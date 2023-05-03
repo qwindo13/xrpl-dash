@@ -9,8 +9,8 @@ const PriceInfo = ({ disableTitle }) => {
     return (
         <ModuleCard title={title} msettings={settings} disableTitle>
             <div className='w-full flex flex-row gap-4'>
-                <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl p-2 items-center justify-center">
-                    <Image src="/images/hound.png" alt="ripple Image" width={46} height={46} />
+                <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl p-4 items-center justify-center">
+                    <Image className=" w-full aspect-square" src="/images/hound.png" alt="ripple Image" width={46} height={46} />
                 </div>
                 <div className='h-auto w-3/1 flex flex-col gap-4 justify-between'>
                     <div className='flex flex-col'>

@@ -36,9 +36,13 @@ export default function ControlPanel() {
             </div>
             <Tabs className="bg-[#21212A] h-full px-1" options={tabOptions} />
             <SearchBar className="h-full" placeholder={"Search for modules, tokens, etc..."} />
-            <Button className="h-full aspect-square	p-0 items-center flex flex-col !rounded-2xl">
-                <AddRoundedIcon />
-            </Button>
+            <Dropdown className="aspect-square" position="right" trigger={
+                <Button className="h-full aspect-square	p-0 items-center flex flex-col !rounded-2xl">
+                    <AddRoundedIcon />
+                </Button>
+            }>
+                <p>Test</p>
+            </Dropdown>
         </div>
     );
 };

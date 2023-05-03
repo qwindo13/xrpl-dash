@@ -20,5 +20,5 @@
 body {
   background: var(--background-color); 
   color: white;
-  @apply font-mont;
+  @apply font-mont overflow-hidden;
 }

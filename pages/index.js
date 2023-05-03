@@ -14,13 +14,13 @@ export default function Home() {
       <Header />
       <ControlPanel />
       <div className='w-full flex flex-row gap-8'>
-        <div className=' w-6/12'>
+        <div className='w-12/12 lg:w-6/12'>
           <RichList />
         </div>
-        <div className=' w-3/12'>
+        <div className='w-12/12 lg:w-3/12'>
           <PriceInfo />
         </div>
-        <div className=' w-3/12'>
+        <div className='w-12/12 lg:w-3/12'>
           <PriceInfo />
         </div>
       </div>
