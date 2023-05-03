@@ -13,7 +13,7 @@ export default function Home() {
     <main className={`flex min-h-screen flex-col items-center gap-16 p-8`}>
       <Header />
       <ControlPanel />
-      <div className='w-full flex flex-row gap-8'>
+      <div className='w-full flex flex-row gap-4'>
         <div className='w-12/12 lg:w-6/12'>
           <RichList />
         </div>
