@@ -1,0 +1,15 @@
+.switch {
+    @apply w-10 h-5 bg-[#A6B0CF] bg-opacity-5 flex justify-start rounded-full p-1 cursor-pointer transition-colors duration-300;
+}
+
+.handle {
+    @apply w-3 h-3 bg-white rounded-full transition-colors duration-300 ;
+}
+
+.switch[data-isOn="true"] {
+    @apply bg-white justify-end;
+}
+
+.switch[data-isOn="true"] .handle {
+    @apply bg-[#21212A];
+}
