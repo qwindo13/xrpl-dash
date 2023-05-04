@@ -22,7 +22,7 @@ const testData = [
 ];
 const defaultSettings = {
     displayTitle: true,
-    displaySearchBar: false,
+    displaySearchBar: true,
 };
 
 const RichList = () => {
@@ -36,6 +36,8 @@ const RichList = () => {
     };
     const [data, setData] = useState(testData);
     const [sortConfig, setSortConfig] = useState(null);
+    const [searchValue, setSearchValue] = useState('');
+
     const renderSortingIcon = (key) => {
         if (!sortConfig || sortConfig.key !== key) {
             return;
@@ -83,38 +85,53 @@ const RichList = () => {
                         value={moduleSettings.displayTitle}
                         onChange={(value) => updateSettings("displayTitle", value)}
                     />
+                    <SearchBarSwitch
+                        value={moduleSettings.displaySearchBar}
+                        onChange={(value) => updateSettings("displaySearchBar", value)}
+                    />
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}
-
         >
-            <div className="w-full">
-                <div className="flex flex-row justify-between pb-4 border-b border-opacity-5 border-white">
-                    {columns.map((column) => {
-                        const isActive = sortConfig && sortConfig.key === column.sortKey;
-                        return (
-                            <div
-                                key={column.sortKey}
-                                className={`cursor-pointer text-left text-xs font-semibold flex flex-row items-center gap-2 transition-all duration-300 ${isActive ? 'opacity-100' : 'opacity-60'
-                                    } ${column.width}`}
-                                onClick={() => sortBy(column.sortKey)}
-                            >
-                                {column.label}
-                                {isActive && renderSortingIcon(column.sortKey)}
+            <div className="w-full flex flex-col gap-8">
+
+                {moduleSettings.displaySearchBar && (
+                    <SearchBar
+                        className={'bg-[#1A1A22] rounded-xl'}
+                        placeholder={'Search for address'}
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                )}
+
+                <div className='flex flex-col gap-4'>
+                    <div className="flex flex-row justify-between border-b border-opacity-5 border-white">
+                        {columns.map((column) => {
+                            const isActive = sortConfig && sortConfig.key === column.sortKey;
+                            return (
+                                <div
+                                    key={column.sortKey}
+                                    className={`cursor-pointer text-left text-xs font-semibold flex flex-row items-center gap-2 transition-all duration-300 ${isActive ? 'opacity-100' : 'opacity-60'
+                                        } ${column.width}`}
+                                    onClick={() => sortBy(column.sortKey)}
+                                >
+                                    {column.label}
+                                    {isActive && renderSortingIcon(column.sortKey)}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                        {data.map((item) => (
+                            <div key={item.rank} className="flex flex-row justify-between">
+                                <div className="text-left w-1/12">{item.rank}</div>
+                                <div className="text-left w-4/12 truncate pr-4">{item.address}</div>
+                                <div className="text-left w-3/12 truncate">{item.amount}</div>
+                                <div className="text-left w-2/12">{item.change}</div>
+                                <div className="text-left w-2/12">{item.percentage}%</div>
                             </div>
-                        );
-                    })}
-                </div>
-                <div className='flex flex-col gap-2 pt-4'>
-                    {data.map((item) => (
-                        <div key={item.rank} className="flex flex-row justify-between">
-                            <div className="text-left w-1/12">{item.rank}</div>
-                            <div className="text-left w-4/12 truncate pr-4">{item.address}</div>
-                            <div className="text-left w-3/12 truncate">{item.amount}</div>
-                            <div className="text-left w-2/12">{item.change}</div>
-                            <div className="text-left w-2/12">{item.percentage}%</div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
 

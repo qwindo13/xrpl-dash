@@ -1,7 +1,7 @@
 import React from 'react';
 import Switch from '../../Switch/Switch';
 
-const SearchBarSwitch = () => {
+const SearchBarSwitch = ({ value, onChange }) => {
     return (
         <div className='flex flex-row justify-between align-middle gap-2'>
             <div className='flex flex-col'>
@@ -9,7 +9,7 @@ const SearchBarSwitch = () => {
                 <span className='opacity-60 font-semibold text-xs'>Display searchbar</span>
             </div>
             <div className='h-auto flex items-center'>
-                <Switch />
+                <Switch value={value} onChange={onChange} />
             </div>
         </div>
     );
