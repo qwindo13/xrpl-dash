@@ -22,7 +22,7 @@ export default function Header() {
                         <Link href="#" className="h-6 w-6"> <NotificationsNoneRoundedIcon /> </Link>
                     </div>
                     <div className="flex flex-row gap-8">
-                        <Link href="#"> <Button>Connect Wallet</Button></Link>
+                        <Link href="/login"> <Button>Connect Wallet</Button></Link>
                     </div>
                 </div>
             </div>
