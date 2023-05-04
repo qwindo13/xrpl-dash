@@ -23,7 +23,7 @@ export default function ControlPanel() {
     ];
 
     return (
-        <div className="w-full flex gap-4 items-center h-12">
+        <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12">
             <div className="relative pr-4">
                 <div className="text-xs absolute -top-2 font-light">Choose Dash:</div>
                 <Dropdown trigger={
@@ -34,15 +34,17 @@ export default function ControlPanel() {
                     <p>Dropdown item 3</p>
                 </Dropdown>
             </div>
-            <Tabs className="bg-[#21212A] h-full px-1" options={tabOptions} />
-            <SearchBar className="h-full" placeholder={"Search for modules, tokens, etc..."} />
-            <Dropdown className="aspect-square" position="right" trigger={
-                <Button className="h-full aspect-square	p-0 items-center flex flex-col !rounded-2xl">
-                    <AddRoundedIcon />
-                </Button>
-            }>
-                <p>Test</p>
-            </Dropdown>
+            <div className="flex flex-row w-full h-12 gap-4 items-center">
+                <Tabs className="bg-[#21212A] h-full px-1" options={tabOptions} />
+                <SearchBar className="h-full" placeholder={"Search for modules, tokens, etc..."} />
+                <Dropdown className="aspect-square" position="right" trigger={
+                    <Button className="h-full aspect-square	p-0 items-center flex flex-col !rounded-2xl">
+                        <AddRoundedIcon />
+                    </Button>
+                }>
+                    <p>Test</p>
+                </Dropdown>
+            </div>
         </div>
     );
 };

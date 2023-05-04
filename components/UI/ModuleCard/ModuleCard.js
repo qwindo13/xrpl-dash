@@ -4,7 +4,7 @@ import Button from '../Button/Button';
 import ModuleCardSettings from './ModuleCardSettings';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const ModuleCard = ({ children, className, title, disableAnimation = false, disableTitle }) => {
+const ModuleCard = ({ children, className, title, settings, disableAnimation = false, disableTitle }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const defaultClass = 'block relative items-start bg-[#21212A] flex flex-col w-full h-auto rounded-2xl relative justify-center items-center p-4';
@@ -58,7 +58,7 @@ const ModuleCard = ({ children, className, title, disableAnimation = false, disa
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <ModuleCardSettings />
+            <ModuleCardSettings> {settings} </ModuleCardSettings>
           </motion.div>
         )}
       </AnimatePresence>

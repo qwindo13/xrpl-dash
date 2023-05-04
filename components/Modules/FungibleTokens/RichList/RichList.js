@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
+import SearchBarSwitch from '@/components/UI/ModuleCard/Settings/SearchBarSwitchcomponents';
+import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 
 const columns = [
     { label: 'Rank', sortKey: 'rank', width: 'w-1/12' },
@@ -63,7 +65,16 @@ const RichList = ({ disableTitle }) => {
 
 
     return (
-        <ModuleCard title="Richlist - HOUND">
+        <ModuleCard
+            title="Richlist - HOUND"
+            settings={
+                <>
+                    <TitleSwitch />
+                    <SearchBarSwitch />
+                </>
+            }
+
+        >
             <div className="w-full">
                 <div className="flex flex-row justify-between pb-4 border-b border-opacity-5 border-white">
                     {columns.map((column) => {
@@ -93,6 +104,7 @@ const RichList = ({ disableTitle }) => {
                     ))}
                 </div>
             </div>
+
         </ModuleCard>
     );
 };

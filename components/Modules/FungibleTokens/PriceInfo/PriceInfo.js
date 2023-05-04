@@ -1,13 +1,22 @@
 import Image from 'next/image';
 import React from 'react';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
+import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 
 const PriceInfo = ({ disableTitle }) => {
     const title = 'Price Info';
     const settings = ['Currency', 'Timeframe', 'Data Source'];
 
     return (
-        <ModuleCard title={title} msettings={settings} disableTitle>
+        <ModuleCard 
+        title={title} 
+        settings={
+            <>
+                <TitleSwitch />
+            </>
+        }
+        disableTitle
+        >
             <div className='w-full flex flex-row gap-4'>
                 <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl p-4 items-center justify-center">
                     <Image className=" w-full aspect-square" src="/images/hound.png" alt="ripple Image" width={46} height={46} />
