@@ -3,6 +3,7 @@ import { useState } from 'react';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import SearchBarSwitch from '@/components/UI/ModuleCard/Settings/SearchBarSwitchcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
+import SearchBar from '@/components/UI/SearchBar/SearchBarcomponents';
 
 const columns = [
     { label: 'Rank', sortKey: 'rank', width: 'w-1/12' },
@@ -19,17 +20,27 @@ const testData = [
     { rank: 5, address: 'rLfP4UznJ65hYTKXjSj2UQQxWDmxmRdbL', amount: 20519920936, change: 50, percentage: 2.3 },
     { rank: 6, address: 'rLfP4UznJ65hYTKXjSj2UQQxWDmxmRdbL', amount: 20519920936, change: 50, percentage: 2.3 },
 ];
-const RichList = ({ disableTitle }) => {
+const defaultSettings = {
+    displayTitle: true,
+    displaySearchBar: false,
+};
 
+const RichList = () => {
+
+    const [moduleSettings, setModuleSettings] = useState(defaultSettings);
+    const updateSettings = (key, value) => {
+        setModuleSettings((prevSettings) => ({
+            ...prevSettings,
+            [key]: value,
+        }));
+    };
     const [data, setData] = useState(testData);
     const [sortConfig, setSortConfig] = useState(null);
     const renderSortingIcon = (key) => {
         if (!sortConfig || sortConfig.key !== key) {
             return;
         }
-
         const iconRotation = sortConfig.direction === 'descending' ? '0' : '180';
-
         return (
             <svg
                 width="7"
@@ -63,16 +74,18 @@ const RichList = ({ disableTitle }) => {
         });
     };
 
-
     return (
         <ModuleCard
             title="Richlist - HOUND"
             settings={
                 <>
-                    <TitleSwitch />
-                    <SearchBarSwitch />
+                    <TitleSwitch
+                        value={moduleSettings.displayTitle}
+                        onChange={(value) => updateSettings("displayTitle", value)}
+                    />
                 </>
             }
+            disableTitle={!moduleSettings.displayTitle}
 
         >
             <div className="w-full">

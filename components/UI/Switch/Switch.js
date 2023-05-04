@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import styles from "./Switch.module.css";
 
-const Switch = ({ onChange }) => {
-    const [isOn, setIsOn] = useState(false);
+const Switch = ({ value, onChange }) => {
+    const [isOn, setIsOn] = useState(value);
+
+    useEffect(() => {
+        setIsOn(value);
+    }, [value]);
 
     const toggleSwitch = () => {
         setIsOn(!isOn);

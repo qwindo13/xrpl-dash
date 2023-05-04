@@ -1,21 +1,35 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from "react";
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 
-const PriceInfo = ({ disableTitle }) => {
-    const title = 'Price Info';
-    const settings = ['Currency', 'Timeframe', 'Data Source'];
+const defaultSettings = {
+    displayTitle: false,
+};
+
+const PriceInfo = () => {
+
+    const [moduleSettings, setModuleSettings] = useState(defaultSettings);
+
+    const updateSettings = (key, value) => {
+        setModuleSettings((prevSettings) => ({
+            ...prevSettings,
+            [key]: value,
+        }));
+    };
 
     return (
-        <ModuleCard 
-        title={title} 
-        settings={
-            <>
-                <TitleSwitch />
-            </>
-        }
-        disableTitle
+        <ModuleCard
+            title="Price - HOUND"
+            settings={
+                <>
+                    <TitleSwitch
+                        value={moduleSettings.displayTitle}
+                        onChange={(value) => updateSettings("displayTitle", value)}
+                    />
+                </>
+            }
+            disableTitle={!moduleSettings.displayTitle}
         >
             <div className='w-full flex flex-row gap-4'>
                 <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl p-4 items-center justify-center">

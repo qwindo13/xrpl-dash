@@ -1,7 +1,7 @@
 import React from 'react';
 import Switch from '../../Switch/Switch';
 
-const TitleSwitch = () => {
+const TitleSwitch = ({ value, onChange }) => {
     return (
         <div className='flex flex-row justify-between align-middle gap-2'>
             <div className='flex flex-col'>
@@ -9,7 +9,7 @@ const TitleSwitch = () => {
                 <span className='opacity-60 font-semibold text-xs'>Display title on top of the module</span>
             </div>
             <div className='h-auto flex items-center'>
-                <Switch />
+                <Switch value={value} onChange={onChange} />
             </div>
         </div>
     );
