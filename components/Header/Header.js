@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import Button from "../UI/Button/Button";
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
@@ -22,7 +23,7 @@ export default function Header() {
                         <Link href="#" className="h-6 w-6"> <NotificationsNoneRoundedIcon /> </Link>
                     </div>
                     <div className="flex flex-row gap-8">
-                        <Link href="/login"> <Button>Connect Wallet</Button></Link>
+                        <Link href="/login"> <Button className="bg-white !text-[#1A1921]">Connect Wallet</Button></Link>
                     </div>
                 </div>
             </div>
