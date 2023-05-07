@@ -10,6 +10,9 @@ module.exports = {
       fontFamily: {
         mont: ['Mont', 'sans-serif']
       },
+      backgroundImage: {
+        'default-avatar': 'linear-gradient(to bottom right, #f280a3, #c86ba0, #9b569d, #75619a, #4f6c97, #85a8d8)',
+      },
     },
   },
   plugins: [],

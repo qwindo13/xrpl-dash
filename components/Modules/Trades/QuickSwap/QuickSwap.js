@@ -61,11 +61,11 @@ const QuickSwap = () => {
                         <span className='text-xs opacity-60 font-semibold'>≈ $9999.99</span>
                     </div>
                 </div>
-                
+
                 {/* Swap Button */}
-                <div className="w-full h-4 z-10 bg-[#21212A]"></div>
+                <div className="w-full h-4 z-[2] bg-[#21212A]"></div>
                 <div className="absolute top-[116px] left-[calc(50%-20px)] z-0 w-[35px] h-[35px] rounded-full border border-[#2C2C35] bg-[#21212A]"></div>
-                <div className='absolute z-10 top-[110px] left-[calc(50%-14px)]'><Button className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation> <SwapVertRoundedIcon/> </Button></div>
+                <div className='absolute z-[2] top-[110px] left-[calc(50%-14px)]'><Button className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation> <SwapVertRoundedIcon /> </Button></div>
 
                 {/* Receive Section */}
                 <div className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
@@ -74,7 +74,10 @@ const QuickSwap = () => {
                     </div>
                     <div className='flex flex-row justify-between items-center'>
                         <Dropdown trigger={
-                            <Button className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}> Explore</Button>
+                            <Button className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>
+                                <div className="rounded-full mr-4"><Image src="/images/greyhound-logo.svg" height={30} width={30} /></div>
+                                HOUND
+                            </Button>
                         }>
                             <p>Dropdown item 1</p>
                             <p>Dropdown item 2</p>
