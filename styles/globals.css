@@ -19,7 +19,7 @@
 
 body {
   background: var(--background-color); 
-  @apply font-mont overflow-hidden text-white;
+  @apply font-mont overflow-auto text-white;
 }
 main{
   place-content: flex-start;

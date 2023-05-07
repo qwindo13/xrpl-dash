@@ -104,8 +104,8 @@ const RichList = () => {
                     />
                 )}
 
-                <div className='flex flex-col gap-4'>
-                    <div className="flex flex-row justify-between border-b border-opacity-5 border-white">
+                <div className='flex flex-col gap-4 overflow-x-auto'>
+                    <div className="flex flex-row justify-between pb-4 border-b border-opacity-5 border-white">
                         {columns.map((column) => {
                             const isActive = sortConfig && sortConfig.key === column.sortKey;
                             return (
