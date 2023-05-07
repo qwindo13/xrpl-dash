@@ -35,7 +35,7 @@ export default function ControlPanel() {
                 </Dropdown>
             </div>
             <div className="flex flex-row w-full h-12 gap-4 items-center">
-                <Tabs className="bg-[#21212A] h-full px-1 hidden md:Block" options={tabOptions} />
+                <Tabs className="bg-[#21212A] h-full px-1 hidden md:flex" options={tabOptions} />
                 <SearchBar className="h-full" placeholder={"Search for modules, tokens, etc..."} />
                 <Dropdown className="aspect-square" position="right" trigger={
                     <Button className="h-full aspect-square	p-0 items-center flex flex-col !rounded-2xl">
