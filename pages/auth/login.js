@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
 import Modal from "@/components/UI/Modal/Modalcomponents"
 import Button from "@/components/UI/Button/Buttoncomponents"
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { useEffect } from 'react';
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
+  const [qrCode, setQrCode] = useState('')
+  const [qrCodeUrl, setQrCodeUrl] = useState('')
+
 
   const openModal = () => {
     setShowModal(true);
@@ -16,6 +19,46 @@ export default function Home() {
   const closeModal = () => {
     setShowModal(false);
   };
+
+  useEffect(() => {
+    const getQrCode = async () => {
+      const payload = await fetch('/api/xumm/createpayload');
+      const data = await payload.json();
+
+      setQrCode(data.payload.refs.qr_png);
+      setQrCodeUrl(data.payload.next.always);
+
+      const ws = new WebSocket(data.payload.refs.websocket_status);
+
+      ws.onmessage = async (e) => {
+        let responseObj = JSON.parse(e.data)
+        if (responseObj.signed !== null && responseObj.signed !== undefined) {
+          const payload = await fetch(`/api/xumm/getpayload?payloadId=${responseObj.payload_uuidv4}`)
+          const payloadJson = await payload.json()
+
+          const hex = payloadJson.payload.response.hex
+          const checkSign = await fetch(`/api/xumm/checksign?hex=${hex}`)
+          const checkSignJson = await checkSign.json()
+
+          // setXrpAddress(checkSignJson.xrpAdress)
+          //set cookie which expires in 1 hour
+          const expires = new Date()
+          expires.setHours(expires.getHours() + 1)
+          document.cookie = `xrpAddress=${checkSignJson.xrpAdress}; expires=${expires.toUTCString()}; path=/`
+          ws.close()
+          
+          //redirect to dashboard
+          window.location.href = '/'
+
+        }
+      }
+    }
+
+    getQrCode()
+
+  }, []);
+
+
   return (
     <main className="p-0">
       <div className="w-full relative h-full flex items-center gap-8 md:gap-16 overflow-hidden">
@@ -54,8 +97,8 @@ export default function Home() {
             <span className="font-semibold text-lg opacity-60">Connect your wallet to XRPLDash quickly and easily by scanning the QR code with your XUMM app.</span>
           </div>
           <div className="flex flex-col gap-4  p-4 md:p-8">
-            <Button className="w-full" onClick={openModal}><Image src="/images/xumm.png" height={30} width={30} className="mr-4" /> XUMM Wallet</Button>
-            <Button className="w-full"><Image src="/images/solo-logo.svg" height={30} width={30} className="mr-4" /> Sologenic App </Button>
+            <Button className="w-full" onClick={openModal}><Image src="/images/xumm.png" height={30} width={30} className="mr-4" alt='xumm login' /> XUMM Wallet</Button>
+            <Button className="w-full"><Image src="/images/solo-logo.svg" height={30} width={30} className="mr-4" alt='sologenic login'/> Sologenic App </Button>
           </div>
         </div>
       </div>
@@ -93,7 +136,12 @@ export default function Home() {
             </div>
           </div>
           <div className='w-1/2'>
-            <Image className="w-full" src="/images/qr.png" height={200} width={200} />
+            {/* <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' /> */}
+            {
+              qrCode ?
+                <img className='w-full' src={qrCode} alt='XUMM QR' />
+                : <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' /> 
+            }
           </div>
 
         </div>
