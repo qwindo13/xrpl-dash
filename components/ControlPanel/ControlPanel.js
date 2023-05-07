@@ -42,7 +42,7 @@ export default function ControlPanel() {
                         <AddRoundedIcon />
                     </Button>
                 }>
-                    <p>Test</p>
+                    <p>Test 1</p> 
                 </Dropdown>
             </div>
         </div>
