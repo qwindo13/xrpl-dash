@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const Tabs = ({ options, onClick, className, bgColor }) => {
-  const [selectedOption, setSelectedOption] = useState(options[0].value);
+const Tabs = ({ options, onClick, className, tabsId , bgColor = "#1A1921" }) => {
+  const [selectedOption, setSelectedOption] = useState(`${tabsId}-${options[0].value}`);
 
   const handleOptionClick = (value) => {
-    setSelectedOption(value);
+    setSelectedOption(`${tabsId}-${value}`);
     if (onClick) {
       onClick(value);
     }
@@ -17,18 +17,17 @@ const Tabs = ({ options, onClick, className, bgColor }) => {
         <motion.div
           key={option.value}
           onClick={() => handleOptionClick(option.value)}
-          className={`text-lg font-semibold cursor-pointer px-2 py-2 rounded-xl transition-all duration-300 hover:opacity-100 !no-select ${selectedOption === option.value ? '' : 'opacity-70'
+          className={`text-lg font-semibold cursor-pointer px-2 py-2 rounded-xl transition-all duration-300 hover:opacity-100 !no-select ${selectedOption === `${tabsId}-${option.value}` ? '' : 'opacity-70'
             } relative`}
           whileHover={{ scale: 1 }}
           whileTap={{ scale: 0.95 }}
         >
-          {selectedOption === option.value && (
+          {selectedOption === `${tabsId}-${option.value}` && (
             <motion.span
-              layoutId="bubble"
-              className="absolute inset-0 z-0 bg-[#1A1921] rounded-2xl"
+              layoutId={`bubble-${tabsId}`}
+              className="absolute inset-0 z-0"
               style={{ backgroundColor: bgColor, borderRadius: 12 }}
-              transition={{ type: 'spring', bounce: 0.2, duration: 0.3, stiffness: 700,
-    damping: 30 }}
+              transition={{ type: "spring", bounce: 0.2, duration: 0.3 }}
             />
           )}
           <motion.span className="relative z-[1]">{option.label}</motion.span>

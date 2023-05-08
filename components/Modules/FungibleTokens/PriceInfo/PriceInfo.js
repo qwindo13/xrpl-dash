@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import { motion } from 'framer-motion';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
+import LogoSwitch from '@/components/UI/ModuleCard/Settings/LogoSwitchcomponents';
 import TokenDropdown from '@/components/UI/ModuleCard/Settings/TokenDropdowncomponents';
 import DisplayPriceInTabs from '@/components/UI/ModuleCard/Settings/DisplayPriceInTabscomponents';
 
 const defaultSettings = {
     displayTitle: false,
+    displayLogo: true,
 };
 
 const PriceInfo = () => {
@@ -21,6 +23,8 @@ const PriceInfo = () => {
         }));
     };
 
+    const [logoValue, setLogoValue] = useState('');
+
     return (
         <ModuleCard
             title="Price - HOUND"
@@ -30,6 +34,10 @@ const PriceInfo = () => {
                         value={moduleSettings.displayTitle}
                         onChange={(value) => updateSettings("displayTitle", value)}
                     />
+                    <LogoSwitch
+                        value={moduleSettings.displayLogo}
+                        onChange={(value) => updateSettings("displayLogo", value)}
+                    />
                     <TokenDropdown />
                     <DisplayPriceInTabs />
                 </>
@@ -37,9 +45,11 @@ const PriceInfo = () => {
             disableTitle={!moduleSettings.displayTitle}
         >
             <div className='w-full flex flex-row gap-4'>
-                <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl p-4 items-center justify-center">
-                    <Image className=" w-full aspect-square" src="/images/hound.png" alt="ripple Image" width={46} height={46} />
-                </div>
+                {moduleSettings.displayLogo && (
+                    <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl p-4 items-center justify-center">
+                        <Image className=" w-full aspect-square" src="/images/hound.png" alt="ripple Image" width={46} height={46} />
+                    </div>
+                )}
                 <div className='h-auto w-3/1 flex flex-col gap-4 justify-between'>
                     <div className='flex flex-col'>
                         <span className="text-xs font-semibold text-white opacity-70">Greyhound</span>
