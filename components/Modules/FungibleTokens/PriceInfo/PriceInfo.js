@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { motion } from 'framer-motion';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
+import TokenDropdown from '@/components/UI/ModuleCard/Settings/TokenDropdowncomponents';
+import DisplayPriceInTabs from '@/components/UI/ModuleCard/Settings/DisplayPriceInTabscomponents';
 
 const defaultSettings = {
     displayTitle: false,
@@ -28,6 +30,8 @@ const PriceInfo = () => {
                         value={moduleSettings.displayTitle}
                         onChange={(value) => updateSettings("displayTitle", value)}
                     />
+                    <TokenDropdown />
+                    <DisplayPriceInTabs />
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}
@@ -39,7 +43,7 @@ const PriceInfo = () => {
                 <div className='h-auto w-3/1 flex flex-col gap-4 justify-between'>
                     <div className='flex flex-col'>
                         <span className="text-xs font-semibold text-white opacity-70">Greyhound</span>
-                        <span className="text-medium font-bold">HOUND</span>
+                        <span className="text-xl font-bold">HOUND</span>
                     </div>
                     <div className='flex flex-col'>
                         <span className="text-xl font-bold">0.000042 XRP</span>

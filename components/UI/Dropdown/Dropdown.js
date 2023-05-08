@@ -31,7 +31,7 @@ const Dropdown = ({ trigger, children, className, position = 'left', onToggle })
     }, []);
 
     return (
-        <div ref={dropdownRef} className={`relative inline-block h-full ${className}`} onClick={toggleDropdown}>
+        <div ref={dropdownRef} className={`relative inline-block h-full `} onClick={toggleDropdown}>
             {React.cloneElement(trigger, { isOpen })}
             {isOpen && (
                 <motion.div
@@ -39,7 +39,7 @@ const Dropdown = ({ trigger, children, className, position = 'left', onToggle })
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className={`absolute bg-[#21212A] mt-2 w-56 p-4 rounded-2xl border border-[#fff] border-opacity-10 bg-opacity-60 backdrop-blur-xl z-10 ${dropdownPosition[position]}`}
+                    className={`absolute bg-[#21212A] mt-2 w-56 p-4 rounded-2xl border border-[#fff] border-opacity-10 bg-opacity-60 backdrop-blur-xl z-10 ${className} ${dropdownPosition[position]}`}
                 >
                     {children}
                 </motion.div>
