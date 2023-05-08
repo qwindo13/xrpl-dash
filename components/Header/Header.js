@@ -61,7 +61,7 @@ export default function Header() {
                                     </Button>
 
                                     <Button className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation>
-                                        <div className="rounded-full h-10 w-10 mr-4 bg-default-avatar"></div>
+                                        <div className="rounded-full h-10 w-10 mr-4 bg-default-avatar" title={xrpAddress}></div>
                                         <span className="text-base font-semibold">{truncateAddress(xrpAddress)}</span>
                                     </Button>
                                 </div>

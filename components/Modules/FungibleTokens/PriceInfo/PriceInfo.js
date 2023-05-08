@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useState } from "react";
+import { motion } from 'framer-motion';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 

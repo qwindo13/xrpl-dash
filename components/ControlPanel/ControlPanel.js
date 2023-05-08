@@ -1,3 +1,4 @@
+import { motion, useAnimation } from "framer-motion";
 import SearchBar from "../UI/SearchBar/SearchBar";
 import Button from "../UI/Button/Button";
 import Dropdown from "../UI/Dropdown/Dropdown";
@@ -21,6 +22,12 @@ export default function ControlPanel() {
             , value: '2'
         },
     ];
+    const rotateAnimation = useAnimation();
+
+    const handleToggle = (isOpen) => {
+        rotateAnimation.start({ rotate: isOpen ? 45 : 0 });
+    };
+
 
     return (
         <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12">
@@ -37,10 +44,12 @@ export default function ControlPanel() {
             <div className="flex flex-row w-full h-12 gap-4 items-center">
                 <Tabs className="bg-[#21212A] h-full px-1 hidden md:flex" options={tabOptions} />
                 <SearchBar className="h-full" placeholder={"Search for modules, tokens, etc..."} />
-                <Dropdown className="aspect-square" position="right" trigger={
-                    <Button className="h-full aspect-square	p-0 items-center flex flex-col !rounded-2xl">
+                <Dropdown className="aspect-square" position="right" onToggle={handleToggle} trigger={
+                    <Button className="h-full aspect-square p-0 items-center flex flex-col !rounded-2xl">
+                    <motion.div className="flex" animate={rotateAnimation}>
                         <AddRoundedIcon />
-                    </Button>
+                    </motion.div>
+                </Button>
                 }>
                     <p>Test 1</p> 
                 </Dropdown>
