@@ -27,7 +27,7 @@ const Modal = ({ children, showModal, closeModal }) => {
       <AnimatePresence mode="wait">
         {showModal && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-opacity-50 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-opacity-50 backdrop-blur-md "
             onClick={closeModal}
             initial="hidden"
             animate="visible"
@@ -36,7 +36,7 @@ const Modal = ({ children, showModal, closeModal }) => {
             style={{ backgroundColor: 'rgba(33, 33, 42, 0.5)' }}
           >
             <motion.div
-              className="m-4 md:m-0 relative w-full max-w-3xl p-8 bg-[#21212A] border-0 rounded-2xl shadow-lg"
+              className="m-8 md:m-0 relative w-full max-w-3xl p-8 bg-[#21212A]  rounded-2xl shadow-lg border border-white border-opacity-5"
               onClick={(e) => e.stopPropagation()}
               variants={modalVariants}
             >

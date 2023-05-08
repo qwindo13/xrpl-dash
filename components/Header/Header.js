@@ -36,11 +36,11 @@ export default function Header() {
                 <div className="">
                     <Link href={"/"}>
                         <Image src="/images/logo.svg" alt="" width={200} height={50} className="hidden md:block py-2 pr-4 mr-4" />
-                        <Image src="/images/logo-icon.svg" alt="" width={50} height={50} className=" md:hidden py-2 pr-4 mr-4" />
+                        <Image src="/images/logo-icon.svg" alt="" width={65} height={70} className=" md:hidden py-2 pr-4 mr-4" />
                     </Link>
                 </div>
                 <div className="flex flex-row items-center justify-between gap-8 lg:gap-16 ">
-                    <div className="flex flex-row gap-8 items-center">
+                    <div className="hidden md:flex flex-row gap-8 items-center ">
                         <Link href="#" className="h-6 w-6 self-center"> <LightbulbOutlinedIcon /> </Link>
                         <Link href="#" className="h-6 w-6 self-center"> <SettingsOutlinedIcon /> </Link>
                         <Link href="#" className="h-6 w-6 self-center"> <NotificationsNoneRoundedIcon /> </Link>
