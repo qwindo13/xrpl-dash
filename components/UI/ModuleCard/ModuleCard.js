@@ -14,7 +14,7 @@ const ModuleCard = ({ children, className, title, settings, disableAnimation = f
   };
 
   return (
-    <div
+    <motion.div
       className={`${defaultClass} ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -62,7 +62,7 @@ const ModuleCard = ({ children, className, title, settings, disableAnimation = f
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 

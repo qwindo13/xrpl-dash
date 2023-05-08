@@ -69,7 +69,7 @@ export default function Header() {
                                 :
                                 <Link href="/auth/login">
                                     <Button className="bg-white !text-[#1A1921]">
-                                        Login
+                                        Connect Wallet
                                     </Button>
                                 </Link>
                         }
