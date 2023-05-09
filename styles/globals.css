@@ -18,9 +18,9 @@
 }
 
 body {
-  background: var(--background-color); 
-  @apply font-mont overflow-auto text-white;
+  @apply font-mont overflow-auto text-white bg-[#1A1921] ;
 }
+
 main{
   place-content: flex-start;
   align-items: flex-start;
@@ -28,3 +28,42 @@ main{
   height: min-content;
   @apply bg-[#1A1921] relative w-full h-full flex flex-col items-center gap-8 md:gap-16 overflow-hidden p-4 md:p-8 mx-auto justify-center;
 }
+
+.react-grid-placeholder {
+  @apply border-2 border-dashed border-white !bg-transparent rounded-2xl z-10;
+}
+.react-draggable-dragging {
+  transform: scale(1.9);
+  @apply shadow-lg;
+}
+
+/* General scrollbar styles */
+::-webkit-scrollbar {
+  width: 10px; 
+  height: 10px; 
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: rgba(10%, 10%, 13%, 0.2%); 
+  opacity: 0.5;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 14px; /* Add rounded corners to the scrollbar thumb */
+  border: 2px solid transparent; /* Add a border to the scrollbar thumb for a more polished look */
+  background-clip: content-box; /* Clip the background to the content box, ensuring the border remains visible */
+}
+
+/* Hover effect */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Change the color of the scrollbar thumb when hovered */
+}
+
+/* Active effect */
+::-webkit-scrollbar-thumb:active {
+  background-color: #333; /* Change the color of the scrollbar thumb when clicked */
+}
+

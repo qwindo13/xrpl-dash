@@ -7,7 +7,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 const ModuleCard = ({ children, className, title, settings, disableAnimation = false, disableTitle }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
-  const defaultClass = 'block relative items-start bg-[#21212A] flex flex-col w-full h-auto rounded-2xl relative justify-center items-center p-4';
+  const defaultClass = 'block relative items-start bg-[#21212A] flex flex-col w-full h-full rounded-2xl relative items-center p-4';
 
   const toggleSettings = () => {
     setIsSettingsVisible(!isSettingsVisible);
@@ -46,7 +46,7 @@ const ModuleCard = ({ children, className, title, settings, disableAnimation = f
       </AnimatePresence>
 
       {/* CARD CONTENT */}
-      <div className='w-full flex items-start'>{children}</div>
+      <div className='w-full h-full flex items-start'>{children}</div>
 
       {/* CARD SETTINGS */}
       <AnimatePresence>

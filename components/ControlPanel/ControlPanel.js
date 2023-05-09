@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { motion, useAnimation } from "framer-motion";
 import SearchBar from "../UI/SearchBar/SearchBar";
 import Button from "../UI/Button/Button";
@@ -33,12 +34,12 @@ export default function ControlPanel() {
         <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12">
             <div className="relative pr-4">
                 <div className="text-xs absolute -top-2 font-light">Choose Dash:</div>
-                <Dropdown trigger={
+                <Dropdown className="w-full" trigger={
                     <Button className="!px-0 text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Explore</Button>
                 }>
-                    <p>Dropdown item 1</p>
-                    <p>Dropdown item 2</p>
-                    <p>Dropdown item 3</p>
+                    <Link href="/"><span className="text-2xl">Explore</span></Link>
+                    <Link href="/trading"> <span className="text-2xl">Trading</span></Link>
+                    <Link href="/"><span className="text-2xl">Custom</span></Link>
                 </Dropdown>
             </div>
             <div className="flex flex-row w-full h-12 gap-4 items-center">

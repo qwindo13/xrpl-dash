@@ -33,7 +33,7 @@ const Modal = ({ children, showModal, closeModal }) => {
             animate="visible"
             exit="hidden"
             variants={backdropVariants}
-            style={{ backgroundColor: 'rgba(33, 33, 42, 0.5)' }}
+            style={{ backgroundColor: 'rgba(26, 25, 33, 0.5)' }}
           >
             <motion.div
               className="m-8 md:m-0 relative w-full max-w-3xl p-8 bg-[#21212A]  rounded-2xl shadow-lg border border-white border-opacity-5"

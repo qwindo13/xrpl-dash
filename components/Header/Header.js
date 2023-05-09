@@ -35,7 +35,7 @@ export default function Header() {
             <div className="flex flex-row justify-between items-center">
                 <div className="">
                     <Link href={"/"}>
-                        <Image src="/images/logo.svg" alt="" width={200} height={50} className="hidden md:block py-2 pr-4 mr-4" />
+                        <Image src="/images/logo.svg" alt="" width={200} height={70} className="hidden md:block py-2 pr-4 mr-4" />
                         <Image src="/images/logo-icon.svg" alt="" width={65} height={70} className=" md:hidden py-2 pr-4 mr-4" />
                     </Link>
                 </div>
