@@ -31,10 +31,10 @@ export default function Trading() {
 
     // Define the layout configuration
     const layout = [
-        { i: 'priceInfo', x: 2, y: 0, w: 1, h: 0.5, minW: 0.5, maxW: 1 },
-        { i: 'priceInfo2', x: 2, y: 0.5, w: 1, h: 0.5, minW: 0.5, maxW: 1 },
+        { i: 'priceInfo', x: 1, y: 0, w: 0.5, h: 0.5, minW: 0.5, maxW: 1 },
+        { i: 'priceInfo2', x: 3, y: 0, w: 0.5, h: 0.5, minW: 0.5, maxW: 1 },
         { i: 'richList', x: 0, y: 0, w: 1, h: 1, minW: 0.5, maxW: 2 },
-        { i: 'quickswap', x: 1, y: 0, w: 1, h: 1, minW: 0.5, maxW: 2 },
+        { i: 'quickswap', x: 1, y: 1, w: 1, h: 1, minW: 0.5, maxW: 2 },
         // Add other modules with their layout configuration
     ];
 
@@ -47,7 +47,7 @@ export default function Trading() {
                     cols={cols}
                     rowHeight={384}
                     width={gridWidth} // Pass the calculated gridWidth
-                    margin={[16, 16]}
+                    margin={[0, 0]}
                     containerPadding={[0, 0]}
                     isResizable={false}
                     isDraggable={true}
