@@ -44,7 +44,7 @@ const PriceInfo = () => {
             }
             disableTitle={!moduleSettings.displayTitle}
         >
-            <div className='w-full flex flex-row gap-4'>
+            <div className='w-full h-full flex flex-row gap-4'>
                 {moduleSettings.displayLogo && (
                     <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl p-4 items-center justify-center">
                         <Image className=" w-full aspect-square" src="/images/hound.png" alt="ripple Image" width={46} height={46} />
