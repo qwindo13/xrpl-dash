@@ -29,17 +29,41 @@ main{
   @apply bg-[#1A1921] relative w-full h-full flex flex-col items-center gap-8 md:gap-16 overflow-hidden p-4 md:p-8 mx-auto justify-center;
 }
 
-.react-grid-item {
-  @apply p-2;
-}
-
 .react-grid-placeholder {
   @apply border-2 border-dashed border-white !bg-transparent rounded-2xl z-10;
 }
 .react-draggable-dragging {
-  transform: scale(1.9);
   @apply shadow-lg;
 }
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.react-grid-item .react-resizable-handle {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.react-grid-item:hover .react-resizable-handle {
+  opacity: 1;
+  animation: fadeIn 0.2s;
+}
+.react-grid-item > .react-resizable-handle::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 5px;
+  height: 5px;
+  border-right: 2px solid rgba(255, 255, 255, 0.6) !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.6) !important;
+}
+.react-grid-item > .react-resizable-handle.react-resizable-handle-se{
+  @apply !bottom-4 !right-4;
+}
+
 
 /* General scrollbar styles */
 ::-webkit-scrollbar {

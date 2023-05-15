@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import GridLayout from 'react-grid-layout';
+import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import AppLayout from '@/components/Layouts/AppLayoutcomponents';
@@ -10,8 +10,7 @@ import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents
 export default function Trading() {
     const gridContainerRef = useRef(null); // Create a reference to the parent
     const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
-    const [cols, setCols] = useState(2);
-
+    const [cols, setCols] = useState(6);
 
     // Update the gridWidth on window resize and component mount
     useEffect(() => {
@@ -30,29 +29,49 @@ export default function Trading() {
     }, []);
 
     // Define the layout configuration
-    const layout = [
-        { i: 'priceInfo', x: 1, y: 0, w: 0.5, h: 0.5, minW: 0.5, maxW: 1 },
-        { i: 'priceInfo2', x: 3, y: 0, w: 0.5, h: 0.5, minW: 0.5, maxW: 1 },
-        { i: 'richList', x: 0, y: 0, w: 1, h: 1, minW: 0.5, maxW: 2 },
-        { i: 'quickswap', x: 1, y: 1, w: 1, h: 1, minW: 0.5, maxW: 2 },
-        // Add other modules with their layout configuration
-    ];
+    const [layout, setLayout] = useState({
+        lg: [
+            { i: 'priceInfo', x: 2, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
+            { i: 'priceInfo2', x: 2, y: 1, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
+            { i: 'richList', x: 0, y: 0, w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 3},
+            { i: 'quickswap', x: 3, y: 0, w: 3, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
+        ],
+        md: [
+            { i: 'priceInfo', x: 2, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
+            { i: 'priceInfo2', x: 3, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
+            { i: 'richList', x: 0, y: 0, w: 2, h: 3, minW: 2, maxW: 3, minH: 2, maxH: 3},
+            { i: 'quickswap', x: 2, y: 0, w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
+        ],
+        sm: [
+            { i: 'priceInfo', x: 0, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
+            { i: 'priceInfo2', x: 2, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
+            { i: 'richList', x: 0, y: 0, w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 3},
+            { i: 'quickswap', x: 3, y: 0, w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 2 },
+        ]
+        // Add other breakpoints here...
+    });
+    const handleLayoutChange = (currentLayout) => {
+        console.log('Layout changed:', currentLayout);
+    };
+
 
     return (
-        <AppLayout setCols={setCols}>
+        <AppLayout>
             <div ref={gridContainerRef} className="w-full"> {/* Attach the reference to the parent */}
-                <GridLayout
+                <ResponsiveGridLayout
                     className="layout"
-                    layout={layout}
-                    cols={cols}
-                    rowHeight={384}
+                    layouts={layout}
+                    breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+                    cols={{ lg: 6, md: 4, sm: 4, xs: 2, xxs: 2 }}
                     width={gridWidth} // Pass the calculated gridWidth
-                    margin={[0, 0]}
+                    rowHeight={180}
+                    margin={[16, 16]}
                     containerPadding={[0, 0]}
-                    isResizable={false}
+                    isResizable={true}
                     isDraggable={true}
                     preventCollision={false}
                     autoSize={true}
+                    onLayoutChange={handleLayoutChange}
                 >
                     <div key="richList">
                         <RichList />
@@ -67,7 +86,7 @@ export default function Trading() {
                         <QuickSwap />
                     </div>
                     {/* Add other modules wrapped in a <div> with their unique key */}
-                </GridLayout>
+                </ResponsiveGridLayout>
             </div>
         </AppLayout>
     );
