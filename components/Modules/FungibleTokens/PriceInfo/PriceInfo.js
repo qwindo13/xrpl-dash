@@ -46,14 +46,17 @@ const PriceInfo = () => {
         >
             <div className='w-full h-full flex flex-row gap-4'>
                 {moduleSettings.displayLogo && (
-                    <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl  items-center justify-center overflow-hidden">
-                        <Image className="w-full aspect-square p-4" src="/images/hound.png" alt="ripple Image" width={46} height={46} />
+                    <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl items-center justify-center overflow-hidden p-4">
+                        <Image className="w-full h-full object-contain" src="/images/hound.png" alt="ripple Image" width={46} height={46} />
                     </div>
+
+
+
                 )}
                 <div className='h-auto w-3/1 flex flex-col gap-4 justify-between'>
                     <div className='flex flex-col'>
-                        <span className="text-xs font-semibold text-white opacity-70">Greyhound</span>
-                        <span className="text-xl font-bold">HOUND</span>
+                        <span className="text-xs font-semibold text-white opacity-60">Greyhound</span>
+                        <span className="text-2xl font-bold">HOUND</span>
                     </div>
                     <div className='flex flex-col'>
                         <span className="text-xl font-bold">0.000042 XRP</span>

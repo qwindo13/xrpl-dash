@@ -6,7 +6,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const ModuleCardSettings = ({ children }) => {
     return (
-        <div className='absolute bg-[#111015] bg-opacity-60 backdrop-blur-xl p-4 w-2/3 h-auto top-0 right-0 rounded-2xl border border-white border-opacity-10 flex flex-col gap-4 justify-between items-start'>
+        <div className='absolute bg-[#111015] bg-opacity-60 backdrop-blur-xl p-4 w-2/3 h-auto max-h-full top-0 right-0 rounded-2xl border border-white border-opacity-10 flex flex-col gap-4 justify-between items-start overflow-y-scroll'>
             <div className='w-full'>
                 <h4 className='font-semibold text-xl'>Settings</h4>
             </div>

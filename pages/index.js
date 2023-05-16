@@ -6,12 +6,11 @@ import AppLayout from '@/components/Layouts/AppLayoutcomponents';
 import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfocomponents';
 import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
+import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
 
 export default function Home() {
     const gridContainerRef = useRef(null); // Create a reference to the parent
     const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
-    const [cols, setCols] = useState(6);
-
     // Update the gridWidth on window resize and component mount
     useEffect(() => {
         const handleResize = () => {
@@ -35,6 +34,7 @@ export default function Home() {
             { i: 'priceInfo2', x: 2, y: 1, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
             { i: 'richList', x: 0, y: 0, w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 3},
             { i: 'quickswap', x: 3, y: 0, w: 3, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
+            { i: 'wallet', x: 0, y: 0, w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
         ],
         md: [
             { i: 'priceInfo', x: 2, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
@@ -64,7 +64,7 @@ export default function Home() {
                     breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
                     cols={{ lg: 6, md: 4, sm: 4, xs: 2, xxs: 2 }}
                     width={gridWidth} // Pass the calculated gridWidth
-                    rowHeight={180}
+                    rowHeight={208}
                     margin={[16, 16]}
                     containerPadding={[0, 0]}
                     isResizable={true}
@@ -84,6 +84,9 @@ export default function Home() {
                     </div>
                     <div key="quickswap">
                         <QuickSwap />
+                    </div>
+                    <div key="wallet">
+                        <Wallet />
                     </div>
                     {/* Add other modules wrapped in a <div> with their unique key */}
                 </ResponsiveGridLayout>

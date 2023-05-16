@@ -48,7 +48,7 @@ const QuickSwap = () => {
                 {/* Pay Section */}
                 <div className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
                     <div className='flex flex-row justify-between'>
-                        <span className='text-sm opacity-60 font-bold'>Pay with</span>
+                        <span className='text-sm opacity-60 font-semibold'>Pay with</span>
                     </div>
                     <div className='flex flex-row justify-between items-center'>
                         <Dropdown
@@ -83,7 +83,7 @@ const QuickSwap = () => {
                 {/* Receive Section */}
                 <div className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
                     <div className='flex flex-row justify-between'>
-                        <span className='text-sm opacity-60 font-bold'>Receive</span>
+                        <span className='text-sm opacity-60 font-semibold'>Receive</span>
                     </div>
                     <div className='flex flex-row justify-between items-center'>
                         <Dropdown
@@ -105,7 +105,11 @@ const QuickSwap = () => {
                         <span className='text-xs opacity-60 font-semibold'>≈ $9999.99</span>
                     </div>
                 </div>
+                <div className="flex w-full pt-4 justify-end">
+                    <Button className="bg-white !text-[#1A1921]">Swap</Button>
+                </div>
             </div>
+
         </ModuleCard>
     );
 };
