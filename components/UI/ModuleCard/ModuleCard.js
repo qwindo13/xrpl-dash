@@ -7,7 +7,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 const ModuleCard = ({ children, className, title, settings, disableAnimation = false, disableTitle }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
-  const defaultClass = 'block relative overflow-hidden items-start bg-[#21212A] flex flex-col w-full h-full rounded-2xl relative items-center p-4';
+  const defaultClass = 'block relative overflow-hidden items-start dark:bg-[#21212A] bg-[#f7f7f7] flex flex-col w-full h-full rounded-2xl relative items-center p-4';
 
   const toggleSettings = () => {
     setIsSettingsVisible(!isSettingsVisible);

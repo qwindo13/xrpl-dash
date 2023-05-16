@@ -97,7 +97,7 @@ const RichList = () => {
 
                 {moduleSettings.displaySearchBar && (
                     <SearchBar
-                        className="!bg-[#1A1A22] rounded-xl"
+                        className="dark:bg-[#1A1A22] bg-[#ffffff] rounded-xl"
                         placeholder={'Search for address'}
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}

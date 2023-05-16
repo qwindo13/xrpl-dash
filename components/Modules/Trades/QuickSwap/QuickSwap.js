@@ -46,7 +46,7 @@ const QuickSwap = () => {
             <div className='w-full flex flex-col gap-0 relative'>
 
                 {/* Pay Section */}
-                <div className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
+                <div className='w-full flex flex-col justify-between rounded-xl border dark:border-white dark:border-opacity-5 p-4 '>
                     <div className='flex flex-row justify-between'>
                         <span className='text-sm opacity-60 font-bold'>Pay with</span>
                     </div>
@@ -72,8 +72,8 @@ const QuickSwap = () => {
                 </div>
 
                 {/* Swap Button */}
-                <div className="w-full h-4 z-[2] bg-[#21212A]"></div>
-                <div className="absolute top-[116px] left-[calc(50%-20px)] z-0 w-[35px] h-[35px] rounded-full border border-[#2C2C35] bg-[#21212A]"></div>
+                <div className="w-full h-4 z-[2] dark:bg-[#21212A]"></div>
+                <div className="absolute top-[116px] left-[calc(50%-20px)] z-0 w-[35px] h-[35px] rounded-full border dark:border-[#2C2C35] dark:bg-[#21212A] bg-[#f7f7f7]"></div>
                 <div className='absolute z-[2] top-[110px] left-[calc(50%-14px)]'>
                     <Button className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation onClick={handleSwap}>
                         <SwapVertRoundedIcon />
@@ -81,7 +81,7 @@ const QuickSwap = () => {
                 </div>
 
                 {/* Receive Section */}
-                <div className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
+                <div className='w-full flex flex-col justify-between rounded-xl border dark:border-white dark:border-opacity-5 p-4 '>
                     <div className='flex flex-row justify-between'>
                         <span className='text-sm opacity-60 font-bold'>Receive</span>
                     </div>

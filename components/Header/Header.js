@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { Cookies } from 'react-cookie';
+import {useTheme} from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import SideMenu from "./SideMenu";
 import Button from "../UI/Button/Button";
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+
 
 function truncateAddress(address, maxLength = 12) {
     if (!address) {
@@ -39,18 +43,56 @@ export default function Header() {
     const closeModal = () => {
         setShowModal(false);
     };
+    
+    
+    const {systemTheme , theme, setTheme} = useTheme ();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() =>{
+    setMounted(true);
+  },[])
+
+   const renderThemeChanger= () => {
+      if(!mounted) return null;
+
+      const currentTheme = theme === "system" ? systemTheme : theme ;
+
+      if(currentTheme ==="dark"){
+        return (
+          <DarkModeOutlinedIcon role="button" onClick={() => setTheme('light')} />
+        )
+      }
+      else {
+        return (
+          <LightModeOutlinedIcon role="button" onClick={() => setTheme('dark')} />
+        )
+      }
+   };
+    
+    
 
     return (
         <nav className="w-full">
             <div className="flex flex-row justify-between items-center">
                 <div className="">
                     <Link href={"/"}>
-                        <Image src="/images/logo.svg" alt="" width={200} height={70} className="hidden md:block py-2 pr-4 mr-4" />
+                        
+                        
+                        
+                        
+                        
+                        <Image src="/images/logo.svg" alt="" width={200} height={70} className="hidden dark:block"/>
+		  				<Image src="/images/logo-reversed.svg" alt="" width={200} height={70} className="block dark:hidden"/>
                         <Image src="/images/logo-icon.svg" alt="" width={65} height={70} className=" md:hidden py-2 pr-4 mr-4" />
+                        
+                        
+                        
                     </Link>
                 </div>
                 <div className="relative flex flex-row items-center justify-between gap-8 lg:gap-16 ">
                     <div className="hidden md:flex flex-row gap-8 items-center ">
+                    
+                        <Link href="#" className="h-6 w-6 self-center"> {renderThemeChanger()} </Link>
                         <Link href="#" className="h-6 w-6 self-center"> <LightbulbOutlinedIcon /> </Link>
                         <Link href="#" className="h-6 w-6 self-center"> <SettingsOutlinedIcon /> </Link>
                         <Link href="#" className="h-6 w-6 self-center"> <NotificationsNoneRoundedIcon /> </Link>
@@ -67,7 +109,7 @@ export default function Header() {
 
                                 :
                                 <Link href="/auth/login">
-                                    <Button className="bg-white !text-[#1A1921]">
+                                    <Button className="dark:bg-white dark:text-[#1A1921]">
                                         Connect Wallet
                                     </Button>
                                 </Link>

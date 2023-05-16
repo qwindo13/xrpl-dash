@@ -46,7 +46,7 @@ const PriceInfo = () => {
         >
             <div className='w-full h-full flex flex-row gap-4'>
                 {moduleSettings.displayLogo && (
-                    <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl  items-center justify-center overflow-hidden">
+                    <div className="h-auto w-1/3 flex dark:bg-[#272832] bg-[#ddd] rounded-xl  items-center justify-center overflow-hidden">
                         <Image className="w-full aspect-square p-4" src="/images/hound.png" alt="ripple Image" width={46} height={46} />
                     </div>
                 )}

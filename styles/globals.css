@@ -18,7 +18,8 @@
 }
 
 body {
-  @apply font-mont overflow-auto text-white bg-[#1A1921] ;
+  @apply font-mont overflow-auto dark:text-white dark:bg-[#1A1921];
+  
 }
 
 main{
@@ -26,7 +27,7 @@ main{
   align-items: flex-start;
   flex: 0 0 auto;
   height: min-content;
-  @apply bg-[#1A1921] relative w-full h-full flex flex-col items-center gap-8 md:gap-16 overflow-hidden p-4 md:p-8 mx-auto justify-center;
+  @apply dark:bg-[#1A1921] relative w-full h-full flex flex-col items-center gap-8 md:gap-16 overflow-hidden p-4 md:p-8 mx-auto justify-center;
 }
 
 .react-grid-placeholder {
