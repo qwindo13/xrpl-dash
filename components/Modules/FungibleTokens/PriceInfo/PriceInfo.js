@@ -49,11 +49,8 @@ const PriceInfo = () => {
                     <div className="h-auto w-1/3 flex bg-[#272832] rounded-xl items-center justify-center overflow-hidden p-4">
                         <Image className="w-full h-full object-contain" src="/images/hound.png" alt="ripple Image" width={46} height={46} />
                     </div>
-
-
-
                 )}
-                <div className='h-auto w-3/1 flex flex-col gap-4 justify-between'>
+                <motion.div layout className='h-auto w-3/1 flex flex-col gap-4 justify-between'>
                     <div className='flex flex-col'>
                         <span className="text-xs font-semibold text-white opacity-60">Greyhound</span>
                         <span className="text-2xl font-bold">HOUND</span>
@@ -67,7 +64,7 @@ const PriceInfo = () => {
                             3.5% (in the last 24h)
                         </span>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </ModuleCard>
     );

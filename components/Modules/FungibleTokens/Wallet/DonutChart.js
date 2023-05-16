@@ -13,7 +13,7 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat}) => {
   const sortedColorScale = colorScale || ['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'];
 
   return (
-    <div className='relative flex justify-center'>
+    <div className='relative flex justify-center overflow-hidden'>
       <svg width="100%" viewBox="-5 -5 62 62">
         {sortedData.map((entry, index) => {
           const { value } = entry;
