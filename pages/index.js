@@ -7,6 +7,8 @@ import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfoco
 import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
+import { priceInfoSize, richListSize, quickSwapSize, walletSize } from '@/components/Utils/ModuleSizescomponents';
+
 
 export default function Home() {
     const gridContainerRef = useRef(null); // Create a reference to the parent
@@ -30,31 +32,30 @@ export default function Home() {
     // Define the layout configuration
     const [layout, setLayout] = useState({
         lg: [
-            { i: 'priceInfo', x: 2, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'priceInfo2', x: 2, y: 1, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'richList', x: 0, y: 0, w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 3},
-            { i: 'quickswap', x: 3, y: 0, w: 3, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
-            { i: 'wallet', x: 0, y: 0, w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 2 },
+            { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.lg },
+            { i: 'priceInfo2', x: 2, y: 1, ...priceInfoSize.lg },
+            { i: 'richList', x: 0, y: 0, ...richListSize.lg },
+            { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.lg },
+            { i: 'wallet', x: 0, y: 0, ...walletSize.lg },
         ],
         md: [
-            { i: 'priceInfo', x: 2, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'priceInfo2', x: 3, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'richList', x: 0, y: 0, w: 2, h: 3, minW: 2, maxW: 3, minH: 2, maxH: 3},
-            { i: 'quickswap', x: 2, y: 0, w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
+            { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.md },
+            { i: 'priceInfo2', x: 3, y: 0, ...priceInfoSize.md },
+            { i: 'richList', x: 0, y: 0, ...richListSize.md },
+            { i: 'quickswap', x: 2, y: 0, ...walletSize.md },
         ],
         sm: [
-            { i: 'priceInfo', x: 0, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'priceInfo2', x: 2, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'richList', x: 0, y: 0, w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 3},
-            { i: 'quickswap', x: 3, y: 0, w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 2 },
-            { i: 'wallet', x: 0, y: 0, w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 2 },
+            { i: 'priceInfo', x: 0, y: 0, ...priceInfoSize.sm },
+            { i: 'priceInfo2', x: 2, y: 0, ...priceInfoSize.sm },
+            { i: 'richList', x: 0, y: 0, ...richListSize.sm },
+            { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.sm },
+            { i: 'wallet', x: 0, y: 0, ...walletSize.sm },
         ]
-        // Add other breakpoints here...
     });
+
     const handleLayoutChange = (currentLayout) => {
         console.log('Layout changed:', currentLayout);
     };
-
 
     return (
         <AppLayout>
