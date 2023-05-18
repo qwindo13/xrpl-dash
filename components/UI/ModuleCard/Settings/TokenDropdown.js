@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../Button/Button';
 import Dropdown from '../../Dropdown/Dropdown';
+import SearchBar from '../../SearchBar/SearchBar';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 
 const TokenDropdown = () => {
@@ -9,13 +10,17 @@ const TokenDropdown = () => {
             <div className='flex flex-col gap-2 w-full'>
                 <span className='font-semibold text-base'>Token</span>
                 <Dropdown
-                className={"w-full"}
+                    className={"w-full"}
                     trigger={
                         <Button className="text-sm w-full font-semibold justify-between" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>
                             HOUND
                         </Button>
                     }
                 >
+                    <SearchBar
+                        className="!bg-[#1A1A22] rounded-xl"
+                        placeholder={'Search for address'}
+                    />
                     <p onClick={() => setPayWithToken("Dropdown item 1")}>Dropdown item 1</p>
                     <p onClick={() => setPayWithToken("Dropdown item 2")}>Dropdown item 2</p>
                     <p onClick={() => setPayWithToken("Dropdown item 3")}>Dropdown item 3</p>

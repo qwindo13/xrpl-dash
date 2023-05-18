@@ -3,6 +3,7 @@ import { useState } from 'react';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import SearchBarSwitch from '@/components/UI/ModuleCard/Settings/SearchBarSwitchcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
+import TokenDropdown from '@/components/UI/ModuleCard/Settings/TokenDropdowncomponents';
 import SearchBar from '@/components/UI/SearchBar/SearchBarcomponents';
 
 const columns = [
@@ -89,6 +90,7 @@ const RichList = () => {
                         value={moduleSettings.displaySearchBar}
                         onChange={(value) => updateSettings("displaySearchBar", value)}
                     />
+                    <TokenDropdown />
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}

@@ -1,8 +1,29 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import chroma from 'chroma-js';
 
-const DonutChart = ({ data, colorScale, valueXRP, valueFiat}) => {
+const ChartTooltip = ({ content, isVisible, position }) => {
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          style={{ top: `${position.y}%`, left: `${position.x}%` }}
+          className="absolute p-2 border rounded-xl border-[#fff] border-opacity-10 bg-opacity-60 backdrop-blur-xl z-[2] max-w-md"
+        >
+          <span className="text-xs font-semibold">{content}</span>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+const DonutChart = ({ data, colorScale, valueXRP, valueFiat }) => {
+  const [hoveredSlice, setHoveredSlice] = useState(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
   // Sort data from highest to lowest
   const sortedData = [...data].sort((a, b) => b.value - a.value);
 
@@ -14,9 +35,9 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat}) => {
 
   return (
     <div className='relative flex justify-center overflow-hidden'>
-      <svg width="100%" viewBox="-5 -5 62 62">
+     <svg className='w-full h-auto' viewBox="-5 -5 62 62">
         {sortedData.map((entry, index) => {
-          const { value } = entry;
+          const { value, token, change, balance } = entry;
           const color = chroma(sortedColorScale[index % sortedColorScale.length]).alpha(0.5).css();
           const sliceAngle = (value / total) * 360;
           let endAngle = startAngle + sliceAngle;
@@ -38,6 +59,13 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat}) => {
             y: 26 + radius * Math.sin(Math.PI * endAngle / 180),
           };
 
+          const sliceCenter = {
+            x: 26 + radius * Math.cos(Math.PI * ((startAngle + sliceAngle / 2) / 180)),
+            y: 26 + radius * Math.sin(Math.PI * ((startAngle + sliceAngle / 2) / 180)),
+          };
+
+          const tooltipHeight = 24; // adjust this value to match the height of your tooltips
+
           startAngle += sliceAngle;
 
           const d = `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${end.x} ${end.y}`;
@@ -52,6 +80,13 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat}) => {
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 1 }}
+              onMouseEnter={() => {
+                setPosition({ x: sliceCenter.x, y: sliceCenter.y + radius + tooltipHeight - 10 });
+                setHoveredSlice({ token, change, balance });
+              }}
+              
+              
+              onMouseLeave={() => setHoveredSlice(null)}
             />
           );
         })}
@@ -60,6 +95,11 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat}) => {
         <span className='font-semibold text-lg'>{valueXRP}</span>
         <span className='font-semibold text-base opacity-60'>{valueFiat}</span>
       </div>
+      <ChartTooltip
+        content={hoveredSlice ? `${hoveredSlice.token}: ${hoveredSlice.change}, ${hoveredSlice.balance}` : ''}
+        isVisible={!!hoveredSlice}
+        position={position}
+      />
 
     </div>
 

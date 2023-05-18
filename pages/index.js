@@ -66,7 +66,7 @@ export default function Home() {
                     breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
                     cols={{ lg: 6, md: 4, sm: 4, xs: 2, xxs: 2 }}
                     width={gridWidth} // Pass the calculated gridWidth
-                    rowHeight={208}
+                    rowHeight={198}
                     margin={[16, 16]}
                     containerPadding={[0, 0]}
                     isResizable={true}

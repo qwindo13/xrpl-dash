@@ -117,7 +117,7 @@ const Wallet = () => {
                 {/* Table */}
                 {moduleSettings.displayWalletDetails && (
                     <motion.div layout className="flex flex-col w-full">
-                        <div className="flex flex-row justify-between ">
+                        <div className="flex flex-row justify-between pb-2">
                             {columns.map((column) => {
                                 const isActive = sortConfig && sortConfig.key === column.sortKey;
                                 return (
@@ -133,7 +133,7 @@ const Wallet = () => {
                                 );
                             })}
                         </div>
-                        <div className='flex flex-col gap-2'>
+                        <div className='flex flex-col '>
                             {data.map((item, index) => (
                                 <div key={index} className="flex flex-row justify-between items-center">
                                     <span className="h-5 w-5 rounded-lg" style={{ display: 'inline-block', width: '20px', height: '20px', backgroundColor: chroma(colorScale[index % colorScale.length]).alpha(0.6) }}></span>
