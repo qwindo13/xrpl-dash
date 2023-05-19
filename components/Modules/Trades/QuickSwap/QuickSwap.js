@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import Image from 'next/image';
+import { motion } from "framer-motion";
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 import Button from '@/components/UI/Button/Buttoncomponents';
 import Dropdown from '@/components/UI/Dropdown/Dropdowncomponents';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
+import useResizeObserver from '@/hooks/useResizeObserver';
 
 const defaultSettings = {
     displayTitle: true,
 };
 
 const QuickSwap = () => {
-
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const [payWithToken, setPayWithToken] = useState(null);
     const [receiveToken, setReceiveToken] = useState(null);
+    const [payRef, payDimensions] = useResizeObserver();
+    const [receiveRef, receiveDimensions] = useResizeObserver();
 
     const updateSettings = (key, value) => {
         setModuleSettings((prevSettings) => ({
@@ -42,11 +45,10 @@ const QuickSwap = () => {
             }
             disableTitle={!moduleSettings.displayTitle}
         >
-
             <div className='w-full flex flex-col gap-0 relative'>
 
                 {/* Pay Section */}
-                <div className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
+                <div ref={payRef} className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
                     <div className='flex flex-row justify-between'>
                         <span className='text-sm opacity-60 font-semibold'>Pay with</span>
                     </div>
@@ -54,14 +56,17 @@ const QuickSwap = () => {
                         <Dropdown
                             trigger={
                                 <Button className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>
-                                    <div className="rounded-full mr-4"><Image src="/images/greyhound-logo.svg" height={30} width={30} /></div>
-                                    {payWithToken || "HOUND"}
+                                    {/* Display image only if width is more than 350px */}
+                                    {payDimensions.width > 350 && (
+                                        <div className="rounded-full mr-4">
+                                            <Image src="/images/greyhound-logo.svg" height={30} width={30} />
+                                        </div>
+                                    )}
+                                    <motion.div layout>{payWithToken || "HOUND"}</motion.div>
                                 </Button>
                             }
                         >
-                            <p onClick={() => setPayWithToken("Dropdown item 1")}>Dropdown item 1</p>
-                            <p onClick={() => setPayWithToken("Dropdown item 2")}>Dropdown item 2</p>
-                            <p onClick={() => setPayWithToken("Dropdown item 3")}>Dropdown item 3</p>
+                            {/* Dropdown items */}
                         </Dropdown>
                         <span className='text-2xl font-semibold'>999,999.99</span>
                     </div>
@@ -81,7 +86,7 @@ const QuickSwap = () => {
                 </div>
 
                 {/* Receive Section */}
-                <div className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
+                <div ref={receiveRef} className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
                     <div className='flex flex-row justify-between'>
                         <span className='text-sm opacity-60 font-semibold'>Receive</span>
                     </div>
@@ -89,14 +94,17 @@ const QuickSwap = () => {
                         <Dropdown
                             trigger={
                                 <Button className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>
-                                    <div className="rounded-full mr-4"><Image src="/images/solo-logo.svg" height={30} width={30} /></div>
-                                    {receiveToken || "SOLO"}
+                                    {/* Display image only if width is more than 350px */}
+                                    {receiveDimensions.width > 350 && (
+                                        <div className="rounded-full mr-4">
+                                            <Image src="/images/solo-logo.svg" height={30} width={30} />
+                                        </div>
+                                    )}
+                                   <motion.div layout> {receiveToken || "SOLO"}</motion.div>
                                 </Button>
                             }
                         >
-                            <p onClick={() => setReceiveToken("Dropdown item 1")}>Dropdown item 1</p>
-                            <p onClick={() => setReceiveToken("Dropdown item 2")}>Dropdown item 2</p>
-                            <p onClick={() => setReceiveToken("Dropdown item 3")}>Dropdown item 3</p>
+                            {/* Dropdown items */}
                         </Dropdown>
                         <span className='text-2xl font-semibold'>999,999.99</span>
                     </div>
@@ -105,6 +113,8 @@ const QuickSwap = () => {
                         <span className='text-xs opacity-60 font-semibold'>≈ $9999.99</span>
                     </div>
                 </div>
+
+                {/* Swap Button */}
                 <div className="flex w-full pt-4 justify-end">
                     <Button className="bg-white !text-[#1A1921]">Swap</Button>
                 </div>

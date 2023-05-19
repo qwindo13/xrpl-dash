@@ -34,7 +34,7 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat }) => {
   const sortedColorScale = colorScale || ['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'];
 
   return (
-    <div className='relative flex justify-center overflow-hidden'>
+    <motion.div className='relative flex justify-center overflow-hidden h-full w-auto'>
      <svg className='w-full h-auto' viewBox="-5 -5 62 62">
         {sortedData.map((entry, index) => {
           const { value, token, change, balance } = entry;
@@ -101,7 +101,7 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat }) => {
         position={position}
       />
 
-    </div>
+    </motion.div>
 
   );
 };

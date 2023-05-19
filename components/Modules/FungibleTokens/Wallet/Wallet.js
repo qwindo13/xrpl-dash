@@ -109,9 +109,9 @@ const Wallet = () => {
             }
             disableTitle={!moduleSettings.displayTitle}
         >
-            <div className={`w-full h-full flex flex-col gap-4 items-center ${moduleSettings.displayWalletDetails ? '' : 'justify-center'}`}>
+            <div className={`w-full h-full flex flex-col gap-4 items-center ${moduleSettings.displayWalletDetails ? '' : ''}`}>
                 {/* Show donut chart here */}
-                <motion.div layout className={` ${moduleSettings.displayWalletDetails ? 'w-6/12' : 'w-10/12'}`}>
+                <motion.div layout className={` aspect-square h-full ${moduleSettings.displayWalletDetails ? 'w-6/12' : 'w-10/12'}`}>
                     <DonutChart data={testData} colorScale={colorScale} valueXRP="9,999.99 XRP" valueFiat="$9,999.99" />
                 </motion.div>
                 {/* Table */}
