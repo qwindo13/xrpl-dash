@@ -7,6 +7,7 @@ import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfoco
 import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
 import Tooltip from '@/components/UI/Tooltip/Tooltipcomponents';
+import Loader from '@/components/UI/Loader/Loadercomponents';
 
 export default function Trading() {
     const gridContainerRef = useRef(null); // Create a reference to the parent
@@ -57,10 +58,13 @@ export default function Trading() {
 
 
     return (
-        <div className='w-full justify-center align-middle flex p-16'>
-            <Tooltip content="This is a tooltip">
-                <h2>Hover me</h2>
-            </Tooltip>
-        </div>
+        <AppLayout>
+            <div className='w-full justify-center align-middle flex p-16'>
+                <Tooltip content="This is a tooltip">
+                    <h2>Hover me</h2>
+                </Tooltip>
+                <Loader />
+            </div>
+        </AppLayout>
     );
 }
