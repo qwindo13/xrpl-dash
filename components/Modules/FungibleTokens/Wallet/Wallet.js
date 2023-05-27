@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
+import BackgroundSwitch from "@/components/UI/ModuleCard/Settings/BackgroundSwitchcomponents";
 import WalletDetailsSwitch from "@/components/UI/ModuleCard/Settings/WalletDetaisSwitchcomponents";
 import DonutChart from "./DonutChart";
 import chroma from 'chroma-js';
 
 const defaultSettings = {
     displayTitle: true,
-    displayWalletDetails: true
+    displayWalletDetails: true,
+    displayBackground: true
 };
 
 const testData = [
@@ -101,13 +103,20 @@ const Wallet = () => {
                         value={moduleSettings.displayTitle}
                         onChange={(value) => updateSettings("displayTitle", value)}
                     />
+                    <BackgroundSwitch
+                        value={moduleSettings.displayBackground}
+                        onChange={(value) => updateSettings("displayBackground", value)}
+                    />
                     <WalletDetailsSwitch
                         value={moduleSettings.displayWalletDetails}
                         onChange={(value) => updateSettings("displayWalletDetails", value)}
                     />
+
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}
+            className={`${moduleSettings.displayBackground ? '' : 'bg-transparent'}`}
+
         >
             <div className={`w-full h-full flex flex-col gap-4 items-center ${moduleSettings.displayWalletDetails ? '' : ''}`}>
                 {/* Show donut chart here */}
