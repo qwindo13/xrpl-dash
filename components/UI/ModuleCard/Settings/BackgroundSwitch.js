@@ -6,7 +6,7 @@ const BackgroundSwitch = ({ value, onChange }) => {
         <div className='flex flex-row justify-between align-middle gap-2'>
             <div className='flex flex-col'>
                 <span className='font-semibold text-base'>Background</span>
-                <span className='opacity-60 font-semibold text-xs'>Display the module's background</span>
+                <span className='opacity-60 font-semibold text-xs'>Display the module&apos;s background</span>
             </div>
             <div className='h-auto flex items-center'>
                 <Switch value={value} onChange={onChange} />
