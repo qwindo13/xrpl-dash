@@ -11,7 +11,7 @@ export default function Trading() {
             <div className='flex flex-col w-full gap-16'>
                 <div className='relative w-full h-40 md:h-72 rounded-2xl bg-[#21212A]'>
                     <div className='absolute left-4 md:left-8 -bottom-8'>
-                        <div className='w-32 h-32 md:w-36 md:h-36 rounded-full bg-default-avatar border-4 border-[#1A1921]' />
+                        <div className='w-32 h-32 md:w-36 md:h-36 rounded-full bg-default-avatar border-2 border-[#1A1921]' />
                     </div>
                     <div className='absolute right-4 bottom-4 md:right-8 md:bottom-8'>
                         <div className='flex flex-row p-4 gap-8 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-sm rounded-xl'>
