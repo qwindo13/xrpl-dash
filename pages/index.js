@@ -58,7 +58,7 @@ export default function Home() {
     };
 
     return (
-        <AppLayout>
+        <AppLayout showControlPanel>
             <div ref={gridContainerRef} className="w-full"> {/* Attach the reference to the parent */}
                 <ResponsiveGridLayout
                     className="layout"

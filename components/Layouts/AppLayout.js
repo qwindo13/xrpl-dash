@@ -1,12 +1,12 @@
 import Header from "../Header/Header";
 import ControlPanel from "../ControlPanel/ControlPanel";
 
-function AppLayout({ children, setCols }) {
+function AppLayout({ children, showControlPanel }) {
     return (
         <>
             <main>
                 <Header />
-                <ControlPanel setCols={setCols} />
+                {showControlPanel && <ControlPanel />}
                 {children}
             </main>
         </>
