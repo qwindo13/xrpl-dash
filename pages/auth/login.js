@@ -188,15 +188,14 @@ export default function Home() {
               </div>
             </div>
           }
+          <Stepper
+            currentStep={currentStep}
+            steps={steps}
+            onPrev={goToPrevStep}
+            onNext={goToNextStep}
+            canGoNext={inputValue.length > 0}
+          />
         </div>
-
-        <Stepper
-          currentStep={currentStep}
-          steps={steps}
-          onPrev={goToPrevStep}
-          onNext={goToNextStep}
-          canGoNext={inputValue.length > 0}
-        />
 
       </Modal>
 
