@@ -3,6 +3,8 @@ import Link from "next/link"
 import Image from "next/image"
 import Modal from "@/components/UI/Modal/Modalcomponents"
 import Button from "@/components/UI/Button/Buttoncomponents"
+import InputField from '@/components/UI/InputField/InputFieldcomponents';
+import Stepper from '@/components/UI/Stepper/Steppercomponents';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 export default function Home() {
@@ -56,6 +58,16 @@ export default function Home() {
 
   }, []);
 
+  const [inputValue, setInputValue] = useState('');
+  const handleInputChange = (event) => setInputValue(event.target.value);
+
+  const [currentStep, setCurrentStep] = useState(0);
+  const steps = [0, 1]; // Add more steps as needed
+
+  const goToNextStep = () => setCurrentStep((prevStep) => prevStep + 1);
+  const goToPrevStep = () => setCurrentStep((prevStep) => prevStep - 1);
+
+
 
   return (
     <main className="p-0">
@@ -101,47 +113,91 @@ export default function Home() {
       </div>
 
       <Modal showModal={showModal} closeModal={closeModal}>
-        <Image className="absolute p-0 top-[-38px] left-0" src="/images/xumm-logo.svg" height={130} width={120} alt='XUMM' />
-        <div className='w-full flex flex-row justify-between items-start pb-8 relative'>
-          <h3 className='font-semibold text-xl'>Scan the QR code with XUMM app</h3>
-          <button onClick={closeModal}> <CloseRoundedIcon /> </button>
-        </div>
-        <div className="flex flex-col md:flex-row justify-between gap-16 ">
-          <div className='flex flex-col gap-16 w-full md:w-1/2 justify-between'>
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center">
-                <div className="w-6 h-6 flex items-center justify-center rounded-full aspect-square bg-[#1A1921]  mr-2">
-                  <span className="text-white font-bold">1</span>
-                </div>
-                <p>Open your XUMM app on your phone.</p>
-              </div>
-              <div className="flex items-center">
-                <div className="w-6 h-6 flex items-center justify-center rounded-full aspect-square bg-[#1A1921]  mr-2">
-                  <span className="text-white font-bold">2</span>
-                </div>
-                <p>Scan the QR code below.</p>
-              </div>
-              <div className="flex items-center">
-                <div className="w-6 h-6 flex items-center justify-center rounded-full aspect-square bg-[#1A1921] mr-2">
-                  <span className="text-white font-bold">3</span>
-                </div>
-                <p>Follow the instructions on your app to complete the login process.</p>
-              </div>
-            </div>
-            <div className='hidden md:flex p-4 bg-[#272832] rounded-xl'>
-              <p>Don’t see a Scan option? <br></br>Update your XUMM app to the latest version and try again.</p>
-            </div>
-          </div>
-          <div className='w-full md:w-1/2'>
-            {/* <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' /> */}
-            {
-              qrCode ?
-                <img className='w-full' src={qrCode} alt='XUMM QR' />
-                : <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' />
-            }
-          </div>
 
+        { /* Login */}
+        <div >
+          <Image className="absolute p-0 top-[-38px] left-0" src="/images/xumm-logo.svg" height={130} width={120} alt='XUMM' />
+          <div className='w-full flex flex-row justify-between items-start pb-8 relative'>
+            <h3 className='font-semibold text-xl'>Scan the QR code with XUMM app</h3>
+            <button onClick={closeModal}> <CloseRoundedIcon /> </button>
+          </div>
+          <div className="flex flex-col md:flex-row justify-between gap-16 ">
+            <div className='flex flex-col gap-16 w-full md:w-1/2 justify-between'>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center">
+                  <div className="w-6 h-6 flex items-center justify-center rounded-full aspect-square bg-[#1A1921]  mr-2">
+                    <span className="text-white font-bold">1</span>
+                  </div>
+                  <p>Open your XUMM app on your phone.</p>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-6 h-6 flex items-center justify-center rounded-full aspect-square bg-[#1A1921]  mr-2">
+                    <span className="text-white font-bold">2</span>
+                  </div>
+                  <p>Scan the QR code below.</p>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-6 h-6 flex items-center justify-center rounded-full aspect-square bg-[#1A1921] mr-2">
+                    <span className="text-white font-bold">3</span>
+                  </div>
+                  <p>Follow the instructions on your app to complete the login process.</p>
+                </div>
+              </div>
+              <div className='hidden md:flex p-4 bg-[#272832] rounded-xl'>
+                <p>Don’t see a Scan option? <br></br>Update your XUMM app to the latest version and try again.</p>
+              </div>
+            </div>
+            <div className='w-full md:w-1/2'>
+              {/* <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' /> */}
+              {
+                qrCode ?
+                  <img className='w-full' src={qrCode} alt='XUMM QR' />
+                  : <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' />
+              }
+            </div>
+
+          </div>
         </div>
+
+        { /* First Time Login */}
+        <div className='hidden'>
+          { /* STEP 1*/}
+          {currentStep === 0 &&
+            <div>
+              <div className='w-full flex flex-col text-center items-center pb-8 relative gap-8'>
+                <h3 className='font-semibold text-2xl'>Welcome! First things first...</h3>
+                <span className='text-lg opacity-60'>Get started with the XRPL Dash in seconds by following these simple steps to set up your account. </span>
+                <div id="avatar" className="rounded-full bg-white p-1 bg-opacity-10">
+                  <div className='w-40 h-40 aspect-square rounded-full bg-default-avatar border-4 border-[#1A1921]'></div>
+                </div>
+                <div className='w-full'>
+                  <InputField value={inputValue} onChange={handleInputChange} isRequired label="Display name" placeholder="username123" icon="@" className="bg-[#A6B0CF] bg-opacity-5 rounded-xl" />
+                </div>
+              </div>
+            </div>
+          }
+          { /* STEP 2*/}
+          {currentStep === 1 &&
+            <div>
+              <div className='w-full flex flex-col text-center items-center pb-8 relative gap-8'>
+                <h3 className='font-semibold text-2xl'>Select projects to follow</h3>
+                <span className='text-lg opacity-60'>Choose which projects and tokens to follow and stay informed on the latest news and updates. </span>
+                <div className='flex flex-wrap border border-white border-opacity-10 w-full h-40 rounded-xl'>
+                </div>
+                <Button className='underline underline-offset-4 opacity-60	' disableAnimation>Skip this step</Button>
+              </div>
+            </div>
+          }
+        </div>
+
+        <Stepper
+          currentStep={currentStep}
+          steps={steps}
+          onPrev={goToPrevStep}
+          onNext={goToNextStep}
+          canGoNext={inputValue.length > 0}
+        />
+
       </Modal>
 
     </main>
