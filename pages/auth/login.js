@@ -118,7 +118,7 @@ export default function Home() {
       <Modal showModal={showModal} closeModal={closeModal}>
 
         { /* Login */}
-        <div className='hidden' >
+        <div >
           <Image className="absolute p-0 top-[-38px] left-0" src="/images/xumm-logo.svg" height={130} width={120} alt='XUMM' />
           <div className='w-full flex flex-row justify-between items-start pb-8 relative'>
             <h3 className='font-semibold text-xl'>Scan the QR code with XUMM app</h3>
@@ -163,7 +163,7 @@ export default function Home() {
         </div>
 
         { /* First Time Login */}
-        <div >
+        <div className='hidden'>
           { /* STEP 1*/}
           {currentStep === 0 &&
             <div>
