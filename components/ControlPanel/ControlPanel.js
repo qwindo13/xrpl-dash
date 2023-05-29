@@ -25,7 +25,7 @@ export default function ControlPanel() {
         <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12">
             <div className="relative pr-4">
                 <div className="text-xs absolute -top-2 font-semibold opacity-60">Choose Dash:</div>
-                <Dropdown className="w-auto" trigger={
+                <Dropdown className="w-auto" isBlurred  trigger={
                     <Button className="!px-0 text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Explore</Button>
                 }>
                     <Link href="/"><span className="text-2xl">Explore</span></Link>
@@ -36,7 +36,7 @@ export default function ControlPanel() {
             <div className="flex flex-row w-full h-12 gap-4 items-center">
 
                 <SearchBar className="h-full" placeholder={"Search for modules, tokens, etc..."} />
-                <Dropdown className="aspect-square !bg-[#111015] !bg-opacity-60 !backdrop-blur-xl h-max !w-72 !gap-4" position="right" onToggle={handleToggle} trigger={
+                <Dropdown isBlurred  className="aspect-square !bg-[#111015] !bg-opacity-60 !backdrop-blur-xl h-max !w-72 !gap-4" position="right" onToggle={handleToggle} trigger={
                     <Button className="h-full aspect-square p-0 items-center flex flex-col !rounded-2xl">
                         <motion.div className="flex" animate={rotateAnimation}>
                             <AddRoundedIcon />

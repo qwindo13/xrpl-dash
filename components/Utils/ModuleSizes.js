@@ -5,9 +5,9 @@ export const priceInfoSize = {
 };
 
 export const richListSize = {
-    lg: { w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 3 },
-    md: { w: 2, h: 3, minW: 2, maxW: 3, minH: 2, maxH: 3 },
-    sm: { w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 3 },
+    lg: { w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
+    md: { w: 2, h: 3, minW: 2, maxW: 3, minH: 2, maxH: 2 },
+    sm: { w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 2 },
   };
   
   export const quickSwapSize = {

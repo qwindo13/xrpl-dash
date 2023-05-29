@@ -9,7 +9,7 @@ import chroma from 'chroma-js';
 
 const defaultSettings = {
     displayTitle: true,
-    displayWalletDetails: true,
+    displayWalletDetails: false,
     displayBackground: true
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
-const Dropdown = ({ trigger, children, className, position = 'left', onToggle }) => {
+const Dropdown = ({ trigger, children, className, position = 'left', onToggle, isBlurred }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
     const toggleDropdown = () => {
@@ -39,7 +39,7 @@ const Dropdown = ({ trigger, children, className, position = 'left', onToggle })
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className={`absolute flex flex-col gap-2 bg-[#21212A] mt-2 w-56 p-4 rounded-2xl border border-[#fff] border-opacity-10 bg-opacity-60 backdrop-blur-xl z-10 overflow-y-scroll ${className} ${dropdownPosition[position]}`}
+                    className={`absolute flex flex-col gap-2 bg-[#21212A] mt-2 w-56 p-4 rounded-2xl border border-[#fff] border-opacity-10 z-10 overflow-y-scroll ${className} ${dropdownPosition[position]} ${isBlurred ? 'bg-opacity-60 backdrop-blur-xl' : ''}`}
                 >
                     {children}
                 </motion.div>
