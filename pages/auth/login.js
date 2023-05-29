@@ -5,7 +5,10 @@ import Modal from "@/components/UI/Modal/Modalcomponents"
 import Button from "@/components/UI/Button/Buttoncomponents"
 import InputField from '@/components/UI/InputField/InputFieldcomponents';
 import Stepper from '@/components/UI/Stepper/Steppercomponents';
+import TagInput from '@/components/UI/TagInput/TagInputcomponents';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+
+import mockTokens from '@/data/mockTokenscomponents';
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -115,7 +118,7 @@ export default function Home() {
       <Modal showModal={showModal} closeModal={closeModal}>
 
         { /* Login */}
-        <div >
+        <div className='hidden' >
           <Image className="absolute p-0 top-[-38px] left-0" src="/images/xumm-logo.svg" height={130} width={120} alt='XUMM' />
           <div className='w-full flex flex-row justify-between items-start pb-8 relative'>
             <h3 className='font-semibold text-xl'>Scan the QR code with XUMM app</h3>
@@ -160,7 +163,7 @@ export default function Home() {
         </div>
 
         { /* First Time Login */}
-        <div className='hidden'>
+        <div >
           { /* STEP 1*/}
           {currentStep === 0 &&
             <div>
@@ -182,8 +185,7 @@ export default function Home() {
               <div className='w-full flex flex-col text-center items-center pb-8 relative gap-8'>
                 <h3 className='font-semibold text-2xl'>Select projects to follow</h3>
                 <span className='text-lg opacity-60'>Choose which projects and tokens to follow and stay informed on the latest news and updates. </span>
-                <div className='flex flex-wrap border border-white border-opacity-10 w-full h-40 rounded-xl'>
-                </div>
+                <TagInput options={mockTokens} placeholder="Insert XRPL token..." />
                 <Button className='underline underline-offset-4 opacity-60	' disableAnimation>Skip this step</Button>
               </div>
             </div>
