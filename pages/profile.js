@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import AppLayout from '@/components/Layouts/AppLayoutcomponents';
 import Button from '@/components/UI/Button/Buttoncomponents';
 import TelegramIcon from '@mui/icons-material/Telegram';
@@ -15,8 +16,8 @@ export default function Trading() {
                     </div>
                     <div className='absolute right-4 bottom-4 md:right-8 md:bottom-8'>
                         <div className='flex flex-row p-4 gap-8 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-sm rounded-xl'>
-                            <TwitterIcon />
-                            <TelegramIcon />
+                            <Link href="#"><TwitterIcon /></Link>
+                            <Link href="#"><TelegramIcon /></Link>
                         </div>
                     </div>
                 </div>
