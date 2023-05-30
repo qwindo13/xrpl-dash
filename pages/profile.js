@@ -2,11 +2,27 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import AppLayout from '@/components/Layouts/AppLayoutcomponents';
 import Button from '@/components/UI/Button/Buttoncomponents';
+import Tooltip from '@/components/UI/Tooltip/Tooltipcomponents';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
-export default function Trading() {
+function truncateAddress(address, maxLength = 12) {
+    if (!address) {
+        return '';
+    }
 
+    if (address.length <= maxLength) {
+        return address;
+    }
+
+    const halfLength = maxLength / 2;
+    const start = address.slice(0, halfLength);
+    const end = address.slice(-halfLength);
+    return `${start}...${end}`;
+}
+const xrpAddress = "rULPgrpm8dvQYovTPLj8hvck6NhkhBFscc";
+
+export default function Profile() {
     return (
         <AppLayout>
             <div className='flex flex-col w-full gap-16'>
@@ -21,13 +37,15 @@ export default function Trading() {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col text-left gap-4">
+                <div className="flex flex-col text-left gap-2">
                     <div className='flex flex-row gap-4 items-center'>
                         <span className="text-2xl font-semibold">Username123</span>
                         <Button className="text-xs">Edit Profile</Button>
                     </div>
-
-                    <span className="text-lg font-semibold opacity-60">rULPgrpm8dvQYovTPLj8hvck6NhkhBFscc</span>
+        
+                    <Tooltip copyContent={xrpAddress}>
+                        <span className="text-lg font-semibold opacity-60 cursor-pointer">{truncateAddress(xrpAddress)}</span> 
+                    </Tooltip>
                 </div>
             </div>
         </AppLayout>

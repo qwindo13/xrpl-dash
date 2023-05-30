@@ -1,6 +1,8 @@
+import React, { useState } from 'react';
+import Link from "next/link";
 import Button from "../UI/Button/Button";
 import { Cookies } from 'react-cookie';
-import Link from "next/link";
+import Tooltip from "../UI/Tooltip/Tooltip"
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Modal from "../UI/Modal/Modal";
 
@@ -13,7 +15,9 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                         <div className="rounded-full h-12 w-12 mr-4 bg-default-avatar" title={xrpAddress}></div>
                         <div className="flex flex-col text-left	">
                             <span className="text-lg font-semibold">Username123</span>
-                            <span className="text-base font-semibold opacity-60">{truncateAddress(xrpAddress)}</span>
+                            <Tooltip copyContent={xrpAddress}>
+                                <span className="text-base font-semibold opacity-60">{truncateAddress(xrpAddress)}</span>
+                            </Tooltip>
                         </div>
                     </Button>
                     <Button
