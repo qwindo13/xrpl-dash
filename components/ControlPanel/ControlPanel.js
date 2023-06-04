@@ -22,6 +22,7 @@ export default function ControlPanel() {
 
 
     return (
+        
         <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12">
             <div className="relative pr-4">
                 <div className="text-xs absolute -top-2 font-semibold opacity-60">Choose Dash:</div>
@@ -30,7 +31,7 @@ export default function ControlPanel() {
                 }>
                     <Link href="/"><span className="text-2xl">Explore</span></Link>
                     <Link href="/trading"> <span className="text-2xl">Trading</span></Link>
-                    <Link href="/"><span className="text-2xl">Custom</span></Link>
+                    <Link href="/custom"><span className="text-2xl">Custom</span></Link>
                 </Dropdown>
             </div>
             <div className="flex flex-row w-full h-12 gap-4 items-center">

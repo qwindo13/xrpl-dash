@@ -41,7 +41,7 @@ export default function Header() {
     };
 
     return (
-        <nav className="w-full">
+        <nav className="w-full z-10">
             <div className="flex flex-row justify-between items-center">
                 <div className="">
                     <Link href={"/"}>

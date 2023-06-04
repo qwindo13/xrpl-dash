@@ -5,6 +5,8 @@ import Button from '@/components/UI/Button/Buttoncomponents';
 import Tooltip from '@/components/UI/Tooltip/Tooltipcomponents';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import { BsDiscord } from "react-icons/bs";
+
 
 function truncateAddress(address, maxLength = 12) {
     if (!address) {

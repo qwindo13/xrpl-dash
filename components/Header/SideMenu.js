@@ -13,7 +13,7 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                 <div className="w-full flex flex-row justify-between">
                     <Button onClick={openModal} className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation>
                         <div className="rounded-full h-12 w-12 mr-4 bg-default-avatar" title={xrpAddress}></div>
-                        <div className="flex flex-col text-left	">
+                        <div className="flex flex-col text-left">
                             <span className="text-lg font-semibold">Username123</span>
                             <Tooltip copyContent={xrpAddress}>
                                 <span className="text-base font-semibold opacity-60">{truncateAddress(xrpAddress)}</span>
@@ -31,7 +31,7 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                 </div>
                 <div className="flex flex-col gap-4">
                     <Link href="/profile"><span className="text-2xl font-semibold">My profile</span></Link>
-                    <Link href="/profile"><span className="text-2xl font-semibold">Settings</span></Link>
+                    <Link href="/settings/profile"><span className="text-2xl font-semibold">Settings</span></Link>
                 </div>
             </div>
 

@@ -21,7 +21,7 @@ const Tooltip = ({ children, copyContent }) => {
 
   return (
     <motion.div
-      className="relative inline-block cursor-pointer"
+      className="flex relative cursor-pointer"
       onMouseEnter={handleHoverStart}
       onMouseLeave={handleHoverEnd}
       onClick={handleTooltipClick}
@@ -33,8 +33,8 @@ const Tooltip = ({ children, copyContent }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.1 }}
-            className="absolute flex px-4 py-2 border rounded-xl border-[#fff] border-opacity-10 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-xl z-10 cursor-pointer"
+            transition={{ duration: 0.2 }}
+            className="absolute flex px-4 py-2 border rounded-xl border-[#fff] border-opacity-10 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-xl z-10 cursor-pointer drop-shadow-md"
           >
             <span className="text-sm font-semibold ">{tooltipText}</span>
           </motion.div>
