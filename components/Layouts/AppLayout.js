@@ -5,8 +5,9 @@ import Footer from "../Footer/Footer";
 function AppLayout({ children, showControlPanel }) {
     return (
         <>
+            <Header />
             <main>
-                <Header />
+
                 {/* Banner testing 
                 <div className="absolute top-0 w-full h-48 overflow-hidden">
                     <div
