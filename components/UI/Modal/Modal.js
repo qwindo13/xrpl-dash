@@ -7,18 +7,10 @@ const backdropVariants = {
 
 const modalVariants = {
     visible: {
-        opacity: 1, scale: 1, transition: {
-            type: "spring",
-            stiffness: 700,
-            damping: 30,
-        }
+        opacity: 1, scale: 1, 
     },
     hidden: {
-        opacity: 0, scale: 0.8, transition: {
-            type: "spring",
-            stiffness: 700,
-            damping: 30,
-        }
+        opacity: 0, scale: 0.8,
     },
 };
 

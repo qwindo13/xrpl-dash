@@ -42,7 +42,7 @@ export default function Profile() {
                 <div className="flex flex-col text-left gap-2">
                     <div className='flex flex-row gap-4 items-center'>
                         <span className="text-2xl font-semibold">Username123</span>
-                        <Button className="text-xs">Edit Profile</Button>
+                        <Link href="./settings/profile"><Button className="text-xs">Edit Profile</Button></Link>
                     </div>
         
                     <Tooltip copyContent={xrpAddress}>

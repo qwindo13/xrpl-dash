@@ -10,9 +10,9 @@ function SettingsLayout({ children }) {
                 <div className="flex flex-start">
                     <h2 className="text-4xl font-semibold">Settings</h2>
                 </div>
-                <div className="w-full flex flex-row">
-                    <nav className="w-64 min-h-screen flex flex-col gap-8">
-                        <ul className="flex flex-col gap-4">
+                <div className="w-full flex flex-col lg:flex-row gap-8">
+                    <nav className="w-64 lg:min-h-screen flex flex-row lg:flex-col gap-8 ">
+                        <ul className="flex  flex-row lg:flex-col gap-4">
                             {[
                                 { name: 'Profile', path: '/settings/profile' },
                                 { name: 'Alerts', path: '/settings/alerts' },
@@ -34,7 +34,12 @@ function SettingsLayout({ children }) {
                     <div className="flex-grow">
                         {children}
                     </div>
-                   
+                    <div className="w-64">
+                        <div className="w-full bg-white rounded-2xl">
+                            asd
+                        </div>
+                    </div>
+
                 </div>
             </AppLayout>
         </>
