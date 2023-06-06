@@ -1,6 +1,7 @@
-import AppLayout from "./AppLayout";
 import Link from "next/link";
 import { useRouter } from 'next/router'
+import AppLayout from "./AppLayout";
+import Button from "../UI/Button/Button";
 
 function SettingsLayout({ children }) {
     const { asPath } = useRouter()
@@ -10,7 +11,7 @@ function SettingsLayout({ children }) {
                 <div className="flex flex-start">
                     <h2 className="text-4xl font-semibold">Settings</h2>
                 </div>
-                <div className="w-full flex flex-col lg:flex-row gap-8">
+                <div className="w-full flex flex-col lg:flex-row gap-16">
                     <nav className="w-64 lg:min-h-screen flex flex-row lg:flex-col gap-8 ">
                         <ul className="flex  flex-row lg:flex-col gap-4">
                             {[
@@ -35,8 +36,10 @@ function SettingsLayout({ children }) {
                         {children}
                     </div>
                     <div className="w-64">
-                        <div className="w-full bg-white rounded-2xl">
-                            asd
+                        <div className="w-full bg-white rounded-2xl p-4">
+                            <h2 className="text-2xl font-semibold text-black">Become Premium</h2>
+                            <h2 className="text-2xl font-semibold text-black">Call to action</h2>
+        
                         </div>
                     </div>
 

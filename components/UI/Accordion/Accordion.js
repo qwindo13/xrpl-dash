@@ -44,9 +44,12 @@ const Accordion = ({ title, children, image }) => {
                 variants={variants}
                 initial="collapsed"
                 animate={isOpen ? "open" : "collapsed"}
-                className="overflow-hidden flex flex-col gap-4"
+                className="overflow-hidden "
             >
-                {children}
+                <div className='pt-4 flex flex-col gap-4'>
+                    {children}
+                </div>
+
             </motion.div>
         </div>
     );

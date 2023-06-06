@@ -22,7 +22,7 @@ function Alerts({ children }) {
         <>
             <SettingsLayout>
                 <div className="w-full flex flex-col gap-8">
-                    <div className="flex flex-col md:flex-row justify-between w-full">
+                    <div className="flex flex-col md:flex-row justify-between w-full items-center">
                         <div className="flex flex-col">
                             <span className="text-2xl font-semibold">Alerts</span>
                             <span className="text-base font-semibold opacity-60 w-full lg:w-2/3">Stay updated on the XRPL market by managing and creating new alerts about price changes, volume increases, or other significant events.</span>
