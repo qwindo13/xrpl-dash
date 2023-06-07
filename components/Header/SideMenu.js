@@ -9,8 +9,8 @@ import Modal from "../UI/Modal/Modal";
 function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModal, className }) {
     return (
         <Modal showModal={showModal} closeModal={closeModal} className={className}>
-            <div className="flex flex-col md:flex-col justify-between gap-8 ">
-                <div className="w-full flex flex-row justify-between">
+            <div className="flex flex-col md:flex-col justify-between gap-8">
+                <div className="w-full flex flex-row justify-between items-center">
                     <Button onClick={openModal} className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation>
                         <div className="rounded-full h-12 w-12 mr-4 bg-default-avatar" title={xrpAddress}></div>
                         <div className="flex flex-col text-left">
@@ -25,7 +25,8 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                             const cookies = new Cookies()
                             cookies.remove('xrpAddress')
                             window.location.href = '/auth/login'
-                        }}>
+                        }}
+                        className="hidden md:flex">
                         <LogoutRoundedIcon />
                     </Button>
                 </div>

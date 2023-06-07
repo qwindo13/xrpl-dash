@@ -51,7 +51,7 @@ export default function Header() {
                         </Link>
                     </div>
                     <div className="relative flex flex-row items-center justify-between gap-8 lg:gap-16 overflow-visible">
-                        <div className="hidden md:flex flex-row gap-8 items-center ">
+                        <div className="flex flex-row gap-8 items-center ">
                             <Link href="#" className="h-6 w-6 self-center"> <LightbulbOutlinedIcon /> </Link>
                             <Link href="/settings/profile" className="h-6 w-6 self-center"> <SettingsOutlinedIcon /> </Link>
                             <Link href="#" className="h-6 w-6 self-center"> <NotificationsNoneRoundedIcon /> </Link>
@@ -61,7 +61,7 @@ export default function Header() {
                                 <div className="flex flex-row gap-2 items-center">
                                     <Button onClick={openModal} className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation>
                                         <div className="rounded-full h-10 w-10 mr-4 bg-default-avatar" title={xrpAddress}></div>
-                                        <span className="text-base font-semibold">{truncateAddress(xrpAddress)}</span>
+                                        <span className="hidden md:flex text-base font-semibold">{truncateAddress(xrpAddress)}</span>
                                     </Button>
                                 </div>
 
@@ -85,7 +85,7 @@ export default function Header() {
                 truncateAddress={truncateAddress}
                 showModal={showModal}
                 closeModal={closeModal}
-                className="!absolute top-4 right-4 md:top-8 md:right-8 max-w-md !p-4" />
+                className="!absolute md:top-8 md:right-8 md:max-w-md !p-4" />
         </>
 
 
