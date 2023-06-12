@@ -1,12 +1,16 @@
 import Header from "../Header/Header";
 import ControlPanel from "../ControlPanel/ControlPanel";
+import Feed from "../Modules/Feeds/Feed/Feed";
 import Footer from "../Footer/Footer";
 
-function AppLayout({ children, showControlPanel }) {
+import mockFeed from "@/data/mockFeedcomponents";
+
+function TestLayout({ children, showControlPanel }) {
     return (
         <>
-            <Header fixed/>
-            <main>
+            <Header />
+            <div className="flex flex-row">
+            <main className="w-2/3 m-0">
 
                 {/* Banner testing 
                 <div className="absolute top-0 w-full h-48 overflow-hidden">
@@ -26,8 +30,13 @@ function AppLayout({ children, showControlPanel }) {
                 {children}
                 <Footer />
             </main>
+            <div className="w-1/3 absolute top-0 right-0 bg-[#21212A] h-screen overflow-scroll"></div>
+            <div className="w-1/3 bg-[#21212A] ">
+                <Feed data={mockFeed}/>
+            </div>
+            </div>
         </>
     );
 }
 
-export default AppLayout;
+export default TestLayout;

@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import AppLayout from '@/components/Layouts/AppLayoutcomponents';
-import TagInput from '@/components/UI/TagInput/TagInputcomponents';
+import TestLayout from '@/components/Layouts/TestLayoutcomponents';
+import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfocomponents';
+import Feed from '@/components/Modules/Feeds/Feed/Feedcomponents';
+import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
+import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
+import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
+import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize } from '@/components/Utils/ModuleSizescomponents';
 
-import Loader from '@/components/UI/Loader/Loadercomponents';
 
-export default function Trading() {
+export default function Home() {
     const gridContainerRef = useRef(null); // Create a reference to the parent
-    const xrplTokens = ['XRP', 'USD', 'BTC', 'ETH', 'LINK', 'UNI', 'YFI', 'DOT', 'DAI', 'USDT'].map(token => ({label: token, value: token}));
     const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
-    const [cols, setCols] = useState(6);
-
     // Update the gridWidth on window resize and component mount
     useEffect(() => {
         const handleResize = () => {
@@ -31,35 +33,73 @@ export default function Trading() {
     // Define the layout configuration
     const [layout, setLayout] = useState({
         lg: [
-            { i: 'priceInfo', x: 2, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'priceInfo2', x: 2, y: 1, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'richList', x: 0, y: 0, w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 3 },
-            { i: 'quickswap', x: 3, y: 0, w: 3, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
+            { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.lg },
+            { i: 'priceInfo2', x: 2, y: 1, ...priceInfoSize.lg },
+            { i: 'richList', x: 0, y: 0, ...richListSize.lg },
+            { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.lg },
+            { i: 'wallet', x: 0, y: 2, ...walletSize.lg },
+            { i: 'feed', x: 2, y: 2, ...feedSize.lg },
         ],
         md: [
-            { i: 'priceInfo', x: 2, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'priceInfo2', x: 3, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'richList', x: 0, y: 0, w: 2, h: 3, minW: 2, maxW: 3, minH: 2, maxH: 3 },
-            { i: 'quickswap', x: 2, y: 0, w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
+            { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.md },
+            { i: 'priceInfo2', x: 3, y: 0, ...priceInfoSize.md },
+            { i: 'richList', x: 0, y: 0, ...richListSize.md },
+            { i: 'quickswap', x: 2, y: 0, ...walletSize.md },
+            { i: 'feed', x: 0, y: 0, ...feedSize.md },
         ],
         sm: [
-            { i: 'priceInfo', x: 0, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'priceInfo2', x: 2, y: 0, w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
-            { i: 'richList', x: 0, y: 0, w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 3 },
-            { i: 'quickswap', x: 3, y: 0, w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 2 },
+            { i: 'priceInfo', x: 0, y: 0, ...priceInfoSize.sm },
+            { i: 'priceInfo2', x: 2, y: 0, ...priceInfoSize.sm },
+            { i: 'richList', x: 0, y: 0, ...richListSize.sm },
+            { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.sm },
+            { i: 'wallet', x: 0, y: 0, ...walletSize.sm },
+            { i: 'feed', x: 0, y: 0, ...feedSize.sm },
         ]
-        // Add other breakpoints here...
     });
+
     const handleLayoutChange = (currentLayout) => {
         console.log('Layout changed:', currentLayout);
     };
 
-
     return (
-        <AppLayout>
-            <div className='w-full justify-center align-middle flex p-16'>
-            <TagInput options={['React', 'Vue', 'Angular', 'Svelte']} placeholder="Add a tag..." />                <Loader />
+        <TestLayout showControlPanel className='w-1/2'>
+            <div ref={gridContainerRef} className="w-full"> {/* Attach the reference to the parent */}
+                <ResponsiveGridLayout
+                    className="layout"
+                    layouts={layout}
+                    breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+                    cols={{ lg: 6, md: 4, sm: 4, xs: 2, xxs: 2 }}
+                    width={gridWidth} // Pass the calculated gridWidth
+                    rowHeight={198}
+                    margin={[16, 16]}
+                    containerPadding={[0, 0]}
+                    isResizable={true}
+                    isDraggable={true}
+                    preventCollision={false}
+                    autoSize={true}
+                    onLayoutChange={handleLayoutChange}
+                >
+                    <div key="richList">
+                        <RichList />
+                    </div>
+                    <div key="priceInfo">
+                        <PriceInfo />
+                    </div>
+                    <div key="priceInfo2">
+                        <PriceInfo />
+                    </div>
+                    <div key="quickswap">
+                        <QuickSwap />
+                    </div>
+                    <div key="wallet">
+                        <Wallet />
+                    </div>
+                    <div key="feed">
+                   
+                    </div>
+                    {/* Add other modules wrapped in a <div> with their unique key */}
+                </ResponsiveGridLayout>
             </div>
-        </AppLayout>
+        </TestLayout>
     );
 }

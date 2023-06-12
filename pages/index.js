@@ -4,10 +4,13 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import AppLayout from '@/components/Layouts/AppLayoutcomponents';
 import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfocomponents';
+import Feed from '@/components/Modules/Feeds/Feed/Feedcomponents';
+import FeedItem from '@/components/Modules/Feeds/Feed/FeedItemcomponents';
 import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
-import { priceInfoSize, richListSize, quickSwapSize, walletSize } from '@/components/Utils/ModuleSizescomponents';
+import mockFeed from '@/data/mockFeedcomponents';
+import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize } from '@/components/Utils/ModuleSizescomponents';
 
 
 export default function Home() {
@@ -36,13 +39,15 @@ export default function Home() {
             { i: 'priceInfo2', x: 2, y: 1, ...priceInfoSize.lg },
             { i: 'richList', x: 0, y: 0, ...richListSize.lg },
             { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.lg },
-            { i: 'wallet', x: 0, y: 0, ...walletSize.lg },
+            { i: 'wallet', x: 0, y: 2, ...walletSize.lg },
+            { i: 'feed', x: 2, y: 2, ...feedSize.lg },
         ],
         md: [
             { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.md },
             { i: 'priceInfo2', x: 3, y: 0, ...priceInfoSize.md },
             { i: 'richList', x: 0, y: 0, ...richListSize.md },
             { i: 'quickswap', x: 2, y: 0, ...walletSize.md },
+            { i: 'feed', x: 0, y: 0, ...feedSize.md },
         ],
         sm: [
             { i: 'priceInfo', x: 0, y: 0, ...priceInfoSize.sm },
@@ -50,6 +55,7 @@ export default function Home() {
             { i: 'richList', x: 0, y: 0, ...richListSize.sm },
             { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.sm },
             { i: 'wallet', x: 0, y: 0, ...walletSize.sm },
+            { i: 'feed', x: 0, y: 0, ...feedSize.sm },
         ]
     });
 
@@ -90,6 +96,9 @@ export default function Home() {
                     <div key="wallet">
                         <Wallet />
                     </div>
+                    <div key="feed">
+                        <Feed data={mockFeed}/>
+                        </div>
                     {/* Add other modules wrapped in a <div> with their unique key */}
                 </ResponsiveGridLayout>
             </div>
