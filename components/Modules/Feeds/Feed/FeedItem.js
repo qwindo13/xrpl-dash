@@ -8,15 +8,15 @@ const getContent = (type, subtype, user, content) => {
         case 'socials':
             return (
                 <div>
-                    {user.handle} <span className="opacity-60">tweeted</span>
-                    <div>{content.text}</div>
+                    {user.handle} <span className="opacity-60 font-medium">tweeted</span>
+                    <div className="font-medium">{content.text}</div>
                 </div>
             );
         case 'wallets':
             if (subtype === 'transaction') {
                 return (
                     <div>
-                        {user.address} <span className="opacity-60">just moved </span> {content.otherInfo.amount} to {content.otherInfo.addressTo}
+                        {user.address} <span className="opacity-60 font-medium">just moved </span> {content.otherInfo.amount} <span className="opacity-60 font-medium">to</span> {content.otherInfo.addressTo}
                     </div>
                 );
             } else if (subtype === 'balance_update') {
@@ -46,7 +46,7 @@ const FeedItem = ({ type, subtype, href = '', user, content, time }) => {
         <Link href={href}>
             <div className="w-full h-auto rounded-xl p-4 flex flex-row gap-4 bg-[#A6B0CF] bg-opacity-5">
                 {user.image &&
-                    <div className="rounded-full h-10 w-10 bg-[#A6B0CF] bg-opacity-30 overflow-hidden">
+                    <div className="rounded-full h-10 w-10 bg-[#A6B0CF] bg-opacity-30 overflow-hidden bg-default-avatar">
                         <Image src={user.image} className="h-full w-full aspect-square" alt={user.imageAlt} width={40} height={40} />
                     </div>
                 }

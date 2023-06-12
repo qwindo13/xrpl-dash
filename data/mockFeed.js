@@ -7,7 +7,7 @@ const mockFeed = [
         user: {
             image: 'https://randomuser.me/api/portraits/men/64.jpg', 
             imageAlt: 'Profile Icon',
-            handle: '@username' // moved here as it relates to the user
+            handle: '@username' 
         },
         content: {
             text: 'Thrilled by the disruptive potential of #XRP. Streamlining cross-border transactions and forging ahead with a future that redefines financial boundaries. Ready for the ride. #Ripple #CryptoCurrency #Blockchain ',
@@ -18,7 +18,7 @@ const mockFeed = [
         id: '2',
         type: 'wallets',
         subtype: 'transaction',
-        direction: 'sent', // for transactions, specify the direction (sent or received)
+        direction: 'sent', 
         href: '#',
         user: {
             image: '',
@@ -28,8 +28,8 @@ const mockFeed = [
         content: {
             otherInfo: {
                 amount: '20.00 XRP',
-                addressFrom: 'rwim...u55h', // sender address
-                addressTo: 'rPbr...L6NW' // recipient address
+                addressFrom: 'rwim...u55h',
+                addressTo: 'rPbr...L6NW' 
             },
         },
         time: '2023-06-08T10:13:22.370Z',
@@ -37,16 +37,16 @@ const mockFeed = [
     {
         id: '3',
         type: 'projects',
-        subtype: 'nft', // subtype added to accommodate various project types
+        subtype: 'nft', 
         href: '#',
         user: {
-            image: '/url-to-image-3', // renamed for better clarity
+            image: '/url-to-image-3',
             imageAlt: 'Project Icon',
-            address: '0x5678...' // moved here as it relates to the user
+            address: '0x5678...' 
         },
         content: {
             infoType: 'Minted NFT',
-            otherInfo: { // additional info could go here as needed
+            otherInfo: { 
                 rightImg: '/url-to-right-image-3',
                 rightImgAlt: 'Project Icon'
             },
@@ -100,13 +100,14 @@ const mockFeed = [
         user: {
             image: '/url-to-image-6',
             imageAlt: '/Wallet Icon',
-            address: '0x4567...'
+            address: 'rwim...u55h'
         },
         content: {
             transactionType: 'Received Payment',
             otherInfo: {
-                amount: '20.00 XRP',
-                from: '0x8910...'
+                amount: '100,000,000.00 HOUND',
+                addressFrom: 'rwim...u55h', 
+                addressTo: 'rPbr...L6NW' 
             },
         },
         time: '2023-05-30T19:16:25.370Z',
