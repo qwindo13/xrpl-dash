@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
-import BackgroundSwitch from "@/components/UI/ModuleCard/Settings/BackgroundSwitchcomponents";
 import WalletDetailsSwitch from "@/components/UI/ModuleCard/Settings/WalletDetaisSwitchcomponents";
 import DonutChart from "./DonutChart";
 import chroma from 'chroma-js';
+import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 
 const defaultSettings = {
     displayTitle: true,
     displayWalletDetails: false,
-    displayBackground: true
+    backgroundSetting: "Solid"
 };
 
 const testData = [
@@ -93,6 +93,10 @@ const Wallet = () => {
             </svg>
         );
     };
+    const backgroundClass = moduleSettings.backgroundSetting === 'Solid' ? '' :
+    moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#6E7489] ' :
+        moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
+
 
     return (
         <ModuleCard
@@ -103,9 +107,9 @@ const Wallet = () => {
                         value={moduleSettings.displayTitle}
                         onChange={(value) => updateSettings("displayTitle", value)}
                     />
-                    <BackgroundSwitch
-                        value={moduleSettings.displayBackground}
-                        onChange={(value) => updateSettings("displayBackground", value)}
+                    <BackgroundTabs
+                        value={moduleSettings.backgroundSetting}
+                        onChange={(value) => updateSettings("backgroundSetting", value)}
                     />
                     <WalletDetailsSwitch
                         value={moduleSettings.displayWalletDetails}
@@ -115,7 +119,7 @@ const Wallet = () => {
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}
-            className={`${moduleSettings.displayBackground ? '' : 'bg-transparent'}`}
+            className={`${backgroundClass}`}
 
         >
             <div className={`w-full h-full flex flex-col gap-4 items-center ${moduleSettings.displayWalletDetails ? '' : ''}`}>

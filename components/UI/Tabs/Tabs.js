@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const Tabs = ({ options, onClick, className, tabsId , bgColor = "#1A1921" }) => {
+const Tabs = ({ options, onChange, className, tabsId , bgColor = "#1A1921" }) => {
   const [selectedOption, setSelectedOption] = useState(`${tabsId}-${options[0].value}`);
 
   const handleOptionClick = (value) => {
     setSelectedOption(`${tabsId}-${value}`);
-    if (onClick) {
-      onClick(value);
+    if (onChange) {
+      onChange(value);
     }
-  };
+};
+
 
   return (
     <div className={`flex flex-row md:flex-row gap-4 justify-center items-center rounded-2xl ${className}`}>
