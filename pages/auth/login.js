@@ -154,7 +154,7 @@ export default function Home() {
               {/* <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' /> */}
               {
                 qrCode ?
-                  <img className='w-full' src={qrCode} alt='XUMM QR' />
+                  <img className='w-full rounded-xl' src={qrCode} alt='XUMM QR' />
                   : <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' />
               }
             </div>

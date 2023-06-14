@@ -28,7 +28,7 @@ const PriceInfo = () => {
     const [logoValue, setLogoValue] = useState('');
 
     const backgroundClass = moduleSettings.backgroundSetting === 'Solid' ? '' :
-    moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#6E7489] ' :
+    moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#525567] ' :
         moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
 
     return (
