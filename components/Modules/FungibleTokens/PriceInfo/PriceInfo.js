@@ -99,7 +99,7 @@ const PriceInfo = () => {
         >
             <div className='w-full h-full flex flex-row gap-4'>
                 {moduleSettings.displayLogo && (
-                    <div className="h-auto w-auto flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
+                    <div className="h-full w-auto flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
                         <Image className="w-full h-full aspect-square object-contain" src={image} alt={token} width={46} height={46} />
                     </div>
                 )}
@@ -115,7 +115,7 @@ const PriceInfo = () => {
                         <span className={`text-xs font-semibold opacity-50 flex flex-row items-center gap-2 whitespace-nowrap	 ${priceChange < 0 ? 'text-negative' : 'text-positive'}`} >
                             <div style={{ transform: priceChange < 0 ? 'rotate(180deg)' : 'rotate(0)' }}>
                                 <svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3.58808 0.833414L5.75475 3.00008C6.01864 3.26397 6.07753 3.56591 5.93142 3.90591C5.78586 4.24647 5.52558 4.41675 5.15058 4.41675L0.858917 4.41675C0.483917 4.41675 0.223639 4.24647 0.078084 3.90591C-0.0680275 3.56591 -0.00913858 3.26397 0.25475 3.00008L2.42142 0.833414C2.50475 0.750081 2.59503 0.687582 2.69225 0.645915C2.78947 0.604248 2.89364 0.583414 3.00475 0.583414C3.11586 0.583414 3.22003 0.604248 3.31725 0.645915C3.41447 0.687582 3.50475 0.750081 3.58808 0.833414Z" fill="#6DCE5C" fillOpacity="0.5" />
+                                    <path d="M3.58808 0.833414L5.75475 3.00008C6.01864 3.26397 6.07753 3.56591 5.93142 3.90591C5.78586 4.24647 5.52558 4.41675 5.15058 4.41675L0.858917 4.41675C0.483917 4.41675 0.223639 4.24647 0.078084 3.90591C-0.0680275 3.56591 -0.00913858 3.26397 0.25475 3.00008L2.42142 0.833414C2.50475 0.750081 2.59503 0.687582 2.69225 0.645915C2.78947 0.604248 2.89364 0.583414 3.00475 0.583414C3.11586 0.583414 3.22003 0.604248 3.31725 0.645915C3.41447 0.687582 3.50475 0.750081 3.58808 0.833414Z" fill={`${priceChange < 0 ? '#CE5C6D' : '#6DCE5C'}`} fillOpacity="0.5" />
                                 </svg>
                             </div>
                             {priceChange}% (in the last 24h)

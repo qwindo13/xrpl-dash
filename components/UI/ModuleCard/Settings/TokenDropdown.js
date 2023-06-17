@@ -171,7 +171,7 @@ const TokenDropdown = ({ onSelect }) => {
                     className={"w-full"}
                     trigger={
                         <Button className="text-sm w-full font-semibold justify-between" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>
-                            {selectedToken || "Select Token"}
+                            {selectedToken || "Select token"}
                         </Button>
                     }
                 >
