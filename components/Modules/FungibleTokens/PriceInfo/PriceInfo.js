@@ -50,9 +50,13 @@ const PriceInfo = () => {
 
     useEffect(() => {
         fetchToken();
-    }, []);
+    }, [toFetch]);
 
-
+    const handleTokenSelect = (selectedToken) => {
+        // Do something with the selected token
+        console.log("Selected Token:", selectedToken);
+        setToFetch(selectedToken);
+      };
 
 
 
@@ -86,7 +90,7 @@ const PriceInfo = () => {
                         value={moduleSettings.displayLogo}
                         onChange={(value) => updateSettings("displayLogo", value)}
                     />
-                    <TokenDropdown />
+                    <TokenDropdown onSelect={handleTokenSelect}/>
                     <DisplayPriceInTabs />
                 </>
             }
