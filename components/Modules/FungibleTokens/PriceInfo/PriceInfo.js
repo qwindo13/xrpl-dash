@@ -50,9 +50,13 @@ const PriceInfo = () => {
 
     useEffect(() => {
         fetchToken();
-    }, []);
+    }, [toFetch]);
 
-
+    const handleTokenSelect = (selectedToken) => {
+        // Do something with the selected token
+        console.log("Selected Token:", selectedToken);
+        setToFetch(selectedToken);
+      };
 
 
 
@@ -86,7 +90,7 @@ const PriceInfo = () => {
                         value={moduleSettings.displayLogo}
                         onChange={(value) => updateSettings("displayLogo", value)}
                     />
-                    <TokenDropdown />
+                    <TokenDropdown onSelect={handleTokenSelect}/>
                     <DisplayPriceInTabs />
                 </>
             }
@@ -96,7 +100,7 @@ const PriceInfo = () => {
             <div className='w-full h-full flex flex-row gap-4'>
                 {moduleSettings.displayLogo && (
                     <div className="h-auto w-1/3 flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
-                        <Image className="w-full h-full object-contain" src={image} alt="ripple Image" width={46} height={46} />
+                        <Image className="w-full h-full object-contain" src={image} alt="ripple Image" width={46} height={46} loader={({ src }) => src} />
                     </div>
                 )}
                 <motion.div layout className='h-auto w-3/1 flex flex-col gap-4 justify-between'>
