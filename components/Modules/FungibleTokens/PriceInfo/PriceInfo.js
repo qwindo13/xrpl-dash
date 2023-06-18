@@ -7,6 +7,7 @@ import LogoSwitch from '@/components/UI/ModuleCard/Settings/LogoSwitchcomponents
 import TokenDropdown from '@/components/UI/ModuleCard/Settings/TokenDropdowncomponents';
 import DisplayPriceInTabs from '@/components/UI/ModuleCard/Settings/DisplayPriceInTabscomponents';
 import BackgroundTabs from '@/components/UI/ModuleCard/Settings/BackgroundTabscomponents';
+import propImage from 'public/images/hound.png'
 const axios = require('axios');
 
 const defaultSettings = {
@@ -23,13 +24,12 @@ const PriceInfo = () => {
     const [priceChange, setPriceChange] = useState(0);
     const [subLabel, setSubLabel] = useState('');
     const [currency, setCurrency] = useState('XRP');
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(propImage);
     const [toFetch, setToFetch] = useState('534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz');
     const [website, setWebsite] = useState('');
 
     const apiUrl = "https://api.xrpldashboard.com:3000"
     // const apiUrl = "http://localhost:3000"
-
 
     const fetchToken = async () => {
         const res = await axios.get(`${apiUrl}/token/${toFetch}`, {
@@ -41,7 +41,15 @@ const PriceInfo = () => {
         const data = res.data;
         console.log(data);
         setToken(data.name);
-        setPrice(Math.round(data.price * 1000) / 1000);
+        // setPrice(Math.round(data.price * 1000) / 1000);
+        //check if price has multiple decimals, if so then convert it to a scientific notation string
+        if (data.price.toString().split(".")[1].length > 3) {
+            // round to 8 decimal places
+            let price = Math.round(data.price * 100000000) / 100000000;
+            setPrice(price);
+        } else {
+            setPrice(Math.round(data.price * 1000) / 1000);
+        }
         setPriceChange(Math.round(data.twenty_four_hour_changes.price.change * 1000) / 1000);
         setSubLabel(data.issuerName);
         setImage(data.icon);
@@ -100,7 +108,7 @@ const PriceInfo = () => {
             <div className='w-full h-full flex flex-row gap-4'>
                 {moduleSettings.displayLogo && (
                     <div className="h-full w-auto flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
-                        <Image className="w-full h-full aspect-square object-contain" src={image} alt={token} width={46} height={46} />
+                        <Image className="w-full h-full aspect-square object-contain" src={image || propImage} alt={token} width={46} height={46} />
                     </div>
                 )}
                 <motion.div layout className='h-auto flex flex-col gap-4 justify-between'>

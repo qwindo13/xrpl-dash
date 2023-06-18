@@ -9,6 +9,10 @@ const TokenDropdown = ({ onSelect }) => {
     const [tokens, setTokens] = useState([]); 
     const [top10, setTop10] = useState([]); 
     const [searchValue, setSearchValue] = useState("");
+    const [images, setImages] = useState([]);
+    const [searchImages, setSearchImages] = useState([]); //images for search results
+    const [issuers, setIssuers] = useState([]); //issuers for search results
+    const [searchIssuers, setSearchIssuers] = useState([]); //issuers for search results
 
     function hexToString(hex) {
         var string = '';
@@ -33,16 +37,34 @@ const TokenDropdown = ({ onSelect }) => {
             .then((data) => {
                 // setTop10(data);
                 const top10 = [];
+                const images = [];
+                const issuers = [];
                 for (let i = 0; i < data.length; i++) {
                     let currency = data[i].currency;
+                    let icon;
+                    let issuername;
+                    if ('icon' in data[i].meta.token) {
+                        icon = data[i].meta.token.icon;
+                    } else {
+                        icon = '/images/hound.png';
+                    }
+                    if ('name' in data[i].meta.issuer) {
+                        issuername = data[i].meta.issuer.name;
+                    } else {
+                        issuername = '';
+                    }
                     if (currency.length > 3) {
                         currency = hexToString(currency);
                     }
                     const issuer = data[i].issuer;
-                    const token = currency + ":" + issuer;  
+                    const token = currency + ":" + issuer; 
+                    images.push(icon); 
                     top10.push(token);
+                    issuers.push(issuername);
                 }
                 setTop10(top10);
+                setImages(images);
+                setIssuers(issuers);
             })
             .catch((error) => {
                 console.log(error);
@@ -52,55 +74,6 @@ const TokenDropdown = ({ onSelect }) => {
     const handleSearch = (event) => {
         const searchQuery = event.target.value;
         setSearchValue(searchQuery);
-        // const url = `https://api.xrpldashboard.com:3000/tokenname`
-        // //check if it has a minimum of 3 characters
-        // if (searchQuery.length >= 3) {
-        //     //check if it starts with r
-        //     if (searchQuery.startsWith("r")) {
-        //         const issuerUrl = url + "/issuer/?issuer=" + searchQuery;
-        //         fetch(issuerUrl)
-        //             .then((response) => response.json())
-        //             .then((data) => {
-        //                 //response, [{"tokenString":"534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz"},{},...]
-        //                 const tokens = [];
-        //                 for (let i = 0; i < data.length; i++) {
-        //                     let currency = data[i].tokenString.split(":")[0];
-        //                     if (currency.length > 3) {
-        //                         currency = hexToString(currency);
-        //                     }
-        //                     const issuer = data[i].tokenString.split(":")[1];
-        //                     const token = currency + ":" + issuer;  
-        //                     tokens.push(token);
-        //                 }
-        //                 setTokens(tokens);
-        //             })
-        //             .catch((error) => {
-        //                 console.log(error);
-        //             }
-        //         );
-        //     } else {
-        //         const currencyUrl = url + "/" + searchQuery;
-        //         fetch(currencyUrl)
-        //             .then((response) => response.json())
-        //             .then((data) => {
-        //                 //response, [{"tokenString":"534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz"}] //a single object in a list
-        //                 const tokenString = data[0].tokenString;
-        //                 let currency = tokenString.split(":")[0];
-        //                 if (currency.length > 3) {
-        //                     currency = hexToString(currency);
-        //                 }
-        //                 const issuer = tokenString.split(":")[1];
-        //                 const token = currency + ":" + issuer;
-        //                 setTokens([token]);
-        //             })
-        //             .catch((error) => {
-        //                 console.log(error);
-        //             }
-        //         );
-        //     }
-        // } else {
-        //     setTokens([]);
-        // };
     };
 
     const onEnterKey = (event) => {
@@ -109,49 +82,28 @@ const TokenDropdown = ({ onSelect }) => {
             const url = `https://api.xrpldashboard.com:3000/tokenname`
             //check if it has a minimum of 3 characters
             if (searchQuery.length >= 3) {
-                //check if it starts with r
-                if (searchQuery.startsWith("r")) {
-                    const issuerUrl = url + "/issuer/?issuer=" + searchQuery;
-                    fetch(issuerUrl)
-                        .then((response) => response.json())
-                        .then((data) => {
-                            //response, [{"tokenString":"534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz"},{},...]
-                            const tokens = [];
-                            for (let i = 0; i < data.length; i++) {
-                                let currency = data[i].tokenString.split(":")[0];
-                                if (currency.length > 3) {
-                                    currency = hexToString(currency);
-                                }
-                                const issuer = data[i].tokenString.split(":")[1];
-                                const token = currency + ":" + issuer;  
-                                tokens.push(token);
-                            }
-                            setTokens(tokens);
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        }
-                    );
-                } else {
                     const currencyUrl = url + "/" + searchQuery;
                     fetch(currencyUrl)
                         .then((response) => response.json())
                         .then((data) => {
-                            //response, [{"tokenString":"534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz"}] //a single object in a list
-                            const tokenString = data[0].tokenString;
-                            let currency = tokenString.split(":")[0];
-                            if (currency.length > 3) {
-                                currency = hexToString(currency);
+                            const tokenData = data[0];
+                            const token = tokenData.currency + ":" + tokenData.issuer;
+                            const issuername = tokenData.meta.issuer.name;
+                            // const icon = tokenData.meta.token.icon;
+                            let icon;
+                            if ('icon' in tokenData.meta.token) {
+                                icon = tokenData.meta.token.icon;
+                            } else {
+                                icon = '/images/hound.png';
                             }
-                            const issuer = tokenString.split(":")[1];
-                            const token = currency + ":" + issuer;
                             setTokens([token]);
+                            setSearchImages([icon]);
+                            setSearchIssuers([issuername]);
                         })
                         .catch((error) => {
                             console.log(error);
                         }
                     );
-                }
             } else {
                 setTokens([]);
             };
@@ -181,22 +133,28 @@ const TokenDropdown = ({ onSelect }) => {
                         onChange={handleSearch}
                         onKeyDown={onEnterKey}
                     />
-                    {/* <p onClick={() => handleTokenClick("Dropdown item 1")}>Dropdown item 1</p>
-                    <p onClick={() => handleTokenClick("Dropdown item 2")}>Dropdown item 2</p>
-                    <p onClick={() => handleTokenClick("Dropdown item 3")}>Dropdown item 3</p> */}
-                    {
-                    // top10.map((token, index) => (
-                    //     <p key={index} onClick={() => handleTokenClick(token)}>{token.split(":")[0]}</p>
-                    // )) only show if token is empty
-                   }
                     {
                         tokens.length > 0 ? (
                             tokens.map((token, index) => (
-                                <p key={index} onClick={() => handleTokenClick(token)}>{token.split(":")[0]}</p>
+                                <>
+                                    <img src={searchImages[index]} alt="icon" className='w-6 h-6' />
+                                    <p key={index} onClick={() => handleTokenClick(token)}>
+                                        {
+                                            // token.split(":")[0] change from hex to string if it is longer than 3 characters
+                                            token.split(":")[0].length > 3 ? hexToString(token.split(":")[0]) : token.split(":")[0]
+                                        }
+                                        {
+                                            searchIssuers[index] ? `(${searchIssuers[index]})` : ''
+                                        }
+                                    </p>
+                                </>
                             ))
                         ) : (
                             top10.map((token, index) => (
-                                <p key={index} onClick={() => handleTokenClick(token)}>{token.split(":")[0]}</p>
+                                <>
+                                    <img src={images[index]} alt="icon" className='w-6 h-6' />
+                                    <p key={index} onClick={() => handleTokenClick(token)}>{token.split(":")[0]} {issuers[index] ? `(${issuers[index]})` : ''}</p>
+                                </>
                             ))
                         )
                     }
