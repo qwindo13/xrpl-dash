@@ -1,4 +1,5 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Button from '../../Button/Button';
 import Dropdown from '../../Dropdown/Dropdown';
 import SearchBar from '../../SearchBar/SearchBar';
@@ -6,8 +7,8 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 
 const TokenDropdown = ({ onSelect }) => {
     const [selectedToken, setSelectedToken] = useState("");
-    const [tokens, setTokens] = useState([]); 
-    const [top10, setTop10] = useState([]); 
+    const [tokens, setTokens] = useState([]);
+    const [top10, setTop10] = useState([]);
     const [searchValue, setSearchValue] = useState("");
     const [images, setImages] = useState([]);
     const [searchImages, setSearchImages] = useState([]); //images for search results
@@ -17,17 +18,17 @@ const TokenDropdown = ({ onSelect }) => {
     function hexToString(hex) {
         var string = '';
         for (var i = 0; i < hex.length; i += 2) {
-          var code = parseInt(hex.substr(i, 2), 16);
-          if (code !== 0) {
-            string += String.fromCharCode(code);
-          }
+            var code = parseInt(hex.substr(i, 2), 16);
+            if (code !== 0) {
+                string += String.fromCharCode(code);
+            }
         }
         return string;
-      }
+    }
 
     const handleTokenClick = (token) => {
-      setSelectedToken(token.split(":")[0]); // Set the selected token
-      onSelect(token); // Invoke the onSelect callback with the selected token
+        setSelectedToken(token.split(":")[0]); // Set the selected token
+        onSelect(token); // Invoke the onSelect callback with the selected token
     };
 
     const getTop10Tokens = () => {
@@ -57,8 +58,8 @@ const TokenDropdown = ({ onSelect }) => {
                         currency = hexToString(currency);
                     }
                     const issuer = data[i].issuer;
-                    const token = currency + ":" + issuer; 
-                    images.push(icon); 
+                    const token = currency + ":" + issuer;
+                    images.push(icon);
                     top10.push(token);
                     issuers.push(issuername);
                 }
@@ -82,27 +83,27 @@ const TokenDropdown = ({ onSelect }) => {
             const url = `https://api.xrpldashboard.com:3000/tokenname`
             //check if it has a minimum of 3 characters
             if (searchQuery.length >= 3) {
-                    const currencyUrl = url + "/" + searchQuery;
-                    fetch(currencyUrl)
-                        .then((response) => response.json())
-                        .then((data) => {
-                            const tokenData = data[0];
-                            const token = tokenData.currency + ":" + tokenData.issuer;
-                            const issuername = tokenData.meta.issuer.name;
-                            // const icon = tokenData.meta.token.icon;
-                            let icon;
-                            if ('icon' in tokenData.meta.token) {
-                                icon = tokenData.meta.token.icon;
-                            } else {
-                                icon = '/images/hound.png';
-                            }
-                            setTokens([token]);
-                            setSearchImages([icon]);
-                            setSearchIssuers([issuername]);
-                        })
-                        .catch((error) => {
-                            console.log(error);
+                const currencyUrl = url + "/" + searchQuery;
+                fetch(currencyUrl)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const tokenData = data[0];
+                        const token = tokenData.currency + ":" + tokenData.issuer;
+                        const issuername = tokenData.meta.issuer.name;
+                        // const icon = tokenData.meta.token.icon;
+                        let icon;
+                        if ('icon' in tokenData.meta.token) {
+                            icon = tokenData.meta.token.icon;
+                        } else {
+                            icon = '/images/hound.png';
                         }
+                        setTokens([token]);
+                        setSearchImages([icon]);
+                        setSearchIssuers([issuername]);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    }
                     );
             } else {
                 setTokens([]);
@@ -110,7 +111,7 @@ const TokenDropdown = ({ onSelect }) => {
         };
     };
 
-    useEffect(() => {   
+    useEffect(() => {
         getTop10Tokens();
     }, []);
 
@@ -120,7 +121,7 @@ const TokenDropdown = ({ onSelect }) => {
             <div className='flex flex-col gap-2 w-full'>
                 <span className='font-semibold text-base'>Token</span>
                 <Dropdown
-                    className={"w-full"}
+                    className={"w-full gap-4"}
                     trigger={
                         <Button className="text-sm w-full font-semibold justify-between" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>
                             {selectedToken || "Select token"}
@@ -137,23 +138,27 @@ const TokenDropdown = ({ onSelect }) => {
                         tokens.length > 0 ? (
                             tokens.map((token, index) => (
                                 <>
-                                    <img src={searchImages[index]} alt="icon" className='w-6 h-6' />
-                                    <p key={index} onClick={() => handleTokenClick(token)}>
-                                        {
-                                            // token.split(":")[0] change from hex to string if it is longer than 3 characters
-                                            token.split(":")[0].length > 3 ? hexToString(token.split(":")[0]) : token.split(":")[0]
-                                        }
-                                        {
-                                            searchIssuers[index] ? `(${searchIssuers[index]})` : ''
-                                        }
-                                    </p>
+                                    <div className='flex flex-row'>
+                                        <img src={searchImages[index]} alt="icon" className='w-6 h-6' />
+                                        <p key={index} onClick={() => handleTokenClick(token)}>
+                                            {
+                                                // token.split(":")[0] change from hex to string if it is longer than 3 characters
+                                                token.split(":")[0].length > 3 ? hexToString(token.split(":")[0]) : token.split(":")[0]
+                                            }
+                                            {
+                                                searchIssuers[index] ? `(${searchIssuers[index]})` : ''
+                                            }
+                                        </p>
+                                    </div>
                                 </>
                             ))
                         ) : (
                             top10.map((token, index) => (
                                 <>
-                                    <img src={images[index]} alt="icon" className='w-6 h-6' />
-                                    <p key={index} onClick={() => handleTokenClick(token)}>{token.split(":")[0]} {issuers[index] ? `(${issuers[index]})` : ''}</p>
+                                    <div className='flex flex-row items-center cursor-pointer'>
+                                        <Image width="30" height="30" src={images[index]} alt="icon" className='mr-2 rounded-full' />
+                                        <span className="whitespace-nowrap font-semibold" key={index} onClick={() => handleTokenClick(token)}>{token.split(":")[0]} {issuers[index] ? `(${issuers[index]})` : ''}</span>
+                                    </div>
                                 </>
                             ))
                         )

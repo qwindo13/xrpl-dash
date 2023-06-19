@@ -5,6 +5,6 @@ const nextConfig = {
 
 module.exports = {
   images: {
-    domains: ['randomuser.me','static.xrplmeta.org','*'],
+    domains: ['randomuser.me','static.xrplmeta.org', 'cdn.xumm.pro','*'],
   },
 }

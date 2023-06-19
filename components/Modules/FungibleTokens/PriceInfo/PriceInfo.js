@@ -64,7 +64,7 @@ const PriceInfo = () => {
         // Do something with the selected token
         console.log("Selected Token:", selectedToken);
         setToFetch(selectedToken);
-      };
+    };
 
 
 
@@ -98,7 +98,7 @@ const PriceInfo = () => {
                         value={moduleSettings.displayLogo}
                         onChange={(value) => updateSettings("displayLogo", value)}
                     />
-                    <TokenDropdown onSelect={handleTokenSelect}/>
+                    <TokenDropdown onSelect={handleTokenSelect} />
                     <DisplayPriceInTabs />
                 </>
             }
@@ -108,7 +108,7 @@ const PriceInfo = () => {
             <div className='w-full h-full flex flex-row gap-4'>
                 {moduleSettings.displayLogo && (
                     <div className="h-full w-auto flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
-                        <Image className="w-full h-full aspect-square object-contain" src={image || propImage} alt={token} width={46} height={46} />
+                        <Image className="w-full h-full aspect-square object-contain rounded-full" src={image || propImage} alt={token} width={200} height={200}  quality={100}	/>
                     </div>
                 )}
                 <motion.div layout className='h-auto flex flex-col gap-4 justify-between'>
