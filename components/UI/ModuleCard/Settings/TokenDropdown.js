@@ -27,7 +27,12 @@ const TokenDropdown = ({ onSelect }) => {
     }
 
     const handleTokenClick = (token) => {
-        setSelectedToken(token.split(":")[0]); // Set the selected token
+        // setSelectedToken(token.split(":")[0]); // Set the selected token
+        if (token.split(":")[0].length > 3) {
+            setSelectedToken(hexToString(token.split(":")[0]));
+        } else {
+            setSelectedToken(token.split(":")[0]);
+        }
         onSelect(token); // Invoke the onSelect callback with the selected token
     };
 

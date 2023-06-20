@@ -116,7 +116,12 @@ const PriceInfo = () => {
                         <a href={website} target="_blank" className="flex flex-row items-center gap-2">
                             <span className="text-xs font-semibold text-white opacity-60">{subLabel}</span>
                         </a>
-                        <span className="text-2xl font-bold">{token}</span>
+                        <span className="text-2xl font-bold">
+                            {
+                                token !== undefined ?
+                                    token : subLabel 
+                            }
+                        </span>
                     </div>
                     <div className='flex flex-col'>
                         <span className="text-2xl font-bold">{price} {currency}</span>

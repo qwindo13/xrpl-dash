@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../Button/Button';
 import ModuleCardSettings from './ModuleCardSettings';
@@ -7,11 +7,23 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 const ModuleCard = ({ children, className, title, settings, disableAnimation = false, disableTitle }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
+  const [opacity, setOpacity] = useState(0);
   const defaultClass = 'block relative overflow-hidden items-start bg-[#21212A] flex flex-col w-full h-full rounded-2xl relative items-center p-4';
 
   const toggleSettings = () => {
     setIsSettingsVisible(!isSettingsVisible);
   };
+
+      const settingsCard = 
+        <motion.div
+          key="settings"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isSettingsVisible ? 1 : 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <ModuleCardSettings> {settings} </ModuleCardSettings>
+        </motion.div>;
 
   return (
     <motion.div
@@ -50,17 +62,9 @@ const ModuleCard = ({ children, className, title, settings, disableAnimation = f
 
       {/* CARD SETTINGS */}
       <AnimatePresence>
-        {isSettingsVisible && (
-          <motion.div
-            key="settings"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ModuleCardSettings> {settings} </ModuleCardSettings>
-          </motion.div>
-        )}
+        {/* {isSettingsVisible && ( */}
+          {settingsCard}
+        {/*  )} */}
       </AnimatePresence>
     </motion.div>
   );
