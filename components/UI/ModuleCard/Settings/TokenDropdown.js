@@ -4,6 +4,24 @@ import Button from '../../Button/Button';
 import Dropdown from '../../Dropdown/Dropdown';
 import SearchBar from '../../SearchBar/SearchBar';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import tokensJsonData from '../../../../public/jsons/tokens.json';
+//[
+// {
+//     "tokenString": "534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz",
+//     "volume_24h": "162697.725567",
+//     "trustlines": 283709,
+//     "image": "https://static.xrplmeta.org/icons/SOLO.png",
+//     "issuerName": "Sologenic"
+// },
+// {
+//     "tokenString": "USD:rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
+//     "volume_24h": "148530.255971",
+//     "trustlines": 27547,
+//     "image": "https://static.xrplmeta.org/icons/USD.png",
+//     "issuerName": "Bitstamp"
+// }
+// ]
+//tokensJsonData format
 
 const TokenDropdown = ({ onSelect }) => {
     const [selectedToken, setSelectedToken] = useState("");
@@ -34,6 +52,9 @@ const TokenDropdown = ({ onSelect }) => {
             setSelectedToken(token.split(":")[0]);
         }
         onSelect(token); // Invoke the onSelect callback with the selected token
+        setSearchImages([]);
+        setSearchIssuers([]);
+        setTokens([]);
     };
 
     const getTop10Tokens = () => {
@@ -57,7 +78,7 @@ const TokenDropdown = ({ onSelect }) => {
                     if ('name' in data[i].meta.issuer) {
                         issuername = data[i].meta.issuer.name;
                     } else {
-                        issuername = '';
+                        issuername = data[i].issuer;
                     }
                     if (currency.length > 3) {
                         currency = hexToString(currency);
@@ -79,47 +100,88 @@ const TokenDropdown = ({ onSelect }) => {
 
     const handleSearch = (event) => {
         const searchQuery = event.target.value;
+        if (searchQuery.length === 0) {
+        } else {
         setSearchValue(searchQuery);
+
+        //search the tokens from the json file, if length is more than 3, convert to hex to string in json file and search
+        const searchResults = [];
+        const searchImages = [];
+        const searchIssuers = [];
+        const searchIssuerNames = [];
+
+        if (searchQuery.length > 3) {
+            for (let i = 0; i < tokensJsonData.length; i++) {
+                let token = tokensJsonData[i].tokenString.split(":")[0];
+                // const issuer = tokensJsonData[i].tokenString.split(":")[1];
+                const issuername = tokensJsonData[i].issuerName;
+
+                const icon = tokensJsonData[i].image;
+                if (token.length > 3) {
+                    token = hexToString(token);
+                }
+                if (token.includes(searchQuery)) {
+                    searchResults.push(tokensJsonData[i].tokenString);
+                    searchImages.push(icon);
+                    searchIssuers.push(issuername);
+                } 
+            }
+        } else {
+            for (let i = 0; i < tokensJsonData.length; i++) {
+                let token = tokensJsonData[i].tokenString.split(":")[0];
+                const issuer = tokensJsonData[i].tokenString.split(":")[1];
+                const issuername = tokensJsonData[i].issuerName;
+                const icon = tokensJsonData[i].image;
+                if (token.includes(searchQuery)) {
+                    searchResults.push(token + ":" + issuer);
+                    searchImages.push(icon);
+                    searchIssuers.push(issuername);
+                }
+            }
+        }
+        setSearchImages(searchImages);
+        setSearchIssuers(searchIssuers);
+        setTokens(searchResults);
+        }
     };
 
-    const onEnterKey = (event) => {
-        if (event.key === "Enter") {
-            const searchQuery = searchValue;
-            const url = `https://api.xrpldashboard.com:3000/tokenname`
-            //check if it has a minimum of 3 characters
-            if (searchQuery.length >= 3) {
-                const currencyUrl = url + "/" + searchQuery;
-                fetch(currencyUrl)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        const tokenData = data[0];
-                        const token = tokenData.currency + ":" + tokenData.issuer;
-                        const issuername = tokenData.meta.issuer.name;
-                        // const icon = tokenData.meta.token.icon;
-                        let icon;
-                        if ('icon' in tokenData.meta.token) {
-                            icon = tokenData.meta.token.icon;
-                        } else {
-                            icon = '/images/hound.png';
-                        }
-                        setTokens([token]);
-                        setSearchImages([icon]);
-                        setSearchIssuers([issuername]);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    }
-                    );
-            } else {
-                setTokens([]);
-            };
-        };
-    };
+    // const onEnterKey = (event) => {
+    //     if (event.key === "Enter") {
+    //         const searchQuery = searchValue;
+    //         const url = `https://api.xrpldashboard.com:3000/tokenname`
+    //         //check if it has a minimum of 3 characters
+    //         if (searchQuery.length >= 3) {
+    //             const currencyUrl = url + "/" + searchQuery;
+    //             fetch(currencyUrl)
+    //                 .then((response) => response.json())
+    //                 .then((data) => {
+    //                     const tokenData = data[0];
+    //                     const token = tokenData.currency + ":" + tokenData.issuer;
+    //                     const issuername = tokenData.meta.issuer.name;
+    //                     // const icon = tokenData.meta.token.icon;
+    //                     let icon;
+    //                     if ('icon' in tokenData.meta.token) {
+    //                         icon = tokenData.meta.token.icon;
+    //                     } else {
+    //                         icon = '/images/hound.png';
+    //                     }
+    //                     setTokens([token]);
+    //                     setSearchImages([icon]);
+    //                     setSearchIssuers([issuername]);
+    //                 })
+    //                 .catch((error) => {
+    //                     console.log(error);
+    //                 }
+    //                 );
+    //         } else {
+    //             setTokens([]);
+    //         };
+    //     };
+    // };
 
     useEffect(() => {
         getTop10Tokens();
     }, []);
-
 
     return (
         <div className='flex flex-row justify-between align-middle gap-2'>
@@ -137,14 +199,14 @@ const TokenDropdown = ({ onSelect }) => {
                         className="!bg-[#1A1A22] rounded-xl"
                         placeholder={'Search for address'}
                         onChange={handleSearch}
-                        onKeyDown={onEnterKey}
+                        // onKeyDown={onEnterKey}
                     />
                     {
                         tokens.length > 0 ? (
                             tokens.map((token, index) => (
                                 <>
                                     <div className='flex flex-row'>
-                                        <img src={searchImages[index]} alt="icon" className='w-6 h-6' />
+                                        <img src={searchImages[index]} alt="icon" className='w-6 h-6 mr-2 rounded-full' />
                                         <p key={index} onClick={() => handleTokenClick(token)}>
                                             {
                                                 // token.split(":")[0] change from hex to string if it is longer than 3 characters
@@ -162,7 +224,9 @@ const TokenDropdown = ({ onSelect }) => {
                                 <>
                                     <div className='flex flex-row items-center cursor-pointer'>
                                         <Image width="30" height="30" src={images[index]} alt="icon" className='mr-2 rounded-full' />
-                                        <span className="whitespace-nowrap font-semibold" key={index} onClick={() => handleTokenClick(token)}>{token.split(":")[0]} {issuers[index] ? `(${issuers[index]})` : ''}</span>
+                                        <span className="whitespace-nowrap font-semibold" key={index} onClick={() => handleTokenClick(token)}>{token.split(":")[0]} </span>
+                                        
+                                        <span className=' text-xs'>&nbsp;{issuers[index] ? `(${issuers[index]})` : ''}</span>
                                     </div>
                                 </>
                             ))
