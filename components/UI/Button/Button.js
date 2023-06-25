@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const Button = ({ children, onClick, className, disableAnimation = false, endIcon = null}) => {
 
-    const defaultClass = 'px-4 py-3 font-semibold text-white bg-[#21212A] rounded-lg hover:bg-opacity-70 w-fit flex select-none items-center h-fit max-h-full whitespace-nowrap	';
+    const defaultClass = 'px-4 py-3 font-semibold text-white text-sm bg-[#21212A] rounded-xl hover:bg-opacity-70 w-fit flex select-none items-center h-fit max-h-full whitespace-nowrap	';
 
     return (
         <motion.button

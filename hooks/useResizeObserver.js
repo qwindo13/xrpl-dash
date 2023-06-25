@@ -6,22 +6,26 @@ const useResizeObserver = () => {
 
     useEffect(() => {
         const observeTarget = ref.current;
+        
+        if (!observeTarget) {
+            return;
+        }
+
         const resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 setDimensions(entry.contentRect);
             });
         });
 
-        if (observeTarget) {
-            resizeObserver.observe(observeTarget);
-        }
+        resizeObserver.observe(observeTarget);
 
         return () => {
             resizeObserver.unobserve(observeTarget);
         };
-    }, [ref]);
+    }, [ref.current]);  // observe changes in ref.current not ref
 
     return [ref, dimensions];
 };
+
 
 export default useResizeObserver;

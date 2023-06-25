@@ -7,6 +7,7 @@ import LogoSwitch from '@/components/UI/ModuleCard/Settings/LogoSwitchcomponents
 import TokenDropdown from '@/components/UI/ModuleCard/Settings/TokenDropdowncomponents';
 import DisplayPriceInTabs from '@/components/UI/ModuleCard/Settings/DisplayPriceInTabscomponents';
 import BackgroundTabs from '@/components/UI/ModuleCard/Settings/BackgroundTabscomponents';
+import useResizeObserver from '@/hooks/useResizeObserver';
 import propImage from 'public/images/hound.png'
 const axios = require('axios');
 
@@ -18,6 +19,7 @@ const defaultSettings = {
 
 const PriceInfo = () => {
 
+    const [ref, dimensions] = useResizeObserver();
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const [token, setToken] = useState('');
     const [price, setPrice] = useState('');
@@ -60,6 +62,14 @@ const PriceInfo = () => {
         fetchToken();
     }, [toFetch]);
 
+    useEffect(() => {
+        if (dimensions.width < 300) {
+            setModuleSettings(prevSettings => ({ ...prevSettings, displayLogo: false }));
+        } else {
+            setModuleSettings(prevSettings => ({ ...prevSettings, displayLogo: true }));
+        }
+    }, [dimensions]);
+
     const handleTokenSelect = (selectedToken) => {
         // Do something with the selected token
         console.log("Selected Token:", selectedToken);
@@ -83,6 +93,7 @@ const PriceInfo = () => {
 
     return (
         <ModuleCard
+           
             title={`Price - ${token}`}
             settings={
                 <>
@@ -97,6 +108,7 @@ const PriceInfo = () => {
                     <LogoSwitch
                         value={moduleSettings.displayLogo}
                         onChange={(value) => updateSettings("displayLogo", value)}
+                        disabled={dimensions.width < 300}
                     />
                     <TokenDropdown onSelect={handleTokenSelect} />
                     <DisplayPriceInTabs />
@@ -105,10 +117,10 @@ const PriceInfo = () => {
             disableTitle={!moduleSettings.displayTitle}
             className={`${backgroundClass}`}
         >
-            <div className='w-full h-full flex flex-row gap-4'>
+            <div  ref={ref} className='w-full h-full flex flex-row gap-4'>
                 {moduleSettings.displayLogo && (
                     <div className="h-full w-auto flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
-                        <Image className="w-full h-full aspect-square object-contain rounded-full" src={image || propImage} alt={token} width={200} height={200}  quality={100}	/>
+                        <Image className="w-full h-full aspect-square object-contain rounded-full" src={image || propImage} alt={token} width={200} height={200} quality={100} />
                     </div>
                 )}
                 <motion.div layout className='h-auto flex flex-col gap-4 justify-between'>
@@ -119,7 +131,7 @@ const PriceInfo = () => {
                         <span className="text-2xl font-bold">
                             {
                                 token !== undefined ?
-                                    token : subLabel 
+                                    token : subLabel
                             }
                         </span>
                     </div>

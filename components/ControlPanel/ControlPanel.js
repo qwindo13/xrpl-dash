@@ -27,7 +27,7 @@ export default function ControlPanel() {
             <div className="relative pr-4">
                 <div className="text-xs absolute -top-2 font-semibold opacity-60">Choose Dash:</div>
                 <Dropdown className="w-auto" isBlurred  trigger={
-                    <Button className="!px-0 text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Explore</Button>
+                    <Button className="!px-0 !text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Explore</Button>
                 }>
                     <Link href="/"><span className="text-2xl">Explore</span></Link>
                     <Link href="/trading"> <span className="text-2xl">Trading</span></Link>

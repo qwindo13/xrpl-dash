@@ -13,3 +13,25 @@
 .switch[data-isOn="true"] .handle {
     @apply bg-[#21212A];
 }
+
+
+.disabled {
+    @apply cursor-not-allowed;
+    pointer-events: none;
+}
+
+.disabled[data-isOn="false"] {
+    @apply bg-[#636369];
+}
+
+.disabled[data-isOn="false"] .handle {
+    @apply bg-[#BEBEBE];
+}
+
+.disabled[data-isOn="true"] {
+    @apply bg-[#636369];
+}
+
+.disabled[data-isOn="true"] .handle {
+    @apply bg-[#BEBEBE];
+}

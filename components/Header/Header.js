@@ -42,7 +42,7 @@ export default function Header({fixed}) {
 
     return (
         <>
-          <nav className={`w-full z-10 relative px-4 md:px-8 py-2 md:py-4 mx-auto justify-center ${fixed ? 'sticky top-0 bg-[#1A1921] bg-opacity-80 backdrop-blur-lg' : ''}`}>
+          <nav className={`w-full z-10 relative px-4 md:px-8 py-2 md:py-4 mx-auto justify-center ${fixed ? 'sticky top-0 bg-[#1A1921] bg-opacity-60 backdrop-blur-lg' : ''}`}>
                 <div className="flex flex-row justify-between items-center">
                     <div className="">
                         <Link href={"/"}>

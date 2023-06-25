@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import styles from "./Switch.module.css";
 
-const Switch = ({ value, onChange }) => {
+const Switch = ({ value, onChange, disabled = false }) => {
     const [isOn, setIsOn] = useState(value);
 
     useEffect(() => {
@@ -10,6 +10,7 @@ const Switch = ({ value, onChange }) => {
     }, [value]);
 
     const toggleSwitch = () => {
+        if (disabled) return; // Add this line to disable toggle when disabled is true
         setIsOn(!isOn);
         if (onChange) {
             onChange(!isOn);
@@ -18,7 +19,7 @@ const Switch = ({ value, onChange }) => {
 
     return (
         <div
-            className={styles.switch}
+            className={`${styles.switch} ${disabled ? styles.disabled : ""}`} // Add the disabled class when disabled is true
             data-isOn={isOn}
             onClick={toggleSwitch}
         >
@@ -26,6 +27,7 @@ const Switch = ({ value, onChange }) => {
         </div>
     );
 };
+
 
 const spring = {
     type: "spring",
