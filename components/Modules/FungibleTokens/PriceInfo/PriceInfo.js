@@ -110,7 +110,7 @@ const PriceInfo = () => {
                         onChange={(value) => updateSettings("displayLogo", value)}
                         disabled={dimensions.width < 300}
                     />
-                    <TokenDropdown onSelect={handleTokenSelect} />
+                    <TokenDropdown onSelect={handleTokenSelect} num={5}/>
                     <DisplayPriceInTabs />
                 </>
             }

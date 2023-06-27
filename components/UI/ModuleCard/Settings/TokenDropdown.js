@@ -23,7 +23,7 @@ import tokensJsonData from '../../../../public/jsons/tokens.json';
 // ]
 //tokensJsonData format
 
-const TokenDropdown = ({ onSelect }) => {
+const TokenDropdown = ({ onSelect, num = 10}) => {
     const [selectedToken, setSelectedToken] = useState("");
     const [tokens, setTokens] = useState([]);
     const [top10, setTop10] = useState([]);
@@ -32,6 +32,7 @@ const TokenDropdown = ({ onSelect }) => {
     const [searchImages, setSearchImages] = useState([]); //images for search results
     const [issuers, setIssuers] = useState([]); //issuers for search results
     const [searchIssuers, setSearchIssuers] = useState([]); //issuers for search results
+    const [tokenCached, setTokenCached] = useState([]); //token cached for search results, [{token: "token",tokenString: "tokenString"},{token: "token",tokenString: "tokenString"},...]
 
     function hexToString(hex) {
         var string = '';
@@ -67,6 +68,7 @@ const TokenDropdown = ({ onSelect }) => {
                 const images = [];
                 const issuers = [];
                 for (let i = 0; i < data.length; i++) {
+                    if (i === num) break;
                     let currency = data[i].currency;
                     let icon;
                     let issuername;
@@ -101,86 +103,50 @@ const TokenDropdown = ({ onSelect }) => {
     const handleSearch = (event) => {
         const searchQuery = event.target.value;
         if (searchQuery.length === 0) {
+            setSearchImages([]);
+            setSearchIssuers([]);
+            setTokens([]);
         } else {
         setSearchValue(searchQuery);
-
-        //search the tokens from the json file, if length is more than 3, convert to hex to string in json file and search
+        let search = searchQuery.toUpperCase();
         const searchResults = [];
         const searchImages = [];
         const searchIssuers = [];
-        const searchIssuerNames = [];
 
-        if (searchQuery.length > 3) {
-            for (let i = 0; i < tokensJsonData.length; i++) {
-                let token = tokensJsonData[i].tokenString.split(":")[0];
-                // const issuer = tokensJsonData[i].tokenString.split(":")[1];
-                const issuername = tokensJsonData[i].issuerName;
-
-                const icon = tokensJsonData[i].image;
-                if (token.length > 3) {
-                    token = hexToString(token);
-                }
-                if (token.includes(searchQuery)) {
-                    searchResults.push(tokensJsonData[i].tokenString);
-                    searchImages.push(icon);
-                    searchIssuers.push(issuername);
-                } 
-            }
-        } else {
-            for (let i = 0; i < tokensJsonData.length; i++) {
-                let token = tokensJsonData[i].tokenString.split(":")[0];
-                const issuer = tokensJsonData[i].tokenString.split(":")[1];
-                const issuername = tokensJsonData[i].issuerName;
-                const icon = tokensJsonData[i].image;
-                if (token.includes(searchQuery)) {
-                    searchResults.push(token + ":" + issuer);
-                    searchImages.push(icon);
-                    searchIssuers.push(issuername);
-                }
+        //the tokenCached has the token data, to match the search with `tokenCached.token`
+        for (let i = 0; i < tokenCached.length; i++) {
+            if (tokenCached[i].token.includes(search)) {
+                searchResults.push(tokenCached[i].tokenString);
+                searchImages.push(tokenCached[i].image);
+                searchIssuers.push(tokenCached[i].issuerName);
             }
         }
+        
         setSearchImages(searchImages);
         setSearchIssuers(searchIssuers);
         setTokens(searchResults);
         }
     };
 
-    // const onEnterKey = (event) => {
-    //     if (event.key === "Enter") {
-    //         const searchQuery = searchValue;
-    //         const url = `https://api.xrpldashboard.com:3000/tokenname`
-    //         //check if it has a minimum of 3 characters
-    //         if (searchQuery.length >= 3) {
-    //             const currencyUrl = url + "/" + searchQuery;
-    //             fetch(currencyUrl)
-    //                 .then((response) => response.json())
-    //                 .then((data) => {
-    //                     const tokenData = data[0];
-    //                     const token = tokenData.currency + ":" + tokenData.issuer;
-    //                     const issuername = tokenData.meta.issuer.name;
-    //                     // const icon = tokenData.meta.token.icon;
-    //                     let icon;
-    //                     if ('icon' in tokenData.meta.token) {
-    //                         icon = tokenData.meta.token.icon;
-    //                     } else {
-    //                         icon = '/images/hound.png';
-    //                     }
-    //                     setTokens([token]);
-    //                     setSearchImages([icon]);
-    //                     setSearchIssuers([issuername]);
-    //                 })
-    //                 .catch((error) => {
-    //                     console.log(error);
-    //                 }
-    //                 );
-    //         } else {
-    //             setTokens([]);
-    //         };
-    //     };
-    // };
-
     useEffect(() => {
         getTop10Tokens();
+        //cache tokens, if the length is more than 3, convert to hex to string
+        const cachedTokens = [];
+        for (let i = 0; i < tokensJsonData.length; i++) {
+            let token = tokensJsonData[i].tokenString.split(":")[0];
+            if (token.length > 3) {
+                token = hexToString(token);
+            }
+            //convert string to uppercase
+            token = token.toUpperCase();
+            cachedTokens.push({
+                token: token,
+                tokenString: tokensJsonData[i].tokenString,
+                image: tokensJsonData[i].image,
+                issuerName: tokensJsonData[i].issuerName
+            });
+        }
+        setTokenCached(cachedTokens);
     }, []);
 
     return (
