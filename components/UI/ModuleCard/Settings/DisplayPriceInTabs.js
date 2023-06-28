@@ -1,9 +1,10 @@
-import React from 'react';
-import Button from '../../Button/Button';
+import React, { useEffect, useState } from 'react';
 import Tabs from '../../Tabs/Tabs';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 
 const DisplayPriceInTabs = () => {
+
+    const [selectedToken, setSelectedToken] = useState("XRP");
+
     const tabOptions = [
         {
             label:
@@ -25,7 +26,7 @@ const DisplayPriceInTabs = () => {
         <div className='flex flex-row justify-between align-middle gap-2'>
             <div className='flex flex-col gap-2'>
                 <span className='font-semibold text-base'>Display price in</span>
-                <Tabs tabsId="price" className="px-0 h-full hidden md:flex bg-transparent flex-wrap !justify-start" options={tabOptions} bgColor="#21212A"/>
+                <Tabs tabsId="price" className="px-0 h-full hidden md:flex bg-transparent flex-wrap !justify-start" options={tabOptions} bgColor="#21212A" selectedTab={selectedToken} setSelectedTab={setSelectedToken} />
             </div>
 
         </div>

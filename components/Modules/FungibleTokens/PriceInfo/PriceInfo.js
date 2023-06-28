@@ -18,7 +18,7 @@ const defaultSettings = {
     backgroundSetting: "Solid"
 };
 
-const PriceInfo = () => {
+const PriceInfo = ({ houndPrice, xrpPrice }) => {
 
     const [ref, dimensions] = useResizeObserver();
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
@@ -77,8 +77,6 @@ const PriceInfo = () => {
         setToFetch(selectedToken);
     };
 
-
-
     const updateSettings = (key, value) => {
         setModuleSettings((prevSettings) => ({
             ...prevSettings,
@@ -86,11 +84,14 @@ const PriceInfo = () => {
         }));
     };
 
-    const [logoValue, setLogoValue] = useState('');
-
     const backgroundClass = moduleSettings.backgroundSetting === 'Solid' ? '' :
         moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#525567] ' :
             moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
+
+    useEffect(() => {
+        console.log("houndPrice", houndPrice);
+        console.log("xrpPrice", xrpPrice);
+    }, [houndPrice, xrpPrice]);
 
     return (
         <ModuleCard
