@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useState, useEffect } from "react";
 import { motion } from 'framer-motion';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
@@ -125,9 +126,9 @@ const PriceInfo = () => {
                 )}
                 <motion.div layout className='h-auto flex flex-col gap-4 justify-between'>
                     <div className='flex flex-col'>
-                        <a href={website} target="_blank" className="flex flex-row items-center gap-2">
+                        <Link href={website} target="_blank" rel="noopener noreferrer" className="flex flex-row items-center gap-2">
                             <span className="text-xs font-semibold text-white opacity-60">{subLabel}</span>
-                        </a>
+                        </Link>
                         <span className="text-2xl font-bold">
                             {
                                 token !== undefined ?
