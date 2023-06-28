@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const Tabs = ({ options, onChange, className, tabsId , bgColor = "#1A1921" }) => {
+const Tabs = ({ options, onChange, className, tabsId , bgColor = "#1A1921", selectedTab, setSelectedTab}) => {
   const [selectedOption, setSelectedOption] = useState(`${tabsId}-${options[0].value}`);
 
   const handleOptionClick = (value) => {
@@ -9,7 +9,13 @@ const Tabs = ({ options, onChange, className, tabsId , bgColor = "#1A1921" }) =>
     if (onChange) {
       onChange(value);
     }
-};
+
+    if (setSelectedTab) {
+      setSelectedTab(value);
+    }
+  };
+
+
 
 
   return (

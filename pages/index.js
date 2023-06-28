@@ -5,7 +5,6 @@ import 'react-resizable/css/styles.css';
 import AppLayout from '@/components/Layouts/AppLayoutcomponents';
 import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfocomponents';
 import Feed from '@/components/Modules/Feeds/Feed/Feedcomponents';
-import FeedItem from '@/components/Modules/Feeds/Feed/FeedItemcomponents';
 import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
