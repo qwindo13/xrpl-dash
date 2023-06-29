@@ -9,6 +9,7 @@ import DisplayPriceInTabs from '@/components/UI/ModuleCard/Settings/DisplayPrice
 import BackgroundTabs from '@/components/UI/ModuleCard/Settings/BackgroundTabscomponents';
 import useResizeObserver from '@/hooks/useResizeObserver';
 import propImage from 'public/images/hound.png'
+import { useCoinPrices } from '@/hooks/useCoinsPrices';
 const axios = require('axios');
 
 const defaultSettings = {
@@ -17,18 +18,19 @@ const defaultSettings = {
     backgroundSetting: "Solid"
 };
 
-const PriceInfo = ({ houndPrice, xrpPrice }) => {
-
+const PriceInfo = () => {
     const [ref, dimensions] = useResizeObserver();
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const [token, setToken] = useState('');
     const [price, setPrice] = useState('');
+    const [priceInXrp, setPriceInXrp] = useState('');
     const [priceChange, setPriceChange] = useState(0);
     const [subLabel, setSubLabel] = useState('');
     const [currency, setCurrency] = useState('XRP');
     const [image, setImage] = useState(propImage);
     const [toFetch, setToFetch] = useState('534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz');
     const [website, setWebsite] = useState('');
+    const { houndPrice, xrpPrice } = useCoinPrices();
 
     const apiUrl = "https://api.xrpldashboard.com:3000"
     // const apiUrl = "http://localhost:3000"
@@ -43,15 +45,27 @@ const PriceInfo = ({ houndPrice, xrpPrice }) => {
         const data = res.data;
         console.log(data);
         setToken(data.name);
-        // setPrice(Math.round(data.price * 1000) / 1000);
-        //check if price has multiple decimals, if so then convert it to a scientific notation string
-        if (data.price.toString().split(".")[1].length > 3) {
-            // round to 8 decimal places
-            let price = Math.round(data.price * 100000000) / 100000000;
-            setPrice(price);
+
+        let priceString = data.price.toString().split('.')[1];
+        if (priceString[0] === '0') {
+            //after decimal, there can be multiple digits, check for 0s and get the number of 0s, should be from start of string and not in between
+            let numberOfZeros = 0;
+            for (let i = 0; i < priceString.length; i++) {
+                if (priceString[i] === '0') {
+                    numberOfZeros++;
+                } else {
+                    break;
+                }
+            }
+            // console.log(numberOfZeros);
+            //round the number according to the number of 0s, if 0s are 2, round to 3 decimal places so that 0s are not lost
+            let roundedPrice = Math.round(data.price * Math.pow(10, numberOfZeros+2)) / Math.pow(10, numberOfZeros+2);
+            setPrice(roundedPrice.toFixed(numberOfZeros+3));
         } else {
+            //round to 3 decimal places
             setPrice(Math.round(data.price * 1000) / 1000);
         }
+        setPriceInXrp(data.price)
         setPriceChange(Math.round(data.twenty_four_hour_changes.price.change * 1000) / 1000);
         setSubLabel(data.issuerName);
         setImage(data.icon);
@@ -87,11 +101,25 @@ const PriceInfo = ({ houndPrice, xrpPrice }) => {
         moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#525567] ' :
             moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
 
-    useEffect(() => {
-        console.log("houndPrice", houndPrice);
-        console.log("xrpPrice", xrpPrice);
-    }, [houndPrice, xrpPrice]);
+    const handleCurrencySelect = (selectedCurrency) => {
+        console.log("Selected Currency:", selectedCurrency);
+        setCurrency(selectedCurrency);
+    };
 
+    //change the price according to the currency selected
+    useEffect(() => {
+        //the default price of the token is displayed in XRP, if they select USD, then we need to convert the price to USD and if they select HOUND, then we need to convert the price to HOUND
+        if (currency === 'USD') {
+            let price = Math.round(priceInXrp * (xrpPrice) * 1000) / 1000;
+            setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 3, maximumFractionDigits: 10 }));
+        } else if (currency === 'HOUND') {
+            console.log(priceInXrp, houndPrice, xrpPrice)
+            let price = priceInXrp/houndPrice;
+            setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 3, maximumFractionDigits: 3 }));
+        } else {
+            setPrice(priceInXrp);
+        }
+    }, [currency]);
     return (
         <ModuleCard
            
@@ -112,7 +140,7 @@ const PriceInfo = ({ houndPrice, xrpPrice }) => {
                         disabled={dimensions.width < 300}
                     />
                     <TokenDropdown onSelect={handleTokenSelect} num={5}/>
-                    <DisplayPriceInTabs />
+                    <DisplayPriceInTabs onTokenChange={handleCurrencySelect} />
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}

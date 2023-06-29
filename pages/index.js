@@ -12,7 +12,7 @@ import mockFeed from '@/data/mockFeedcomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize } from '@/components/Utils/ModuleSizescomponents';
 
 
-export default function Home() {
+export default function Home( {houndPrice, xrpPrice} ) {
     const gridContainerRef = useRef(null); // Create a reference to the parent
     const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
     // Update the gridWidth on window resize and component mount

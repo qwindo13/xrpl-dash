@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Tabs from '../../Tabs/Tabs';
 
-const DisplayPriceInTabs = () => {
+const DisplayPriceInTabs = ({ onTokenChange }) => {
 
     const [selectedToken, setSelectedToken] = useState("XRP");
+
+    useEffect(() => {
+        onTokenChange(selectedToken);
+    }, [selectedToken, onTokenChange]);
 
     const tabOptions = [
         {
