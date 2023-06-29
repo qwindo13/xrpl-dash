@@ -23,7 +23,7 @@ import tokensJsonData from '../../../../public/jsons/tokens.json';
 // ]
 //tokensJsonData format
 
-const TokenDropdown = ({ onSelect, num = 10}) => {
+const TokenDropdown = ({ onSelect, num = 10 }) => {
     const [selectedToken, setSelectedToken] = useState("");
     const [tokens, setTokens] = useState([]);
     const [top10, setTop10] = useState([]);
@@ -107,24 +107,24 @@ const TokenDropdown = ({ onSelect, num = 10}) => {
             setSearchIssuers([]);
             setTokens([]);
         } else {
-        setSearchValue(searchQuery);
-        let search = searchQuery.toUpperCase();
-        const searchResults = [];
-        const searchImages = [];
-        const searchIssuers = [];
+            setSearchValue(searchQuery);
+            let search = searchQuery.toUpperCase();
+            const searchResults = [];
+            const searchImages = [];
+            const searchIssuers = [];
 
-        //the tokenCached has the token data, to match the search with `tokenCached.token`
-        for (let i = 0; i < tokenCached.length; i++) {
-            if (tokenCached[i].token.includes(search)) {
-                searchResults.push(tokenCached[i].tokenString);
-                searchImages.push(tokenCached[i].image);
-                searchIssuers.push(tokenCached[i].issuerName);
+            //the tokenCached has the token data, to match the search with `tokenCached.token`
+            for (let i = 0; i < tokenCached.length; i++) {
+                if (tokenCached[i].token.includes(search)) {
+                    searchResults.push(tokenCached[i].tokenString);
+                    searchImages.push(tokenCached[i].image);
+                    searchIssuers.push(tokenCached[i].issuerName);
+                }
             }
-        }
-        
-        setSearchImages(searchImages);
-        setSearchIssuers(searchIssuers);
-        setTokens(searchResults);
+
+            setSearchImages(searchImages);
+            setSearchIssuers(searchIssuers);
+            setTokens(searchResults);
         }
     };
 
@@ -160,28 +160,34 @@ const TokenDropdown = ({ onSelect, num = 10}) => {
                             {selectedToken || "Select token"}
                         </Button>
                     }
+                    closeDropdown={(e) => {
+                        // Here, we check if the search bar was clicked
+                        if (e.target !== document.getElementById('searchBar')) {
+                            // If it wasn't the search bar, we trigger the close
+                            e.stopPropagation();
+                        }
+                    }}
                 >
                     <SearchBar
+                        id="searchBar"
                         className="!bg-[#1A1A22] rounded-xl"
                         placeholder={'Search for address'}
                         onChange={handleSearch}
-                        // onKeyDown={onEnterKey}
+                    // onKeyDown={onEnterKey}
                     />
                     {
                         tokens.length > 0 ? (
                             tokens.map((token, index) => (
                                 <>
-                                    <div className='flex flex-row'>
-                                        <img src={searchImages[index]} alt="icon" className='w-6 h-6 mr-2 rounded-full' />
-                                        <p key={index} onClick={() => handleTokenClick(token)}>
+                                    <div className='flex flex-row items-center cursor-pointer'>
+                                        <img width="30" height="30" src={searchImages[index]} alt="icon" className='mr-2 rounded-full' />
+                                        <span className="whitespace-nowrap font-semibold" key={index} onClick={() => handleTokenClick(token)}>
                                             {
                                                 // token.split(":")[0] change from hex to string if it is longer than 3 characters
                                                 token.split(":")[0].length > 3 ? hexToString(token.split(":")[0]) : token.split(":")[0]
                                             }
-                                            {
-                                                searchIssuers[index] ? `(${searchIssuers[index]})` : ''
-                                            }
-                                        </p>
+                                        </span>
+                                        <span className=' text-xs'>&nbsp;{ searchIssuers[index] ? `(${searchIssuers[index]})` : '' }</span>
                                     </div>
                                 </>
                             ))
@@ -191,7 +197,6 @@ const TokenDropdown = ({ onSelect, num = 10}) => {
                                     <div className='flex flex-row items-center cursor-pointer'>
                                         <Image width="30" height="30" src={images[index]} alt="icon" className='mr-2 rounded-full' />
                                         <span className="whitespace-nowrap font-semibold" key={index} onClick={() => handleTokenClick(token)}>{token.split(":")[0]} </span>
-                                        
                                         <span className=' text-xs'>&nbsp;{issuers[index] ? `(${issuers[index]})` : ''}</span>
                                     </div>
                                 </>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
-const Dropdown = ({ trigger, children, className, position = 'left', onToggle, isBlurred }) => {
+const Dropdown = ({ trigger, children, className, position = 'left', onToggle, isBlurred, closeDropdown }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
     const toggleDropdown = () => {
@@ -30,11 +30,20 @@ const Dropdown = ({ trigger, children, className, position = 'left', onToggle, i
         };
     }, []);
 
+    // This function will be called when an item inside the dropdown is clicked
+    const handleItemClick = (event) => {
+        // We call the closeDropdown function passed as a prop
+        if (closeDropdown) {
+            closeDropdown(event);
+        }
+    };
+
     return (
         <div ref={dropdownRef} className={`relative inline-block h-full `} onClick={toggleDropdown}>
             {React.cloneElement(trigger, { isOpen })}
             {isOpen && (
                 <motion.div
+                    onClick={handleItemClick}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
