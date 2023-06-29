@@ -62,11 +62,13 @@ const PriceInfo = () => {
             //round the number according to the number of 0s, if 0s are 2, round to 3 decimal places so that 0s are not lost
             let roundedPrice = Math.round(data.price * Math.pow(10, numberOfZeros+2)) / Math.pow(10, numberOfZeros+2);
             setPrice(roundedPrice.toFixed(numberOfZeros+3));
+            setPriceInXrp(data.price)
         } else {
             //round to 3 decimal places
             setPrice(Math.round(data.price * 1000) / 1000);
+            setPriceInXrp(data.price)
         }
-        setPriceInXrp(data.price)
+        // setPriceInXrp(data.price)
         setPriceChange(Math.round(data.twenty_four_hour_changes.price.change * 1000) / 1000);
         setSubLabel(data.issuerName);
         setImage(data.icon);
@@ -103,7 +105,7 @@ const PriceInfo = () => {
             moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
 
     const handleCurrencySelect = (selectedCurrency) => {
-        console.log("Selected Currency:", selectedCurrency);
+        // console.log("Selected Currency:", selectedCurrency);
         setCurrency(selectedCurrency);
     };
 
@@ -114,7 +116,6 @@ const PriceInfo = () => {
             let price = Math.round(priceInXrp * (xrpPrice) * 1000) / 1000;
             setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 3, maximumFractionDigits: 10 }));
         } else if (currency === 'HOUND') {
-            console.log(priceInXrp, houndPrice, xrpPrice)
             let price = priceInXrp/houndPrice;
             setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 3, maximumFractionDigits: 3 }));
         } else {
