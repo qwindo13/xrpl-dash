@@ -27,7 +27,6 @@ const TokenDropdown = ({ onSelect, num = 10 }) => {
     const [selectedToken, setSelectedToken] = useState("");
     const [tokens, setTokens] = useState([]);
     const [top10, setTop10] = useState([]);
-    const [searchValue, setSearchValue] = useState("");
     const [images, setImages] = useState([]);
     const [searchImages, setSearchImages] = useState([]); //images for search results
     const [issuers, setIssuers] = useState([]); //issuers for search results
@@ -107,7 +106,6 @@ const TokenDropdown = ({ onSelect, num = 10 }) => {
             setSearchIssuers([]);
             setTokens([]);
         } else {
-            setSearchValue(searchQuery);
             let search = searchQuery.toUpperCase();
             const searchResults = [];
             const searchImages = [];
@@ -179,9 +177,9 @@ const TokenDropdown = ({ onSelect, num = 10 }) => {
                         tokens.length > 0 ? (
                             tokens.map((token, index) => (
                                 <>
-                                    <div className='flex flex-row items-center cursor-pointer'>
+                                    <div className='flex flex-row items-center cursor-pointer' onClick={() => handleTokenClick(token)}>
                                         <img width="30" height="30" src={searchImages[index]} alt="icon" className='mr-2 rounded-full' />
-                                        <span className="whitespace-nowrap font-semibold" key={index} onClick={() => handleTokenClick(token)}>
+                                        <span className="whitespace-nowrap font-semibold" key={index}>
                                             {
                                                 // token.split(":")[0] change from hex to string if it is longer than 3 characters
                                                 token.split(":")[0].length > 3 ? hexToString(token.split(":")[0]) : token.split(":")[0]
