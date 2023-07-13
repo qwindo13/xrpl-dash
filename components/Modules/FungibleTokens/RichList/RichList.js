@@ -11,6 +11,7 @@ const columns = [
   { label: 'Rank', sortKey: 'rank', width: 'w-1/12' },
   { label: 'Address', sortKey: 'address', width: 'w-4/12' },
   { label: 'Amount', sortKey: 'amount', width: 'w-3/12' },
+  { label: 'Percentage', sortKey: 'percentage', width: 'w-2/12' },
 ];
 const testData = [
   { rank: 1, address: 'rNXhU52ybru7GyhU4duZSrxNGwD2vE7Z9H', amount: 303944484806, change: 20, percentage: 35.24 },
@@ -125,7 +126,21 @@ const RichList = () => {
   }, [toFetch]);
 
   useEffect(() => {
-    setFilteredData(data.filter((item) => item.address.toLowerCase().includes(searchValue.toLowerCase())));
+    // setFilteredData(data.filter((item) => item.address.toLowerCase().includes(searchValue.toLowerCase())));
+    if (data !== null || data !== undefined) {
+      // setFilteredData(
+        // data.filter((item) => item.address.toLowerCase().includes(searchValue.toLowerCase()) || item.account.toLowerCase().includes(searchValue.toLowerCase()))
+        // );
+        if ('address' in data[0]) {
+          setFilteredData(
+            data.filter((item) => item.address.toLowerCase().includes(searchValue.toLowerCase()))
+          );
+        } else {
+          setFilteredData(
+            data.filter((item) => item.account.toLowerCase().includes(searchValue.toLowerCase()))
+          );
+        }
+    }
   }, [data, searchValue]);
 
   return (
@@ -184,6 +199,9 @@ const RichList = () => {
                   <a href={'https://bithomp.com/explorer/' + item.address || item.account} target="_blank" rel="noreferrer" className="text-left w-4/12 truncate pr-4">{item.address || item.account}</a>
                   <div className="text-left w-3/12 truncate">
                     {Math.round(item.amount * 100) / 100}
+                  </div>
+                  <div className="text-left w-3/12 truncate">
+                    {Math.round(item.percentage * 1000) / 1000}%
                   </div>
                 </div>
               ))}
