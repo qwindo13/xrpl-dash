@@ -120,7 +120,8 @@ const PriceInfo = () => {
             setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 3, maximumFractionDigits: 10 }));
         } else if (currency === 'HOUND') {
             let price = priceInXrp/houndPrice;
-            setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 3, maximumFractionDigits: 3 }));
+            // setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 3, maximumFractionDigits: 3 }));
+            setPrice(price.toFixed(3));
         } else {
             setPrice(priceInXrp);
         }

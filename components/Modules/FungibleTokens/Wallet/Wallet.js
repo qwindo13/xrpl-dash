@@ -14,19 +14,19 @@ const defaultSettings = {
 };
 
 const testData = [
-    { value: 60, token: 'XRP', change: '+2.3%', balance: '10,000' },
-    { value: 30, token: 'HOUND', change: '+2.3%', balance: '300,000,000' },
-    { value: 10, token: 'SOLO', change: '+2.3%', balance: '10,000' },
-    { value: 5, token: 'CSC', change: '+2.3%', balance: '10,000' },
-    { value: 5, token: 'CSC', change: '+2.3%', balance: '10,000' },
-    { value: 5, token: 'CSC', change: '+2.3%', balance: '10,000' },
+    { value: 60, token: 'XRP', xrpValue: "100", balance: '10,000' },
+    { value: 30, token: 'HOUND', xrpValue: "10", balance: '300,000,000' },
+    { value: 10, token: 'SOLO', xrpValue: "200", balance: '10,000' },
+    { value: 5, token: 'CSC', xrpValue: "400", balance: '10,000' },
+    { value: 5, token: 'CSC', xrpValue: "500", balance: '10,000' },
+    { value: 5, token: 'CSC', xrpValue: "1", balance: '10,000' },
 ];
 
 const columns = [
     { label: '', width: 'w-4' },
     { label: 'Token', sortKey: 'token', width: 'w-2/12' },
     { label: 'Balance', sortKey: 'balance', width: 'w-3/12' },
-    { label: 'Change (24H)', sortKey: 'change', width: 'w-2/12' },
+    { label: 'XRP Value', sortKey: 'change', width: 'w-2/12' }, 
     { label: 'Percentage (%)', sortKey: 'value', width: 'w-2/12' },
 ];
 
@@ -154,7 +154,7 @@ const Wallet = () => {
                                         <span>{item.token}</span>
                                     </div>
                                     <div className="text-left w-3/12">{item.balance}</div>
-                                    <div className="text-left w-2/12">{item.change}</div>
+                                    <div className="text-left w-2/12">{item.xrpValue}</div>
                                     <div className="text-left w-2/12">{item.value}%</div>
                                 </div>
                             ))}
