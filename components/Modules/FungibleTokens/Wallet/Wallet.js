@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { motion } from "framer-motion";
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
@@ -6,6 +6,7 @@ import WalletDetailsSwitch from "@/components/UI/ModuleCard/Settings/WalletDetai
 import DonutChart from "./DonutChart";
 import chroma from 'chroma-js';
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
+import { config } from "@/configcomponents";
 
 const defaultSettings = {
     displayTitle: true,
@@ -47,6 +48,7 @@ const Wallet = () => {
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const [sortConfig, setSortConfig] = useState(null);
     const [data, setData] = useState(testData);
+    const [xrpAddress, setXrpAddress] = useState('rD1JczqBRHW2gAwMoJ4zWruMy5EfWAHNGo');
 
     const updateSettings = (key, value) => {
         setModuleSettings((prevSettings) => ({
@@ -55,6 +57,16 @@ const Wallet = () => {
         }));
     };
 
+    function hexToString(hex) {
+        var string = '';
+        for (var i = 0; i < hex.length; i += 2) {
+            var code = parseInt(hex.substr(i, 2), 16);
+            if (code !== 0) {
+                string += String.fromCharCode(code);
+            }
+        }
+        return string;
+    }
     const sortBy = (key) => {
         let direction = 'ascending';
         if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
@@ -97,6 +109,28 @@ const Wallet = () => {
     moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#6E7489] ' :
         moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
 
+    
+    useEffect(() => {
+        const url = `${config.api_url}/wallettrustlines/${xrpAddress}`;
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                const tls = data.trustlines;
+                const tokens = [{ token: 'XRP', balance: data.xrpBalance-10, xrpValue: "100", value: 0 }];
+                // const xrpBalance = data.xrpBalance - 10;
+                for (let i = 0; i < tls.length; i++) {
+                    let token = tls[i].currency;
+                    let balance = tls[i].balance;
+                    if (token.length > 3) {
+                        token = hexToString(token);
+                    }
+                    tokens.push({ token: token, balance: balance, xrpValue: "100", value: 0 });
+                }
+                console.log(tokens);
+                setData(tokens);
+            });
+    }, [xrpAddress]);
 
     return (
         <ModuleCard
@@ -125,7 +159,7 @@ const Wallet = () => {
             <div className={`w-full h-full flex flex-col gap-4 items-center ${moduleSettings.displayWalletDetails ? '' : ''}`}>
                 {/* Show donut chart here */}
                 <motion.div layout className={` aspect-square h-full ${moduleSettings.displayWalletDetails ? 'w-6/12' : 'w-10/12'}`}>
-                    <DonutChart data={testData} colorScale={colorScale} valueXRP="9,999.99 XRP" valueFiat="$9,999.99" />
+                    <DonutChart data={data} colorScale={colorScale} valueXRP="9,999.99 XRP" valueFiat="$9,999.99" />
                 </motion.div>
                 {/* Table */}
                 {moduleSettings.displayWalletDetails && (
