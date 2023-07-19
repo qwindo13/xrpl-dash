@@ -5,23 +5,7 @@ import Dropdown from '../../Dropdown/Dropdown';
 import SearchBar from '../../SearchBar/SearchBar';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import tokensJsonData from '../../../../public/jsons/tokens.json';
-//[
-// {
-//     "tokenString": "534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz",
-//     "volume_24h": "162697.725567",
-//     "trustlines": 283709,
-//     "image": "https://static.xrplmeta.org/icons/SOLO.png",
-//     "issuerName": "Sologenic"
-// },
-// {
-//     "tokenString": "USD:rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
-//     "volume_24h": "148530.255971",
-//     "trustlines": 27547,
-//     "image": "https://static.xrplmeta.org/icons/USD.png",
-//     "issuerName": "Bitstamp"
-// }
-// ]
-//tokensJsonData format
+import { config } from '@/configcomponents';
 
 const TokenDropdown = ({ onSelect, num = 10 }) => {
     const [selectedToken, setSelectedToken] = useState("");
@@ -58,7 +42,7 @@ const TokenDropdown = ({ onSelect, num = 10 }) => {
     };
 
     const getTop10Tokens = () => {
-        const url = `https://api.xrpldashboard.com:3000/top10`;
+        const url = `${config.api_url}/top10`;
         fetch(url)
             .then((response) => response.json())
             .then((data) => {

@@ -12,6 +12,7 @@ import useResizeObserver from '@/hooks/useResizeObserver';
 import propImage from 'public/images/hound.png'
 import { useCoinPrices } from '@/hooks/useCoinsPrices';
 const axios = require('axios');
+import { config } from '../../../../config';
 
 const defaultSettings = {
     displayTitle: false,
@@ -34,7 +35,7 @@ const PriceInfo = () => {
     const [loading, setLoading] = useState(true);
     const { houndPrice, xrpPrice } = useCoinPrices();
 
-    const apiUrl = "https://api.xrpldashboard.com:3000"
+    const apiUrl = config.api_url;
     // const apiUrl = "http://localhost:3000"
 
     const fetchToken = async () => {
