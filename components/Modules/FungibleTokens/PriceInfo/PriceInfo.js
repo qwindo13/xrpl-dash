@@ -161,7 +161,7 @@ const PriceInfo = () => {
                         <Image className="w-full h-full aspect-square object-contain rounded-full" src={image || propImage} alt={token} width={200} height={200} quality={100} />
                     </div>
                 )}
-                <motion.div layout className='h-auto flex flex-col gap-4 justify-between'>
+                <motion.div  className='h-auto flex flex-col gap-4 justify-between'>
                     { loading ? <div className="flex flex-col justify-center items-center w-full h-full"> Loading... </div> :
                         <><div className='flex flex-col'>
                             <Link href={website} target="_blank" rel="noopener noreferrer" className="flex flex-row items-center gap-2">

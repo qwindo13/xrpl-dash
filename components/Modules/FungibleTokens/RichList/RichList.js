@@ -200,7 +200,7 @@ const RichList = () => {
                   <div className="text-left w-3/12 truncate">
                     {Math.round(item.amount * 100) / 100}
                   </div>
-                  <div className="text-left w-3/12 truncate">
+                  <div className="text-left w-2/12 truncate">
                     {Math.round(item.percentage * 1000) / 1000}%
                   </div>
                 </div>
