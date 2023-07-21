@@ -136,7 +136,7 @@ const PriceInfo = () => {
 
     return (
         <ModuleCard
-            title={`Price - ${token}`}
+            title={`Price - ${token || subLabel}`}
             settings={
                 <>
                     <TitleSwitch
@@ -155,7 +155,7 @@ const PriceInfo = () => {
                     <TokenDropdown 
                         onSelect={handleTokenSelect} 
                         num={5}
-                        selectToken={token}
+                        selectToken={token || subLabel}
                     />
                     <DisplayPriceInTabs 
                         onTokenChange={handleCurrencySelect} 
