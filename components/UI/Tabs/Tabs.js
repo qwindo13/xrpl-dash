@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const Tabs = ({ options, onChange, className, tabsId , bgColor = "#1A1921", selectedTab, setSelectedTab}) => {
@@ -15,7 +15,11 @@ const Tabs = ({ options, onChange, className, tabsId , bgColor = "#1A1921", sele
     }
   };
 
-
+  useEffect(() => {
+    if (selectedTab) {
+      handleOptionClick(selectedTab);
+    }
+  }, [selectedTab]);
 
 
   return (

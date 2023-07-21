@@ -7,8 +7,8 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import tokensJsonData from '../../../../public/jsons/tokens.json';
 import { config } from '@/configcomponents';
 
-const TokenDropdown = ({ onSelect, num = 10 }) => {
-    const [selectedToken, setSelectedToken] = useState("SOLO");
+const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" }) => {
+    const [selectedToken, setSelectedToken] = useState(selectToken);
     const [tokens, setTokens] = useState([]);
     const [top10, setTop10] = useState([]);
     const [images, setImages] = useState([]);

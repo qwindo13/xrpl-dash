@@ -11,8 +11,10 @@ import BackgroundTabs from '@/components/UI/ModuleCard/Settings/BackgroundTabsco
 import useResizeObserver from '@/hooks/useResizeObserver';
 import propImage from 'public/images/hound.png'
 import { useCoinPrices } from '@/hooks/useCoinsPrices';
+import { Skeleton } from '@mui/material';
 const axios = require('axios');
 import { config } from '../../../../config';
+
 
 const defaultSettings = {
     displayTitle: false,
@@ -33,10 +35,10 @@ const PriceInfo = () => {
     const [toFetch, setToFetch] = useState('534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz');
     const [website, setWebsite] = useState('');
     const [loading, setLoading] = useState(true);
+    const [toggleSettings, setToggleSettings] = useState(false);
     const { houndPrice, xrpPrice } = useCoinPrices();
 
     const apiUrl = config.api_url;
-    // const apiUrl = "http://localhost:3000"
 
     const fetchToken = async () => {
         const res = await axios.get(`${apiUrl}/token/${toFetch}`, {
@@ -46,7 +48,7 @@ const PriceInfo = () => {
             },
         });
         const data = res.data;
-        console.log(data);
+        // console.log(data);
         setToken(data.name);
 
         let priceString = data.price.toString().split('.')[1];
@@ -60,22 +62,22 @@ const PriceInfo = () => {
                     break;
                 }
             }
-            // console.log(numberOfZeros);
+            console.log(numberOfZeros);
             //round the number according to the number of 0s, if 0s are 2, round to 3 decimal places so that 0s are not lost
             let roundedPrice = Math.round(data.price * Math.pow(10, numberOfZeros+2)) / Math.pow(10, numberOfZeros+2);
             setPrice(roundedPrice.toFixed(numberOfZeros+3));
-            setPriceInXrp(data.price)
+            setPriceInXrp(roundedPrice.toFixed(numberOfZeros+3))
         } else {
             //round to 3 decimal places
             setPrice(Math.round(data.price * 1000) / 1000);
-            setPriceInXrp(data.price)
+            setPriceInXrp(Math.round(data.price * 1000) / 1000);
         }
-        // setPriceInXrp(data.price)
         setPriceChange(Math.round(data.twenty_four_hour_changes.price.change * 1000) / 1000);
         setSubLabel(data.issuerName);
         setImage(data.icon);
         setWebsite(data.website_link || '');
         setLoading(false);
+        setToggleSettings(false);
     };
 
     useEffect(() => {
@@ -95,6 +97,7 @@ const PriceInfo = () => {
         console.log("Selected Token:", selectedToken);
         setToFetch(selectedToken);
         setLoading(true);
+        setToggleSettings(true)
     };
 
     const updateSettings = (key, value) => {
@@ -115,6 +118,7 @@ const PriceInfo = () => {
 
     //change the price according to the currency selected
     useEffect(() => {
+        console.log("Currency:", currency)
         //the default price of the token is displayed in XRP, if they select USD, then we need to convert the price to USD and if they select HOUND, then we need to convert the price to HOUND
         if (currency === 'USD') {
             let price = Math.round(priceInXrp * (xrpPrice) * 1000) / 1000;
@@ -129,7 +133,6 @@ const PriceInfo = () => {
     }, [currency]);
     return (
         <ModuleCard
-           
             title={`Price - ${token}`}
             settings={
                 <>
@@ -146,23 +149,40 @@ const PriceInfo = () => {
                         onChange={(value) => updateSettings("displayLogo", value)}
                         disabled={dimensions.width < 300}
                     />
-                    <TokenDropdown onSelect={handleTokenSelect} num={5}/>
-                    <DisplayPriceInTabs onTokenChange={handleCurrencySelect} />
+                    <TokenDropdown 
+                        onSelect={handleTokenSelect} 
+                        num={5}
+                        selectToken={token}
+                    />
+                    <DisplayPriceInTabs 
+                        onTokenChange={handleCurrencySelect} 
+                        selectToken={currency}
+                    />
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}
             className={`${backgroundClass}`}
+            callToggleSettings={toggleSettings}
         >
             <div  ref={ref} className='w-full h-full flex flex-row gap-4'>
                 {
-                loading ? <div className="flex flex-col justify-center items-center w-full h-full"> Loading... </div> :
+                loading ? 
+                <div className="h-full w-auto flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
+                    <Skeleton variant="circular" width={100} height={250} />
+                </div>            
+                 :
                 moduleSettings.displayLogo && (
                     <div className="h-full w-auto flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
                         <Image className="w-full h-full aspect-square object-contain rounded-full" src={image || propImage} alt={token} width={200} height={200} quality={100} />
                     </div>
                 )}
                 <motion.div  className='h-auto flex flex-col gap-4 justify-between'>
-                    { loading ? <div className="flex flex-col justify-center items-center w-full h-full"> Loading... </div> :
+                    { loading ?
+                    <div className="flex flex-col gap-4">
+                        <Skeleton variant="text" width="100%" height={40} />
+                        <Skeleton variant="text" width="100%" height={80} />
+                    </div>
+                      :
                         <><div className='flex flex-col'>
                             <Link href={website} target="_blank" rel="noopener noreferrer" className="flex flex-row items-center gap-2">
                                 <span className="text-xs font-semibold text-white opacity-60">{subLabel}</span>
