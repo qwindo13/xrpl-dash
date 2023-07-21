@@ -9,10 +9,6 @@ const DisplayPriceInTabs = ({ onTokenChange, selectToken="XRP" }) => {
         onTokenChange(selectedToken);
     }, [selectedToken, onTokenChange, selectToken]);
 
-    useEffect(() => {
-        console.log("selectToken: ", selectToken);
-    }, [selectToken]);
-
     const tabOptions = [
         {
             label:

@@ -94,7 +94,6 @@ const PriceInfo = () => {
 
     const handleTokenSelect = (selectedToken) => {
         // Do something with the selected token
-        console.log("Selected Token:", selectedToken);
         setToFetch(selectedToken);
         setLoading(true);
         setToggleSettings(true)
@@ -112,13 +111,15 @@ const PriceInfo = () => {
             moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
 
     const handleCurrencySelect = (selectedCurrency) => {
-        // console.log("Selected Currency:", selectedCurrency);
-        setCurrency(selectedCurrency);
+        // setCurrency(selectedCurrency);
+        if (currency !== selectedCurrency) {
+            setCurrency(selectedCurrency);
+            setToggleSettings(true)
+        }
     };
 
     //change the price according to the currency selected
     useEffect(() => {
-        console.log("Currency:", currency)
         //the default price of the token is displayed in XRP, if they select USD, then we need to convert the price to USD and if they select HOUND, then we need to convert the price to HOUND
         if (currency === 'USD') {
             let price = Math.round(priceInXrp * (xrpPrice) * 1000) / 1000;
@@ -130,7 +131,9 @@ const PriceInfo = () => {
         } else {
             setPrice(priceInXrp);
         }
-    }, [currency]);
+        setToggleSettings(false)
+    }, [currency, houndPrice, priceInXrp, xrpPrice]);
+
     return (
         <ModuleCard
             title={`Price - ${token}`}
