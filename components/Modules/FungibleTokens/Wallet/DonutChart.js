@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import chroma from 'chroma-js';
+import { Skeleton } from '@mui/material';
 
 const ChartTooltip = ({ content, isVisible, position }) => {
   return (
@@ -20,7 +21,7 @@ const ChartTooltip = ({ content, isVisible, position }) => {
   );
 };
 
-const DonutChart = ({ data, colorScale, valueXRP, valueFiat }) => {
+const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
   const [hoveredSlice, setHoveredSlice] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -91,12 +92,30 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat }) => {
           );
         })}
       </svg>
-      <div className="absolute flex flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-        <span className='font-semibold text-lg'>{valueXRP}</span>
-        <span className='font-semibold text-base opacity-60'>{valueFiat}</span>
-      </div>
+
+  <div className="absolute flex flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+    {loading ? (
+      <>
+        <Skeleton variant="text" width={100} height={20} />
+        <Skeleton variant="text" width={100} height={20} />
+      </>
+    ) : (
+      <>
+        <span className="font-semibold text-lg">
+          {valueXRP}
+          <i
+            className="text-xs text-white text-opacity-50 cursor-pointer ml-1"
+            title="Prices are calculated based on the last trade on the DEX. The actual value of your tokens might be different."
+          >
+            i
+          </i>
+        </span>
+        <span className="font-semibold text-base opacity-80">{valueFiat}</span>
+      </>
+    )}
+  </div>
       <ChartTooltip
-        content={hoveredSlice ? `${hoveredSlice.token}: ${hoveredSlice.change}, ${hoveredSlice.balance}` : ''}
+        content={hoveredSlice ? `${hoveredSlice.token}: ${hoveredSlice.balance}` : ''}
         isVisible={!!hoveredSlice}
         position={position}
       />
