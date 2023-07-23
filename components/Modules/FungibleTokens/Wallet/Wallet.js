@@ -162,7 +162,10 @@ const Wallet = () => {
 
         setData(tokensToFetch);
         setTotXrp(Math.round(totalxrp * 100) / 100);
-        setTotFiat(Math.round(totalxrp * 0.7 * 100) / 100);
+        // setTotFiat(Math.round(totalxrp * 0.7 * 100) / 100);
+        const xrpprice = await fetch(`${config.api_url}/xrpprice`);
+        const xrppricedata = await xrpprice.json();
+        setTotFiat(Math.round(totalxrp * xrppricedata.price * 100) / 100);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -200,7 +203,7 @@ const Wallet = () => {
           />
         </motion.div>
       )),
-    [data, colorScale]
+    [totXrp]
   );
 
   DonutChartWrapper.displayName = "DonutChartWrapper";
