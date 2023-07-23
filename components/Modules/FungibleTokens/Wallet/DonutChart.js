@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import chroma from 'chroma-js';
 import { Skeleton } from '@mui/material';
 
 const ChartTooltip = ({ content, isVisible, position }) => {
@@ -39,7 +38,7 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
      <svg className='w-full h-auto' viewBox="-5 -5 62 62">
         {sortedData.map((entry, index) => {
           const { value, token, change, balance } = entry;
-          const color = chroma(sortedColorScale[index % sortedColorScale.length]).alpha(0.5).css();
+          const color = sortedColorScale[index % sortedColorScale.length];
           const sliceAngle = (value / total) * 360;
           let endAngle = startAngle + sliceAngle;
 

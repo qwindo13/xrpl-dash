@@ -22,6 +22,7 @@
     "framer-motion": "^10.12.6",
     "next": "13.3.2",
     "postcss": "8.4.23",
+    "randomcolor": "^0.6.2",
     "react": "18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",

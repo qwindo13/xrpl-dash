@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "../Button/Button";
 import ModuleCardSettings from "./ModuleCardSettings";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const ModuleCard = ({ children, className, title, settings, disableTitle,callToggleSettings = false }) => {
+const ModuleCard = ({ children, className, title, settings, disableTitle, callToggleSettings = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const defaultClass =
     "block relative overflow-hidden items-start bg-[#21212A] flex flex-col w-full h-full rounded-2xl relative items-center p-4";
 
-  const toggleSettings = () => {
-    setIsSettingsVisible(!isSettingsVisible);
-  };
+  const toggleSettings = useCallback(() => {
+    setIsSettingsVisible((prevIsSettingsVisible) => !prevIsSettingsVisible);
+  }, []);
 
   useEffect(() => {
     if (callToggleSettings) {
       toggleSettings();
     }
-  }, [callToggleSettings]);
+  }, [callToggleSettings, toggleSettings]);
   
-  const settingsCard = (
+  const settingsCard = useMemo(() => (
     <motion.div
       key="settings"
       initial={{ opacity: 0 }}
@@ -30,13 +30,21 @@ const ModuleCard = ({ children, className, title, settings, disableTitle,callTog
     >
       <ModuleCardSettings> {settings} </ModuleCardSettings>
     </motion.div>
-  );
+  ), [isSettingsVisible, settings]);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
 
   return (
     <motion.div
       className={`${defaultClass} ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {/* CARD TITLE */}
       {!disableTitle && (
@@ -71,10 +79,6 @@ const ModuleCard = ({ children, className, title, settings, disableTitle,callTog
         {children}
       </div>
 
-      {/* CARD SETTINGS */}
-      {/* <AnimatePresence>
-        {settingsCard}
-      </AnimatePresence> */}
       {
         isSettingsVisible && 
         <AnimatePresence> {settingsCard} </AnimatePresence>
