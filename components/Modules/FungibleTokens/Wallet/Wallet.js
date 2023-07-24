@@ -7,7 +7,6 @@ import TitleSwitch from "@/components/UI/ModuleCard/Settings/TitleSwitchcomponen
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 import WalletDetailsSwitch from "@/components/UI/ModuleCard/Settings/WalletDetaisSwitchcomponents";
 import { config } from "@/configcomponents";
-var randomColor = require('randomcolor');
 
 const BACKGROUND_SETTINGS = {
   SOLID: "solid",
@@ -179,7 +178,8 @@ const Wallet = () => {
   const colorScale = useMemo(
     () =>
       chroma
-        .scale([randomColor(), randomColor(), randomColor(), randomColor(), randomColor(), randomColor()])
+        .scale(['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'])
+        .mode("lch")
         .colors(data.length),
     [data]
   );
