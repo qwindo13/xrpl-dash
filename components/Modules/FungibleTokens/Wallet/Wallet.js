@@ -8,12 +8,6 @@ import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabsco
 import WalletDetailsSwitch from "@/components/UI/ModuleCard/Settings/WalletDetaisSwitchcomponents";
 import { config } from "@/configcomponents";
 
-const BACKGROUND_SETTINGS = {
-  SOLID: "solid",
-  HIGHLIGHT: "highlight",
-  TRANSPARENT: "transparent",
-};
-
 const columns = [
   { label: "Token", sortKey: "token", width: "w-2/12" },
   { label: "Balance", sortKey: "balance", width: "w-3/12" },
@@ -24,7 +18,7 @@ const columns = [
 const defaultSettings = {
     displayTitle: true,
     displayWalletDetails: false,
-    backgroundSetting: BACKGROUND_SETTINGS.SOLID,
+    backgroundSetting: "Solid",
 };
 
 
@@ -99,14 +93,9 @@ const Wallet = () => {
     );
   };
 
-  const backgroundClass =
-    moduleSettings.backgroundSetting === BACKGROUND_SETTINGS.SOLID
-      ? ""
-      : moduleSettings.backgroundSetting === BACKGROUND_SETTINGS.HIGHLIGHT
-      ? "bg-[#6E7489] "
-      : moduleSettings.backgroundSetting === BACKGROUND_SETTINGS.TRANSPARENT
-      ? "bg-transparent backdrop-blur-lg border border-white border-opacity-5"
-      : "";
+  const backgroundClass = moduleSettings.backgroundSetting === 'Solid' ? '' :
+  moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#6E7489] ' :
+      moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -275,7 +264,7 @@ const Wallet = () => {
           />
           <BackgroundTabs
             value={moduleSettings.backgroundSetting}
-            onChange={(value) => updateSettings("backgroundSetting", value)}
+            onChange={(value) => {console.log(value); updateSettings("backgroundSetting", value)}}
           />
           <WalletDetailsSwitch
             value={moduleSettings.displayWalletDetails}
