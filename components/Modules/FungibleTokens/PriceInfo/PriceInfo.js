@@ -11,7 +11,6 @@ import BackgroundTabs from '@/components/UI/ModuleCard/Settings/BackgroundTabsco
 import useResizeObserver from '@/hooks/useResizeObserver';
 import propImage from 'public/images/hound.png'
 import { useCoinPrices } from '@/hooks/useCoinsPrices';
-import { Skeleton } from '@mui/material';
 const axios = require('axios');
 import { config } from '../../../../config';
 
@@ -179,12 +178,12 @@ const PriceInfo = () => {
 
                         <>
                             <div className='flex flex-col animate-pulse'>
-                                <span className="h-2.5 bg-[#A6B0CF] bg-opacity-5 rounded-full w-24 mb-4" />
-                                <span className="h-6 bg-[#A6B0CF] bg-opacity-5 rounded-full  w-24 mb-4" />
+                                <span className="h-2.5 bg-[#A6B0CF] bg-opacity-5 rounded-lg  w-24 mb-2" />
+                                <span className="h-6 bg-[#A6B0CF] bg-opacity-5 rounded-lg   w-24 mb-2" />
                             </div>
                             <div className='flex flex-col animate-pulse'>
-                                <span className="h-6 bg-[#A6B0CF] bg-opacity-5 rounded-full  w-32 mb-4" />
-                                <span className="h-2.5 bg-[#A6B0CF] bg-opacity-5 rounded-full w-24 mb-4" />
+                                <span className="h-6 bg-[#A6B0CF] bg-opacity-5 rounded-lg   w-32 mb-2" />
+                                <span className="h-2.5 bg-[#A6B0CF] bg-opacity-5 rounded-lg  w-24 mb-2" />
                             </div>
                         </>
                         :

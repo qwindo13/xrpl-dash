@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import SearchBarSwitch from '@/components/UI/ModuleCard/Settings/SearchBarSwitchcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
@@ -95,7 +96,7 @@ const RichList = () => {
 
   const handleTokenSelect = (token) => {
     console.log("Selected Token:", token);
-    setToFetch(token);  
+    setToFetch(token);
     setLoading(true);
   };
 
@@ -129,23 +130,23 @@ const RichList = () => {
     // setFilteredData(data.filter((item) => item.address.toLowerCase().includes(searchValue.toLowerCase())));
     if (data !== null || data !== undefined) {
       // setFilteredData(
-        // data.filter((item) => item.address.toLowerCase().includes(searchValue.toLowerCase()) || item.account.toLowerCase().includes(searchValue.toLowerCase()))
-        // );
-        if ('address' in data[0]) {
-          setFilteredData(
-            data.filter((item) => item.address.toLowerCase().includes(searchValue.toLowerCase()))
-          );
-        } else {
-          setFilteredData(
-            data.filter((item) => item.account.toLowerCase().includes(searchValue.toLowerCase()))
-          );
-        }
+      // data.filter((item) => item.address.toLowerCase().includes(searchValue.toLowerCase()) || item.account.toLowerCase().includes(searchValue.toLowerCase()))
+      // );
+      if ('address' in data[0]) {
+        setFilteredData(
+          data.filter((item) => item.address.toLowerCase().includes(searchValue.toLowerCase()))
+        );
+      } else {
+        setFilteredData(
+          data.filter((item) => item.account.toLowerCase().includes(searchValue.toLowerCase()))
+        );
+      }
     }
   }, [data, searchValue]);
 
   return (
     <ModuleCard
-      title= {"Richlist - " + title}
+      title={"Richlist - " + title}
       settings={
         <>
           <TitleSwitch
@@ -156,7 +157,7 @@ const RichList = () => {
             value={moduleSettings.displaySearchBar}
             onChange={(value) => updateSettings("displaySearchBar", value)}
           />
-          <TokenDropdown onSelect={handleTokenSelect} num={5}/>
+          <TokenDropdown onSelect={handleTokenSelect} num={5} />
         </>
       }
       disableTitle={!moduleSettings.displayTitle}
@@ -190,13 +191,24 @@ const RichList = () => {
             })}
           </div>
           <div className='flex flex-col gap-2'>
-            {
-              loading ? <div className="text-center text-white">Loading...</div> :
+
+            {loading ?
+           
+                Array.from({length: 33 }).map((_, index) => (
+                <div key={index} className="flex flex-row justify-between animate-pulse">
+                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded-lg w-1/12" />
+                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded-lg w-4/12" />
+                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded-lg w-3/12" />
+                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded-lg w-2/12" />
+                </div>
+                ))
+              :
+
               filteredData.map((item) => (
                 <div key={item.rank} className="flex flex-row justify-between">
                   <div className="text-left w-1/12">{item.rank}</div>
-                  {/* <div className="text-left w-4/12 truncate pr-4">{item.address}</div> */}
-                  <a href={'https://bithomp.com/explorer/' + item.address || item.account} target="_blank" rel="noreferrer" className="text-left w-4/12 truncate pr-4">{item.address || item.account}</a>
+
+                  <Link href={'https://bithomp.com/explorer/' + item.address || item.account} target="_blank" rel="noreferrer" className="text-left w-4/12 truncate pr-4">{item.address || item.account}</Link>
                   <div className="text-left w-3/12 truncate">
                     {Math.round(item.amount * 100) / 100}
                   </div>
@@ -204,7 +216,8 @@ const RichList = () => {
                     {Math.round(item.percentage * 1000) / 1000}%
                   </div>
                 </div>
-              ))}
+              ))
+            }
           </div>
         </div>
       </div>
