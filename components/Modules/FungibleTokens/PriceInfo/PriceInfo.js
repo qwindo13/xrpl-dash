@@ -183,7 +183,7 @@ const PriceInfo = () => {
                             </div>
                             <div className='flex flex-col animate-pulse'>
                                 <span className="h-6 bg-[#A6B0CF] bg-opacity-5 rounded-lg   w-32 mb-2" />
-                                <span className="h-2.5 bg-[#A6B0CF] bg-opacity-5 rounded-lg  w-24 mb-2" />
+                                <span className="h-2.5 bg-[#A6B0CF] bg-opacity-5 rounded-lg  w-36 mb-2" />
                             </div>
                         </>
                         :

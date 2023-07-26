@@ -7,6 +7,7 @@ import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfoco
 import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
+import ProfitnLose from '@/components/Modules/FungibleTokens/ProfitnLose/ProfitnLosecomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize } from '@/components/Utils/ModuleSizescomponents';
 
 
@@ -89,6 +90,9 @@ export default function Home() {
                     </div>
                     <div key="wallet">
                         <Wallet />
+                    </div>
+                    <div key="profitnLose">
+                        <ProfitnLose />
                     </div>
                     {/* Add other modules wrapped in a <div> with their unique key */}
                 </ResponsiveGridLayout>

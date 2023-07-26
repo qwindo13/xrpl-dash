@@ -6,6 +6,7 @@ import InputField from "@/components/UI/InputField/InputFieldcomponents";
 import TextAreaInput from "@/components/UI/TextAreaInput/TextAreaInputcomponents";
 import Button from "@/components/UI/Button/Buttoncomponents";
 import Modal from "@/components/UI/Modal/Modalcomponents";
+import Nft from "@/components/UI/Nft/Nftcomponents";
 import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import ImageSearchRoundedIcon from '@mui/icons-material/ImageSearchRounded';
@@ -70,8 +71,13 @@ function ProfileSettings({ children }) {
             </SettingsLayout>
 
             <Modal showModal={showAvatarModal} closeModal={closeAvatarModal}>
-                <h2 className="text-xl font-semibold mb-2">Change avatar</h2>
-                <span className="text-base font-semibold opacity-60">Select an NFT from your wallet or buy a new one to use as your new avatar.</span>
+                <div className="pb-4 md:pb-8">
+                    <h2 className="text-xl font-semibold mb-2">Change avatar</h2>
+                    <span className="text-base font-semibold opacity-60">Select an NFT from your wallet or buy a new one to use as your new avatar.</span>
+                </div>
+                <div className="">
+                    <Nft />
+                </div>
             </Modal>
 
             <Modal showModal={showBannerModal} closeModal={closeBannerModal}>
