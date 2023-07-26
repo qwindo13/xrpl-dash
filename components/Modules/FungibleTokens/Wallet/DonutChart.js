@@ -27,6 +27,7 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
 
   // Sort data from highest to lowest
   const sortedData = [...data].sort((a, b) => b.value - a.value);
+  console.log(sortedData);
 
   const total = sortedData.reduce((sum, entry) => sum + entry.value, 0);
   let startAngle = 0;
@@ -39,7 +40,7 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
      <svg className='w-full h-auto' viewBox="-5 -5 62 62">
         {sortedData.map((entry, index) => {
           const { value, token, change, balance } = entry;
-          const color =chroma(sortedColorScale[index % sortedColorScale.length]).alpha(0.5).css();
+         const color = chroma(sortedColorScale[index % sortedColorScale.length]).alpha(0.5).css();
           const sliceAngle = (value / total) * 360;
           let endAngle = startAngle + sliceAngle;
 

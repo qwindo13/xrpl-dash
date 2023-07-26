@@ -64,9 +64,9 @@ const PriceInfo = () => {
             }
             console.log(numberOfZeros);
             //round the number according to the number of 0s, if 0s are 2, round to 3 decimal places so that 0s are not lost
-            let roundedPrice = Math.round(data.price * Math.pow(10, numberOfZeros+2)) / Math.pow(10, numberOfZeros+2);
-            setPrice(roundedPrice.toFixed(numberOfZeros+3));
-            setPriceInXrp(roundedPrice.toFixed(numberOfZeros+3))
+            let roundedPrice = Math.round(data.price * Math.pow(10, numberOfZeros + 2)) / Math.pow(10, numberOfZeros + 2);
+            setPrice(roundedPrice.toFixed(numberOfZeros + 3));
+            setPriceInXrp(roundedPrice.toFixed(numberOfZeros + 3))
         } else {
             //round to 3 decimal places
             setPrice(Math.round(data.price * 1000) / 1000);
@@ -123,9 +123,9 @@ const PriceInfo = () => {
         //the default price of the token is displayed in XRP, if they select USD, then we need to convert the price to USD and if they select HOUND, then we need to convert the price to HOUND
         if (currency === 'USD') {
             let price = Math.round(priceInXrp * (xrpPrice) * 1000) / 1000;
-            setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 3, maximumFractionDigits: 10 }));
+            setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 3, maximumFractionDigits: 10 }));
         } else if (currency === 'HOUND') {
-            let price = priceInXrp/houndPrice;
+            let price = priceInXrp / houndPrice;
             // setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 3, maximumFractionDigits: 3 }));
             setPrice(price.toFixed(3));
         } else {
@@ -152,13 +152,13 @@ const PriceInfo = () => {
                         onChange={(value) => updateSettings("displayLogo", value)}
                         disabled={dimensions.width < 300}
                     />
-                    <TokenDropdown 
-                        onSelect={handleTokenSelect} 
+                    <TokenDropdown
+                        onSelect={handleTokenSelect}
                         num={5}
                         selectToken={token || subLabel}
                     />
-                    <DisplayPriceInTabs 
-                        onTokenChange={handleCurrencySelect} 
+                    <DisplayPriceInTabs
+                        onTokenChange={handleCurrencySelect}
                         selectToken={currency}
                     />
                 </>
@@ -167,34 +167,38 @@ const PriceInfo = () => {
             className={`${backgroundClass}`}
             callToggleSettings={toggleSettings}
         >
-            <div  ref={ref} className='w-full h-full flex flex-row gap-4'>
-                {
-                loading ? 
-                <div className="h-full w-auto flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
-                    <Skeleton variant="circular" width={100} height={250} />
-                </div>            
-                 :
-                moduleSettings.displayLogo && (
+            <div ref={ref} className='w-full h-full flex flex-row gap-4'>
+                {!loading && moduleSettings.displayLogo && (
                     <div className="h-full w-auto flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
                         <Image className="w-full h-full aspect-square object-contain rounded-full" src={image || propImage} alt={token} width={200} height={200} quality={100} />
                     </div>
                 )}
-                <motion.div  className='h-auto flex flex-col gap-4 justify-between'>
-                    { loading ?
-                    <div className="flex flex-col gap-4">
-                        <Skeleton variant="text" width="100%" height={40} />
-                        <Skeleton variant="text" width="100%" height={80} />
-                    </div>
-                      :
-                        <><div className='flex flex-col'>
-                            <Link href={website} target="_blank" rel="noopener noreferrer" className="flex flex-row items-center gap-2">
-                                <span className="text-xs font-semibold text-white opacity-60">{subLabel}</span>
-                            </Link>
-                            <span className="text-2xl font-bold">
-                                {token !== undefined ?
-                                    token : subLabel}
-                            </span>
-                        </div><div className='flex flex-col'>
+
+                <motion.div className='h-auto flex flex-col gap-4 justify-between'>
+                    {loading ?
+
+                        <>
+                            <div className='flex flex-col animate-pulse'>
+                                <span className="h-2.5 bg-[#A6B0CF] bg-opacity-5 rounded-full w-24 mb-4" />
+                                <span className="h-6 bg-[#A6B0CF] bg-opacity-5 rounded-full  w-24 mb-4" />
+                            </div>
+                            <div className='flex flex-col animate-pulse'>
+                                <span className="h-6 bg-[#A6B0CF] bg-opacity-5 rounded-full  w-32 mb-4" />
+                                <span className="h-2.5 bg-[#A6B0CF] bg-opacity-5 rounded-full w-24 mb-4" />
+                            </div>
+                        </>
+                        :
+                        <>
+                            <div className='flex flex-col'>
+                                <Link href={website} target="_blank" rel="noopener noreferrer" className="flex flex-row items-center gap-2">
+                                    <span className="text-xs font-semibold text-white opacity-60">{subLabel}</span>
+                                </Link>
+                                <span className="text-2xl font-bold">
+                                    {token !== undefined ?
+                                        token : subLabel}
+                                </span>
+                            </div>
+                            <div className='flex flex-col'>
                                 <span className="text-2xl font-bold">{price} {currency}</span>
                                 <span className={`text-xs font-semibold opacity-50 flex flex-row items-center gap-2 whitespace-nowrap	 ${priceChange < 0 ? 'text-negative' : 'text-positive'}`}>
                                     <div style={{ transform: priceChange < 0 ? 'rotate(180deg)' : 'rotate(0)' }}>
@@ -204,7 +208,8 @@ const PriceInfo = () => {
                                     </div>
                                     {priceChange}% (in the last 24h)
                                 </span>
-                            </div></>
+                            </div>
+                        </>
                     }
                 </motion.div>
             </div>

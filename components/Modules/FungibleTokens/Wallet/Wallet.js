@@ -18,7 +18,7 @@ const columns = [
 const defaultSettings = {
     displayTitle: true,
     displayWalletDetails: false,
-    backgroundSetting: "Solid",
+    backgroundSetting: "Transparent",
 };
 
 
