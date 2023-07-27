@@ -95,6 +95,7 @@ const RichList = () => {
   };
 
   const handleTokenSelect = (token) => {
+    if (token === toFetch) return;
     console.log("Selected Token:", token);
     setToFetch(token);
     setLoading(true);
