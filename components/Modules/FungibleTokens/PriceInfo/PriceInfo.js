@@ -92,6 +92,7 @@ const PriceInfo = () => {
     }, [dimensions]);
 
     const handleTokenSelect = (selectedToken) => {
+        if (selectedToken === toFetch) return;
         // Do something with the selected token
         setToFetch(selectedToken);
         setLoading(true);
