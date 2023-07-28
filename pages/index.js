@@ -8,8 +8,9 @@ import Feed from '@/components/Modules/Feeds/Feed/Feedcomponents';
 import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
+import Badges from '@/components/Modules/NonFungibleTokens/Badges/Badgescomponents';
 import mockFeed from '@/data/mockFeedcomponents';
-import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize } from '@/components/Utils/ModuleSizescomponents';
+import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, badges } from '@/components/Utils/ModuleSizescomponents';
 
 
 export default function Home( {houndPrice, xrpPrice} ) {
@@ -34,6 +35,7 @@ export default function Home( {houndPrice, xrpPrice} ) {
     // Define the layout configuration
     const [layout, setLayout] = useState({
         lg: [
+            { i: 'badges', x: 2, y: 0, ...badges.lg },
             { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.lg },
             { i: 'priceInfo2', x: 2, y: 1, ...priceInfoSize.lg },
             { i: 'richList', x: 0, y: 0, ...richListSize.lg },
@@ -94,6 +96,9 @@ export default function Home( {houndPrice, xrpPrice} ) {
                     </div>
                     <div key="wallet">
                         <Wallet />
+                    </div>
+                    <div key="badges">
+                        <Badges />
                     </div>
                     <div key="feed">
                         <Feed data={mockFeed}/>
