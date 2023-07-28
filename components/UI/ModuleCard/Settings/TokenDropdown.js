@@ -153,7 +153,7 @@ const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" }) => {
                     <SearchBar
                         id="searchBar"
                         className="!bg-[#1A1A22] rounded-xl"
-                        placeholder={'Search for address'}
+                        placeholder={'Search token'}
                         onChange={handleSearch}
                     // onKeyDown={onEnterKey}
                     />

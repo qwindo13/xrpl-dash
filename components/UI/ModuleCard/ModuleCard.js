@@ -65,7 +65,7 @@ const ModuleCard = ({ children, className, title, settings, disableTitle, callTo
           transition={{ duration: 0.2 }}
         >
           <Button
-            className="!p-0 bg-[transparent] rounded-full absolute top-4 right-4 z-10"
+            className="!p-0 bg-[transparent] rounded-full absolute top-4 right-4 z-20"
             disableAnimation
             onClick={toggleSettings}
           >
