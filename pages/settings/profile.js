@@ -5,13 +5,19 @@ import SettingsLayout from "@/components/Layouts/SettingsLayoutcomponents";
 import InputField from "@/components/UI/InputField/InputFieldcomponents";
 import TextAreaInput from "@/components/UI/TextAreaInput/TextAreaInputcomponents";
 import Button from "@/components/UI/Button/Buttoncomponents";
+import SliderButton from "@/components/UI/SliderButton/SliderButtoncomponents";
 import Modal from "@/components/UI/Modal/Modalcomponents";
 import Nft from "@/components/UI/Nft/Nftcomponents";
+import 'keen-slider/keen-slider.min.css';
+import { useKeenSlider } from 'keen-slider/react';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import ImageSearchRoundedIcon from '@mui/icons-material/ImageSearchRounded';
 
 function ProfileSettings({ children }) {
+
+    const [selectedNft, setSelectedNft] = useState(null);
+
     const variants = {
         hidden: { opacity: 0, scale: 0.8, transition: { duration: 0.2, ease: 'easeInOut' } },
         visible: { opacity: 1, scale: 1, transition: { duration: 0.2, ease: 'easeInOut' } },
@@ -24,6 +30,22 @@ function ProfileSettings({ children }) {
 
     const openAvatarModal = () => setShowAvatarModal(true);
     const openBannerModal = () => setShowBannerModal(true);
+
+    const [currentSlide, setCurrentSlide] = useState(0)
+    const [loaded, setLoaded] = useState(false)
+    const [sliderRef, instanceRef] = useKeenSlider({
+        mode: "snap",
+        rtl: false,
+        slides: { perView: "auto", spacing: 16, },
+        initial: 0,
+        slideChanged(slider) {
+            setCurrentSlide(slider.track.details.rel)
+        },
+        created() {
+            setLoaded(true)
+        },
+    })
+
     return (
         <>
             <SettingsLayout>
@@ -75,10 +97,56 @@ function ProfileSettings({ children }) {
                     <h2 className="text-xl font-semibold mb-2">Change avatar</h2>
                     <span className="text-base font-semibold opacity-60">Select an NFT from your wallet or buy a new one to use as your new avatar.</span>
                 </div>
-                <div className="">
-                    <Nft />
+                <div className="relative mb-4 md:mb-8">
+                    <div ref={sliderRef} className="keen-slider ">
+                        {Array.from({ length: 8 }).map((_, index) => (
+                            <div className="keen-slider__slide" style={{ maxWidth: '11.1rem', minWidth: '11.1rem' }}>
+                                <Nft />
+                            </div>
+                        ))
+                        }
+                    </div>
+                    <div className="absolute top-1/2 left-0 transform -translate-y-1/2  flex flex-row justify-between">
+                        {loaded && instanceRef.current && (
+                            <>
+                                <SliderButton
+                                    left
+                                    onClick={(e) =>
+                                        e.stopPropagation() || instanceRef.current?.prev()
+                                    }
+                                    disabled={currentSlide === 0}
+                                />
+
+
+                            </>
+                        )}
+                    </div>
+                    <div className="absolute top-1/2 right-0 transform -translate-y-1/2  flex flex-row justify-between">
+                        {loaded && instanceRef.current && (
+                            <>
+                                <SliderButton
+                                    right
+                                    onClick={(e) =>
+                                        e.stopPropagation() || instanceRef.current?.next()
+                                    }
+                                    disabled={
+                                        currentSlide ===
+                                        instanceRef.current.track.details.slides.length - 3
+                                    }
+                                />
+
+
+                            </>
+                        )}
+                    </div>
+
+
                 </div>
-            </Modal>
+                <div className="flex justify-end">
+                    <Button className="bg-white !text-[#1A1921]">Save</Button>
+                </div>
+
+            </Modal >
 
             <Modal showModal={showBannerModal} closeModal={closeBannerModal}>
                 <h2 className="text-xl font-semibold mb-2">Change banner</h2>
