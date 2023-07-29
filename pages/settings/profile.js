@@ -99,7 +99,7 @@ function ProfileSettings({ children }) {
                 <div className="relative mb-4 md:mb-8">
                     <div ref={sliderRef} className="keen-slider ">
                         {Array.from({ length: 8 }).map((_, index) => (
-                            <div className="keen-slider__slide" style={{ maxWidth: '11.1rem', minWidth: '11.1rem' }}>
+                            <div key={index} className="keen-slider__slide" style={{ maxWidth: '11.1rem', minWidth: '11.1rem' }}>
                                 <Nft />
                             </div>
                         ))

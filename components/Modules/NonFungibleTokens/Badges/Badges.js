@@ -66,8 +66,8 @@ const Badges = ({ data }) => {
             <div className="relative">
                     <div ref={sliderRef} className="keen-slider ">
                         {Array.from({ length: 5 }).map((_, index) => (
-                            <div className="keen-slider__slide" style={{ maxWidth: '7rem', minWidth: '7rem' }}>
-                                <Image src='/images/badge.webp' width={300} height={300} />
+                            <div key='index' className="keen-slider__slide" style={{ maxWidth: '7rem', minWidth: '7rem' }}>
+                                <Image src='/images/badge.webp' width={300} height={300} alt={}/>
                             </div>
                         ))
                         }
