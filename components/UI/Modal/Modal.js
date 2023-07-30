@@ -29,7 +29,7 @@ const Modal = ({ children, showModal, closeModal, className }) => {
             style={{ backgroundColor: 'rgba(26, 25, 33, 0.5)' }}
           >
             <motion.div
-              className={`m-0 h-full md:h-auto relative w-full max-w-3xl p-4 md:p-8 bg-[#21212A]  md:rounded-2xl shadow-lg border border-white border-opacity-5 ${className}`}
+              className={`m-0 h-full overflow-y-scroll md:h-auto relative w-full max-w-3xl p-4 md:p-8 bg-[#21212A]  md:rounded-2xl shadow-lg border border-white border-opacity-5 ${className}`}
               onClick={(e) => e.stopPropagation()}
               variants={modalVariants}
             >
