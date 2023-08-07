@@ -75,7 +75,6 @@ export default function Home() {
                     preventCollision={false}
                     autoSize={true}
                     onLayoutChange={handleLayoutChange}
-                    dragTouchDelayDuration = {3000}
                 >
                     <div key="richList">
                         <RichList />
