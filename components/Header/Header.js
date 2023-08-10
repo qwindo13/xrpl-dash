@@ -46,8 +46,8 @@ export default function Header({fixed}) {
                 <div className="flex flex-row justify-between items-center">
                     <div className="">
                         <Link href={"/"}>
-                            <Image src="/images/logo.svg" alt="" width={200} height={70} className="hidden md:block py-2 pr-4 mr-4" />
-                            <Image src="/images/logo-icon.svg" alt="" width={65} height={70} className=" md:hidden py-2 pr-4 mr-4" />
+                            <Image src="/images/logo.svg" alt="" width={200} height={70} className="hidden md:block py-2 pr-4 mr-4 " />
+                            <Image src="/images/logo-icon.svg" alt="" width={40} height={43} className=" md:hidden" />
                         </Link>
                     </div>
                     <div className="relative flex flex-row items-center justify-between gap-8 lg:gap-16 overflow-visible">
@@ -60,7 +60,7 @@ export default function Header({fixed}) {
                             {xrpAddress ?
                                 <div className="flex flex-row gap-2 items-center">
                                     <Button onClick={openModal} className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation>
-                                        <div className="rounded-full h-10 w-10 mr-4 bg-default-avatar" title={xrpAddress}></div>
+                                        <div className="rounded-full h-10 w-10 md:mr-4 bg-default-avatar" title={xrpAddress}></div>
                                         <span className="hidden md:flex text-base font-semibold">{truncateAddress(xrpAddress)}</span>
                                     </Button>
                                 </div>

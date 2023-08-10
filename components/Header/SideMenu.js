@@ -14,11 +14,12 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                     <Button onClick={openModal} className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation>
                         <div className="rounded-full h-12 w-12 mr-4 bg-default-avatar" title={xrpAddress}></div>
                         <div className="flex flex-col text-left">
-                            <span className="text-lg font-semibold">Username123</span>
+                            <span className="text-lg font-semibold">@username123</span>
                             <Tooltip copyContent={xrpAddress}>
                                 <span className="text-base font-semibold opacity-60">{truncateAddress(xrpAddress)}</span>
                             </Tooltip>
                         </div>
+                        
                     </Button>
                     <Button
                         onClick={() => {
@@ -26,9 +27,13 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                             cookies.remove('xrpAddress')
                             window.location.href = '/auth/login'
                         }}
-                        className="hidden md:flex">
+                        className="hidden md:flex opacity-60">
                         <LogoutRoundedIcon />
                     </Button>
+                </div>
+                <div className="flex flex-col">
+                    <span className="text-base font-semibold opacity-60">Wallet Balance</span>
+                    <span className='text-3xl font-semibold'>8,662.00 XRP</span>
                 </div>
                 <div className="flex flex-col gap-4">
                     <Link href="/profile"><span className="text-2xl font-semibold">My profile</span></Link>
