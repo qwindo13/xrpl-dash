@@ -184,7 +184,8 @@ const Wallet = () => {
           }`}
         >
           <DonutChart
-            data={data}
+            // data={data} do not send tokens with balance 0
+            data={data.filter((token) => token.balance > 0)}
             colorScale={colorScale}
             valueXRP={`${totXrp} XRP`}
             valueFiat={`$${totFiat}`}

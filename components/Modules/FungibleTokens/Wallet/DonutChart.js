@@ -27,8 +27,6 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
 
   // Sort data from highest to lowest
   const sortedData = [...data].sort((a, b) => b.value - a.value);
-  console.log(sortedData);
-
   const total = sortedData.reduce((sum, entry) => sum + entry.value, 0);
   let startAngle = 0;
 
