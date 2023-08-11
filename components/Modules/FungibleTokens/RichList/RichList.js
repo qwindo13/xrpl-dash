@@ -8,6 +8,10 @@ import SearchBar from '@/components/UI/SearchBar/SearchBarcomponents';
 const axios = require('axios');
 import { config } from '../../../../config';
 
+function formatNumber(num) {
+  return new Intl.NumberFormat('en-US').format(num);
+}
+
 const columns = [
   { label: 'Rank', sortKey: 'rank', width: 'w-1/12' },
   { label: 'Address', sortKey: 'address', width: 'w-4/12' },
@@ -211,7 +215,7 @@ const RichList = () => {
 
                   <Link href={'https://bithomp.com/explorer/' + item.address || item.account} target="_blank" rel="noreferrer" className="text-left w-4/12 truncate pr-4">{item.address || item.account}</Link>
                   <div className="text-left w-3/12 truncate">
-                    {Math.round(item.amount * 100) / 100}
+                    {formatNumber(Math.round(item.amount * 100) / 100)}
                   </div>
                   <div className="text-left w-2/12 truncate">
                     {Math.round(item.percentage * 1000) / 1000}%
