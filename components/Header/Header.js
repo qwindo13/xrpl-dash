@@ -83,7 +83,7 @@ export default function Header({fixed}) {
                 truncateAddress={truncateAddress}
                 showModal={showModal}
                 closeModal={closeModal}
-                className="!absolute md:top-8 md:right-8 md:max-w-md !p-4" />
+                className="!absolute md:top-8 md:bottom-8 md:right-8 md:max-w-md !p-4" />
         </>
 
 

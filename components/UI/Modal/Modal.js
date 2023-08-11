@@ -7,12 +7,25 @@ const backdropVariants = {
   hidden: { opacity: 0 },
 };
 
-const Modal = ({ children, showModal, closeModal, className }) => {
+const Modal = ({ children, showModal, closeModal, className, allowBackgroundScroll = false }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
   }, []);
+
+  
+  useEffect(() => {
+    if (showModal && !allowBackgroundScroll) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showModal, allowBackgroundScroll]);
 
   let modalVariants = {
     visible: {
