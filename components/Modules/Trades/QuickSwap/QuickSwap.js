@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import Image from 'next/image';
 import { motion } from "framer-motion";
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
+import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 import Button from '@/components/UI/Button/Buttoncomponents';
 import Dropdown from '@/components/UI/Dropdown/Dropdowncomponents';
+import InputField from "@/components/UI/InputField/InputFieldcomponents";
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
 import useResizeObserver from '@/hooks/useResizeObserver';
 
 const defaultSettings = {
     displayTitle: true,
+    backgroundSetting: "Transparent",
 };
 
 const QuickSwap = () => {
@@ -31,6 +34,9 @@ const QuickSwap = () => {
         setPayWithToken(receiveToken);
         setReceiveToken(temp);
     };
+    const backgroundClass = moduleSettings.backgroundSetting === 'Solid' ? '' :
+        moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#525567] ' :
+            moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
 
     return (
         <ModuleCard
@@ -41,14 +47,23 @@ const QuickSwap = () => {
                         value={moduleSettings.displayTitle}
                         onChange={(value) => updateSettings("displayTitle", value)}
                     />
+                    <BackgroundTabs
+                        value={moduleSettings.backgroundSetting}
+                        onChange={(value) => updateSettings("backgroundSetting", value)}
+                    />
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}
+            className={`${backgroundClass}`}
+
         >
             <div className='w-full flex flex-col gap-0 relative'>
 
                 {/* Pay Section */}
-                <div ref={payRef} className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
+                <div
+                    ref={payRef}
+                    className={`w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 ${moduleSettings.backgroundSetting === 'Transparent' ? 'border-none bg-[#A6B0CF] bg-opacity-5' : ''}`}
+                >
                     <div className='flex flex-row justify-between'>
                         <span className='text-sm opacity-60 font-semibold'>Pay with</span>
                     </div>
@@ -77,16 +92,19 @@ const QuickSwap = () => {
                 </div>
 
                 {/* Swap Button */}
-                <div className="w-full h-4 z-[2] bg-[#21212A]"></div>
-                <div className="absolute top-[116px] left-[calc(50%-20px)] z-0 w-[35px] h-[35px] rounded-full border border-[#2C2C35] bg-[#21212A]"></div>
-                <div className='absolute z-[2] top-[110px] left-[calc(50%-14px)]'>
+                <div className={`w-full h-4 z-[1] bg-[#21212A] ${moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent' : ''}`}></div>
+                <div className={`absolute top-[116px] left-[calc(50%-20px)] z-0 w-[35px] h-[35px] rounded-full border border-[#2C2C35]  ${moduleSettings.backgroundSetting === 'Transparent' ? 'bg-[#1A1921] border-none' : 'bg-[#21212A]'}`}></div>
+                <div className='absolute z-[1] top-[110px] left-[calc(50%-14px)]'>
                     <Button className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation onClick={handleSwap}>
                         <SwapVertRoundedIcon />
                     </Button>
                 </div>
 
                 {/* Receive Section */}
-                <div ref={receiveRef} className='w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 '>
+                <div
+                    ref={receiveRef}
+                    className={`w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 ${moduleSettings.backgroundSetting === 'Transparent' ? 'border-none bg-[#A6B0CF] bg-opacity-5' : ''}`}
+                >
                     <div className='flex flex-row justify-between'>
                         <span className='text-sm opacity-60 font-semibold'>Receive</span>
                     </div>
@@ -100,7 +118,7 @@ const QuickSwap = () => {
                                             <Image src="/images/solo-logo.svg" height={30} width={30} />
                                         </div>
                                     )}
-                                   <motion.div layout> {receiveToken || "SOLO"}</motion.div>
+                                    <motion.div layout> {receiveToken || "SOLO"}</motion.div>
                                 </Button>
                             }
                         >

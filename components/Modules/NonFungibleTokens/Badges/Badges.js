@@ -10,7 +10,7 @@ import { useKeenSlider } from 'keen-slider/react';
 
 const defaultSettings = {
     displayTitle: true,
-    backgroundSetting: "Solid",
+    backgroundSetting: "Transparent",
 };
 
 
@@ -25,7 +25,7 @@ const Badges = ({ data }) => {
     };
 
     const [currentSlide, setCurrentSlide] = useState(0)
-       const [loaded, setLoaded] = useState(false)
+    const [loaded, setLoaded] = useState(false)
     const [sliderRef, instanceRef] = useKeenSlider({
         mode: "snap",
         rtl: false,
