@@ -31,14 +31,14 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
   let startAngle = 0;
 
   // Use the provided color scale or fallback to default if not provided
-  const sortedColorScale = colorScale || ['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'];
+  const sortedColorScale = colorScale || ['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'].reverse();
 
   return (
     <motion.div className='relative flex justify-center h-full w-auto'>
      <svg className='w-full h-auto' viewBox="-5 -5 62 62">
         {sortedData.map((entry, index) => {
           const { value, token, change, balance } = entry;
-         const color = chroma(sortedColorScale[index % sortedColorScale.length]).alpha(0.5).css();
+          const color = chroma(sortedColorScale[index % sortedColorScale.length]).alpha(0.5).css();
           const sliceAngle = (value / total) * 360;
           let endAngle = startAngle + sliceAngle;
 

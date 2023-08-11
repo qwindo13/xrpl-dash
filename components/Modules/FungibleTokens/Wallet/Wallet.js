@@ -164,15 +164,8 @@ const Wallet = () => {
     });
   }, [xrpAddress]);
 
-  const colorScale = useMemo(
-    () =>
-      chroma
-        .scale(['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'])
-        .mode("lch")
-        .colors(data.length),
-    [data]
-  );
-
+  const colorScale =  ['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'].reverse();
+  
   const DonutChartWrapper = useMemo(
     () =>
       // eslint-disable-next-line react/display-name
