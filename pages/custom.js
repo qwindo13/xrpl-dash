@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -14,6 +15,17 @@ import { priceInfoSize, richListSize, quickSwapSize, walletSize } from '@/compon
 export default function Home() {
     const gridContainerRef = useRef(null); // Create a reference to the parent
     const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
+    const [xrpAddress, setXrpAddress] = useState('');
+    const router = useRouter();
+
+    useEffect(() => {
+        if (localStorage.getItem('address')) {
+            setXrpAddress(localStorage.getItem('address'));
+        } else {
+            // setLoggedin(false);
+            router.push('/auth/login');
+        }
+    }, []);
     // Update the gridWidth on window resize and component mount
     useEffect(() => {
         const handleResize = () => {

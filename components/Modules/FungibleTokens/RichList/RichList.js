@@ -20,11 +20,6 @@ const columns = [
 ];
 const testData = [
   { rank: 1, address: 'rNXhU52ybru7GyhU4duZSrxNGwD2vE7Z9H', amount: 303944484806, change: 20, percentage: 35.24 },
-  { rank: 2, address: 'r3RaNVLvWjqqtFAawC6jbRhgKyFH7HvRS8', amount: 192467432254, change: -10, percentage: 22.31 },
-  { rank: 3, address: 'rLfP4UznJ65hYTKXjSj2UQQxWDmxmRdbL', amount: 20519920936, change: 50, percentage: 2.3 },
-  { rank: 4, address: 'rLfP4UznJ65hYTKXjSj2UQQxWDmxmRdbL', amount: 20519920936, change: 50, percentage: 2.3 },
-  { rank: 5, address: 'rLfP4UznJ65hYTKXjSj2UQQxWDmxmRdbL', amount: 20519920936, change: 50, percentage: 2.3 },
-  { rank: 6, address: 'rLfP4UznJ65hYTKXjSj2UQQxWDmxmRdbL', amount: 20519920936, change: 50, percentage: 2.3 },
 ];
 const defaultSettings = {
   displayTitle: true,
