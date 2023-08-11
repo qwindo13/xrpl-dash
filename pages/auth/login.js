@@ -7,6 +7,7 @@ import InputField from '@/components/UI/InputField/InputFieldcomponents';
 import Stepper from '@/components/UI/Stepper/Steppercomponents';
 import TagInput from '@/components/UI/TagInput/TagInputcomponents';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { config } from '@/configcomponents';
 
 import mockTokens from '@/data/mockTokenscomponents';
 
@@ -14,14 +15,28 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [qrCode, setQrCode] = useState('')
   const [qrCodeUrl, setQrCodeUrl] = useState('')
+  const [isMobile, setIsMobile] = useState(false)
+  const [xummButtonClicked, setXummButtonClicked] = useState(false)
+  const [soloText, setSoloText] = useState('Sologenic App')
+  const [customMessage, setCustomMessage] = useState('')
+  const api_url = config.api_url;
 
   const openModal = () => {
     setShowModal(true);
+    setXummButtonClicked(true)
   };
 
   const closeModal = () => {
     setShowModal(false);
+    setXummButtonClicked(false)
   };
+
+  useEffect(() => {
+    console.log(window.innerWidth)
+    if (window.innerWidth <= 800) {
+      setIsMobile(true)
+    }
+  }, [])
 
   useEffect(() => {
     const getQrCode = async () => {
@@ -30,6 +45,11 @@ export default function Home() {
 
       setQrCode(data.payload.refs.qr_png);
       setQrCodeUrl(data.payload.next.always);
+
+      if (isMobile) {
+        //open in new tab
+        window.open(data.payload.next.always, '_blank');
+      }
 
       const ws = new WebSocket(data.payload.refs.websocket_status);
 
@@ -44,22 +64,64 @@ export default function Home() {
           const checkSignJson = await checkSign.json()
 
           // setXrpAddress(checkSignJson.xrpAdress)
-          //set cookie which expires in 1 hour
-          const expires = new Date()
-          expires.setHours(expires.getHours() + 1)
-          document.cookie = `xrpAddress=${checkSignJson.xrpAdress}; expires=${expires.toUTCString()}; path=/`
-          ws.close()
+          //set address in local storage
+          localStorage.setItem('address', checkSignJson.xrpAdress)
 
+          //check if user exists, post req to /checkUserExists
+          setCustomMessage('Logging you in...')
+          const checkUserExists = await fetch(`${api_url}/checkUserExists`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              address: checkSignJson.xrpAdress
+            })
+          })
+          const checkUserExistsJson = await checkUserExists.json()
+          if (checkUserExistsJson.exists) {
+            //redirect to dashboard
+            window.location.href = '/'
+          } else {
+            //createUser
+            const payload = {
+              address: checkSignJson.xrpAdress,
+              username: checkSignJson.xrpAdress,
+              bio: null,
+              pfp_id: null,
+              banner_id: null,
+              twitter: null,
+              telegram: null
+            }
+            const createUser = await fetch(`${api_url}/createUser`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+            })
+            const createUserJson = await createUser.json()
+            if (createUserJson.success) {
+              //redirect to dashboard
+              window.location.href = '/'
+            } else {
+              //error
+              console.log(createUserJson)
+            }
+          }
           //redirect to dashboard
-          window.location.href = '/'
+          // window.location.href = '/'
 
         }
       }
     }
 
-    getQrCode()
+    // getQrCode()
+    if (xummButtonClicked) {
+      getQrCode()
+    }
 
-  }, []);
+  }, [xummButtonClicked])
 
   const [inputValue, setInputValue] = useState('');
   const handleInputChange = (event) => setInputValue(event.target.value);
@@ -110,7 +172,10 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-4  p-4 md:p-8">
             <Button className="w-full" onClick={openModal}><Image src="/images/xumm.png" height={30} width={30} className="mr-4" alt='xumm login' /> XUMM Wallet</Button>
-            <Button className="w-full"><Image src="/images/solo-logo.svg" height={30} width={30} className="mr-4" alt='sologenic login' /> Sologenic App </Button>
+            <Button className="w-full" disabled onClick={() => setInterval(() => setSoloText('Coming soon!'), 3000)}>
+              <Image src="/images/solo-logo.svg" height={30} width={30} className="mr-4" alt='sologenic login' /> 
+                {soloText}
+              </Button>
           </div>
         </div>
       </div>
@@ -154,7 +219,9 @@ export default function Home() {
               {/* <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' /> */}
               {
                 qrCode ?
-                  <img className='w-full rounded-xl' src={qrCode} alt='XUMM QR' />
+                  <a href={qrCodeUrl} target="_blank" rel="noreferrer">
+                    <img className='w-full rounded-xl' src={qrCode} alt='XUMM QR' />
+                  </a>
                   : <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' />
               }
             </div>

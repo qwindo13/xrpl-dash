@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import Link from "next/link";
 import Button from "../UI/Button/Button";
-import { Cookies } from 'react-cookie';
 import Tooltip from "../UI/Tooltip/Tooltip"
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Modal from "../UI/Modal/Modal";
+import { useBalance } from '@/hooks/useBalance';
 
 function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModal, className }) {
+    const {xrpbalance: balance} = useBalance()
+ 
     return (
         <Modal showModal={showModal} closeModal={closeModal} className={className}>
             <div className="flex flex-col md:flex-col justify-between gap-8">
@@ -23,8 +25,7 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                     </Button>
                     <Button
                         onClick={() => {
-                            const cookies = new Cookies()
-                            cookies.remove('xrpAddress')
+                            localStorage.removeItem('address')
                             window.location.href = '/auth/login'
                         }}
                         className="hidden md:flex opacity-60">
@@ -33,7 +34,7 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                 </div>
                 <div className="flex flex-col">
                     <span className="text-base font-semibold opacity-60">Wallet Balance</span>
-                    <span className='text-3xl font-semibold'>8,662.00 XRP</span>
+                    <span className='text-3xl font-semibold'>{(Math.round(balance * 100) / 100)-10} XRP</span>
                 </div>
                 <div className="flex flex-col gap-4">
                     <Link href="/profile"><span className="text-2xl font-semibold">My profile</span></Link>

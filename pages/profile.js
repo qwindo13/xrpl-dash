@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import AppLayout from '@/components/Layouts/AppLayoutcomponents';
 import Button from '@/components/UI/Button/Buttoncomponents';
@@ -6,6 +7,7 @@ import Tooltip from '@/components/UI/Tooltip/Tooltipcomponents';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { BsDiscord } from "react-icons/bs";
+import { config } from '@/configcomponents';
 
 
 function truncateAddress(address, maxLength = 12) {
@@ -22,9 +24,43 @@ function truncateAddress(address, maxLength = 12) {
     const end = address.slice(-halfLength);
     return `${start}...${end}`;
 }
-const xrpAddress = "rULPgrpm8dvQYovTPLj8hvck6NhkhBFscc";
+// const xrpAddress = "rULPgrpm8dvQYovTPLj8hvck6NhkhBFscc";
 
 export default function Profile() {
+    const [xrpAddress, setXrpAddress] = useState('');
+    const [userData, setUserData] = useState({});
+    const router = useRouter();
+    const api_url = config.api_url;
+
+    useEffect(() => {
+        if (localStorage.getItem('address')) {
+            setXrpAddress(localStorage.getItem('address'));
+            //send post req to api/checkUserExists with address
+            fetch(`${api_url}/checkUserExists`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    address: localStorage.getItem('address'),
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    if (data.exists) {
+                        setUserData(data.data);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            // setLoggedin(false);
+            router.push('/auth/login');
+        }
+    }, []);
+
     return (
         <AppLayout>
             <div className='flex flex-col w-full gap-16'>
@@ -41,7 +77,7 @@ export default function Profile() {
                 </div>
                 <div className="flex flex-col text-left gap-2">
                     <div className='flex flex-row gap-4 items-center'>
-                        <span className="text-2xl font-semibold">Username123</span>
+                        <span className="text-2xl font-semibold">{ userData.username || `Username`}</span>
                         <Link href="./settings/profile"><Button className="text-xs">Edit Profile</Button></Link>
                     </div>
         

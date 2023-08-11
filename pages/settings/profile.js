@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import { useRouter } from 'next/router';
 import Link from "next/link";
 import { motion } from "framer-motion";
 import SettingsLayout from "@/components/Layouts/SettingsLayoutcomponents";
@@ -44,6 +45,17 @@ function ProfileSettings({ children }) {
             setLoaded(true)
         },
     })
+    const [xrpAddress, setXrpAddress] = useState('');
+    const router = useRouter();
+
+    useEffect(() => {
+        if (localStorage.getItem('address')) {
+            setXrpAddress(localStorage.getItem('address'));
+        } else {
+            // setLoggedin(false);
+            router.push('/auth/login');
+        }
+    }, []);
 
     return (
         <>

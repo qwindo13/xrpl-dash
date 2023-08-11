@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -12,10 +13,12 @@ import Badges from '@/components/Modules/NonFungibleTokens/Badges/Badgescomponen
 import mockFeed from '@/data/mockFeedcomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, badges } from '@/components/Utils/ModuleSizescomponents';
 
-
 export default function Home( {houndPrice, xrpPrice} ) {
     const gridContainerRef = useRef(null); // Create a reference to the parent
     const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
+    const [xrpAddress, setXrpAddress] = useState(null);
+    const router = useRouter();
+
     // Update the gridWidth on window resize and component mount
     useEffect(() => {
         const handleResize = () => {
@@ -63,6 +66,18 @@ export default function Home( {houndPrice, xrpPrice} ) {
     const handleLayoutChange = (currentLayout) => {
         console.log('Layout changed:', currentLayout);
     };
+
+    useEffect(() => {
+        console.log(`${localStorage.getItem('address')} - address`);
+        const addy = localStorage.getItem('address');
+        if (addy !== null) {
+            console.log('setting address')
+            setXrpAddress(localStorage.getItem('address'));
+        } else {
+            console.log('redirecting')
+            router.push('/auth/login');
+        }
+    }, []);
 
     return (
         <AppLayout showControlPanel>

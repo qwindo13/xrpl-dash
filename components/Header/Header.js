@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Cookies } from 'react-cookie';
 import Image from "next/image";
 import Link from "next/link";
 import SideMenu from "./SideMenu";
@@ -27,9 +26,8 @@ export default function Header({fixed}) {
     const [xrpAddress, setXrpAddress] = useState('')
     const [showModal, setShowModal] = useState(false);
     useEffect(() => {
-        const cookies = new Cookies();
-        const xrpAddressCookie = cookies.get('xrpAddress')
-        setXrpAddress(xrpAddressCookie)
+        const address = localStorage.getItem('address')
+        setXrpAddress(address)
     }, [])
 
     const openModal = () => {
