@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from 'next/image';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
@@ -39,6 +39,17 @@ const Badges = ({ data }) => {
         },
     })
 
+    const [address, setAddress] = useState(null)
+    const [blurClass, setBlurClass] = useState("w-full h-full flex flex-col justify-center")
+    useEffect(() => {
+        const add = localStorage.getItem('address')
+        if (add) {
+            setAddress(add)
+        } else {
+            setBlurClass("w-full h-full flex flex-col justify-center blur-sm")
+        }
+    }, [])
+
     const backgroundClass = moduleSettings.backgroundSetting === 'Solid' ? '' :
         moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#525567] ' :
             moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
@@ -62,7 +73,16 @@ const Badges = ({ data }) => {
             className={`${backgroundClass}`}
         >
 
-            <div className="w-full h-full flex flex-col justify-center">
+            {
+                !address && (
+                    <div className="w-full h-full justify-center">
+                        <div className="items-center">
+                            <div className="text-sm font-semibold text-white">Connect your wallet to view your badges</div>
+                        </div>
+                    </div>
+                )
+            }
+            <div className={blurClass}>        
             <div className="relative">
                     <div ref={sliderRef} className="keen-slider ">
                         {Array.from({ length: 5 }).map((_, index) => (
@@ -107,7 +127,7 @@ const Badges = ({ data }) => {
                     </div>
 
 
-                </div>
+            </div>
             </div>
 
         </ModuleCard>

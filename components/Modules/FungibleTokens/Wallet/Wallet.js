@@ -26,12 +26,15 @@ const Wallet = () => {
   const [moduleSettings, setModuleSettings] = useState(defaultSettings);
   const [sortConfig, setSortConfig] = useState(null);
   const [data, setData] = useState([]);
-  const [xrpAddress, setXrpAddress] = useState(
-    "rD1JczqBRHW2gAwMoJ4zWruMy5EfWAHNGo"
-  );
+  const [xrpAddress, setXrpAddress] = useState(null);
   const [totXrp, setTotXrp] = useState(0);
   const [totFiat, setTotFiat] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const address = localStorage.getItem("address");
+    setXrpAddress(address);
+  }, []);
 
   const updateSettings = (key, value) => {
     setModuleSettings((prevSettings) => ({
@@ -169,7 +172,7 @@ const Wallet = () => {
   const DonutChartWrapper = useMemo(
     () =>
       // eslint-disable-next-line react/display-name
-      React.memo(({ moduleSettings, totXrp, totFiat, loading }) => (
+      React.memo(({ moduleSettings, totXrp, totFiat, loading,mock=false }) => (
         <motion.div
           layout
           className={`aspect-square h-full ${
@@ -178,7 +181,8 @@ const Wallet = () => {
         >
           <DonutChart
             // data={data} do not send tokens with balance 0
-            data={data.filter((token) => token.balance > 0)}
+            // data={data.filter((token) => token.balance > 0)}
+            data={mock ? [{token: 'XRP', balance: 100, xrpValue: 100, value: 50}, {token: 'BTC', balance: 100, xrpValue: 100, value: 30}, {token: 'ETH', balance: 100, xrpValue: 100, value: 20}] : data}
             colorScale={colorScale}
             valueXRP={`${totXrp} XRP`}
             valueFiat={`$${totFiat}`}
@@ -248,6 +252,7 @@ const Wallet = () => {
     Table.displayName = "Table";
 
   return (
+    (xrpAddress !== null) ? 
     <ModuleCard
       title="Wallet"
       settings={
@@ -282,7 +287,43 @@ const Wallet = () => {
         />
         {moduleSettings.displayWalletDetails && <Table data={data} />}
       </div>
-    </ModuleCard>
+    </ModuleCard> 
+    :
+    <ModuleCard
+    title="Wallet"
+    settings={
+      <>
+        <TitleSwitch
+          value={moduleSettings.displayTitle}
+          onChange={(value) => updateSettings("displayTitle", value)}
+        />
+        <BackgroundTabs
+          value={moduleSettings.backgroundSetting}
+          onChange={(value) => {console.log(value); updateSettings("backgroundSetting", value)}}
+        />
+      </>
+    }
+    disableTitle={!moduleSettings.displayTitle}
+    className={backgroundClass}
+  >
+    <h1>
+      Connect Wallet to access this module!
+    </h1>
+    <div
+      className={`w-full h-full flex flex-col items-center blur-md ${
+        moduleSettings.displayWalletDetails ? "" : ""
+      }`}
+    >
+      {/* a demo donutchart */}
+      <DonutChartWrapper
+        moduleSettings={moduleSettings}
+        totXrp={100}
+        totFiat={100}
+        loading={false}
+        mock={true}
+      />
+      </div>
+  </ModuleCard>
   );
 };
 

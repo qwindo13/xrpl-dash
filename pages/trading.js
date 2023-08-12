@@ -23,7 +23,7 @@ export default function Home() {
             setXrpAddress(localStorage.getItem('address'));
         } else {
             // setLoggedin(false);
-            router.push('/auth/login');
+            // router.push('/auth/login');
         }
     }, []);
     // Update the gridWidth on window resize and component mount
