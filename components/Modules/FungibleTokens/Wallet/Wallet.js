@@ -8,6 +8,10 @@ import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabsco
 import WalletDetailsSwitch from "@/components/UI/ModuleCard/Settings/WalletDetaisSwitchcomponents";
 import { config } from "@/configcomponents";
 
+function formatNumber(num) {
+  return new Intl.NumberFormat('en-US').format(num);
+}
+
 const columns = [
   { label: "Token", sortKey: "token", width: "w-2/12" },
   { label: "Balance", sortKey: "balance", width: "w-3/12" },
@@ -238,8 +242,8 @@ const Wallet = () => {
                 <div className="text-left w-2/12 flex items-center">
                   <span>{item.token}</span>
                 </div>
-                <div className="text-left w-3/12">{item.balance}</div>
-                <div className="text-left w-2/12">{item.xrpValue}</div>
+                <div className="text-left w-3/12">{formatNumber(item.balance)}</div>
+                <div className="text-left w-2/12">{formatNumber(item.xrpValue)}</div>
                 <div className="text-left w-2/12">{item.value}%</div>
               </div>
             ))}
@@ -251,80 +255,48 @@ const Wallet = () => {
 
     Table.displayName = "Table";
 
-  return (
-    (xrpAddress !== null) ? 
-    <ModuleCard
-      title="Wallet"
-      settings={
-        <>
-          <TitleSwitch
-            value={moduleSettings.displayTitle}
-            onChange={(value) => updateSettings("displayTitle", value)}
-          />
-          <BackgroundTabs
-            value={moduleSettings.backgroundSetting}
-            onChange={(value) => {console.log(value); updateSettings("backgroundSetting", value)}}
-          />
-          <WalletDetailsSwitch
-            value={moduleSettings.displayWalletDetails}
-            onChange={(value) => updateSettings("displayWalletDetails", value)}
-          />
-        </>
-      }
-      disableTitle={!moduleSettings.displayTitle}
-      className={backgroundClass}
-    >
-      <div
-        className={`w-full h-full flex flex-col items-center ${
-          moduleSettings.displayWalletDetails ? "" : ""
-        }`}
+    return (
+      <ModuleCard
+        title="Wallet"
+        settings={
+          <>
+            <TitleSwitch
+              value={moduleSettings.displayTitle}
+              onChange={(value) => updateSettings("displayTitle", value)}
+            />
+            <BackgroundTabs
+              value={moduleSettings.backgroundSetting}
+              onChange={(value) => { console.log(value); updateSettings("backgroundSetting", value) }}
+            />
+            <WalletDetailsSwitch
+              value={moduleSettings.displayWalletDetails}
+              onChange={(value) => updateSettings("displayWalletDetails", value)}
+            />
+          </>
+        }
+        disableTitle={!moduleSettings.displayTitle}
+        className={backgroundClass}
       >
-        <DonutChartWrapper
-          moduleSettings={moduleSettings}
-          totXrp={totXrp}
-          totFiat={totFiat}
-          loading={loading}
-        />
-        {moduleSettings.displayWalletDetails && <Table data={data} />}
-      </div>
-    </ModuleCard> 
-    :
-    <ModuleCard
-    title="Wallet"
-    settings={
-      <>
-        <TitleSwitch
-          value={moduleSettings.displayTitle}
-          onChange={(value) => updateSettings("displayTitle", value)}
-        />
-        <BackgroundTabs
-          value={moduleSettings.backgroundSetting}
-          onChange={(value) => {console.log(value); updateSettings("backgroundSetting", value)}}
-        />
-      </>
-    }
-    disableTitle={!moduleSettings.displayTitle}
-    className={backgroundClass}
-  >
-    <h1>
-      Connect Wallet to access this module!
-    </h1>
-    <div
-      className={`w-full h-full flex flex-col items-center blur-md ${
-        moduleSettings.displayWalletDetails ? "" : ""
-      }`}
-    >
-      {/* a demo donutchart */}
-      <DonutChartWrapper
-        moduleSettings={moduleSettings}
-        totXrp={100}
-        totFiat={100}
-        loading={false}
-        mock={true}
-      />
-      </div>
-  </ModuleCard>
-  );
-};
-
+        {xrpAddress !== null ? (
+          <div
+            className={`w-full h-full flex flex-col items-center ${moduleSettings.displayWalletDetails ? "" : ""
+              }`}
+          >
+            <DonutChartWrapper
+              moduleSettings={moduleSettings}
+              totXrp={formatNumber(totXrp)}
+              totFiat={formatNumber(totFiat)}
+              loading={loading}
+            />
+            {moduleSettings.displayWalletDetails && <Table data={data} />}
+          </div>
+        ) : (
+          <div className="w-full h-full flex flex-col gap-2 items-center justify-center">
+            <span className="text-lg font-semibold text-white text-center">Connect Wallet</span>
+            <span className="text-sm font-semibold text-white text-center opacity-40">Connect your wallet to view this module.</span>
+          </div>
+        )}
+      </ModuleCard>
+    );
+        }
 export default Wallet;
