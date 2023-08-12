@@ -75,7 +75,7 @@ export default function Home( {houndPrice, xrpPrice} ) {
             setXrpAddress(localStorage.getItem('address'));
         } else {
             console.log('redirecting')
-            router.push('/auth/login');
+            // router.push('/auth/login');
         }
     }, []);
 

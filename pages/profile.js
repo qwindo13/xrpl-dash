@@ -57,7 +57,7 @@ export default function Profile() {
                 });
         } else {
             // setLoggedin(false);
-            router.push('/auth/login');
+            // router.push('/auth/login');
         }
     }, []);
 
