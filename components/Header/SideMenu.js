@@ -6,7 +6,12 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Modal from "../UI/Modal/Modal";
 import { useBalance } from '@/hooks/useBalance';
 
+function formatNumber(num) {
+  return new Intl.NumberFormat('en-US').format(num);
+}
+
 function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModal, className }) {
+    const [isLoading, setIsLoading] = useState(true);
     const {xrpbalance: balance} = useBalance()
  
     return (
@@ -34,7 +39,12 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                 </div>
                 <div className="flex flex-col">
                     <span className="text-base font-semibold opacity-60">Wallet Balance</span>
-                    <span className='text-3xl font-semibold'>{(Math.round(balance * 100) / 100)-10} XRP</span>
+                    {isLoading ? (
+                        <span className='text-3xl font-semibold'>{formatNumber((Math.round(balance * 100) / 100) - 10)} XRP</span>
+                    ) : (
+                        <span className="h-8 animate-pulse bg-[#A6B0CF] bg-opacity-5 rounded-lg w-6/12" />
+
+                    )}
                 </div>
                 <div className="flex flex-col gap-4">
                     <Link href="/profile"><span className="text-2xl font-semibold">My profile</span></Link>

@@ -22,7 +22,7 @@ function truncateAddress(address, maxLength = 12) {
     return `${start}...${end}`;
 }
 
-export default function Header({fixed}) {
+export default function Header({ fixed }) {
     const [xrpAddress, setXrpAddress] = useState('')
     const [showModal, setShowModal] = useState(false);
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function Header({fixed}) {
 
     return (
         <>
-          <nav className={`w-full z-10 relative px-4 md:px-8 py-2 md:py-4 mx-auto justify-center ${fixed ? 'sticky top-0 bg-[#1A1921] bg-opacity-60 backdrop-blur-lg' : ''}`}>
+            <nav className={`w-full z-10 relative px-4 md:px-8 py-2 md:py-4 mx-auto justify-center ${fixed ? 'sticky top-0 bg-[#1A1921] bg-opacity-60 backdrop-blur-lg' : ''}`}>
                 <div className="flex flex-row justify-between items-center">
                     <div className="">
                         <Link href={"/"}>
@@ -83,7 +83,8 @@ export default function Header({fixed}) {
                 truncateAddress={truncateAddress}
                 showModal={showModal}
                 closeModal={closeModal}
-                className="!absolute md:top-8 md:bottom-8 md:right-8 md:max-w-md !p-4" />
+                className="!absolute md:top-8 md:bottom-8 md:right-8 md:max-w-md !p-4"
+            />
         </>
 
 

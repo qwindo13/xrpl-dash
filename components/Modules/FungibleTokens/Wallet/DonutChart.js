@@ -2,27 +2,10 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '@mui/material';
 import chroma from "chroma-js";
-
-const ChartTooltip = ({ content, isVisible, position }) => {
-  return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          style={{ top: `${position.y}%`, left: `${position.x}%` }}
-          className="absolute p-2 border rounded-xl border-[#fff] border-opacity-10 bg-opacity-60 backdrop-blur-xl z-[2] max-w-md"
-        >
-          <span className="text-xs font-semibold">{content}</span>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
+import Tooltip from '@/components/UI/Tooltip/Tooltipcomponents';
 
 const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
-  const [hoveredSlice, setHoveredSlice] = useState(null);
+ const [hoveredSlice, setHoveredSlice] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   // Sort data from highest to lowest
@@ -35,7 +18,7 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
 
   return (
     <motion.div className='relative flex justify-center h-full w-auto'>
-     <svg className='w-full h-auto' viewBox="-5 -5 62 62">
+      <svg className='w-full h-auto' viewBox="-5 -5 62 62">
         {sortedData.map((entry, index) => {
           const { value, token, change, balance } = entry;
           const color = chroma(sortedColorScale[index % sortedColorScale.length]).alpha(0.5).css();
@@ -64,8 +47,6 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
             y: 26 + radius * Math.sin(Math.PI * ((startAngle + sliceAngle / 2) / 180)),
           };
 
-          const tooltipHeight = 24; // adjust this value to match the height of your tooltips
-
           startAngle += sliceAngle;
 
           const d = `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${end.x} ${end.y}`;
@@ -80,47 +61,46 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 1 }}
-              onMouseEnter={() => {
-                setPosition({ x: sliceCenter.x, y: sliceCenter.y + radius + tooltipHeight - 10 });
+              onMouseOver={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
                 setHoveredSlice({ token, change, balance });
               }}
-              
-              
               onMouseLeave={() => setHoveredSlice(null)}
             />
           );
         })}
       </svg>
 
-  <div className="absolute flex flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-    {loading ? (
-      <>
-        <Skeleton variant="text" width={100} height={20} />
-        <Skeleton variant="text" width={100} height={20} />
-      </>
-    ) : (
-      <>
-        <span className="font-semibold text-lg">
-          {valueXRP}
-          <i
-            className="text-xs text-white text-opacity-50 cursor-pointer ml-1"
-            title="Prices are calculated based on the last trade on the DEX. The actual value of your tokens might be different."
-          >
-            i
-          </i>
-        </span>
-        <span className="font-semibold text-base opacity-80">{valueFiat}</span>
-      </>
-    )}
-  </div>
-      <ChartTooltip
-        content={hoveredSlice ? `${hoveredSlice.token}: ${hoveredSlice.balance}` : ''}
-        isVisible={!!hoveredSlice}
-        position={position}
-      />
+      <div className="absolute flex flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+        {loading ? (
+          <>
+            <Skeleton variant="text" width={100} height={20} />
+            <Skeleton variant="text" width={100} height={20} />
+          </>
+        ) : (
+          <>
+            <span className="font-semibold text-lg">
+              {valueXRP}
+              <i
+                className="text-xs text-white text-opacity-50 cursor-pointer ml-1"
+                title="Prices are calculated based on the last trade on the DEX. The actual value of your tokens might be different."
+              >
+                i
+              </i>
+            </span>
+            <span className="font-semibold text-base opacity-80">{valueFiat}</span>
+          </>
+        )}
+      </div>
+
+      {hoveredSlice && (
+        <Tooltip content={`${hoveredSlice.token}: ${hoveredSlice.balance}`} copyContent={`${hoveredSlice.token}: ${hoveredSlice.balance}`}>
+          <div style={{ position: 'absolute', top: `${position.y}px`, left: `${position.x}px` }} />
+        </Tooltip>
+      )}
 
     </motion.div>
-
   );
 };
 
