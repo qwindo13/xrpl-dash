@@ -69,9 +69,9 @@ export default function Profile() {
                         <div className='w-32 h-32 md:w-36 md:h-36 rounded-full bg-default-avatar border-2 border-[#1A1921]' />
                     </div>
                     <div className='absolute right-4 bottom-4 md:right-8 md:bottom-8'>
-                        <div className='flex flex-row p-4 gap-8 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-sm rounded-xl'>
-                            <Link href="#"><TwitterIcon /></Link>
-                            <Link href="#"><TelegramIcon /></Link>
+                        <div className='flex flex-row px-4 py-2 gap-8 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-sm rounded-xl'>
+                            <Link href="#"><TwitterIcon sx={{ fontSize: 18 }} /></Link>
+                            <Link href="#"><TelegramIcon sx={{ fontSize: 18 }} /></Link>
                         </div>
                     </div>
                 </div>

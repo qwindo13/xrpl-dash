@@ -44,8 +44,8 @@ export default function Header({ fixed }) {
                 <div className="flex flex-row justify-between items-center">
                     <div className="">
                         <Link href={"/"}>
-                            <Image src="/images/logo.svg" alt="" width={200} height={70} className="hidden md:block py-2 pr-4 mr-4 " />
-                            <Image src="/images/logo-icon.svg" alt="" width={40} height={43} className=" md:hidden" />
+                            <Image src="/images/logo.svg" alt="XRPLDash Logo" width={200} height={70} className="hidden md:block py-2 pr-4 mr-4 " />
+                            <Image src="/images/logo-icon.svg" alt="XRPLDash Icon" width={40} height={43} className=" md:hidden" />
                         </Link>
                     </div>
                     <div className="relative flex flex-row items-center justify-between gap-8 lg:gap-16 overflow-visible">

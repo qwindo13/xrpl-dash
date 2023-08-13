@@ -40,24 +40,24 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
 
                 <div className='flex flex-col justify-between h-full'>
 
-                {/* MENU */}
-                <div className="flex flex-col gap-4">
-                    <Link href="/profile"><span className="text-2xl font-semibold">My profile</span></Link>
-                    <Link href="/settings/profile"><span className="text-2xl font-semibold">Settings</span></Link>
-                </div>
-
-                {/* WALLET DETAILS */}
-                <div className='p-4 border border-white border-opacity-5 rounded-xl'>
-                    <div className="flex flex-col">
-                        <span className="text-sm font-semibold opacity-60">Wallet Balance</span>
-                        {isLoading ? (
-                            <span className='text-xl font-semibold'>{formatNumber((Math.round(balance * 100) / 100) - 10)} XRP</span>
-                        ) : (
-                            <span className="h-8 animate-pulse bg-[#A6B0CF] bg-opacity-5 rounded-lg w-6/12" />
-
-                        )}
+                    {/* MENU */}
+                    <div className="flex flex-col gap-4">
+                        <Link href="/profile"><span className="text-2xl font-semibold">My profile</span></Link>
+                        <Link href="/settings/profile"><span className="text-2xl font-semibold">Settings</span></Link>
                     </div>
-                </div>
+
+                    {/* WALLET DETAILS */}
+                    <div className='p-4 border border-white border-opacity-5 rounded-xl'>
+                        <div className="flex flex-col">
+                            <span className="text-sm font-semibold opacity-60">Wallet Balance</span>
+                            {isLoading ? (
+                                <span className='text-xl font-semibold'>{formatNumber((Math.round(balance * 100) / 100) - 10)} XRP</span>
+                            ) : (
+                                <span className="h-8 animate-pulse bg-[#A6B0CF] bg-opacity-5 rounded-lg w-6/12" />
+
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
 

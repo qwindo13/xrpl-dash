@@ -44,7 +44,7 @@ function SettingsLayout({ children }) {
                     <div className="w-64">
                         <div className="w-full bg-[#21212A] rounded-2xl p-4 sticky top-[134px]">
                             <h2 className="text-2xl font-semibold mb-4">Upgrade to Premium</h2>
-                            <p className="mb-6 opacity-60">Experience the full power of XRPLDash with the premium version. Unlock all features now!</p>
+                            <p className="font-semibold mb-6 opacity-60">Experience the full power of XRPLDash with the premium version. Unlock all features now!</p>
                             <Button className="bg-white !text-[#1A1921]">Upgrade Now</Button>
                         </div>
                     </div>
