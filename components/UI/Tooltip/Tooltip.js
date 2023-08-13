@@ -57,7 +57,7 @@ const Tooltip = ({ children, copyContent }) => {
               left: springX,
               transform: 'translate(20%, 20%)',
             }}
-            className="flex px-4 py-2 border rounded-xl border-[#fff] border-opacity-10 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-xl z-10 cursor-pointer drop-shadow-md"
+            className="flex px-4 py-2 border rounded-xl border-[#fff] border-opacity-10 bg-[#1A1921] backdrop-blur-xl z-10 cursor-pointer drop-shadow-md"
           >
             <span className="text-sm font-semibold">{tooltipText}</span>
           </motion.div>

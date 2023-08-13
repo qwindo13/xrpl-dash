@@ -14,6 +14,9 @@ import { useCoinPrices } from '@/hooks/useCoinsPrices';
 const axios = require('axios');
 import { config } from '../../../../config';
 
+function formatNumber(num) {
+    return new Intl.NumberFormat('en-US').format(num);
+}
 
 const defaultSettings = {
     displayTitle: false,
@@ -199,7 +202,7 @@ const PriceInfo = () => {
                                 </span>
                             </div>
                             <div className='flex flex-col'>
-                                <span className="text-2xl font-bold">{price} {currency}</span>
+                                <span className="text-2xl font-bold"> {formatNumber(price)} {currency}</span>
                                 <span className={`text-xs font-semibold opacity-50 flex flex-row items-center gap-2 whitespace-nowrap	 ${priceChange < 0 ? 'text-negative' : 'text-positive'}`}>
                                     <div style={{ transform: priceChange < 0 ? 'rotate(180deg)' : 'rotate(0)' }}>
                                         <svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg">

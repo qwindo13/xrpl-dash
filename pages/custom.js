@@ -9,6 +9,7 @@ import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcompo
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
 import ProfitnLose from '@/components/Modules/FungibleTokens/ProfitnLoss/ProfitnLosscomponents';
+import Loader from '@/components/UI/Loader/Loadercomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize } from '@/components/Utils/ModuleSizescomponents';
 
 
@@ -96,7 +97,7 @@ export default function Home() {
                         <PriceInfo />
                     </div>
                     <div key="priceInfo2">
-                        <PriceInfo />
+                      <Loader />
                     </div>
                     <div key="quickswap">
                         <QuickSwap />

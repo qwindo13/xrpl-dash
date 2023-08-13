@@ -1,23 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '@mui/material';
 import chroma from "chroma-js";
-import Tooltip from '@/components/UI/Tooltip/Tooltipcomponents';
+
+function formatNumber(num) {
+  return new Intl.NumberFormat('en-US').format(num);
+}
 
 const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
- const [hoveredSlice, setHoveredSlice] = useState(null);
+  const [hoveredSlice, setHoveredSlice] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false); // Tooltip hover state
 
-  // Sort data from highest to lowest
   const sortedData = [...data].sort((a, b) => b.value - a.value);
   const total = sortedData.reduce((sum, entry) => sum + entry.value, 0);
   let startAngle = 0;
 
-  // Use the provided color scale or fallback to default if not provided
   const sortedColorScale = colorScale || ['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'].reverse();
 
+  const handleHoverStart = () => {
+    setIsHovered(true);
+  };
+
+  const handleHoverEnd = () => {
+    setIsHovered(false);
+  };
+
   return (
-    <motion.div className='relative flex justify-center h-full w-auto'>
+    <motion.div className='relative flex justify-center h-full w-auto overflow-visible'>
       <svg className='w-full h-auto' viewBox="-5 -5 62 62">
         {sortedData.map((entry, index) => {
           const { value, token, change, balance } = entry;
@@ -29,7 +39,6 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
           endAngle -= gapAngle;
 
           const largeArcFlag = sliceAngle <= 180 ? 0 : 1;
-
           const radius = 24;
 
           const start = {
@@ -42,14 +51,9 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
             y: 26 + radius * Math.sin(Math.PI * endAngle / 180),
           };
 
-          const sliceCenter = {
-            x: 26 + radius * Math.cos(Math.PI * ((startAngle + sliceAngle / 2) / 180)),
-            y: 26 + radius * Math.sin(Math.PI * ((startAngle + sliceAngle / 2) / 180)),
-          };
+          const d = `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${end.x} ${end.y}`;
 
           startAngle += sliceAngle;
-
-          const d = `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${end.x} ${end.y}`;
 
           return (
             <motion.path
@@ -61,13 +65,22 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 1 }}
-              onMouseOver={(e) => {
+              onMouseEnter={(e) => { // Use onMouseEnter instead of onMouseOver
                 const rect = e.currentTarget.getBoundingClientRect();
                 setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-                setHoveredSlice({ token, change, balance });
+                setHoveredSlice({ token, change, balance, color });
+                handleHoverStart();
               }}
-              onMouseLeave={() => setHoveredSlice(null)}
+              onMouseMove={(e) => { // Add onMouseMove to update tooltip position
+                const rect = e.currentTarget.getBoundingClientRect();
+                setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+              }}
+              onMouseLeave={() => {
+                setHoveredSlice(null);
+                handleHoverEnd();
+              }}
             />
+
           );
         })}
       </svg>
@@ -94,12 +107,38 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
         )}
       </div>
 
-      {hoveredSlice && (
-        <Tooltip content={`${hoveredSlice.token}: ${hoveredSlice.balance}`} copyContent={`${hoveredSlice.token}: ${hoveredSlice.balance}`}>
-          <div style={{ position: 'absolute', top: `${position.y}px`, left: `${position.x}px` }} />
-        </Tooltip>
-      )}
-
+      <AnimatePresence>
+        {hoveredSlice && isHovered && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              position: 'fixed',
+              top: position.y + 40, // Offset by 20 pixels downwards
+              left: position.x + 40, // Offset by 20 pixels to the right
+              transform: 'translate(20%, 20%)',
+              zIndex: 9999,
+            }}
+            className="flex items-center px-4 py-2 border rounded-xl border-[#fff] border-opacity-10 bg-[#1A1921] backdrop-blur-xl z-10 cursor-pointer drop-shadow-md"
+          >
+            <div
+            className='h-5 w-5 rounded-lg'
+              style={{
+                width: '20px', // Size of the color square
+                height: '20px',
+                backgroundColor: hoveredSlice.color, // Set the background color
+                marginRight: '8px', // Some spacing between the square and the text
+              }}
+            ></div>
+            <div className='flex flex-row'>
+              <span className='font-semibold'>{hoveredSlice.token}</span>
+              <span className='ml-2 opacity-60'>{formatNumber(hoveredSlice.balance)}</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
