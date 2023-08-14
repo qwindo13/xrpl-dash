@@ -26,6 +26,7 @@ function truncateAddress(address, maxLength = 12) {
 }
 
 export default function Profile() {
+    const [isLoading, setLoading] = useState(true);
     const [userData, setUserData] = useState({});
     const [isOwner, setIsOwner] = useState(false);
     const router = useRouter();
@@ -33,25 +34,28 @@ export default function Profile() {
     const api_url = config.api_url;
 
     useEffect(() => {
-            //send post req to api/checkUserExists with address
-            fetch(`${api_url}/checkUserExists`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    address: xrpAddress,
-                }),
+        setLoading(true); // Start loading
+    
+        fetch(`${api_url}/checkUserExists`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                address: xrpAddress,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.exists) {
+                    setUserData(data.data);
+                }
+                setLoading(false); // Stop loading once data is fetched
             })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.exists) {
-                        setUserData(data.data);
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            .catch((err) => {
+                console.log(err);
+                setLoading(false); // Stop loading if there's an error
+            });
     }, [xrpAddress]);
 
     useEffect(() => {
@@ -70,23 +74,45 @@ export default function Profile() {
                     </div>
                     <div className='absolute right-4 bottom-4 md:right-8 md:bottom-8'>
                         <div className='flex flex-row px-4 py-2 gap-8 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-sm rounded-xl'>
-                            { userData.twitter && <Link href={`https://twitter.com/${userData.twitter}`} target='_blank'><TwitterIcon sx={{ fontSize: 18 }} /></Link> }
-                            { userData.telegram && <Link href={`tg://user?id=${userData.telegram}`} target='_blank'><TelegramIcon sx={{ fontSize: 18 }} /></Link> }
+                            {userData.twitter && <Link href={`https://twitter.com/${userData.twitter}`} target='_blank'><TwitterIcon sx={{ fontSize: 18 }} /></Link>}
+                            {userData.telegram && <Link href={`tg://user?id=${userData.telegram}`} target='_blank'><TelegramIcon sx={{ fontSize: 18 }} /></Link>}
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col text-left gap-2">
-                    {isOwner &&
-                        <div className='flex flex-row gap-4 items-center'>
-                            <span className="text-2xl font-semibold">{ userData.username || `Username`}</span>
-                            <Link href="/settings/profile"><Button className="text-xs">Edit Profile</Button></Link>
-                        </div>
-                    }
-                    <Tooltip copyContent={xrpAddress}>
-                        <span className="text-lg font-semibold opacity-60 cursor-pointer">{truncateAddress(xrpAddress)}</span> 
-                    </Tooltip>
+                    {isOwner ? (
+                        isLoading ? (
+                            <div className='flex flex-row gap-4 items-center animate-pulse'>
+                                <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-32 h-6 "></div>
+                                <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-24 h-6"></div>
+                            </div>
+                        ) : (
+                            <div className='flex flex-row gap-4 items-center'>
+                                <span className="text-2xl font-semibold">{userData.username || truncateAddress(xrpAddress)}</span>
+                                <Link href="/settings/profile"><Button className="text-xs">Edit Profile</Button></Link>
+                            </div>
+                        )
+                    ) : null}
+
+                    {isLoading ? (
+                        <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-40 h-5 animate-pulse"></div>
+                    ) : (
+                        <Tooltip copyContent={xrpAddress} className="w-fit">
+                            <span className="text-lg font-semibold opacity-60 cursor-pointer">{truncateAddress(xrpAddress)}</span>
+                        </Tooltip>
+                    )}
                 </div>
-                {userData.bio}
+                {isLoading ? (
+                    <div className='animate-pulse flex flex-col w-auto gap-2'>
+                        <span className="bg-[#A6B0CF] bg-opacity-5 rounded w-[440px] h-5" />
+                        <span className="bg-[#A6B0CF] bg-opacity-5 rounded w-96 h-5" />
+                    </div>
+                    ) : (
+                        <Tooltip copyContent={xrpAddress} className="w-fit">
+                            <span>{userData.bio}</span>
+                        </Tooltip>
+                    )}
+                
             </div>
         </AppLayout>
     );

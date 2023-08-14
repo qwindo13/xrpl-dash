@@ -37,7 +37,7 @@ const Tooltip = ({ children, copyContent }) => {
   return (
     <motion.div
       ref={ref}
-      className="flex relative cursor-pointer"
+      className="flex relative cursor-pointer w-fit"
       onMouseEnter={handleHoverStart}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleHoverEnd}
