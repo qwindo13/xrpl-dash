@@ -24,18 +24,11 @@ function truncateAddress(address, maxLength = 12) {
     const end = address.slice(-halfLength);
     return `${start}...${end}`;
 }
-// const xrpAddress = "rULPgrpm8dvQYovTPLj8hvck6NhkhBFscc";
 
 export default function Profile() {
-    const [xrpAddress, setXrpAddress] = useState('');
     const [userData, setUserData] = useState({});
     const router = useRouter();
-    const { slug } = router.query;
-    useEffect(() => {
-        if (slug) {
-            setXrpAddress(slug);
-        }
-    }, [slug]);
+    const xrpAddress = router.query.slug;
     const api_url = config.api_url;
 
     useEffect(() => {
@@ -51,7 +44,6 @@ export default function Profile() {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data);
                     if (data.exists) {
                         setUserData(data.data);
                     }
@@ -59,7 +51,7 @@ export default function Profile() {
                 .catch((err) => {
                     console.log(err);
                 });
-    }, []);
+    }, [xrpAddress]);
 
     return (
         <AppLayout>
