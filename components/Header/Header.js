@@ -6,6 +6,7 @@ import Button from "../UI/Button/Button";
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+import { config } from "@/configcomponents";
 
 function truncateAddress(address, maxLength = 12) {
     if (!address) {
@@ -25,6 +26,9 @@ function truncateAddress(address, maxLength = 12) {
 export default function Header({ fixed }) {
     const [xrpAddress, setXrpAddress] = useState('')
     const [showModal, setShowModal] = useState(false);
+    const [userData, setUserData] = useState('');
+    const api_url = config.api_url;
+
     useEffect(() => {
         const address = localStorage.getItem('address')
         setXrpAddress(address)
@@ -37,6 +41,34 @@ export default function Header({ fixed }) {
     const closeModal = () => {
         setShowModal(false);
     };
+
+    useEffect(() => {
+        const cached = sessionStorage.getItem('userData');
+        if (xrpAddress !== '' && cached === null) {
+            fetch(`${api_url}/checkUserExists`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    address: localStorage.getItem('address'),
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    if (data.exists) {
+                        setUserData(data.data);
+                        sessionStorage.setItem('userData', JSON.stringify(data.data));
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else if (cached !== null) {
+            setUserData(JSON.parse(cached));
+        }
+    }, [xrpAddress]);
 
     return (
         <>
@@ -59,7 +91,7 @@ export default function Header({ fixed }) {
                                 <div className="flex flex-row gap-2 items-center">
                                     <Button onClick={openModal} className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation>
                                         <div className="rounded-full h-10 w-10 md:mr-4 bg-default-avatar" title={xrpAddress}></div>
-                                        <span className="hidden md:flex text-base font-semibold">{truncateAddress(xrpAddress)}</span>
+                                        <span className="hidden md:flex text-base font-semibold">{userData.username}</span>
                                     </Button>
                                 </div>
 
@@ -70,9 +102,6 @@ export default function Header({ fixed }) {
                                     </Button>
                                 </Link>}
                         </div>
-
-
-
                     </div>
                 </div>
 
@@ -84,6 +113,7 @@ export default function Header({ fixed }) {
                 showModal={showModal}
                 closeModal={closeModal}
                 className="!absolute md:top-8 md:bottom-8 md:right-8 md:max-w-md !p-4"
+                userData={userData}
             />
         </>
 

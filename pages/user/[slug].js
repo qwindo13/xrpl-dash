@@ -27,6 +27,7 @@ function truncateAddress(address, maxLength = 12) {
 
 export default function Profile() {
     const [userData, setUserData] = useState({});
+    const [isOwner, setIsOwner] = useState(false);
     const router = useRouter();
     const xrpAddress = router.query.slug;
     const api_url = config.api_url;
@@ -53,6 +54,13 @@ export default function Profile() {
                 });
     }, [xrpAddress]);
 
+    useEffect(() => {
+        const addy = localStorage.getItem('address');
+        if (addy === xrpAddress) {
+            setIsOwner(true);
+        }
+    }, [xrpAddress]);
+
     return (
         <AppLayout>
             <div className='flex flex-col w-full gap-16'>
@@ -62,17 +70,18 @@ export default function Profile() {
                     </div>
                     <div className='absolute right-4 bottom-4 md:right-8 md:bottom-8'>
                         <div className='flex flex-row px-4 py-2 gap-8 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-sm rounded-xl'>
-                            <Link href={`https://twitter.com/${userData.twitter}`} target='_blank'><TwitterIcon sx={{ fontSize: 18 }} /></Link>
-                            <Link href={`tg://user?id=${userData.telegram}`} target='_blank'><TelegramIcon sx={{ fontSize: 18 }} /></Link>
+                            { userData.twitter && <Link href={`https://twitter.com/${userData.twitter}`} target='_blank'><TwitterIcon sx={{ fontSize: 18 }} /></Link> }
+                            { userData.telegram && <Link href={`tg://user?id=${userData.telegram}`} target='_blank'><TelegramIcon sx={{ fontSize: 18 }} /></Link> }
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col text-left gap-2">
-                    <div className='flex flex-row gap-4 items-center'>
-                        <span className="text-2xl font-semibold">{ userData.username || `Username`}</span>
-                        <Link href="./settings/profile"><Button className="text-xs">Edit Profile</Button></Link>
-                    </div>
-        
+                    {isOwner &&
+                        <div className='flex flex-row gap-4 items-center'>
+                            <span className="text-2xl font-semibold">{ userData.username || `Username`}</span>
+                            <Link href="/settings/profile"><Button className="text-xs">Edit Profile</Button></Link>
+                        </div>
+                    }
                     <Tooltip copyContent={xrpAddress}>
                         <span className="text-lg font-semibold opacity-60 cursor-pointer">{truncateAddress(xrpAddress)}</span> 
                     </Tooltip>
