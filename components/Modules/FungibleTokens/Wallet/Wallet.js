@@ -107,6 +107,9 @@ const Wallet = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (xrpAddress === null) {
+          return;
+        }
         const url = `${config.api_url}/wallettrustlines/${xrpAddress}`;
         const response = await fetch(url);
         const data = await response.json();
@@ -166,9 +169,11 @@ const Wallet = () => {
       }
     };
 
-    fetchData().then(() => {
-      setLoading(false);
-    });
+    if (xrpAddress !== null) {
+      fetchData().then(() => {
+        setLoading(false);
+      });
+    }
   }, [xrpAddress]);
 
   const colorScale =  ['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'].reverse();
@@ -176,7 +181,7 @@ const Wallet = () => {
   const DonutChartWrapper = useMemo(
     () =>
       // eslint-disable-next-line react/display-name
-      React.memo(({ moduleSettings, totXrp, totFiat, loading,mock=false }) => (
+      React.memo(({ moduleSettings, totXrp, totFiat, loading }) => (
         <motion.div
           layout
           className={`aspect-square h-full ${
@@ -185,8 +190,7 @@ const Wallet = () => {
         >
           <DonutChart
             // data={data} do not send tokens with balance 0
-            // data={data.filter((token) => token.balance > 0)}
-            data={mock ? [{token: 'XRP', balance: 100, xrpValue: 100, value: 50}, {token: 'BTC', balance: 100, xrpValue: 100, value: 30}, {token: 'ETH', balance: 100, xrpValue: 100, value: 20}] : data}
+            data={data.filter((token) => token.balance > 0)}
             colorScale={colorScale}
             valueXRP={`${totXrp} XRP`}
             valueFiat={`$${totFiat}`}

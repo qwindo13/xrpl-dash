@@ -65,7 +65,7 @@ export default function Home() {
 
           // setXrpAddress(checkSignJson.xrpAdress)
           //set address in local storage
-          localStorage.setItem('address', checkSignJson.xrpAdress)
+          localStorage.setItem('address', checkSignJson.xrpAddress)
 
           //check if user exists, post req to /checkUserExists
           setCustomMessage('Logging you in...')
@@ -75,7 +75,7 @@ export default function Home() {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              address: checkSignJson.xrpAdress
+              address: checkSignJson.xrpAddress
             })
           })
           const checkUserExistsJson = await checkUserExists.json()
@@ -85,8 +85,8 @@ export default function Home() {
           } else {
             //createUser
             const payload = {
-              address: checkSignJson.xrpAdress,
-              username: checkSignJson.xrpAdress,
+              address: checkSignJson.xrpAddress,
+              username: checkSignJson.xrpAddress,
               bio: null,
               pfp_id: null,
               banner_id: null,
@@ -109,9 +109,6 @@ export default function Home() {
               console.log(createUserJson)
             }
           }
-          //redirect to dashboard
-          // window.location.href = '/'
-
         }
       }
     }

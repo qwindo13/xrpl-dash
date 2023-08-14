@@ -30,17 +30,15 @@ export default function Profile() {
     const [xrpAddress, setXrpAddress] = useState('');
     const [userData, setUserData] = useState({});
     const router = useRouter();
-    const { address } = router.query;
+    const { slug } = router.query;
     useEffect(() => {
-        if (address) {
-            setXrpAddress(address);
+        if (slug) {
+            setXrpAddress(slug);
         }
-    }, [address]);
+    }, [slug]);
     const api_url = config.api_url;
 
     useEffect(() => {
-        if (localStorage.getItem('address')) {
-            setXrpAddress(localStorage.getItem('address'));
             //send post req to api/checkUserExists with address
             fetch(`${api_url}/checkUserExists`, {
                 method: 'POST',
@@ -48,7 +46,7 @@ export default function Profile() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    address: localStorage.getItem('address'),
+                    address: xrpAddress,
                 }),
             })
                 .then((res) => res.json())
@@ -61,10 +59,6 @@ export default function Profile() {
                 .catch((err) => {
                     console.log(err);
                 });
-        } else {
-            // setLoggedin(false);
-            router.push('/auth/login');
-        }
     }, []);
 
     return (
