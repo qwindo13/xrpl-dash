@@ -196,10 +196,10 @@ const RichList = () => {
            
                 Array.from({length: 33 }).map((_, index) => (
                 <div key={index} className="flex flex-row justify-between animate-pulse">
-                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded-lg w-1/12" />
-                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded-lg w-4/12" />
-                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded-lg w-3/12" />
-                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded-lg w-2/12" />
+                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded w-1/12" />
+                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded w-4/12" />
+                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded w-3/12" />
+                  <span className="h-4 bg-[#A6B0CF] bg-opacity-5 rounded w-2/12" />
                 </div>
                 ))
               :

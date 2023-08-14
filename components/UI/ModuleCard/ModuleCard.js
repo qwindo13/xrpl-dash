@@ -75,7 +75,7 @@ const ModuleCard = ({ children, className, title, settings, disableTitle, callTo
       </AnimatePresence>
 
       {/* CARD CONTENT */}
-      <div className="w-full h-full flex items-start overflow-y-scroll">
+      <div className="w-full h-full flex items-start overflow-x-hidden">
         {children}
       </div>
 
