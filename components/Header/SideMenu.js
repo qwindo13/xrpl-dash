@@ -19,7 +19,7 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
             <div className="flex flex-col md:flex-col justify-between gap-8 h-full">
                 <div className="w-full flex flex-row justify-between items-center">
                     <Button onClick={openModal} className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation>
-                        <div className="rounded-full h-12 w-12 mr-4 bg-default-avatar" title={xrpAddress}></div>
+                        <div className="rounded-full h-12 w-12 mr-4 bg-default-avatar" title={xrpAddress} style={userData.pfp_nft_url ? { backgroundImage: `url(${userData.pfp_nft_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}></div>
                         <div className="flex flex-col text-left">
                             <span className="text-lg font-semibold">@{userData.username || ''}</span>
                             <Tooltip copyContent={xrpAddress}>

@@ -16,6 +16,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import ImageSearchRoundedIcon from "@mui/icons-material/ImageSearchRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { config } from "@/configcomponents";
+import axios from "axios";
 
 function ProfileSettings({ children }) {
   const variants = {
@@ -41,6 +42,12 @@ function ProfileSettings({ children }) {
   const [xummButtonClicked, setXummButtonClicked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [closeModal, setCloseModal] = useState(true);
+  const [nfts, setNfts] = useState([]);
+  const [nfts2, setNfts2] = useState([]);
+  const [selectedNft, setSelectedNft] = useState("");
+  const [selectedBanner, setSelectedBanner] = useState("");
+  const [selectedBannerImage, setSelectedBannerImage] = useState("");
+  const [selectedNftImage, setSelectedNftImage] = useState("");
   const api_url = config.api_url;
 
   const closeAvatarModal = () => setShowAvatarModal(false);
@@ -66,6 +73,14 @@ function ProfileSettings({ children }) {
   const [xrpAddress, setXrpAddress] = useState("");
   const router = useRouter();
 
+  const convertHexToString = (hex) => {
+    let string = "";
+    for (let i = 0; i < hex.length; i += 2) {
+      string += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    }
+    return string;
+  };
+
   useEffect(() => {
     if (localStorage.getItem("address")) {
       setXrpAddress(localStorage.getItem("address"));
@@ -73,7 +88,74 @@ function ProfileSettings({ children }) {
       // setLoggedin(false);
       router.push("/auth/login");
     }
+    const userData = sessionStorage.getItem("userData");
+    if (userData) {
+      const userDataJson = JSON.parse(userData);
+      setUserName(userDataJson.username);
+      setBio(userDataJson.bio);
+      setTwitter(userDataJson.twitter);
+      setTelegram(userDataJson.telegram);
+      setSelectedNft(userDataJson.pfp_nft_id);
+      setSelectedNftImage(userDataJson.pfp_nft_url);
+      setSelectedBanner(userDataJson.banner_nft_id);
+      setSelectedBannerImage(userDataJson.banner_nft_url);
+    }
   }, []);
+
+  useEffect(() => {
+    if (xrpAddress) {
+      const url = `${api_url}/walletnfts/rbKoFeFtQr2cRMK2jRwhgTa1US9KU6v4L`
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data.nfts);
+          setNfts(data.nfts);
+        });
+    }
+  }, [xrpAddress]);
+
+  useEffect(() => {
+    console.log(nfts.length);
+    if (nfts.length > 0) {
+      fetchNfts()
+    }
+
+    async function fetchNfts() {
+      nfts.forEach(async (nft) => {
+        //if URI field is not present, then skip
+        if (nft.URI) {
+          const decoded = convertHexToString(nft.URI);
+          if (decoded.startsWith('https://')) {
+            const data = await axios.get(decoded);
+            decodeImage(data, nft);
+          } else if (decoded.startsWith('ipfs://')) {
+            //detect the cid from the decoded string
+            const cid = decoded.replace('ipfs://', 'https://ipfs.io/ipfs/');
+            const data = await axios.get(cid);
+            decodeImage(data, nft);
+          } else {
+            // finalNfts.push(`https://ipfs.io/ipfs/${decoded}`);
+            const data = await axios.get(`https://ipfs.io/ipfs/${decoded}`);
+            decodeImage(data, nft);
+          }
+        }
+      });
+
+      function decodeImage(data, nft) {
+        if (data.data.image === undefined) {
+          return
+        }
+        if (data.data.image.startsWith('ipfs://')) {
+          const image = data.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
+          setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image }]);
+        } else if (data.data.image.startsWith('https://')) {
+          setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.image }]);
+        } else {
+          setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.image}` }]);
+        }
+      }
+    }
+  }, [nfts]);
 
   useEffect(() => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -102,10 +184,8 @@ function ProfileSettings({ children }) {
           const hex = payloadJson.payload.response.hex;
           const checkSign = await fetch(`/api/xumm/checksign?hex=${hex}`);
           const checkSignJson = await checkSign.json();
-
           if (checkSignJson.xrpAddress === xrpAddress) {
             // setLoggedin(true);
-            console.log("success");
             const updateUser = await fetch(`${api_url}/updateUser`, {
               method: "POST",
               headers: {
@@ -116,14 +196,19 @@ function ProfileSettings({ children }) {
                 username: userName,
                 bio: bio,
                 twitter: twitter,
-                telegram: telegram
+                telegram: telegram,
+                pfp_id: selectedNft,
+                pfp_img: selectedNftImage,
+                banner_id: selectedBanner,
+                banner_img: selectedBannerImage,
               }),
             });
 
             const updateUserJson = await updateUser.json();
-            console.log(updateUserJson);
             if (updateUserJson.success) {
-              router.push("/profile");
+              //delete session storage
+              sessionStorage.removeItem("userData");
+              router.push("/user/" + xrpAddress);
             } else {
               // setLoggedin(false);
               console.log("failed");
@@ -131,9 +216,6 @@ function ProfileSettings({ children }) {
               router.push("/settings/profile");
             }
           } else {
-            console.log(checkSignJson.xrpAddress);
-            console.log(xrpAddress);
-            console.log(checkSignJson.xrpAddress === xrpAddress);
             // setLoggedin(false);
             console.log("failed");
           }
@@ -156,7 +238,8 @@ function ProfileSettings({ children }) {
     <>
       <SettingsLayout>
         <div className="w-full flex flex-col gap-16">
-          <div className="relative w-full h-40 md:h-72 rounded-2xl bg-[#21212A] p-2">
+          <div className="relative w-full h-40 md:h-72 rounded-2xl bg-[#21212A] p-2" style={selectedBanner ? { backgroundImage: `url(${selectedBannerImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
+            { nfts2.length > 0 && (
             <motion.div
               onClick={openBannerModal}
               variants={variants}
@@ -166,8 +249,11 @@ function ProfileSettings({ children }) {
             >
               <ImageSearchRoundedIcon />
             </motion.div>
+            )}
             <div className="absolute left-4 md:left-8 -bottom-8">
-              <div className="w-32 h-32 md:w-36 md:h-36 p-2 rounded-full bg-default-avatar border-2 border-[#1A1921] ">
+              {/* set image as https://ipfs.io/ipfs/bafybeiek4j6yn3p3jvoxxsmfttzprfn7en3togmslm6yjloolajcoqpzju/3436.png */}
+              <div className="w-32 h-32 md:w-36 md:h-36 p-2 rounded-full border-2 border-[#1A1921] bg-default-avatar" style={selectedNft ? { backgroundImage: `url(${selectedNftImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
+                { nfts2.length > 0 && (
                 <motion.div
                   onClick={openAvatarModal}
                   variants={variants}
@@ -177,6 +263,7 @@ function ProfileSettings({ children }) {
                 >
                   <ImageSearchRoundedIcon />
                 </motion.div>
+                )}
               </div>
             </div>
           </div>
@@ -242,13 +329,23 @@ function ProfileSettings({ children }) {
         </div>
         <div className="relative mb-4 md:mb-8">
           <div ref={sliderRef} className="keen-slider ">
-            {Array.from({ length: 8 }).map((_, index) => (
+            {Array.from({ length: nfts2.length }).map((_, index) => (
               <div
                 key={index}
                 className="keen-slider__slide"
                 style={{ maxWidth: "11.1rem", minWidth: "11.1rem" }}
               >
-                <Nft />
+                {/* { nfts.length > 0 && <Nft src={nfts2[index].image} /> } */}
+                {nfts2.length > 0 && (
+                  <Nft
+                    src={nfts2[index].image}
+                    onClick={() => {
+                      // console.log(nfts2[index].nftid);
+                      setSelectedNft(nfts2[index].nftid);
+                      setSelectedNftImage(nfts2[index].image);
+                    }}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -274,8 +371,7 @@ function ProfileSettings({ children }) {
                     e.stopPropagation() || instanceRef.current?.next()
                   }
                   disabled={
-                    currentSlide ===
-                    instanceRef.current.track.details.slides.length - 3
+                    currentSlide === instanceRef.current.track.details.slides.length - 3
                   }
                 />
               </>
@@ -293,9 +389,63 @@ function ProfileSettings({ children }) {
           Select an NFT from your wallet or buy a new one to use as your new
           banner.
         </span>
+
+        <div className="relative mb-4 md:mb-8">
+          <div ref={sliderRef} className="keen-slider ">
+            {Array.from({ length: nfts2.length }).map((_, index) => (
+              <div
+                key={index}
+                className="keen-slider__slide"
+                style={{ maxWidth: "11.1rem", minWidth: "11.1rem" }}
+              >
+                {/* { nfts.length > 0 && <Nft src={nfts2[index].image} /> } */}
+                {nfts2.length > 0 && (
+                  <Nft
+                    src={nfts2[index].image}
+                    onClick={() => {
+                      // console.log(nfts2[index].nftid);
+                      setSelectedBanner(nfts2[index].nftid);
+                      setSelectedBannerImage(nfts2[index].image);
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="absolute top-1/2 left-0 transform -translate-y-1/2  flex flex-row justify-between">
+            {loaded && instanceRef.current && (
+              <>
+                <SliderButton
+                  left
+                  onClick={(e) =>
+                    e.stopPropagation() || instanceRef.current?.prev()
+                  }
+                  disabled={currentSlide === 0}
+                />
+              </>
+            )}
+          </div>
+          <div className="absolute top-1/2 right-0 transform -translate-y-1/2  flex flex-row justify-between">
+            {loaded && instanceRef.current && (
+              <>
+                <SliderButton
+                  right
+                  onClick={(e) =>
+                    e.stopPropagation() || instanceRef.current?.next()
+                  }
+                  disabled={
+                    currentSlide === instanceRef.current.track.details.slides.length - 3
+                  }
+                />
+              </>
+            )}
+          </div>
+        </div>
+
       </Modal>
+
       <Modal showModal={showModal} closeModal={closeModal}>
-        {/* Login */}
+        {/* verify */}
         <div>
           <Image
             className="absolute p-0 top-[-38px] left-0"
@@ -306,7 +456,7 @@ function ProfileSettings({ children }) {
           />
           <div className="w-full flex flex-row justify-between items-start pb-8 relative">
             <h3 className="font-semibold text-xl">
-              Scan the QR code with XUMM app
+              Scan the QR code with XUMM app to verify your account
             </h3>
             <button onClick={() => setXummButtonClicked(false)}>
               {" "}
@@ -333,8 +483,7 @@ function ProfileSettings({ children }) {
                     <span className="text-white font-bold">3</span>
                   </div>
                   <p>
-                    Follow the instructions on your app to complete the login
-                    process.
+                    Follow the instructions on your app to complete the verification process.
                   </p>
                 </div>
               </div>
