@@ -43,7 +43,16 @@ export default function Header({ fixed }) {
     };
 
     useEffect(() => {
-        const cached = sessionStorage.getItem('userData');
+        let cached = sessionStorage.getItem('userData');
+        if (cached !== null) {
+            const address = localStorage.getItem('address');
+            const cachedJson = JSON.parse(cached);
+            const compare = cachedJson.address.localeCompare(address);
+            if (compare !== 0) {
+                sessionStorage.removeItem('userData');
+                cached = null;
+            } 
+        }
         if (xrpAddress !== '' && cached === null) {
             fetch(`${api_url}/checkUserExists`, {
                 method: 'POST',

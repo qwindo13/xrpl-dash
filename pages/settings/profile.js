@@ -88,8 +88,14 @@ function ProfileSettings({ children }) {
       // setLoggedin(false);
       router.push("/auth/login");
     }
-    const userData = sessionStorage.getItem("userData");
-    if (userData) {
+    let userData = sessionStorage.getItem("userData");
+    let compare = 1;
+    if (userData !== null) {
+      const userDataJson = JSON.parse(userData);
+      compare = userDataJson.address.localeCompare(localStorage.getItem("address"));
+    }
+    if (compare === 0) {
+      console.log("matched");
       const userDataJson = JSON.parse(userData);
       setUserName(userDataJson.username);
       setBio(userDataJson.bio);
@@ -99,12 +105,40 @@ function ProfileSettings({ children }) {
       setSelectedNftImage(userDataJson.pfp_nft_url);
       setSelectedBanner(userDataJson.banner_nft_id);
       setSelectedBannerImage(userDataJson.banner_nft_url);
+    } else {
+      fetch(`${api_url}/checkUserExists`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          address: localStorage.getItem("address"),
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.exists) {
+            console.log("exists");
+            setUserName(data.username);
+            setBio(data.bio);
+            setTwitter(data.twitter);
+            setTelegram(data.telegram);
+            setSelectedNft(data.pfp_nft_id);
+            setSelectedNftImage(data.pfp_nft_url);
+            setSelectedBanner(data.banner_nft_id);
+            setSelectedBannerImage(data.banner_nft_url);
+          } else {
+            // setLoggedin(false);
+            console.log("failed");
+            // router.push("/auth/login");
+          }
+        });
     }
-  }, []);
+  }, []); 
 
   useEffect(() => {
     if (xrpAddress) {
-      const url = `${api_url}/walletnfts/rbKoFeFtQr2cRMK2jRwhgTa1US9KU6v4L`
+      const url = `${api_url}/walletnfts/${xrpAddress}`;
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
