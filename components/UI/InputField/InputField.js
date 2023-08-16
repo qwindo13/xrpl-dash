@@ -22,6 +22,7 @@ const InputField = ({ children, onClick, className, label, placeholder, icon, is
                     className={`bg-[#21212A] h-full block w-full p-4 ${icon ? 'pl-12' : 'pl-4'} text-medium border border-transparent hover:border-white hover:border-opacity-5  focus:border-white focus:border-opacity-70 active:border active:border-opacity-70 placeholder:text-white placeholder:opacity-60 rounded-2xl transition-all duration-300 ${className}`}
                     placeholder={placeholder}
                     required={isRequired}
+                    maxLength={40}
                 />
             </div>
         </div>

@@ -43,7 +43,16 @@ export default function Header({ fixed }) {
     };
 
     useEffect(() => {
-        const cached = sessionStorage.getItem('userData');
+        let cached = sessionStorage.getItem('userData');
+        if (cached !== null) {
+            const address = localStorage.getItem('address');
+            const cachedJson = JSON.parse(cached);
+            const compare = cachedJson.address.localeCompare(address);
+            if (compare !== 0) {
+                sessionStorage.removeItem('userData');
+                cached = null;
+            } 
+        }
         if (xrpAddress !== '' && cached === null) {
             fetch(`${api_url}/checkUserExists`, {
                 method: 'POST',
@@ -90,7 +99,7 @@ export default function Header({ fixed }) {
                             {xrpAddress ?
                                 <div className="flex flex-row gap-2 items-center">
                                     <Button onClick={openModal} className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation>
-                                        <div className="rounded-full h-10 w-10 md:mr-4 bg-default-avatar" title={xrpAddress}></div>
+                                        <div className="rounded-full h-10 w-10 md:mr-4 bg-default-avatar" title={xrpAddress} style={userData.pfp_nft_url ? { backgroundImage: `url(${userData.pfp_nft_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}></div>
                                         <span className="hidden md:flex text-base font-semibold">{userData.username}</span>
                                     </Button>
                                 </div>
