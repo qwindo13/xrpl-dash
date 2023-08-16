@@ -62,7 +62,7 @@ const QuickSwap = () => {
                 {/* Pay Section */}
                 <div
                     ref={payRef}
-                    className={`w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 ${moduleSettings.backgroundSetting === 'Transparent' ? 'border-none bg-[#A6B0CF] bg-opacity-5' : ''}`}
+                    className={`w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 ${moduleSettings.backgroundSetting === 'Transparent' ? 'border-none bg-[#21212A]' : ''}`}
                 >
                     <div className='flex flex-row justify-between'>
                         <span className='text-sm opacity-60 font-semibold'>Pay with</span>
@@ -103,7 +103,7 @@ const QuickSwap = () => {
                 {/* Receive Section */}
                 <div
                     ref={receiveRef}
-                    className={`w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 ${moduleSettings.backgroundSetting === 'Transparent' ? 'border-none bg-[#A6B0CF] bg-opacity-5' : ''}`}
+                    className={`w-full flex flex-col justify-between rounded-xl border border-white border-opacity-5 p-4 ${moduleSettings.backgroundSetting === 'Transparent' ? 'border-none bg-[#21212A]' : ''}`}
                 >
                     <div className='flex flex-row justify-between'>
                         <span className='text-sm opacity-60 font-semibold'>Receive</span>
