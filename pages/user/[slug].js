@@ -34,6 +34,8 @@ export default function Profile() {
     const api_url = config.api_url;
 
     useEffect(() => {
+        if (!xrpAddress) return;
+        else {
         setLoading(true); // Start loading
     
         fetch(`${api_url}/checkUserExists`, {
@@ -56,6 +58,7 @@ export default function Profile() {
                 console.log(err);
                 setLoading(false); // Stop loading if there's an error
             });
+        }
     }, [xrpAddress]);
 
     useEffect(() => {
@@ -92,8 +95,18 @@ export default function Profile() {
                                 <Link href="/settings/profile"><Button className="text-xs">Edit Profile</Button></Link>
                             </div>
                         )
-                    ) : null}
-
+                    ) : (
+                        isLoading ? (
+                            <div className='flex flex-row gap-4 items-center animate-pulse'>
+                                <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-32 h-6 "></div>
+                                <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-24 h-6"></div>
+                            </div>
+                        ) : (
+                            <div className='flex flex-row gap-4 items-center'>
+                                <span className="text-2xl font-semibold">{userData.username || truncateAddress(xrpAddress)}</span>
+                            </div>
+                        )
+                    )}
                     {isLoading ? (
                         <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-40 h-5 animate-pulse"></div>
                     ) : (

@@ -53,7 +53,7 @@ export default function Header({ fixed }) {
                 cached = null;
             } 
         }
-        if (xrpAddress !== '' && cached === null) {
+        if (xrpAddress !== '' && cached === null && xrpAddress !== null) {
             fetch(`${api_url}/checkUserExists`, {
                 method: 'POST',
                 headers: {
