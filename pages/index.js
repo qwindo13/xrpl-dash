@@ -119,7 +119,7 @@ export default function Home( {houndPrice, xrpPrice} ) {
     }, []);
 
     return (
-        <AppLayout showControlPanel onClickTitle={onClickTitle}>
+        <AppLayout showControlPanel onClickTitle={onClickTitle} className='overflow-hidden'>
             <div ref={gridContainerRef} className="w-full"> {/* Attach the reference to the parent */}
                 <ResponsiveGridLayout
                     className="layout"
