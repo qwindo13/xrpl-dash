@@ -1,13 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Nft = ({ displayName, displayPrice, imageSize, selected, onClick, src = '/images/nft.webp'}) => {
+const Nft = ({ displayName, displayPrice, imageSize, selected, onClick, videoFlag, src = '/images/nft.webp'}) => {
     return (
         <div 
             className={`border ${selected ? 'border-blue-500 border-opacity-100' : 'border-white border-opacity-5'} p-2 w-fit h-fit rounded-2xl flex flex-col gap-4 cursor-pointer`} onClick={onClick}
         >
             <div className={`w-40 h-40 ${imageSize}`}>
-                <img className='w-full h-full rounded-xl' src={src} alt="NFT" />
+                {/* <img className='w-full h-full rounded-xl' src={src} alt="NFT" /> */}
+                {
+                    videoFlag ? (
+                        <video className='w-full h-full rounded-xl' autoPlay loop muted playsInline src={src} />
+                    ) : (
+                        <img className='w-full h-full rounded-xl' src={src} alt="NFT" />
+                    )
+                }
             </div>
 
             {displayName &&
