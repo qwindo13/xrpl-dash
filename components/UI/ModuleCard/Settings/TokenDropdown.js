@@ -162,7 +162,7 @@ const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" }) => {
                             tokens.map((token, index) => (
                                 <>
                                     <div className='flex flex-row items-center cursor-pointer' onClick={() => handleTokenClick(token)}>
-                                        <img width="30" height="30" src={searchImages[index]} alt="icon" className='mr-2 rounded-full' />
+                                        <Image width="30" height="30" src={searchImages[index]} alt="icon" className='mr-2 rounded-full' />
                                         <span className="whitespace-nowrap font-semibold" key={index}>
                                             {
                                                 // token.split(":")[0] change from hex to string if it is longer than 3 characters

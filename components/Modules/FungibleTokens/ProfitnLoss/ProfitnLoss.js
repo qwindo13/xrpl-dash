@@ -4,22 +4,17 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
-import Button from '@/components/UI/Button/Buttoncomponents';
-import Dropdown from '@/components/UI/Dropdown/Dropdowncomponents';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
-import useResizeObserver from '@/hooks/useResizeObserver';
+import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
+import ProfitTabs from "@/components/UI/ModuleCard/Settings/ProfitTabscomponents";
+
 
 const defaultSettings = {
     displayTitle: true,
+    backgroundSetting: "Transparent",
 };
 
 const ProfitnLose = () => {
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
-    const [payWithToken, setPayWithToken] = useState(null);
-    const [receiveToken, setReceiveToken] = useState(null);
-    const [payRef, payDimensions] = useResizeObserver();
-    const [receiveRef, receiveDimensions] = useResizeObserver();
 
     const updateSettings = (key, value) => {
         setModuleSettings((prevSettings) => ({
@@ -27,11 +22,11 @@ const ProfitnLose = () => {
             [key]: value,
         }));
     };
-    const handleSwap = () => {
-        const temp = payWithToken;
-        setPayWithToken(receiveToken);
-        setReceiveToken(temp);
-    };
+
+    const backgroundClass = moduleSettings.backgroundSetting === 'Solid' ? '' :
+    moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#525567] ' :
+        moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
+
 
     return (
         <ModuleCard
@@ -42,9 +37,18 @@ const ProfitnLose = () => {
                         value={moduleSettings.displayTitle}
                         onChange={(value) => updateSettings("displayTitle", value)}
                     />
+                    <ProfitTabs 
+                    value={moduleSettings.profitSetting}
+                    onChange={(value) => updateSettings("profitSetting", value)}
+                    />
+                    <BackgroundTabs
+                        value={moduleSettings.backgroundSetting}
+                        onChange={(value) => updateSettings("backgroundSetting", value)}
+                    />
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}
+            className={`${backgroundClass}`}
         >
             <div className='w-full flex flex-col  relative justify-center h-full'>
 
@@ -53,7 +57,7 @@ const ProfitnLose = () => {
                         HOUND
                     </span>
                 </Link>
-                <span className="text-lg  font-semibold text-positive opacity-50">+3,144 XRP</span>
+                <span className="text-lg font-semibold text-positive opacity-50">+3,144 XRP</span>
             </div>
 
 

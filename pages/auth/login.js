@@ -212,14 +212,15 @@ export default function Home() {
                 <p>Don’t see a Scan option? <br></br>Update your XUMM app to the latest version and try again.</p>
               </div>
             </div>
-            <div className='w-full md:w-1/2'>
+            <div className='w-full h-full md:w-1/2'>
               {/* <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' /> */}
               {
                 qrCode ?
                   <a href={qrCodeUrl} target="_blank" rel="noreferrer">
-                    <img className='w-full rounded-xl' src={qrCode} alt='XUMM QR' />
+                    <Image className='w-full rounded-xl' src={qrCode} alt='XUMM QR' height={500} width={500} />
                   </a>
                   : <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' />
+                  
               }
             </div>
 
