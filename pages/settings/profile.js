@@ -45,12 +45,18 @@ function ProfileSettings({ children }) {
   const [nfts, setNfts] = useState([]);
   const [nfts2, setNfts2] = useState([]);
   const [selectedNft, setSelectedNft] = useState("");
+  const [selectedNftImage, setSelectedNftImage] = useState("");
+  const [selectedNft2, setSelectedNft2] = useState("");
+  const [selectedNftImage2, setSelectedNftImage2] = useState("");
   const [selectedBanner, setSelectedBanner] = useState("");
   const [selectedBannerImage, setSelectedBannerImage] = useState("");
-  const [selectedNftImage, setSelectedNftImage] = useState("");
   const api_url = config.api_url;
 
-  const closeAvatarModal = () => setShowAvatarModal(false);
+  const closeAvatarModal = () => {
+    setShowAvatarModal(false);
+    setSelectedNft(selectedNft2);
+    setSelectedNftImage(selectedNftImage2);
+  }
   const closeBannerModal = () => setShowBannerModal(false);
 
   const openAvatarModal = () => setShowAvatarModal(true);
@@ -179,13 +185,46 @@ function ProfileSettings({ children }) {
         if (data.data.image === undefined) {
           return
         }
-        if (data.data.image.startsWith('ipfs://')) {
-          const image = data.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
-          setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image }]);
-        } else if (data.data.image.startsWith('https://')) {
-          setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.image }]);
+        if (!('video' in data.data) && data.data.video === undefined && data.data.video === '' && !('animation' in data.data) && data.data.animation === undefined && data.data.animation === '') {
+          if (data.data.image.startsWith('ipfs://')) {
+            const image = data.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
+            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image,videoFlag: false }]);
+          } else if (data.data.image.startsWith('https://')) {
+            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.image,videoFlag: false }]);
+          } else {
+            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.image}`,videoFlag: false }]);
+          }
         } else {
-          setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.image}` }]);
+          if ('video' in data.data && data.data.video !== undefined && data.data.video !== '') {
+            if (data.data.video.startsWith('ipfs://')) {
+              const image = data.data.video.replace('ipfs://', 'https://ipfs.io/ipfs/');
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image,videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
+            } else if (data.data.video.startsWith('https://')) {
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.video,videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
+            } else {
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.video}`,videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
+            }
+          } else if ('animation' in data.data && data.data.animation !== undefined && data.data.animation !== '') {
+            console.log(`Animation: ${data.data.animation}\n${data.data.animation.substr(data.data.animation.length - 3)}`)
+            if (data.data.animation.startsWith('ipfs://')) {
+              const image = data.data.animation.replace('ipfs://', 'https://ipfs.io/ipfs/');
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image,videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
+            } else if (data.data.animation.startsWith('https://')) {
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.animation,videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
+            } else {
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.animation}`,videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
+            }
+          } else {
+            //use image
+            if (data.data.image.startsWith('ipfs://')) {
+              const image = data.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image,videoFlag: false }]);
+            } else if (data.data.image.startsWith('https://')) {
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.image,videoFlag: false }]);
+            } else {
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.image}`,videoFlag: false }]);
+            }
+          }
         }
       }
     }
@@ -371,14 +410,16 @@ function ProfileSettings({ children }) {
               >
                 {/* { nfts.length > 0 && <Nft src={nfts2[index].image} /> } */}
                 {nfts2.length > 0 && (
-                  <Nft
-                    src={nfts2[index].image}
-                    onClick={() => {
-                      // console.log(nfts2[index].nftid);
-                      setSelectedNft(nfts2[index].nftid);
-                      setSelectedNftImage(nfts2[index].image);
-                    }}
-                  />
+                    <Nft
+                      src={nfts2[index].image}
+                      onClick={() => {
+                        // console.log(nfts2[index].nftid);
+                        setSelectedNft2(nfts2[index].nftid);
+                        setSelectedNftImage2(nfts2[index].image);
+                      }}
+                      selected={nfts2[index].nftid === selectedNft2}
+                      videoFlag={nfts2[index].videoFlag}
+                    />
                 )}
               </div>
             ))}
@@ -413,7 +454,9 @@ function ProfileSettings({ children }) {
           </div>
         </div>
         <div className="flex justify-end">
-          <Button className="bg-white !text-[#1A1921]">Save</Button>
+          <Button className="bg-white !text-[#1A1921]" onClick={closeAvatarModal}>
+            Save
+          </Button>
         </div>
       </Modal>
 

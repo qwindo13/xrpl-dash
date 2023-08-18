@@ -17,6 +17,8 @@ export default function Home( {houndPrice, xrpPrice} ) {
     const gridContainerRef = useRef(null); // Create a reference to the parent
     const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
     const [xrpAddress, setXrpAddress] = useState(null);
+    // const [modules, setModules] = useState(['wallet', 'priceinfo', 'quickswap', 'badges']);
+    const [modules, setModules] = useState([]);
     const router = useRouter();
 
     // Update the gridWidth on window resize and component mount
@@ -36,35 +38,38 @@ export default function Home( {houndPrice, xrpPrice} ) {
     }, []);
 
     // Define the layout configuration
-    const [layout, setLayout] = useState({
-        lg: [
-            { i: 'badges', x: 2, y: 0, ...badges.lg },
-            { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.lg },
-            { i: 'priceInfo2', x: 2, y: 1, ...priceInfoSize.lg },
-            { i: 'richList', x: 0, y: 0, ...richListSize.lg },
-            { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.lg },
-            { i: 'wallet', x: 0, y: 2, ...walletSize.lg },
-            { i: 'feed', x: 2, y: 2, ...feedSize.lg },
-        ],
-        md: [
-            { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.md },
-            { i: 'priceInfo2', x: 3, y: 0, ...priceInfoSize.md },
-            { i: 'richList', x: 0, y: 0, ...richListSize.md },
-            { i: 'quickswap', x: 2, y: 0, ...walletSize.md },
-            { i: 'feed', x: 0, y: 0, ...feedSize.md },
-        ],
-        sm: [
-            { i: 'priceInfo', x: 0, y: 0, ...priceInfoSize.sm },
-            { i: 'priceInfo2', x: 2, y: 0, ...priceInfoSize.sm },
-            { i: 'richList', x: 0, y: 0, ...richListSize.sm },
-            { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.sm },
-            { i: 'wallet', x: 0, y: 0, ...walletSize.sm },
-            { i: 'feed', x: 0, y: 0, ...feedSize.sm },
-        ]
-    });
+    const [layout, setLayout] = useState(
+            {
+            lg: [
+                // { i: 'badges', x: 2, y: 0, ...badges.lg },
+                // { i: 'priceinfo', x: 2, y: 0, ...priceInfoSize.lg },
+                // { i: 'richlist', x: 0, y: 0, ...richListSize.lg },
+                // { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.lg },
+                // { i: 'wallet', x: 0, y: 2, ...walletSize.lg },
+                // { i: 'feed', x: 2, y: 2, ...feedSize.lg },
+            ],
+            md: [
+            //     { i: 'priceinfo', x: 2, y: 0, ...priceInfoSize.md },
+            //     { i: 'richlist', x: 0, y: 0, ...richListSize.md },
+            //     { i: 'quickswap', x: 2, y: 0, ...walletSize.md },
+            //     { i: 'feed', x: 0, y: 0, ...feedSize.md },
+            ],
+            sm: [
+                // { i: 'priceinfo', x: 0, y: 0, ...priceInfoSize.sm },
+                // { i: 'richlist', x: 0, y: 0, ...richListSize.sm },
+                // { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.sm },
+                // { i: 'wallet', x: 0, y: 0, ...walletSize.sm },
+                // { i: 'feed', x: 0, y: 0, ...feedSize.sm },
+            ]
+        }
+    );
 
     const handleLayoutChange = (currentLayout) => {
         console.log('Layout changed:', currentLayout);
+        // localStorage.setItem('layout', JSON.stringify(currentLayout));
+        // if (currentLayout.length > 0) { 
+        //     localStorage.setItem('layout', JSON.stringify(currentLayout));
+        // }
     };
 
     useEffect(() => {
@@ -79,8 +84,42 @@ export default function Home( {houndPrice, xrpPrice} ) {
         }
     }, []);
 
+    const onClickTitle = (title) => {
+        console.log(title);
+        const name = `${title.toLowerCase().replace(/\s/g, '')}_${Date.now()}`;
+        setModules([...modules, name]);
+        const size = (title === 'Price Info') ? priceInfoSize : (title === 'Richlist') ? richListSize : (title === 'Quick Swap') ? quickSwapSize : (title === 'Wallet') ? walletSize : (title === 'Feed') ? feedSize : badges;
+        const newLayout = {
+            lg: [...layout.lg, { i: name, x: 0, y: 0, ...size.lg }],
+            md: [...layout.md, { i: name, x: 0, y: 0, ...size.md }],
+            sm: [...layout.sm, { i: name, x: 0, y: 0, ...size.sm }],
+        };
+
+        setLayout(newLayout);
+        localStorage.setItem('layout', JSON.stringify(newLayout));
+        localStorage.setItem('modules', JSON.stringify([...modules, name]));
+    };
+
+    useEffect(() => {
+        console.log(modules);
+    }, [modules]);
+
+    useEffect(() => {
+        const layout = localStorage.getItem('layout');
+        console.log(`layout: ${layout}`)
+        if (layout !== null && layout.length > 0) {
+            setLayout(JSON.parse(layout));
+        }
+
+        const modules = localStorage.getItem('modules');
+        console.log(`modules: ${modules}`)
+        if (modules !== null && modules.length > 0) {
+            setModules(JSON.parse(modules));
+        }
+    }, []);
+
     return (
-        <AppLayout showControlPanel>
+        <AppLayout showControlPanel onClickTitle={onClickTitle}>
             <div ref={gridContainerRef} className="w-full"> {/* Attach the reference to the parent */}
                 <ResponsiveGridLayout
                     className="layout"
@@ -97,28 +136,45 @@ export default function Home( {houndPrice, xrpPrice} ) {
                     autoSize={true}
                     onLayoutChange={handleLayoutChange}
                 >
-                    <div key="richList">
-                        <RichList />
-                    </div>
-                    <div key="priceInfo">
-                        <PriceInfo />
-                    </div>
-                    <div key="priceInfo2">
-                        <PriceInfo />
-                    </div>
-                    <div key="quickswap">
-                        <QuickSwap />
-                    </div>
-                    <div key="wallet">
-                        <Wallet />
-                    </div>
-                    <div key="badges">
-                        <Badges />
-                    </div>
-                    <div key="feed">
-                        <Feed data={mockFeed}/>
-                        </div>
-                    {/* Add other modules wrapped in a <div> with their unique key */}
+                    {modules.map((module) => {
+                        if (module.startsWith('priceinfo')) {
+                            return (
+                                <div key={module}>
+                                    <PriceInfo />
+                                </div>
+                            );
+                        } else if (module.startsWith('feed')) {
+                            return (
+                                <div key={module}>
+                                    <Feed feed={mockFeed} />
+                                </div>
+                            );
+                        } else if (module.startsWith('richlist')) {
+                            return (
+                                <div key={module}>
+                                    <RichList />
+                                </div>
+                            );
+                        } else if (module.startsWith('quickswap')) {
+                            return (
+                                <div key={module}>
+                                    <QuickSwap />
+                                </div>
+                            );
+                        } else if (module.startsWith('wallet')) {
+                            return (
+                                <div key={module}>
+                                    <Wallet />
+                                </div>
+                            );
+                        } else if (module.startsWith('badges')) {
+                            return (
+                                <div key={module}>
+                                    <Badges />
+                                </div>
+                            );
+                        }
+                    })}
                 </ResponsiveGridLayout>
             </div>
         </AppLayout>

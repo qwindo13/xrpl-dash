@@ -9,7 +9,8 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Mont', 'Poppins', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-        mont: ['Mont', 'sans']
+        mont: ['Mont', 'sans'],
+		montserrat: ['Montserrat', 'sans']
       },
       backgroundImage: {
         'default-avatar': 'linear-gradient(to bottom right, #f280a3, #c86ba0, #9b569d, #75619a, #4f6c97, #85a8d8)',
