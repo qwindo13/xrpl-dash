@@ -45,12 +45,18 @@ function ProfileSettings({ children }) {
   const [nfts, setNfts] = useState([]);
   const [nfts2, setNfts2] = useState([]);
   const [selectedNft, setSelectedNft] = useState("");
+  const [selectedNftImage, setSelectedNftImage] = useState("");
+  const [selectedNft2, setSelectedNft2] = useState("");
+  const [selectedNftImage2, setSelectedNftImage2] = useState("");
   const [selectedBanner, setSelectedBanner] = useState("");
   const [selectedBannerImage, setSelectedBannerImage] = useState("");
-  const [selectedNftImage, setSelectedNftImage] = useState("");
   const api_url = config.api_url;
 
-  const closeAvatarModal = () => setShowAvatarModal(false);
+  const closeAvatarModal = () => {
+    setShowAvatarModal(false);
+    setSelectedNft(selectedNft2);
+    setSelectedNftImage(selectedNftImage2);
+  }
   const closeBannerModal = () => setShowBannerModal(false);
 
   const openAvatarModal = () => setShowAvatarModal(true);
@@ -375,9 +381,10 @@ function ProfileSettings({ children }) {
                     src={nfts2[index].image}
                     onClick={() => {
                       // console.log(nfts2[index].nftid);
-                      setSelectedNft(nfts2[index].nftid);
-                      setSelectedNftImage(nfts2[index].image);
+                      setSelectedNft2(nfts2[index].nftid);
+                      setSelectedNftImage2(nfts2[index].image);
                     }}
+                    selected={nfts2[index].nftid === selectedNft2}
                   />
                 )}
               </div>
@@ -413,7 +420,9 @@ function ProfileSettings({ children }) {
           </div>
         </div>
         <div className="flex justify-end">
-          <Button className="bg-white !text-[#1A1921]">Save</Button>
+          <Button className="bg-white !text-[#1A1921]" onClick={closeAvatarModal}>
+            Save
+          </Button>
         </div>
       </Modal>
 
