@@ -8,7 +8,7 @@ import Modal from "../UI/Modal/Modal";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 
-export default function ControlPanel() {
+export default function ControlPanel( { onSelectTitle } ) {
     const rotateAnimation = useAnimation();
 
     const handleToggle = (isOpen) => {
@@ -16,7 +16,7 @@ export default function ControlPanel() {
     };
 
     const ModuleItem = ({ title, desc }) => (
-        <div className="flex flex-col p-4 rounded-xl bg-transparent border border-white border-opacity-5 font-semibold gap-2 w-full cursor-pointer">
+        <div className="flex flex-col p-4 rounded-xl bg-transparent border border-white border-opacity-5 font-semibold gap-2 w-full cursor-pointer" onClick={() => onSelectTitle(title)}>
             <span className="text-base">{title}</span>
             <span className="text-xs opacity-60">{desc}</span>
         </div>
