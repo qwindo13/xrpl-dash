@@ -69,7 +69,7 @@ export default function Profile() {
     }, [xrpAddress]);
 
     return (
-        <AppLayout>
+        <AppLayout className='overflow-hidden'>
             <div className='flex flex-col w-full gap-16'>
             {isLoading ? (
                     // Skeleton Loader for the Banner
