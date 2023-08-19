@@ -17,6 +17,7 @@ import ImageSearchRoundedIcon from "@mui/icons-material/ImageSearchRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { config } from "@/configcomponents";
 import axios from "axios";
+import TxModal from "@/components/Modals/TxModal/TxModalcomponents";
 
 function ProfileSettings({ children }) {
   const variants = {
@@ -530,9 +531,8 @@ function ProfileSettings({ children }) {
 
       </Modal>
 
-
-      <Modal showModal={showModal} closeModal={closeModal}>
-        {/* verify */}
+      <TxModal showModal={showModal} closeModal={closeModal} qrCode={qrCode} qrCodeUrl={qrCodeUrl} text='verification process' />
+      {/* <Modal showModal={showModal} closeModal={closeModal}>
         <div>
           <Image
             className="absolute p-0 top-[-38px] left-0"
@@ -582,7 +582,6 @@ function ProfileSettings({ children }) {
               </div>
             </div>
             <div className="w-full md:w-1/2">
-              {/* <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' /> */}
               {qrCode ? (
                 <a href={qrCodeUrl} target="_blank" rel="noreferrer">
                   <img
@@ -603,7 +602,7 @@ function ProfileSettings({ children }) {
             </div>
           </div>
         </div>
-      </Modal>
+      </Modal> */}
     </>
   );
 }

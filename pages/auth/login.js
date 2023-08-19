@@ -8,6 +8,7 @@ import Stepper from '@/components/UI/Stepper/Steppercomponents';
 import TagInput from '@/components/UI/TagInput/TagInputcomponents';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { config } from '@/configcomponents';
+import TxModal from '@/components/Modals/TxModal/TxModalcomponents';
 
 import mockTokens from '@/data/mockTokenscomponents';
 
@@ -177,9 +178,12 @@ export default function Home() {
         </div>
       </div>
 
+      <TxModal showModal={showModal} closeModal={closeModal} qrCode={qrCode} qrCodeUrl={qrCodeUrl} text={'login process'}/>
+
+
+      {/* 
       <Modal showModal={showModal} closeModal={closeModal}>
 
-        { /* Login */}
         <div >
           <Image className="absolute p-0 top-[-38px] left-0" src="/images/xumm-logo.svg" height={130} width={120} alt='XUMM' />
           <div className='w-full flex flex-row justify-between items-start pb-8 relative'>
@@ -213,7 +217,6 @@ export default function Home() {
               </div>
             </div>
             <div className='w-full h-full md:w-1/2'>
-              {/* <Image className="w-full blur-sm" src="/images/qr.png" height={200} width={200} alt='XUMM QR' /> */}
               {
                 qrCode ?
                   <a href={qrCodeUrl} target="_blank" rel="noreferrer">
@@ -227,9 +230,7 @@ export default function Home() {
           </div>
         </div>
 
-        { /* First Time Login */}
         <div className='hidden'>
-          { /* STEP 1*/}
           {currentStep === 0 &&
             <div>
               <div className='w-full flex flex-col text-center items-center pb-8 relative gap-8'>
@@ -244,7 +245,6 @@ export default function Home() {
               </div>
             </div>
           }
-          { /* STEP 2*/}
           {currentStep === 1 &&
             <div>
               <div className='w-full flex flex-col text-center items-center pb-8 relative gap-8'>
@@ -264,7 +264,7 @@ export default function Home() {
           />
         </div>
 
-      </Modal>
+      </Modal>  */}
 
     </main>
   )
