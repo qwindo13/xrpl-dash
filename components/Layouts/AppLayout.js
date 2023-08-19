@@ -2,11 +2,11 @@ import Header from "../Header/Header";
 import ControlPanel from "../ControlPanel/ControlPanel";
 import Footer from "../Footer/Footer";
 
-function AppLayout({ children, showControlPanel, onClickTitle }) {
+function AppLayout({ children, showControlPanel, onClickTitle, className }) {
     return (
         <>
             <Header fixed/>
-            <main>
+            <main className={className}>
 
                 {/* Banner testing 
                 <div className="absolute top-0 w-full h-48 overflow-hidden">

@@ -4,7 +4,7 @@ import Link from "next/link";
 const Nft = ({ displayName, displayPrice, imageSize, selected, onClick, videoFlag, src = '/images/nft.webp'}) => {
     return (
         <div 
-            className={`border ${selected ? 'border-blue-500 border-opacity-100' : 'border-white border-opacity-5'} p-2 w-fit h-fit rounded-2xl flex flex-col gap-4 cursor-pointer`} onClick={onClick}
+            className={`border ${selected ? 'border-opacity-100' : 'border-white border-opacity-5'} transition-colors duration-200 p-2 w-fit h-fit rounded-2xl flex flex-col gap-4 cursor-pointer`} onClick={onClick}
         >
             <div className={`w-40 h-40 ${imageSize}`}>
                 {/* <img className='w-full h-full rounded-xl' src={src} alt="NFT" /> */}

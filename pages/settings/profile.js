@@ -140,7 +140,7 @@ function ProfileSettings({ children }) {
           }
         });
     }
-  }, []); 
+  }, []);
 
   useEffect(() => {
     if (xrpAddress) {
@@ -188,41 +188,41 @@ function ProfileSettings({ children }) {
         if (!('video' in data.data) && data.data.video === undefined && data.data.video === '' && !('animation' in data.data) && data.data.animation === undefined && data.data.animation === '') {
           if (data.data.image.startsWith('ipfs://')) {
             const image = data.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
-            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image,videoFlag: false }]);
+            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image, videoFlag: false }]);
           } else if (data.data.image.startsWith('https://')) {
-            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.image,videoFlag: false }]);
+            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.image, videoFlag: false }]);
           } else {
-            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.image}`,videoFlag: false }]);
+            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.image}`, videoFlag: false }]);
           }
         } else {
           if ('video' in data.data && data.data.video !== undefined && data.data.video !== '') {
             if (data.data.video.startsWith('ipfs://')) {
               const image = data.data.video.replace('ipfs://', 'https://ipfs.io/ipfs/');
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image,videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image, videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
             } else if (data.data.video.startsWith('https://')) {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.video,videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.video, videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
             } else {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.video}`,videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.video}`, videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
             }
           } else if ('animation' in data.data && data.data.animation !== undefined && data.data.animation !== '') {
             console.log(`Animation: ${data.data.animation}\n${data.data.animation.substr(data.data.animation.length - 3)}`)
             if (data.data.animation.startsWith('ipfs://')) {
               const image = data.data.animation.replace('ipfs://', 'https://ipfs.io/ipfs/');
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image,videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image, videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
             } else if (data.data.animation.startsWith('https://')) {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.animation,videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.animation, videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
             } else {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.animation}`,videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.animation}`, videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
             }
           } else {
             //use image
             if (data.data.image.startsWith('ipfs://')) {
               const image = data.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image,videoFlag: false }]);
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image, videoFlag: false }]);
             } else if (data.data.image.startsWith('https://')) {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.image,videoFlag: false }]);
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.image, videoFlag: false }]);
             } else {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.image}`,videoFlag: false }]);
+              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.image}`, videoFlag: false }]);
             }
           }
         }
@@ -312,30 +312,30 @@ function ProfileSettings({ children }) {
       <SettingsLayout>
         <div className="w-full flex flex-col gap-16">
           <div className="relative w-full h-40 md:h-72 rounded-2xl bg-[#21212A] p-2" style={selectedBanner ? { backgroundImage: `url(${selectedBannerImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-            { nfts2.length > 0 && (
-            <motion.div
-              onClick={openBannerModal}
-              variants={variants}
-              initial="hidden"
-              whileHover="visible"
-              className="w-full h-full rounded-xl bg-[#1A1921] cursor-pointer bg-opacity-60 backdrop-blur-md flex items-center justify-center"
-            >
-              <ImageSearchRoundedIcon />
-            </motion.div>
+            {nfts2.length > 0 && (
+              <motion.div
+                onClick={openBannerModal}
+                variants={variants}
+                initial="hidden"
+                whileHover="visible"
+                className="w-full h-full rounded-xl bg-[#1A1921] cursor-pointer bg-opacity-60 backdrop-blur-md flex items-center justify-center"
+              >
+                <ImageSearchRoundedIcon />
+              </motion.div>
             )}
             <div className="absolute left-4 md:left-8 -bottom-8">
               {/* set image as https://ipfs.io/ipfs/bafybeiek4j6yn3p3jvoxxsmfttzprfn7en3togmslm6yjloolajcoqpzju/3436.png */}
               <div className="w-32 h-32 md:w-36 md:h-36 p-2 rounded-full border-2 border-[#1A1921] bg-default-avatar" style={selectedNft ? { backgroundImage: `url(${selectedNftImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-                { nfts2.length > 0 && (
-                <motion.div
-                  onClick={openAvatarModal}
-                  variants={variants}
-                  initial="hidden"
-                  whileHover="visible"
-                  className="w-full h-full rounded-full bg-[#1A1921] bg-opacity-60 backdrop-blur-md flex items-center justify-center cursor-pointer"
-                >
-                  <ImageSearchRoundedIcon />
-                </motion.div>
+                {nfts2.length > 0 && (
+                  <motion.div
+                    onClick={openAvatarModal}
+                    variants={variants}
+                    initial="hidden"
+                    whileHover="visible"
+                    className="w-full h-full rounded-full bg-[#1A1921] bg-opacity-60 backdrop-blur-md flex items-center justify-center cursor-pointer"
+                  >
+                    <ImageSearchRoundedIcon />
+                  </motion.div>
                 )}
               </div>
             </div>
@@ -383,14 +383,18 @@ function ProfileSettings({ children }) {
               onChange={(e) => setTelegram(e.target.value)}
             />
           </div>
-          <Button
-            className="bg-white !text-[#1A1921]"
-            onClick={() => setXummButtonClicked(true)}
-          >
-            Save settings
-          </Button>
+          <div className="flex w-full lg:w-2/3 justify-end">
+            <Button
+              className="bg-white !text-[#1A1921]"
+              onClick={() => setXummButtonClicked(true)}
+            >
+              Save settings
+            </Button>
+          </div>
         </div>
       </SettingsLayout>
+
+      {/* AVATAR MODAL */}
 
       <Modal showModal={showAvatarModal} closeModal={closeAvatarModal}>
         <div className="pb-4 md:pb-8">
@@ -410,16 +414,16 @@ function ProfileSettings({ children }) {
               >
                 {/* { nfts.length > 0 && <Nft src={nfts2[index].image} /> } */}
                 {nfts2.length > 0 && (
-                    <Nft
-                      src={nfts2[index].image}
-                      onClick={() => {
-                        // console.log(nfts2[index].nftid);
-                        setSelectedNft2(nfts2[index].nftid);
-                        setSelectedNftImage2(nfts2[index].image);
-                      }}
-                      selected={nfts2[index].nftid === selectedNft2}
-                      videoFlag={nfts2[index].videoFlag}
-                    />
+                  <Nft
+                    src={nfts2[index].image}
+                    onClick={() => {
+                      // console.log(nfts2[index].nftid);
+                      setSelectedNft2(nfts2[index].nftid);
+                      setSelectedNftImage2(nfts2[index].image);
+                    }}
+                    selected={nfts2[index].nftid === selectedNft2}
+                    videoFlag={nfts2[index].videoFlag}
+                  />
                 )}
               </div>
             ))}
@@ -460,13 +464,16 @@ function ProfileSettings({ children }) {
         </div>
       </Modal>
 
-      <Modal showModal={showBannerModal} closeModal={closeBannerModal}>
-        <h2 className="text-xl font-semibold mb-2">Change banner</h2>
-        <span className="text-base font-semibold opacity-60">
-          Select an NFT from your wallet or buy a new one to use as your new
-          banner.
-        </span>
+      {/* BANNER MODAL */}
 
+      <Modal showModal={showBannerModal} closeModal={closeBannerModal}>
+        <div className="pb-4 md:pb-8">
+          <h2 className="text-xl font-semibold mb-2">Change banner</h2>
+          <span className="text-base font-semibold opacity-60">
+            Select an NFT from your wallet or buy a new one to use as your new
+            banner.
+          </span>
+        </div>
         <div className="relative mb-4 md:mb-8">
           <div ref={sliderRef} className="keen-slider ">
             {Array.from({ length: nfts2.length }).map((_, index) => (
@@ -522,6 +529,7 @@ function ProfileSettings({ children }) {
         </div>
 
       </Modal>
+
 
       <Modal showModal={showModal} closeModal={closeModal}>
         {/* verify */}
