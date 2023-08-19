@@ -66,10 +66,15 @@ export default function Home( {houndPrice, xrpPrice} ) {
 
     const handleLayoutChange = (currentLayout) => {
         console.log('Layout changed:', currentLayout);
-        // localStorage.setItem('layout', JSON.stringify(currentLayout));
-        // if (currentLayout.length > 0) { 
-        //     localStorage.setItem('layout', JSON.stringify(currentLayout));
-        // }
+        if (currentLayout.length > 0) {
+            const layoutInStorage = JSON.parse(localStorage.getItem('layout'));
+            if (layoutInStorage !== null) {
+                layoutInStorage.lg = currentLayout;
+                layoutInStorage.md = currentLayout;
+                layoutInStorage.sm = currentLayout;
+                localStorage.setItem('layout', JSON.stringify(layoutInStorage));
+            }
+        }
     };
 
     useEffect(() => {
@@ -115,6 +120,15 @@ export default function Home( {houndPrice, xrpPrice} ) {
         console.log(`modules: ${modules}`)
         if (modules !== null && modules.length > 0) {
             setModules(JSON.parse(modules));
+        }
+
+        if (modules !== undefined && layout.lg !== undefined) {
+            if (modules.length>0 && layout.lg.length>0 && layout.lg.length !== modules.length) {
+                console.log('modules and layout length mismatch');
+                //clear local storage
+                localStorage.removeItem('layout');
+                localStorage.removeItem('modules');
+            }
         }
     }, []);
 

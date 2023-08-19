@@ -484,6 +484,8 @@ function ProfileSettings({ children }) {
                       setSelectedBanner(nfts2[index].nftid);
                       setSelectedBannerImage(nfts2[index].image);
                     }}
+                    selected={nfts2[index].nftid === selectedBanner}
+                    videoFlag={nfts2[index].videoFlag}
                   />
                 )}
               </div>
