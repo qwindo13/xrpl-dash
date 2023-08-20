@@ -71,7 +71,7 @@ export default function Profile() {
     return (
         <AppLayout className='overflow-hidden'>
             <div className='flex flex-col w-full gap-16'>
-            {isLoading ? (
+                {isLoading ? (
                     // Skeleton Loader for the Banner
                     <div className="relative w-full h-40 md:h-72 rounded-2xl bg-[#A6B0CF] bg-opacity-5 animate-pulse">
                         {/* Skeleton Loader for the Avatar inside Banner */}
@@ -80,28 +80,27 @@ export default function Profile() {
                         </div>
                     </div>
                 ) : (
-                <div className='relative w-full h-40 md:h-72 rounded-2xl bg-[#21212A]' style={userData.banner_nft_url ? { backgroundImage: `url(${userData.banner_nft_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-                    <div className='absolute left-4 md:left-8 -bottom-8'>
-                        <div className='w-32 h-32 md:w-36 md:h-36 rounded-full bg-default-avatar border-2 border-[#1A1921]' style={userData.pfp_nft_url ? { backgroundImage: `url(${userData.pfp_nft_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
-                    </div>
-                    <div className='absolute right-4 bottom-4 md:right-8 md:bottom-8'>
+                    <div className='relative w-full h-40 md:h-72 rounded-2xl bg-[#21212A]' style={userData.banner_nft_url ? { backgroundImage: `url(${userData.banner_nft_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
+                        <div className='absolute left-4 md:left-8 -bottom-8'>
+                            <div className='w-32 h-32 md:w-36 md:h-36 rounded-full bg-default-avatar border-2 border-[#1A1921]' style={userData.pfp_nft_url ? { backgroundImage: `url(${userData.pfp_nft_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
+                        </div>
+                        <div className='absolute right-4 bottom-4 md:right-8 md:bottom-8'>
 
-                        {(userData.twitter || userData.telegram) && (
-                            <div className='flex flex-row px-4 py-2 gap-8 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-sm rounded-xl'>
-                                {userData.twitter && <Link href={`https://twitter.com/${userData.twitter}`} target='_blank'><TwitterIcon sx={{ fontSize: 18 }} /></Link>}
-                                {userData.telegram && <Link href={`tg://user?id=${userData.telegram}`} target='_blank'><TelegramIcon sx={{ fontSize: 18 }} /></Link>}
-                            </div>
-                        )}
-                        
+                            {(userData.twitter || userData.telegram) && (
+                                <div className='flex flex-row px-4 py-2 gap-8 bg-[#A6B0CF] bg-opacity-5 backdrop-blur-sm rounded-xl'>
+                                    {userData.twitter && <Link href={`https://twitter.com/${userData.twitter}`} target='_blank'><TwitterIcon sx={{ fontSize: 18 }} /></Link>}
+                                    {userData.telegram && <Link href={`tg://user?id=${userData.telegram}`} target='_blank'><TelegramIcon sx={{ fontSize: 18 }} /></Link>}
+                                </div>
+                            )}
+
+                        </div>
                     </div>
-                </div>
                 )}
                 <div className="flex flex-col text-left gap-2">
                     {isOwner ? (
                         isLoading ? (
                             <div className='flex flex-row gap-4 items-center animate-pulse'>
                                 <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-32 h-6 "></div>
-                                <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-24 h-6"></div>
                             </div>
                         ) : (
                             <div className='flex flex-row gap-4 items-center'>
@@ -135,9 +134,7 @@ export default function Profile() {
                         <span className="bg-[#A6B0CF] bg-opacity-5 rounded w-96 h-5" />
                     </div>
                 ) : (
-                    <Tooltip copyContent={xrpAddress} className="w-fit">
-                        <span>{userData.bio}</span>
-                    </Tooltip>
+                    <span>{userData.bio}</span>
                 )}
 
             </div>

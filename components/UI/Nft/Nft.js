@@ -1,18 +1,23 @@
+import { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 
-const Nft = ({ displayName, displayPrice, imageSize, selected, onClick, videoFlag, src = '/images/nft.webp'}) => {
+const Nft = ({ displayName, displayPrice, imageSize, selected, onClick, videoFlag, src = '/images/nft.webp' }) => {
+    const [isImageLoaded, setImageLoaded] = useState(false);
+
     return (
-        <div 
+        <div
             className={`border ${selected ? 'border-opacity-100' : 'border-white border-opacity-5'} transition-colors duration-200 p-2 w-fit h-fit rounded-2xl flex flex-col gap-4 cursor-pointer`} onClick={onClick}
         >
-            <div className={`w-40 h-40 ${imageSize}`}>
-                {/* <img className='w-full h-full rounded-xl' src={src} alt="NFT" /> */}
+            <div className={`w-40 h-40 relative ${imageSize}`}>
                 {
                     videoFlag ? (
                         <video className='w-full h-full rounded-xl' autoPlay loop muted playsInline src={src} />
                     ) : (
-                        <img className='w-full h-full rounded-xl' src={src} alt="NFT" />
+                        <>
+                            {!isImageLoaded && <div className="w-full h-full rounded-xl bg-[#A6B0CF] bg-opacity-5 animate-pulse"></div>}
+                            <Image className='w-full h-full rounded-xl' src={src} alt="NFT" fill onLoad={() => setImageLoaded(true)} />
+                        </>
                     )
                 }
             </div>
