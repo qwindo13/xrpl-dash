@@ -4,6 +4,7 @@ import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 import SliderButton from "@/components/UI/SliderButton/SliderButtoncomponents";
+import WalletPrompt from "@/components/UI/WalletPrompt/WalletPromptcomponents";
 import 'keen-slider/keen-slider.min.css';
 import { useKeenSlider } from 'keen-slider/react';
 
@@ -100,10 +101,7 @@ const Badges = ({ data }) => {
                 </div>
             </div>
         ) : (
-            <div className="w-full h-full flex flex-col gap-2 items-center justify-center">
-                <span className="text-lg font-semibold text-white text-center">Connect Wallet</span>
-                <span className="text-sm font-semibold text-white text-center opacity-40">Connect your wallet to view your badges.</span>
-            </div>
+           <WalletPrompt />
         )}
     </ModuleCard>
     );

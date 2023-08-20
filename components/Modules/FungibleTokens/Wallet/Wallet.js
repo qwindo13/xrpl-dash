@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import chroma from "chroma-js";
 import { motion } from "framer-motion";
-import ModuleCard from "@/components/UI/ModuleCard/ModuleCardcomponents";
 import DonutChart from "./DonutChart";
+import ModuleCard from "@/components/UI/ModuleCard/ModuleCardcomponents";
+import WalletPrompt from "@/components/UI/WalletPrompt/WalletPromptcomponents";
 import TitleSwitch from "@/components/UI/ModuleCard/Settings/TitleSwitchcomponents";
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 import WalletDetailsSwitch from "@/components/UI/ModuleCard/Settings/WalletDetaisSwitchcomponents";
@@ -20,9 +21,9 @@ const columns = [
 ];
 
 const defaultSettings = {
-    displayTitle: true,
-    displayWalletDetails: false,
-    backgroundSetting: "Transparent",
+  displayTitle: true,
+  displayWalletDetails: false,
+  backgroundSetting: "Transparent",
 };
 
 
@@ -101,7 +102,7 @@ const Wallet = () => {
   };
 
   const backgroundClass = moduleSettings.backgroundSetting === 'Solid' ? '' :
-  moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#6E7489] ' :
+    moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#6E7489] ' :
       moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
 
   useEffect(() => {
@@ -176,17 +177,16 @@ const Wallet = () => {
     }
   }, [xrpAddress]);
 
-  const colorScale =  ['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'].reverse();
-  
+  const colorScale = ['#f280a3', '#c86ba0', '#9b569d', '#75619a', '#4f6c97', '#85a8d8'].reverse();
+
   const DonutChartWrapper = useMemo(
     () =>
       // eslint-disable-next-line react/display-name
       React.memo(({ moduleSettings, totXrp, totFiat, loading }) => (
         <motion.div
           layout
-          className={`aspect-square h-full ${
-            moduleSettings.displayWalletDetails ? "w-6/12" : "w-10/12"
-          }`}
+          className={`aspect-square h-full ${moduleSettings.displayWalletDetails ? "w-6/12" : "w-10/12"
+            }`}
         >
           <DonutChart
             // data={data} do not send tokens with balance 0
@@ -215,9 +215,8 @@ const Wallet = () => {
               return (
                 <div
                   key={column.sortKey}
-                  className={`cursor-pointer text-left text-xs font-semibold flex flex-row items-center gap-2 transition-all duration-300 ${
-                    isActive ? "opacity-100" : "opacity-60"
-                  } ${column.width}`}
+                  className={`cursor-pointer text-left text-xs font-semibold flex flex-row items-center gap-2 transition-all duration-300 ${isActive ? "opacity-100" : "opacity-60"
+                    } ${column.width}`}
                   onClick={() => sortBy(column.sortKey)}
                 >
                   {column.label}
@@ -257,50 +256,47 @@ const Wallet = () => {
     [data, sortConfig, colorScale, sortBy]
   );
 
-    Table.displayName = "Table";
+  Table.displayName = "Table";
 
-    return (
-      <ModuleCard
-        title="Wallet"
-        settings={
-          <>
-            <TitleSwitch
-              value={moduleSettings.displayTitle}
-              onChange={(value) => updateSettings("displayTitle", value)}
-            />
-            <BackgroundTabs
-              value={moduleSettings.backgroundSetting}
-              onChange={(value) => { console.log(value); updateSettings("backgroundSetting", value) }}
-            />
-            <WalletDetailsSwitch
-              value={moduleSettings.displayWalletDetails}
-              onChange={(value) => updateSettings("displayWalletDetails", value)}
-            />
-          </>
-        }
-        disableTitle={!moduleSettings.displayTitle}
-        className={backgroundClass}
-      >
-        {xrpAddress !== null ? (
-          <div
-            className={`w-full h-full flex flex-col items-center ${moduleSettings.displayWalletDetails ? "" : ""
-              }`}
-          >
-            <DonutChartWrapper
-              moduleSettings={moduleSettings}
-              totXrp={formatNumber(totXrp)}
-              totFiat={formatNumber(totFiat)}
-              loading={loading}
-            />
-            {moduleSettings.displayWalletDetails && <Table data={data} />}
-          </div>
-        ) : (
-          <div className="w-full h-full flex flex-col gap-2 items-center justify-center">
-            <span className="text-lg font-semibold text-white text-center">Connect Wallet</span>
-            <span className="text-sm font-semibold text-white text-center opacity-40">Connect your wallet to view this module.</span>
-          </div>
-        )}
-      </ModuleCard>
-    );
-        }
+  return (
+    <ModuleCard
+      title="Wallet"
+      settings={
+        <>
+          <TitleSwitch
+            value={moduleSettings.displayTitle}
+            onChange={(value) => updateSettings("displayTitle", value)}
+          />
+          <BackgroundTabs
+            value={moduleSettings.backgroundSetting}
+            onChange={(value) => { console.log(value); updateSettings("backgroundSetting", value) }}
+          />
+          <WalletDetailsSwitch
+            value={moduleSettings.displayWalletDetails}
+            onChange={(value) => updateSettings("displayWalletDetails", value)}
+          />
+        </>
+      }
+      disableTitle={!moduleSettings.displayTitle}
+      className={backgroundClass}
+    >
+      {xrpAddress !== null ? (
+        <div
+          className={`w-full h-full flex flex-col items-center ${moduleSettings.displayWalletDetails ? "" : ""
+            }`}
+        >
+          <DonutChartWrapper
+            moduleSettings={moduleSettings}
+            totXrp={formatNumber(totXrp)}
+            totFiat={formatNumber(totFiat)}
+            loading={loading}
+          />
+          {moduleSettings.displayWalletDetails && <Table data={data} />}
+        </div>
+      ) : (
+        <WalletPrompt />
+      )}
+    </ModuleCard>
+  );
+}
 export default Wallet;
