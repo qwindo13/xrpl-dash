@@ -8,7 +8,7 @@ import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfoco
 import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
-import ProfitnLose from '@/components/Modules/FungibleTokens/ProfitnLoss/ProfitnLosscomponents';
+import ProfitnLose from '@/components/Modules/Trades/ProfitnLoss/ProfitnLosscomponents';
 import Loader from '@/components/UI/Loader/Loadercomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize } from '@/components/Utils/ModuleSizescomponents';
 

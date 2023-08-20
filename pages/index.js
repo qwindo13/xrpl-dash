@@ -11,7 +11,7 @@ import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
 import Badges from '@/components/Modules/NonFungibleTokens/Badges/Badgescomponents';
 import mockFeed from '@/data/mockFeedcomponents';
-import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, badges } from '@/components/Utils/ModuleSizescomponents';
+import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, badges, profitnLose } from '@/components/Utils/ModuleSizescomponents';
 
 export default function Home( {houndPrice, xrpPrice} ) {
     const gridContainerRef = useRef(null); // Create a reference to the parent
