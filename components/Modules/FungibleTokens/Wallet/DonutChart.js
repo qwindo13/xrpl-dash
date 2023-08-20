@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '@mui/material';
 import chroma from "chroma-js";
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+
 
 function formatNumber(num) {
   return new Intl.NumberFormat('en-US').format(num);
@@ -93,14 +95,14 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
           </>
         ) : (
           <>
-            <span className="font-semibold text-lg">
+            <span className="font-semibold text-lg flex items-center relative">
               {valueXRP}
-              <i
-                className="text-xs text-white opacity-60 cursor-pointer ml-1"
+              <span
+                className="text-xs text-white opacity-60 cursor-pointer -right-6 absolute"
                 title="Prices are calculated based on the last trade on the DEX. The actual value of your tokens might be different."
               >
-                i
-              </i>
+                <InfoRoundedIcon sx={{ fontSize: 18 }}/>
+              </span>
             </span>
             <span className="font-semibold text-base opacity-60">{valueFiat}</span>
           </>

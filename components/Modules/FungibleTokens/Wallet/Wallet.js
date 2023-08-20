@@ -16,8 +16,8 @@ function formatNumber(num) {
 const columns = [
   { label: "Token", sortKey: "token", width: "w-2/12" },
   { label: "Balance", sortKey: "balance", width: "w-3/12" },
-  { label: "XRP Value", sortKey: "xrpValue", width: "w-2/12" },
-  { label: "% of Portfolio", sortKey: "value", width: "w-2/12" },
+  { label: "Value (XRP)", sortKey: "xrpValue", width: "w-2/12" },
+  { label: "%", sortKey: "value", width: "w-2/12" },
 ];
 
 const defaultSettings = {
@@ -209,6 +209,7 @@ const Wallet = () => {
       React.memo(({ data }) => (
         <motion.div layout className="flex flex-col w-full">
           <div className="flex flex-row justify-between pb-2">
+            <div className="w-5 h-5"></div>
             {columns.map((column) => {
               const isActive =
                 sortConfig && sortConfig.key === column.sortKey;
@@ -227,10 +228,7 @@ const Wallet = () => {
           </div>
           <div className="flex flex-col ">
             {data.map((item, index) => (
-              <div
-                key={index}
-                className="flex flex-row justify-between items-center"
-              >
+              <div key={index} className="flex flex-row justify-between items-center">
                 <span
                   className="h-5 w-5 rounded-lg"
                   style={{
