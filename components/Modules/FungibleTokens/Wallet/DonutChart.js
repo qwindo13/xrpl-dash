@@ -96,13 +96,13 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
             <span className="font-semibold text-lg">
               {valueXRP}
               <i
-                className="text-xs text-white text-opacity-50 cursor-pointer ml-1"
+                className="text-xs text-white opacity-60 cursor-pointer ml-1"
                 title="Prices are calculated based on the last trade on the DEX. The actual value of your tokens might be different."
               >
                 i
               </i>
             </span>
-            <span className="font-semibold text-base opacity-80">{valueFiat}</span>
+            <span className="font-semibold text-base opacity-60">{valueFiat}</span>
           </>
         )}
       </div>
