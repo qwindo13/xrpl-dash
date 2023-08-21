@@ -5,6 +5,7 @@ import Tooltip from "../UI/Tooltip/Tooltip"
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Modal from "../UI/Modal/Modal";
 import { useBalance } from '@/hooks/useBalance';
+import { useCookies } from 'react-cookie';
 
 function formatNumber(num) {
     return new Intl.NumberFormat('en-US').format(num);
@@ -12,6 +13,7 @@ function formatNumber(num) {
 
 function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModal, className,userData }) {
     const [isLoading, setIsLoading] = useState(true);
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
     const { xrpbalance: balance } = useBalance()
 
     return (
@@ -31,6 +33,7 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                     <Button
                         onClick={() => {
                             localStorage.removeItem('address')
+                            removeCookie('token')
                             window.location.href = '/auth/login'
                         }}
                         className="hidden md:flex opacity-60">

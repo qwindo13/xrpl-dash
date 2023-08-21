@@ -10,6 +10,7 @@ import RichList from "@/components/Modules/FungibleTokens/RichList/RichListcompo
 import QuickSwap from "@/components/Modules/Trades/QuickSwap/QuickSwapcomponents";
 import Wallet from "@/components/Modules/FungibleTokens/Wallet/Walletcomponents";
 import Badges from "@/components/Modules/NonFungibleTokens/Badges/Badgescomponents";
+import ProfitnLose from "@/components/Modules/Trades/ProfitnLoss/ProfitnLosscomponents";
 import mockFeed from "@/data/mockFeedcomponents";
 import {
   priceInfoSize,
@@ -123,18 +124,26 @@ export default function Home({ houndPrice, xrpPrice }) {
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
-            if (
-              data.data.layout[0].modules !== null &&
-              data.data.layout[0].modules !== undefined
-            ) {
-              setModules(data.data.layout[0].modules);
-            }
+            if (data.data.layout[0].hasOwnProperty("modules")) {
+              console.log(`hit modules`)
+              if (
+                data.data.layout[0].modules !== null &&
+                data.data.layout[0].modules !== undefined
+              ) {
+                setModules(data.data.layout[0].modules);
+                localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules));
+              }
+          }
+          if (data.data.layout[1].hasOwnProperty("layout")) {
+            console.log(`hit layout`)
             if (
               data.data.layout[1].layout !== null &&
               data.data.layout[1].layout !== undefined
             ) {
               setLayout(data.data.layout[1].layout);
+              localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout));
             }
+          }
           });
       } else {
         // console.log("redirecting");
@@ -193,8 +202,8 @@ export default function Home({ houndPrice, xrpPrice }) {
   }, [changeCount]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onClickTitle = (title) => {
-    console.log(title);
     const name = `${title.toLowerCase().replace(/\s/g, "")}_${Date.now()}`;
+    console.log(name);
     setModules([...modules, name]);
     const size =
       title === "Price Info"
@@ -210,13 +219,17 @@ export default function Home({ houndPrice, xrpPrice }) {
         : title === "Badges"
         ? badges
         : profitnLose;
-    const layout = JSON.parse(localStorage.getItem("layout"));
-    console.log(layout);
+    const layout = JSON.parse(localStorage.getItem("layout")) || {
+      lg: [],
+      md: [],
+      sm: [],
+    };
     const newLayout = {
       lg: [...layout.lg, { i: name, x: 0, y: 0, ...size.lg }],
       md: [...layout.md, { i: name, x: 0, y: 0, ...size.md }],
       sm: [...layout.sm, { i: name, x: 0, y: 0, ...size.sm }],
     };
+    console.log(`newLayout: ${JSON.stringify(newLayout)}`)
 
     setLayout(newLayout);
     localStorage.setItem("layout", JSON.stringify(newLayout));
@@ -294,6 +307,12 @@ export default function Home({ houndPrice, xrpPrice }) {
               return (
                 <div key={module}>
                   <Badges />
+                </div>
+              );
+            } else if (module.startsWith("profitandloss")) {
+              return (
+                <div key={module}>
+                  <ProfitnLose />
                 </div>
               );
             }
