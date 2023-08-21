@@ -23,7 +23,7 @@ const cls1Styles = {
   strokeWidth: 0.5,
 };
 
-const Loader = () => {
+const Loader = ({text="Loading..."}) => {
   return (
     <div className="w-[100px]">
       <motion.svg
@@ -44,6 +44,9 @@ const Loader = () => {
         </g>
 
       </motion.svg>
+      <div className="text-center text-white mt-2">
+        {text}
+      </div>
     </div>
   );
 }

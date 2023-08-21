@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from "next/link"
 import Image from "next/image"
-import Modal from "@/components/UI/Modal/Modalcomponents"
 import Button from "@/components/UI/Button/Buttoncomponents"
-import InputField from '@/components/UI/InputField/InputFieldcomponents';
-import Stepper from '@/components/UI/Stepper/Steppercomponents';
-import TagInput from '@/components/UI/TagInput/TagInputcomponents';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { config } from '@/configcomponents';
 import TxModal from '@/components/Modals/TxModal/TxModalcomponents';
-
-import mockTokens from '@/data/mockTokenscomponents';
+import { useCookies } from 'react-cookie';
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -20,6 +14,8 @@ export default function Home() {
   const [xummButtonClicked, setXummButtonClicked] = useState(false)
   const [soloText, setSoloText] = useState('Sologenic App')
   const [customMessage, setCustomMessage] = useState('')
+  const [cookies, setCookie] = useCookies(['token']);
+  const expires = new Date(Date.now() + 1000 * 60 * 60 * 24 * 2) //2 days
   const api_url = config.api_url;
 
   const openModal = () => {
@@ -63,10 +59,17 @@ export default function Home() {
           const hex = payloadJson.payload.response.hex
           const checkSign = await fetch(`/api/xumm/checksign?hex=${hex}`)
           const checkSignJson = await checkSign.json()
-
+          console.log(checkSignJson)
           // setXrpAddress(checkSignJson.xrpAdress)
           //set address in local storage
           localStorage.setItem('address', checkSignJson.xrpAddress)
+          //set cookies
+          setCookie('token', checkSignJson.token, {
+            expires: expires,
+            secure: true,
+            sameSite: 'strict',
+            path: '/'
+          })
 
           //check if user exists, post req to /checkUserExists
           setCustomMessage('Logging you in...')

@@ -9,6 +9,9 @@ export function useBalance() {
     useEffect(() => {
         //get xrp address from local storage
         const xrpAddress = localStorage.getItem('address');
+        if (!xrpAddress || xrpAddress === 'undefined' || xrpAddress === 'null' || xrpAddress === '' || xrpAddress === undefined || xrpAddress === null) {
+            return;
+        }
         console.log(xrpAddress);
         if (xrpAddress) {
             //get xrp balance from api
