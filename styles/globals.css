@@ -40,8 +40,10 @@
   }
 }
 
+
+
 body {
-  @apply font-mont overflow-auto text-white bg-[#1A1921] ;
+  @apply font-mont overflow-auto text-white bg-[#1A1921] min-h-screen ;
 }
 
 main{

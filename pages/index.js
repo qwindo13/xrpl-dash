@@ -263,7 +263,7 @@ export default function Home({ houndPrice, xrpPrice }) {
         )}
       </AnimatePresence>
 
-      <div ref={gridContainerRef} className="w-full">
+      <div ref={gridContainerRef} className="w-full flex-grow">
         {" "}
         {/* Attach the reference to the parent */}
         <ResponsiveGridLayout
