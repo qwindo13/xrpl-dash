@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Responsive as ResponsiveGridLayout } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -13,6 +13,7 @@ import Wallet from "@/components/Modules/FungibleTokens/Wallet/Walletcomponents"
 import Badges from "@/components/Modules/NonFungibleTokens/Badges/Badgescomponents";
 import ProfitnLose from "@/components/Modules/Trades/ProfitnLoss/ProfitnLosscomponents";
 import mockFeed from "@/data/mockFeedcomponents";
+import SaveIcon from '@mui/icons-material/Save';
 import {
   priceInfoSize,
   richListSize,
@@ -34,7 +35,7 @@ export default function Home({ houndPrice, xrpPrice }) {
   // const [modules, setModules] = useState(['wallet', 'priceinfo', 'quickswap', 'badges']);
   const [modules, setModules] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [changeCount, setChangeCount] = useState(0);
   const router = useRouter();
   const api_url = config.api_url;
@@ -245,12 +246,22 @@ export default function Home({ houndPrice, xrpPrice }) {
       onClickTitle={onClickTitle}
       className="overflow-hidden"
     >
-      {loading && (
-        <AnimatePresence>
-          <Toast message="asdsda" />
-        </AnimatePresence>
-
-      )}
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.7 }}
+            transition={{
+              opacity: { duration: 0.3 },
+              scale: { type: 'spring', stiffness: 500, damping: 30 }
+            }}
+            className={`fixed bottom-8 right-8`}
+          >
+            <span className="animate-pulse"><SaveIcon sx={{ fontSize: 40 }} /></span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div ref={gridContainerRef} className="w-full">
         {" "}
