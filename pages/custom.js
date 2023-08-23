@@ -74,42 +74,8 @@ export default function Home() {
     return (
         <AppLayout showControlPanel>
             <div ref={gridContainerRef} className="w-full"> {/* Attach the reference to the parent */}
-                <ResponsiveGridLayout
-                    className="layout"
-                    layouts={layout}
-                    breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-                    cols={{ lg: 6, md: 4, sm: 4, xs: 2, xxs: 2 }}
-                    width={gridWidth} // Pass the calculated gridWidth
-                    rowHeight={198}
-                    margin={[16, 16]}
-                    containerPadding={[0, 0]}
-                    isResizable={true}
-                    isDraggable={true}
-                    preventCollision={false}
-                    autoSize={true}
-                    dragTouchDelayDuration={250}
-                    onLayoutChange={handleLayoutChange}
-                >
-                    <div key="richList">
-                        <RichList />
-                    </div>
-                    <div key="priceInfo">
-                        <PriceInfo />
-                    </div>
-                    <div key="priceInfo2">
-                      <Loader />
-                    </div>
-                    <div key="quickswap">
-                        <QuickSwap />
-                    </div>
-                    <div key="wallet">
-                        <Wallet />
-                    </div>
-                    <div key="profitnLose">
-                        <ProfitnLose />
-                    </div>
-                    {/* Add other modules wrapped in a <div> with their unique key */}
-                </ResponsiveGridLayout>
+            <Loader />
+            asdasd
             </div>
         </AppLayout>
     );

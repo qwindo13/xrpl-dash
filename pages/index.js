@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import { AnimatePresence } from 'framer-motion';
 import { Responsive as ResponsiveGridLayout } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -24,6 +25,7 @@ import {
 import { useCookies } from "react-cookie";
 import { config } from "@/configcomponents";
 import Loader from "@/components/UI/Loader/Loadercomponents";
+import Toast from "@/components/UI/Toast/Toastcomponents";
 
 export default function Home({ houndPrice, xrpPrice }) {
   const gridContainerRef = useRef(null); // Create a reference to the parent
@@ -32,7 +34,7 @@ export default function Home({ houndPrice, xrpPrice }) {
   // const [modules, setModules] = useState(['wallet', 'priceinfo', 'quickswap', 'badges']);
   const [modules, setModules] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [changeCount, setChangeCount] = useState(0);
   const router = useRouter();
   const api_url = config.api_url;
@@ -133,17 +135,17 @@ export default function Home({ houndPrice, xrpPrice }) {
                 setModules(data.data.layout[0].modules);
                 localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules));
               }
-          }
-          if (data.data.layout[1].hasOwnProperty("layout")) {
-            console.log(`hit layout`)
-            if (
-              data.data.layout[1].layout !== null &&
-              data.data.layout[1].layout !== undefined
-            ) {
-              setLayout(data.data.layout[1].layout);
-              localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout));
             }
-          }
+            if (data.data.layout[1].hasOwnProperty("layout")) {
+              console.log(`hit layout`)
+              if (
+                data.data.layout[1].layout !== null &&
+                data.data.layout[1].layout !== undefined
+              ) {
+                setLayout(data.data.layout[1].layout);
+                localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout));
+              }
+            }
           });
       } else {
         // console.log("redirecting");
@@ -209,16 +211,16 @@ export default function Home({ houndPrice, xrpPrice }) {
       title === "Price Info"
         ? priceInfoSize
         : title === "Richlist"
-        ? richListSize
-        : title === "Quick Swap"
-        ? quickSwapSize
-        : title === "Wallet"
-        ? walletSize
-        : title === "Feed"
-        ? feedSize
-        : title === "Badges"
-        ? badges
-        : profitnLose;
+          ? richListSize
+          : title === "Quick Swap"
+            ? quickSwapSize
+            : title === "Wallet"
+              ? walletSize
+              : title === "Feed"
+                ? feedSize
+                : title === "Badges"
+                  ? badges
+                  : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
       lg: [],
       md: [],
@@ -237,23 +239,19 @@ export default function Home({ houndPrice, xrpPrice }) {
   };
 
   return (
-    
+
     <AppLayout
       showControlPanel
       onClickTitle={onClickTitle}
       className="overflow-hidden"
     >
-        {loading && (
-          <div id="toast-success" className="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-            <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
-                <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-                </svg>
-                <span className="sr-only">Check icon</span>
-            </div>
-            <div className="ml-3 text-sm font-normal">Layout Saved Succesfully!</div>
-        </div>
-        )}
+      {loading && (
+        <AnimatePresence>
+          <Toast message="asdsda" />
+        </AnimatePresence>
+
+      )}
+
       <div ref={gridContainerRef} className="w-full">
         {" "}
         {/* Attach the reference to the parent */}
