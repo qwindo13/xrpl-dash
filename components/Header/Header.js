@@ -7,6 +7,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 import { config } from "@/configcomponents";
+import { useCookies } from "react-cookie";
 
 function truncateAddress(address, maxLength = 12) {
     if (!address) {
@@ -27,11 +28,14 @@ export default function Header({ fixed }) {
     const [xrpAddress, setXrpAddress] = useState('')
     const [showModal, setShowModal] = useState(false);
     const [userData, setUserData] = useState('');
+    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const api_url = config.api_url;
 
     useEffect(() => {
         const address = localStorage.getItem('address')
-        setXrpAddress(address)
+        if (address !== null && address !== undefined && address !== '' && cookies.token !== undefined && cookies.token !== null && cookies.token !== '') {
+            setXrpAddress(address)
+        }
     }, [])
 
     const openModal = () => {

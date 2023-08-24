@@ -87,6 +87,7 @@ export default function Home() {
             //redirect to dashboard
             window.location.href = '/'
           } else {
+            if (checkSignJson.xrpAddress !== null && checkSignJson.xrpAddress !== undefined && checkSignJson.xrpAddress !== '') {
             //createUser
             const payload = {
               address: checkSignJson.xrpAddress,
@@ -112,6 +113,7 @@ export default function Home() {
               //error
               console.log(createUserJson)
             }
+          }
           }
         }
       }
