@@ -39,7 +39,7 @@ const Dropdown = ({ trigger, children, className, position = 'left', onToggle, i
     };
 
     return (
-        <div ref={dropdownRef} className={`relative inline-block h-full `} onClick={toggleDropdown}>
+        <div ref={dropdownRef} className={`relative inline-block h-full w-full `} onClick={toggleDropdown}>
             {React.cloneElement(trigger, { isOpen })}
             {isOpen && (
                 <motion.div

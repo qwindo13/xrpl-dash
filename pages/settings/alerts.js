@@ -1,15 +1,19 @@
-import { useState,useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import Link from "next/link";
 import { motion } from "framer-motion";
 import SettingsLayout from "@/components/Layouts/SettingsLayoutcomponents";
 import InputField from "@/components/UI/InputField/InputFieldcomponents";
+import Dropdown from "@/components/UI/Dropdown/Dropdowncomponents";
+import TokenDropdown from "@/components/UI/ModuleCard/Settings/TokenDropdowncomponents";
 import Switch from "@/components/UI/Switch/Switchcomponents";
 import TextAreaInput from "@/components/UI/TextAreaInput/TextAreaInputcomponents";
 import Button from "@/components/UI/Button/Buttoncomponents";
 import Modal from "@/components/UI/Modal/Modalcomponents";
 import Accordion from "@/components/UI/Accordion/Accordioncomponents";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+
 
 import mockAlerts from "@/data/mockAlertscomponents";
 
@@ -63,9 +67,53 @@ function Alerts({ children }) {
                 </div>
             </SettingsLayout>
 
-            <Modal showModal={showModal} closeModal={closeModal}>
-                <h2 className="text-xl font-semibold mb-2">New alert</h2>
-                <span className="text-base font-semibold opacity-60">Select an NFT from your wallet or buy a new one to use as your new banner.</span>
+            <Modal
+                showModal={showModal}
+                closeModal={closeModal}
+                title="New alert"
+                description="Create an alert to stay informed about price changes, volume increases, or other significant events."
+                className="max-h-[100%]"
+            >
+
+                <div className="flex flex-col gap-8 w-full ">
+                    <div className="w-fit">
+                        <TokenDropdown />
+                    </div>
+                    <div className="flex flex-col md:flex-row gap-8 w-full ">
+                        <div className="w-1/2">
+                            <Dropdown
+                                trigger={
+                                    <Button
+                                        className="bg-[#A6B0CF] hover:bg-opacity-5 bg-opacity-5 rounded-xl text-medium py-4 w-full justify-between "
+                                        disableAnimation
+                                        endIcon={<KeyboardArrowDownRoundedIcon />}
+                                    >
+                                        Alert Type
+                                    </Button>
+                                }
+                                className="w-full"
+                            >
+                                <div>Above</div>
+                                <div>Below</div>
+                                <div >Other Event</div>
+                            </Dropdown>
+                        </div>
+                        <div className="w-full md:w-1/2">
+                            <InputField
+                                className="bg-[#A6B0CF] bg-opacity-5 rounded-xl text-sm "
+                                value="Current Price"
+                                description="≈ $000"
+                            />
+
+                        </div>
+                    </div>
+
+                </div>
+                <div className="flex justify-end pt-4 md:pt-8">
+                    <Button className="bg-white !text-[#1A1921] w-full md:w-auto justify-center">
+                        Set alert
+                    </Button>
+                </div>
             </Modal>
         </>
     );

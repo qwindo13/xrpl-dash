@@ -1,13 +1,15 @@
 import React from 'react';
 
-const InputField = ({ children, onClick, className, label, placeholder, icon, isRequired, value, onChange }) => {
+const InputField = ({ children, onClick, className, label, placeholder, icon, isRequired, value, onChange, description }) => {
 
     return (
         <div className='w-full text-left'>
-            <label for="default-input" className="block mb-2 text-base font-semibold dark:text-white">
-                {label}
-                {isRequired && <span className="text-xs font-semibold opacity-60 ml-1">(required)</span>}
-            </label>
+            {label &&
+                <label for="default-input" className="block mb-2 text-base font-semibold dark:text-white">
+                    {label}
+                    {isRequired && <span className="text-xs font-semibold opacity-60 ml-1">(required)</span>}
+                </label>
+            }
 
             <div className={`relative w-full `}>
                 {icon &&
@@ -25,6 +27,9 @@ const InputField = ({ children, onClick, className, label, placeholder, icon, is
                     maxLength={40}
                 />
             </div>
+            {description &&
+                <span className='opacity-60 font-semibold text-xs'>{description}</span>
+            }
         </div>
     );
 };

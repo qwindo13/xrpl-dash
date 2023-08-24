@@ -7,14 +7,14 @@ const backdropVariants = {
   hidden: { opacity: 0 },
 };
 
-const Modal = ({ children, showModal, closeModal, className, allowBackgroundScroll = false }) => {
+const Modal = ({ title, description, children, showModal, closeModal, className, allowBackgroundScroll = false }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
   }, []);
 
-  
+
   useEffect(() => {
     if (showModal && !allowBackgroundScroll) {
       document.body.style.overflow = 'hidden';
@@ -29,21 +29,21 @@ const Modal = ({ children, showModal, closeModal, className, allowBackgroundScro
 
   let modalVariants = {
     visible: {
-      opacity: 1, 
+      opacity: 1,
       scale: 1,
-      y: "0%" ,
-      transition: isMobile ? {stiffness: 100 } : undefined
+      y: "0%",
+      transition: isMobile ? { stiffness: 100 } : undefined
 
     },
     hidden: {
-      opacity: 0, 
+      opacity: 0,
       scale: isMobile ? 1 : 0.8,
       y: isMobile ? "100%" : "0%",
-      transition: isMobile ? {stiffness: 100 } : undefined
+      transition: isMobile ? { stiffness: 100 } : undefined
 
     }
   };
-  
+
   return (
     <AnimatePresence mode="wait">
       {showModal && (
@@ -69,6 +69,14 @@ const Modal = ({ children, showModal, closeModal, className, allowBackgroundScro
             animate="visible"
             exit="hidden"
           >
+
+            {(title || description) && (
+                <div className="pb-4 md:pb-8">
+                  {title && <h2 className="text-xl font-semibold mb-2"> {title} </h2>}
+                  {description && <span className="text-base font-semibold opacity-60 hidden md:block">{description}</span>}
+                </div>
+              )}
+
             {children}
           </motion.div>
         </motion.div>
