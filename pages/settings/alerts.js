@@ -13,7 +13,8 @@ import Modal from "@/components/UI/Modal/Modalcomponents";
 import Accordion from "@/components/UI/Accordion/Accordioncomponents";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-
+import { config } from '@/configcomponents';
+import { useCookies } from "react-cookie";
 
 import mockAlerts from "@/data/mockAlertscomponents";
 
@@ -23,16 +24,48 @@ function Alerts({ children }) {
     const closeModal = () => setShowModal(false);
     const openModal = () => setShowModal(true);
     const [xrpAddress, setXrpAddress] = useState('');
+    const [alertType, setAlertType] = useState('Above');
+    const [targetPrice, setTargetPrice] = useState(0);
+    const [currentPrice, setCurrentPrice] = useState(0);
+    const [cookies] = useCookies(["token"]);
     const router = useRouter();
 
     useEffect(() => {
-        if (localStorage.getItem('address')) {
-            setXrpAddress(localStorage.getItem('address'));
-        } else {
-            // setLoggedin(false);
-            router.push('/auth/login');
+        if (!cookies.token) {
+            router.push('/login');
         }
     }, []);
+
+    const onSelect = (token) => {
+        setCurrentPrice(null)
+        const url = `${config.api_url}/token/${token}`;
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                let priceString = data.price.toString().split('.')[1];
+                if (priceString[0] === '0') {
+                    //after decimal, there can be multiple digits, check for 0s and get the number of 0s, should be from start of string and not in between
+                    let numberOfZeros = 0;
+                    for (let i = 0; i < priceString.length; i++) {
+                        if (priceString[i] === '0') {
+                            numberOfZeros++;
+                        } else {
+                            break;
+                        }
+                    }
+                    //round the number according to the number of 0s, if 0s are 2, round to 3 decimal places so that 0s are not lost
+                    let roundedPrice = Math.round(data.price * Math.pow(10, numberOfZeros + 2)) / Math.pow(10, numberOfZeros + 2);
+                    setCurrentPrice(roundedPrice.toFixed(numberOfZeros + 3));
+                } else {
+                    //round to 3 decimal places
+                    setCurrentPrice(Math.round(data.price * 1000) / 1000);
+                }
+            });
+    };
+
+    useEffect(() => {
+        setTargetPrice(currentPrice)
+    }, [currentPrice]);
 
     return (
         <>
@@ -77,7 +110,7 @@ function Alerts({ children }) {
 
                 <div className="flex flex-col gap-8 w-full ">
                     <div className="w-fit">
-                        <TokenDropdown />
+                        <TokenDropdown onSelect={onSelect} num={5}/>
                     </div>
                     <div className="flex flex-col md:flex-row gap-8 w-full ">
                         <div className="w-1/2">
@@ -88,21 +121,25 @@ function Alerts({ children }) {
                                         disableAnimation
                                         endIcon={<KeyboardArrowDownRoundedIcon />}
                                     >
-                                        Alert Type
+                                        {alertType}
                                     </Button>
                                 }
                                 className="w-full"
                             >
-                                <div>Above</div>
-                                <div>Below</div>
-                                <div >Other Event</div>
+                                <button onClick={() => setAlertType('Above')} className="w-full text-left">
+                                    Above</button>
+                                <button onClick={() => setAlertType('Below')} className="w-full text-left">
+                                    Below</button>
                             </Dropdown>
                         </div>
                         <div className="w-full md:w-1/2">
                             <InputField
                                 className="bg-[#A6B0CF] bg-opacity-5 rounded-xl text-sm "
-                                value="Current Price"
-                                description="≈ $000"
+                                value={targetPrice}
+                                // description={`Current Price ≈ ${currentPrice}`}
+                                description={currentPrice ? `Current Price ≈ ${currentPrice} XRP` : ''}
+                                onChange={(e) => setTargetPrice(e.target.value)}
+                                label={'Set Target Price'}
                             />
 
                         </div>

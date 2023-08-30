@@ -7,6 +7,7 @@ import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponen
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 import ProfitTabs from "@/components/UI/ModuleCard/Settings/ProfitTabscomponents";
 import { config } from "@/configcomponents";
+import WalletPrompt from "@/components/UI/WalletPrompt/WalletPromptcomponents";
 
 
 const defaultSettings = {
@@ -129,7 +130,7 @@ const ProfitnLose = () => {
                 </div>
             }
             {
-                data === null &&
+                data === null && xrpAddress !== null &&
                 <div className='w-full flex flex-col  relative justify-center h-full'>
                     <Link href='#' target="_blank" rel="noopener noreferrer" className="flex flex-row items-center gap-2">
                         <span className="text-2xl font-bold">
@@ -140,6 +141,10 @@ const ProfitnLose = () => {
                         Loading...
                     </span>
                 </div>
+            }
+            {
+                xrpAddress === null &&
+                <WalletPrompt />
             }
 
 
