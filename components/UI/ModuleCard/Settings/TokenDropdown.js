@@ -28,17 +28,27 @@ const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" }) => {
         return string;
     }
 
-    const handleTokenClick = (token) => {
+    const handleTokenClick = (token,flag = false) => {
         // setSelectedToken(token.split(":")[0]); // Set the selected token
-        if (token.split(":")[0].length > 3) {
-            setSelectedToken(hexToString(token.split(":")[0]));
+        if (!flag) {
+            if (token.split(":")[0].length > 3) {
+                setSelectedToken(hexToString(token.split(":")[0]));
+                console.log(hexToString(token.split(":")[0]));
+            } else {
+                setSelectedToken(token.split(":")[0]);
+                console.log(token.split(":")[0]);
+            }
+            onSelect(token); // Invoke the onSelect callback with the selected token
+            setSearchImages([]);
+            setSearchIssuers([]);
+            setTokens([]);
         } else {
             setSelectedToken(token.split(":")[0]);
+            onSelect(token); // Invoke the onSelect callback with the selected token
+            setSearchImages([]);
+            setSearchIssuers([]);
+            setTokens([]);
         }
-        onSelect(token); // Invoke the onSelect callback with the selected token
-        setSearchImages([]);
-        setSearchIssuers([]);
-        setTokens([]);
     };
 
     const getTop10Tokens = () => {
@@ -162,7 +172,7 @@ const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" }) => {
                             tokens.map((token, index) => (
                                 <>
                                     <div className='flex flex-row items-center cursor-pointer' onClick={() => handleTokenClick(token)}>
-                                        <Image width="30" height="30" src={searchImages[index]} alt="icon" className='mr-2 rounded-full' />
+                                        <img width="30" height="30" src={searchImages[index]} alt="icon" className='mr-2 rounded-full' />
                                         <span className="whitespace-nowrap font-semibold" key={index}>
                                             {
                                                 // token.split(":")[0] change from hex to string if it is longer than 3 characters
@@ -178,7 +188,7 @@ const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" }) => {
                                 <>
                                     <div className='flex flex-row items-center cursor-pointer'>
                                         <Image width="30" height="30" src={images[index]} alt="icon" className='mr-2 rounded-full' />
-                                        <span className="whitespace-nowrap font-semibold" key={index} onClick={() => handleTokenClick(token)}>{token.split(":")[0]} </span>
+                                        <span className="whitespace-nowrap font-semibold" key={index} onClick={() => handleTokenClick(token,true)}>{token.split(":")[0]} </span>
                                         <span className=' text-xs'>&nbsp;{issuers[index] ? `(${issuers[index]})` : ''}</span>
                                     </div>
                                 </>

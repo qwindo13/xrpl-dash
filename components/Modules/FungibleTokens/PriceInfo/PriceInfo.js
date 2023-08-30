@@ -64,7 +64,6 @@ const PriceInfo = () => {
                     break;
                 }
             }
-            console.log(numberOfZeros);
             //round the number according to the number of 0s, if 0s are 2, round to 3 decimal places so that 0s are not lost
             let roundedPrice = Math.round(data.price * Math.pow(10, numberOfZeros + 2)) / Math.pow(10, numberOfZeros + 2);
             setPrice(roundedPrice.toFixed(numberOfZeros + 3));
