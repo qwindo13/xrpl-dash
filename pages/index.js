@@ -143,8 +143,8 @@ export default function Home({ houndPrice, xrpPrice }) {
                     data.data.layout[1].layout !== null &&
                     data.data.layout[1].layout !== undefined 
                 ) {
-                    setLayout(data.data.layout[1].layout);
-                    localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout));
+                    setLayout(data.data.layout[1].layout[1]);
+                    localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[1]));
                 }
                 }
             }
