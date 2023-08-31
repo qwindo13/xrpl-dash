@@ -59,25 +59,10 @@ export default function Home({ houndPrice, xrpPrice }) {
   // Define the layout configuration
   const [layout, setLayout] = useState({
     lg: [
-      // { i: 'badges', x: 2, y: 0, ...badges.lg },
-      // { i: 'priceinfo', x: 2, y: 0, ...priceInfoSize.lg },
-      // { i: 'richlist', x: 0, y: 0, ...richListSize.lg },
-      // { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.lg },
-      // { i: 'wallet', x: 0, y: 2, ...walletSize.lg },
-      // { i: 'feed', x: 2, y: 2, ...feedSize.lg },
     ],
     md: [
-      //     { i: 'priceinfo', x: 2, y: 0, ...priceInfoSize.md },
-      //     { i: 'richlist', x: 0, y: 0, ...richListSize.md },
-      //     { i: 'quickswap', x: 2, y: 0, ...walletSize.md },
-      //     { i: 'feed', x: 0, y: 0, ...feedSize.md },
     ],
     sm: [
-      // { i: 'priceinfo', x: 0, y: 0, ...priceInfoSize.sm },
-      // { i: 'richlist', x: 0, y: 0, ...richListSize.sm },
-      // { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.sm },
-      // { i: 'wallet', x: 0, y: 0, ...walletSize.sm },
-      // { i: 'feed', x: 0, y: 0, ...feedSize.sm },
     ],
   });
 
@@ -85,12 +70,27 @@ export default function Home({ houndPrice, xrpPrice }) {
     console.log("Layout changed:", currentLayout);
     setChangeCount(changeCount + 1);
     if (currentLayout.length > 0) {
-      const layoutInStorage = JSON.parse(localStorage.getItem("layout"));
-      if (layoutInStorage !== null) {
-        layoutInStorage.lg = currentLayout;
-        layoutInStorage.md = currentLayout;
-        layoutInStorage.sm = currentLayout;
-        localStorage.setItem("layout", JSON.stringify(layoutInStorage));
+      const layout = localStorage.getItem("layout");
+      if (layout !== null && layout !== undefined && layout !== "" && layout !== "null" && layout !== "undefined") {
+        const layoutInStorage = JSON.parse(localStorage.getItem("layout"));
+        if (layoutInStorage !== null) {
+          layoutInStorage.lg = currentLayout;
+          layoutInStorage.md = currentLayout;
+          layoutInStorage.sm = currentLayout;
+          localStorage.setItem("layout", JSON.stringify(layoutInStorage));
+        } else {
+          localStorage.setItem("layout", JSON.stringify({
+            lg: currentLayout,
+            md: currentLayout,
+            sm: currentLayout,
+          }));
+        }
+      } else {
+        localStorage.setItem("layout", JSON.stringify({
+          lg: currentLayout,
+          md: currentLayout,
+          sm: currentLayout,
+        }));
       }
     }
   };
@@ -103,10 +103,10 @@ export default function Home({ houndPrice, xrpPrice }) {
       localStorage.removeItem("address");
 
       //get the layout from local storage
-      if (layout !== null && layout !== undefined) {
+      if (layout !== null && layout !== undefined && layout !== "" && layout !== "null" && layout !== "undefined") {
         setLayout(JSON.parse(localStorage.getItem("layout")));
       }
-      if (modules !== null && modules !== undefined) {
+      if (modules !== null && modules !== undefined && modules !== "" && modules !== "null" && modules !== "undefined") { 
         setModules(JSON.parse(localStorage.getItem("modules")));
       }
     } else {
@@ -128,7 +128,6 @@ export default function Home({ houndPrice, xrpPrice }) {
           .then((data) => {
             if (data.data.layout.length === 2) {
                 if (data.data.layout[0].hasOwnProperty("modules")) {
-                console.log(`hit modules`)
                 if (
                     data.data.layout[0].modules !== null &&
                     data.data.layout[0].modules !== undefined
@@ -138,7 +137,6 @@ export default function Home({ houndPrice, xrpPrice }) {
                 }
                 }
                 if (data.data.layout[1].hasOwnProperty("layout")) {
-                console.log(`hit layout`)
                 if (
                     data.data.layout[1].layout !== null &&
                     data.data.layout[1].layout !== undefined 
@@ -152,10 +150,10 @@ export default function Home({ houndPrice, xrpPrice }) {
       } else {
         // console.log("redirecting");
         //get the layout from local storage
-        if (layout !== null && layout !== undefined) {
+        if (layout !== null && layout !== undefined && layout !== "" && layout !== "null" && layout !== "undefined") {
           setLayout(JSON.parse(localStorage.getItem("layout")));
         }
-        if (modules !== null && modules !== undefined) {
+        if (modules !== null && modules !== undefined && modules !== "" && modules !== "null" && modules !== "undefined") {
           setModules(JSON.parse(localStorage.getItem("modules")));
         }
       }
