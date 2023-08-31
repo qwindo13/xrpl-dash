@@ -99,6 +99,10 @@ export default function Home({ houndPrice, xrpPrice }) {
     const token = cookies.token;
     const layout = localStorage.getItem("layout");
     const modules = localStorage.getItem("modules");
+    if (modules === undefined || modules === null || modules === "" || modules === "null" || modules === "undefined") {
+      localStorage.removeItem("modules");
+      localStorage.removeItem("layout");
+    }
     if (token === undefined || token === null || token === "") {
       localStorage.removeItem("address");
 
@@ -132,8 +136,10 @@ export default function Home({ houndPrice, xrpPrice }) {
                     data.data.layout[0].modules !== null &&
                     data.data.layout[0].modules !== undefined
                 ) {
-                    setModules(data.data.layout[0].modules[0]);
-                    localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules[0]));
+                  if (data.data.layout[0].modules.length > 0) {
+                      setModules(data.data.layout[0].modules[0]);
+                      localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules[0]));
+                  }
                 }
                 }
                 if (data.data.layout[1].hasOwnProperty("layout")) {
@@ -141,8 +147,10 @@ export default function Home({ houndPrice, xrpPrice }) {
                     data.data.layout[1].layout !== null &&
                     data.data.layout[1].layout !== undefined 
                 ) {
-                    setLayout(data.data.layout[1].layout[1]);
-                    localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[1]));
+                  if (data.data.layout[1].layout.length > 0) {
+                      setLayout(data.data.layout[1].layout[0]);
+                      localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[0]));
+                  }
                 }
                 }
             }
