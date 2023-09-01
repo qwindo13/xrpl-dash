@@ -103,6 +103,10 @@ export default function Home({ houndPrice, xrpPrice }) {
       localStorage.removeItem("modules");
       localStorage.removeItem("layout");
     }
+    if (layout === undefined || layout === null || layout === "" || layout === "null" || layout === "undefined") {
+      localStorage.removeItem("modules");
+      localStorage.removeItem("layout");
+    }
     if (token === undefined || token === null || token === "") {
       localStorage.removeItem("address");
 
