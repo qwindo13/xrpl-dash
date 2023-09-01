@@ -1,6 +1,5 @@
 import '../styles/globals.css'
 import {config} from '../config'
-import { useCoinPrices } from '@/hooks/useCoinsPrices'
 import Toast from "@/components/UI/Toast/Toastcomponents";
 import { useEffect, useState } from 'react';
 import { useCookies } from "react-cookie";
