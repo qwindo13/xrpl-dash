@@ -139,10 +139,6 @@ export default function Home({ houndPrice, xrpPrice }) {
                 localStorage.removeItem("modules");
                 localStorage.removeItem("layout");
                 //set the layout in local storage
-                // localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[0]));
-                // localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules));
-                // setLayout(data.data.layout[1].layout[0]);
-                // setModules(data.data.layout[0].modules);
                 if (data.data.layout[1].layout.length === 0) {
                   localStorage.setItem("layout", JSON.stringify({
                     lg: [],
