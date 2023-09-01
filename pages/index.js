@@ -139,10 +139,26 @@ export default function Home({ houndPrice, xrpPrice }) {
                 localStorage.removeItem("modules");
                 localStorage.removeItem("layout");
                 //set the layout in local storage
-                localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[0]));
-                localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules));
-                setLayout(data.data.layout[1].layout[0]);
-                setModules(data.data.layout[0].modules);
+                // localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[0]));
+                // localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules));
+                // setLayout(data.data.layout[1].layout[0]);
+                // setModules(data.data.layout[0].modules);
+                if (data.data.layout[1].layout.length === 0) {
+                  localStorage.setItem("layout", JSON.stringify({
+                    lg: [],
+                    md: [],
+                    sm: [],
+                  }));
+                } else {
+                  localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[0]));
+                  setLayout(data.data.layout[1].layout[0]);
+                }
+                if (data.data.layout[0].modules.length === 0) {
+                  localStorage.setItem("modules", JSON.stringify([]));
+                } else {
+                  localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules));
+                  setModules(data.data.layout[0].modules);
+                }
             }
           });
       } else {
@@ -165,13 +181,15 @@ export default function Home({ houndPrice, xrpPrice }) {
       const token = cookies.token;
       const modules = [];
       const layout = [];
-      if (JSON.parse(localStorage.getItem("modules")) !== null && JSON.parse(localStorage.getItem("modules")) !== undefined && JSON.parse(localStorage.getItem("modules")) !== "" && JSON.parse(localStorage.getItem("modules")) !== "null" && JSON.parse(localStorage.getItem("modules")) !== "undefined") {
+      const localModules = localStorage.getItem("modules");
+      const localLayout = localStorage.getItem("layout");
+      if (localModules !== null && localModules !== undefined && localModules !== "" && localModules !== "null" && localModules !== "undefined") {
         // modules = JSON.parse(localStorage.getItem("modules"));
         JSON.parse(localStorage.getItem("modules")).forEach((module) => {
           modules.push(module);
         });
       }
-      if (JSON.parse(localStorage.getItem("layout")) !== null && JSON.parse(localStorage.getItem("layout")) !== undefined && JSON.parse(localStorage.getItem("layout")) !== "" && JSON.parse(localStorage.getItem("layout")) !== "null" && JSON.parse(localStorage.getItem("layout")) !== "undefined") {
+      if (localLayout !== null && localLayout !== undefined && localLayout !== "" && localLayout !== "null" && localLayout !== "undefined") {
         layout.push(JSON.parse(localStorage.getItem("layout")));
       }
       if (token === undefined || token === null || token === "") {
