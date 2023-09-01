@@ -9,7 +9,8 @@ export default function Toast({
     className,
     icon,
     noBackground = false,
-    title
+    title,
+    key
 }) {
     return (
         <motion.div
@@ -18,6 +19,7 @@ export default function Toast({
             exit={{ opacity: 0, y: 50 }}
             transition={{ duration: 0.3 }}
             className={`fixed bottom-8 right-8 p-4 rounded-2xl drop-shadow-md bg-[#21212A] ${noBackground ? 'bg-transparent' : ''} ${className}`}
+            id={key}
         >
             <div className='flex flex-row items-center'>
 
@@ -28,11 +30,11 @@ export default function Toast({
                     </div>
                 )}
 
-                <div className="text-sm font-normal">
+                <div className="text-sm font-normal break-normal">
                     {title && (
                         <span className="mb-1 text-sm font-semibold">{title}</span>
                     )}
-                    <div className={`${title ? 'opacity-60' : 'opacity-100'} text-sm font-semibold`}>{message}</div>
+                    <p className={`${title ? 'opacity-60' : 'opacity-100'} text-sm font-semibold break-normal max-w-xs`}>{message}</p>
                 </div>
                 <Button className="!px-0 !py-0 ml-3" onClick={onClose}>
                     <CloseRoundedIcon sx={{ fontSize: 18 }} />

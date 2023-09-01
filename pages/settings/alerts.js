@@ -16,6 +16,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { config } from '@/configcomponents';
 import { useCookies } from "react-cookie";
+const xrpl = require('xrpl')
 
 import mockAlerts from "@/data/mockAlertscomponents";
 
@@ -30,6 +31,8 @@ function Alerts({ children }) {
     const [currentPrice, setCurrentPrice] = useState(0);
     const [disabled, setDisabled] = useState(true);
     const [token, setToken] = useState('');
+    const [tokenImg, setTokenImg] = useState('');
+    const [alerts, setAlerts] = useState([]); 
     const [cookies] = useCookies(["token"]);
     const router = useRouter();
 
@@ -37,6 +40,33 @@ function Alerts({ children }) {
         if (!cookies.token) {
             router.push('/login');
         }
+
+        //get alerts from api/getAlerts
+        fetch(`${config.api_url}/getAlerts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                token: cookies.token
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log('Success:', data.data);
+                // setAlerts(data.data); //type: array of objects, each object has: {alert:{type,value:{coin,issuer,price,img}},created_at,hit_at,notified} For now we group the same coin alerts together and put them in an array
+                if (!data.hasOwnProperty('data')) {
+                    return;
+                }
+                const uniqueCoins = [...new Set(data.data.map(item => item.alert.value.coin))];
+                let alertsArray = [];
+                uniqueCoins.forEach(coin => {
+                    let coinAlerts = data.data.filter(item => item.alert.value.coin === coin);
+                    alertsArray.push(coinAlerts);
+                });
+                console.log(alertsArray);
+                setAlerts(alertsArray);
+            })
     }, []);
 
     const onSelect = (token) => {
@@ -64,6 +94,9 @@ function Alerts({ children }) {
                     //round to 3 decimal places
                     setCurrentPrice(Math.round(data.price * 1000) / 1000);
                 }
+                if (data.hasOwnProperty('icon')) {
+                    setTokenImg(data.icon);
+                }
             });
     };
 
@@ -71,7 +104,9 @@ function Alerts({ children }) {
         setTargetPrice(currentPrice)
     }, [currentPrice]);
 
-    const setAlert = () => {
+    const setAlert = (e) => {
+        e.preventDefault();
+        e.currentTarget.disabled = true;
         setDisabled(true);
         // console.log('set alert'); send post request to api/setAlert, {token,alertType,alertValue:{coin,issuer,price}}
         fetch(`${config.api_url}/setAlert`, {
@@ -85,7 +120,8 @@ function Alerts({ children }) {
                 alertValue: {
                     coin: token.split(':')[0],
                     issuer: token.split(':')[1],
-                    price: targetPrice
+                    price: targetPrice,
+                    img: tokenImg
                 }
             }),
         })
@@ -94,9 +130,92 @@ function Alerts({ children }) {
                 console.log('Success:', data);
                 closeModal();
                 setDisabled(false);
+                setToken('');
+                setTokenImg('');
+                setTargetPrice(0);
+                setCurrentPrice(0);
+                //get alerts from api/getAlerts
+                fetch(`${config.api_url}/getAlerts`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: cookies.token
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.hasOwnProperty('data')) {
+                            return;
+                        }
+                        const uniqueCoins = [...new Set(data.data.map(item => item.alert.value.coin))];
+                        let alertsArray = [];
+                        uniqueCoins.forEach(coin => {
+                            let coinAlerts = data.data.filter(item => item.alert.value.coin === coin);
+                            alertsArray.push(coinAlerts);
+                        });
+                        console.log(alertsArray);
+                        setAlerts(alertsArray);
+                    })
             })
 
     }
+
+    const deleteAlert = (e) => {
+        e.preventDefault();
+        e.currentTarget.disabled = true;
+        //send post req at api/deleteAlert, {token,alertId}
+        fetch(`${config.api_url}/deleteAlert`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                token: cookies.token,
+                alertId: e.currentTarget.id
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                //get alerts from api/getAlerts
+                fetch(`${config.api_url}/getAlerts`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: cookies.token
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.hasOwnProperty('data')) {
+                            return;
+                        }
+                        const uniqueCoins = [...new Set(data.data.map(item => item.alert.value.coin))];
+                        let alertsArray = [];
+                        uniqueCoins.forEach(coin => {
+                            let coinAlerts = data.data.filter(item => item.alert.value.coin === coin);
+                            alertsArray.push(coinAlerts);
+                        });
+                        console.log(alertsArray);
+                        setAlerts(alertsArray);
+                    })
+            })
+    }
+
+    const hexToString = (hex) => {
+        let string = "";
+        for (let i = 0; i < hex.length; i += 2) {
+            const code = parseInt(hex.substr(i, 2), 16);
+            if (code !== 0) {
+            string += String.fromCharCode(code);
+            }
+        }
+        return string;
+    };
 
     return (
         <>
@@ -110,7 +229,7 @@ function Alerts({ children }) {
                         <Button onClick={openModal} endIcon={<AddRoundedIcon />}>New alert</Button>
                     </div>
                     <div className="flex flex-col gap-4">
-                        {mockAlerts.map(project => (
+                        {/* {mockAlerts.map(project => (
                             <Accordion
                                 key={project.id}
                                 title={project.token}
@@ -126,7 +245,29 @@ function Alerts({ children }) {
                                     </div>
                                 ))}
                             </Accordion>
-                        ))}
+                        ))} */}
+                        {
+                            alerts && alerts.map((project, index) => (
+                                <Accordion
+                                    key={index}
+                                    // title={project[0].alert.value.coin} if its more than 3 letters, convert from hex to string
+                                    title={project[0].alert.value.coin.length > 3 ? hexToString(project[0].alert.value.coin) : project[0].alert.value.coin}
+                                    // image={{ src: project[0].alert.value.img, alt: project[0].alert.value.coin }} if image string is empty, use https://ui-avatars.com/api/?name='first letter of coin'
+                                    image={{ src: project[0].alert.value.img ? project[0].alert.value.img : project[0].alert.value.coin.length > 3 ? `https://ui-avatars.com/api/?name=${hexToString(project[0].alert.value.coin)[0]}&rounded=true` : `https://ui-avatars.com/api/?name=${project[0].alert.value.coin[0]}&rounded=true`, alt: project[0].alert.value.coin }}
+                                >
+                                    {project.map(alert => (
+                                        <div className="flex flex-row w-full justify-between items-center" key={alert.id}>
+                                            <div className="flex flex-col">
+                                                <span className="font-semibold">{alert.alert.type}</span>
+                                                <span className="font-semibold opacity-60">{alert.alert.value.price} XRP</span>
+                                            </div>
+                                            <Button className="!p-0 bg-transparent"><DeleteOutlineRoundedIcon id={alert.id} onClick={deleteAlert} /></Button>
+                                        </div>
+                                    ))}
+                                </Accordion>
+                            ))
+                        }
+
                     </div>
                 </div>
             </SettingsLayout>
@@ -143,7 +284,7 @@ function Alerts({ children }) {
 
                 <div className="flex flex-col gap-8 w-full ">
                     <div className="w-fit">
-                        <TokenDropdown onSelect={onSelect} num={5} />
+                        <TokenDropdown onSelect={onSelect} num={5} selectToken="Select token" />
                     </div>
                     <div className="flex flex-col md:flex-row gap-8 w-full ">
                         <div className="w-1/2">
@@ -180,6 +321,7 @@ function Alerts({ children }) {
 
                 </div>
                 <div className="flex justify-end pt-4 md:pt-8">
+                    {/* <Button className="bg-white !text-[#1A1921] w-full md:w-auto justify-center" onClick={() => (setDisabled(true); setAlert())} disabled={disabled}> */}
                     <Button className="bg-white !text-[#1A1921] w-full md:w-auto justify-center" onClick={setAlert} disabled={disabled}>
                         Set alert
                     </Button>

@@ -52,7 +52,18 @@ const ProfitnLose = () => {
                     fetch(`${api_url}/token/${data.data.comparison[0].currency}:${data.data.comparison[0].issuer}`)
                         .then((res) => res.json())
                         .then((data) => {
-                            setImg1(data.icon);
+                            // setImg1(data.icon);
+                            if (data.hasOwnProperty('icon')) {
+                                setImg1(data.icon);
+                            } else {
+                                // set the image as first letter of the currency, https://ui-avatars.com/api/?name=G&rounded=true
+                                //if currency.length > 3, then convert it to string
+                                if (data.data.comparison[0].currency.length > 3) {
+                                    setImg1(`https://ui-avatars.com/api/?name=${hexToString(data.data.comparison[0].currency[0])}&rounded=true`);
+                                } else {
+                                    setImg1(`https://ui-avatars.com/api/?name=${data.data.comparison[0].currency[0]}&rounded=true`);
+                                }
+                            }
                         }
                     );
                     fetch(`${api_url}/token/${data.data.comparison[data.data.comparison.length - 1].currency}:${data.data.comparison[data.data.comparison.length - 1].issuer}`)

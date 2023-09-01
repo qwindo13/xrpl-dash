@@ -75,9 +75,9 @@ const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" }) => {
                     } else {
                         issuername = data[i].issuer;
                     }
-                    if (currency.length > 3) {
-                        currency = hexToString(currency);
-                    }
+                    // if (currency.length > 3) {
+                    //     currency = hexToString(currency);
+                    // }
                     const issuer = data[i].issuer;
                     const token = currency + ":" + issuer;
                     images.push(icon);
@@ -186,9 +186,14 @@ const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" }) => {
                         ) : (
                             top10.map((token, index) => (
                                 <>
-                                    <div className='flex flex-row items-center cursor-pointer'>
+                                    <div className='flex flex-row items-center cursor-pointer' onClick={() => handleTokenClick(token)}>
                                         <Image width="30" height="30" src={images[index]} alt="icon" className='mr-2 rounded-full' />
-                                        <span className="whitespace-nowrap font-semibold" key={index} onClick={() => handleTokenClick(token,true)}>{token.split(":")[0]} </span>
+                                        <span className="whitespace-nowrap font-semibold" key={index}>
+                                            {
+                                                // token.split(":")[0] change from hex to string if it is longer than 3 characters
+                                                token.split(":")[0].length > 3 ? hexToString(token.split(":")[0]) : token.split(":")[0]
+                                            }
+                                        </span>
                                         <span className=' text-xs'>&nbsp;{issuers[index] ? `(${issuers[index]})` : ''}</span>
                                     </div>
                                 </>
