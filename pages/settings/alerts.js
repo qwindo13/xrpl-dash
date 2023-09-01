@@ -28,6 +28,8 @@ function Alerts({ children }) {
     const [alertType, setAlertType] = useState('Above');
     const [targetPrice, setTargetPrice] = useState(0);
     const [currentPrice, setCurrentPrice] = useState(0);
+    const [disabled, setDisabled] = useState(true);
+    const [token, setToken] = useState('');
     const [cookies] = useCookies(["token"]);
     const router = useRouter();
 
@@ -38,6 +40,7 @@ function Alerts({ children }) {
     }, []);
 
     const onSelect = (token) => {
+        setToken(token);
         setCurrentPrice(null)
         const url = `${config.api_url}/token/${token}`;
         fetch(url)
@@ -67,6 +70,33 @@ function Alerts({ children }) {
     useEffect(() => {
         setTargetPrice(currentPrice)
     }, [currentPrice]);
+
+    const setAlert = () => {
+        setDisabled(true);
+        // console.log('set alert'); send post request to api/setAlert, {token,alertType,alertValue:{coin,issuer,price}}
+        fetch(`${config.api_url}/setAlert`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                token: cookies.token,
+                alertType: alertType,
+                alertValue: {
+                    coin: token.split(':')[0],
+                    issuer: token.split(':')[1],
+                    price: targetPrice
+                }
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                closeModal();
+                setDisabled(false);
+            })
+
+    }
 
     return (
         <>
@@ -149,7 +179,7 @@ function Alerts({ children }) {
 
                 </div>
                 <div className="flex justify-end pt-4 md:pt-8">
-                    <Button className="bg-white !text-[#1A1921] w-full md:w-auto justify-center">
+                    <Button className="bg-white !text-[#1A1921] w-full md:w-auto justify-center" onClick={setAlert} disabled={disabled}>
                         Set alert
                     </Button>
                 </div>
