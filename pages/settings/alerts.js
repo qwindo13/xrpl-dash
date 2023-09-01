@@ -131,6 +131,7 @@ function Alerts({ children }) {
                 </div>
             </SettingsLayout>
 
+            {/* CREATE ALERT MODAL */}
 
             <Modal
                 showModal={showModal}
@@ -142,7 +143,7 @@ function Alerts({ children }) {
 
                 <div className="flex flex-col gap-8 w-full ">
                     <div className="w-fit">
-                        <TokenDropdown onSelect={onSelect} num={5}/>
+                        <TokenDropdown onSelect={onSelect} num={5} />
                     </div>
                     <div className="flex flex-col md:flex-row gap-8 w-full ">
                         <div className="w-1/2">
