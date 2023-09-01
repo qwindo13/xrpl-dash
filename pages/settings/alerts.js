@@ -13,6 +13,7 @@ import Modal from "@/components/UI/Modal/Modalcomponents";
 import Accordion from "@/components/UI/Accordion/Accordioncomponents";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { config } from '@/configcomponents';
 import { useCookies } from "react-cookie";
 
@@ -91,7 +92,7 @@ function Alerts({ children }) {
                                             <span className="font-semibold">{alert.type}</span>
                                             <span className="font-semibold opacity-60">{alert.description}</span>
                                         </div>
-                                        <Switch checked={alert.active} />
+                                        <Button className="!p-0 bg-transparent"><DeleteOutlineRoundedIcon /></Button>
                                     </div>
                                 ))}
                             </Accordion>
@@ -99,6 +100,7 @@ function Alerts({ children }) {
                     </div>
                 </div>
             </SettingsLayout>
+
 
             <Modal
                 showModal={showModal}
