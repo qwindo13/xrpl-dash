@@ -134,29 +134,15 @@ export default function Home({ houndPrice, xrpPrice }) {
         })
           .then((res) => res.json())
           .then((data) => {
+            console.log(data);
             if (data.data.layout.length === 2) {
-                if (data.data.layout[0].hasOwnProperty("modules")) {
-                if (
-                    data.data.layout[0].modules !== null &&
-                    data.data.layout[0].modules !== undefined
-                ) {
-                  if (data.data.layout[0].modules.length > 0) {
-                      setModules(data.data.layout[0].modules[0]);
-                      localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules[0]));
-                  }
-                }
-                }
-                if (data.data.layout[1].hasOwnProperty("layout")) {
-                if (
-                    data.data.layout[1].layout !== null &&
-                    data.data.layout[1].layout !== undefined 
-                ) {
-                  if (data.data.layout[1].layout.length > 0) {
-                      setLayout(data.data.layout[1].layout[0]);
-                      localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[0]));
-                  }
-                }
-                }
+                localStorage.removeItem("modules");
+                localStorage.removeItem("layout");
+                //set the layout in local storage
+                localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[0]));
+                localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules));
+                setLayout(data.data.layout[1].layout[0]);
+                setModules(data.data.layout[0].modules);
             }
           });
       } else {
@@ -179,10 +165,13 @@ export default function Home({ houndPrice, xrpPrice }) {
       const token = cookies.token;
       const modules = [];
       const layout = [];
-      if (JSON.parse(localStorage.getItem("modules")) !== null) {
-        modules.push(JSON.parse(localStorage.getItem("modules")));
+      if (JSON.parse(localStorage.getItem("modules")) !== null && JSON.parse(localStorage.getItem("modules")) !== undefined && JSON.parse(localStorage.getItem("modules")) !== "" && JSON.parse(localStorage.getItem("modules")) !== "null" && JSON.parse(localStorage.getItem("modules")) !== "undefined") {
+        // modules = JSON.parse(localStorage.getItem("modules"));
+        JSON.parse(localStorage.getItem("modules")).forEach((module) => {
+          modules.push(module);
+        });
       }
-      if (JSON.parse(localStorage.getItem("layout")) !== null) {
+      if (JSON.parse(localStorage.getItem("layout")) !== null && JSON.parse(localStorage.getItem("layout")) !== undefined && JSON.parse(localStorage.getItem("layout")) !== "" && JSON.parse(localStorage.getItem("layout")) !== "null" && JSON.parse(localStorage.getItem("layout")) !== "undefined") {
         layout.push(JSON.parse(localStorage.getItem("layout")));
       }
       if (token === undefined || token === null || token === "") {
@@ -198,8 +187,8 @@ export default function Home({ houndPrice, xrpPrice }) {
             body: JSON.stringify({
               token: token,
               layout: [
-                { modules: modules },
-                { layout: layout },
+                { "modules" : modules },
+                { "layout" : layout },
               ],
             }),
           })
@@ -281,7 +270,7 @@ export default function Home({ houndPrice, xrpPrice }) {
           </motion.div>
         )}
       </AnimatePresence>
-
+      {/* <Toast title={'target hit!'} message={'your target of 0.01 on solo was hit at 10:00!'} /> */}
       <div ref={gridContainerRef} className="w-full flex-grow">
         {" "}
         {/* Attach the reference to the parent */}
