@@ -208,7 +208,7 @@ const RichList = () => {
                 <div key={item.rank} className="flex flex-row justify-between">
                   <div className="text-left w-1/12">{item.rank}</div>
 
-                  <Link href={'https://bithomp.com/explorer/' + item.address || item.account} target="_blank" rel="noreferrer" className="text-left w-4/12 truncate pr-4">{item.address || item.account}</Link>
+                  <Link href={'https://bithomp.com/explorer/' + item.account} target="_blank" rel="noreferrer" className="text-left w-4/12 truncate pr-4">{item.address || item.account}</Link>
                   <div className="text-left w-3/12 truncate">
                     {formatNumber(Math.round(item.amount * 100) / 100)}
                   </div>
