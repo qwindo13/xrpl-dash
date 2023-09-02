@@ -46,12 +46,20 @@ const ProfitnLose = () => {
             fetch(`${api_url}/pnl/${xrpAddress}`)
                 .then((res) => res.json())
                 .then((data) => {
+                    if (!data.hasOwnProperty('data')) {
+                        return;
+                    }
+                    if (!data.data.hasOwnProperty('comparison')) {
+                        return;
+                    }
                     setData(data.data.comparison);
-                    console.log(data.data);
                     //fetch token:issuer from api/token endpoint and set the images
                     fetch(`${api_url}/token/${data.data.comparison[0].currency}:${data.data.comparison[0].issuer}`)
                         .then((res) => res.json())
                         .then((data) => {
+                            if (data.hasOwnProperty('error')) {
+                                return;
+                            }
                             // setImg1(data.icon);
                             if (data.hasOwnProperty('icon')) {
                                 setImg1(data.icon);
