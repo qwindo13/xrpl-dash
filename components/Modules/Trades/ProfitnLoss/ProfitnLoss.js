@@ -56,21 +56,21 @@ const ProfitnLose = () => {
                     //fetch token:issuer from api/token endpoint and set the images
                     fetch(`${api_url}/token/${data.data.comparison[0].currency}:${data.data.comparison[0].issuer}`)
                         .then((res) => res.json())
-                        .then((data) => {
-                            if (data.hasOwnProperty('error')) {
-                                return;
-                            }
-                            if (!data.hasOwnProperty('data')) {
+                        .then((tokenData) => {
+                            if (tokenData.hasOwnProperty('error')) {
+                                console.log(`Error: ${tokenData.error}`); // `Error: ${data.error}
                                 return;
                             }
                             // setImg1(data.icon);
-                            if (data.hasOwnProperty('icon')) {
-                                setImg1(data.icon);
+                            if (tokenData.hasOwnProperty('icon')) {
+                                console.log(tokenData.icon)
+                                setImg1(tokenData.icon);
                             } else {
+                                console.log('no icon')
                                 // set the image as first letter of the currency, https://ui-avatars.com/api/?name=G&rounded=true
                                 //if currency.length > 3, then convert it to string
                                 if (data.data.comparison[0].currency.length > 3) {
-                                    setImg1(`https://ui-avatars.com/api/?name=${hexToString(data.data.comparison[0].currency[0])}&rounded=true`);
+                                    setImg1(`https://ui-avatars.com/api/?name=${hexToString(data.data.comparison[0].currency)[0]}&rounded=true`); 
                                 } else {
                                     setImg1(`https://ui-avatars.com/api/?name=${data.data.comparison[0].currency[0]}&rounded=true`);
                                 }
@@ -79,8 +79,22 @@ const ProfitnLose = () => {
                     );
                     fetch(`${api_url}/token/${data.data.comparison[data.data.comparison.length - 1].currency}:${data.data.comparison[data.data.comparison.length - 1].issuer}`)
                         .then((res) => res.json())
-                        .then((data) => {
-                            setImg2(data.icon);
+                        .then((tokenData) => {
+                            if (tokenData.hasOwnProperty('error')) {
+                                return;
+                            }
+                            // setImg2(data.icon);
+                            if (tokenData.hasOwnProperty('icon')) {
+                                setImg2(tokenData.icon);
+                            } else {
+                                console.log(data.data.comparison[data.data.comparison.length - 1].currency)
+                                console.log(data.data.comparison[0].currency)
+                                if (data.data.comparison[data.data.comparison.length - 1].currency.length > 3) {
+                                    setImg2(`https://ui-avatars.com/api/?name=${hexToString(data.data.comparison[data.data.comparison.length - 1].currency)[0]}&rounded=true`);
+                                } else {
+                                    setImg2(`https://ui-avatars.com/api/?name=${data.data.comparison[data.data.comparison.length - 1].currency[0]}&rounded=true`);
+                                }
+                            }
                         }
                     );
                 });
@@ -98,6 +112,10 @@ const ProfitnLose = () => {
     moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#525567] ' :
         moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
 
+    useEffect(() => {
+        console.log(img1)
+        console.log(img2)
+    }, [img1, img2])
 
     return (
         <ModuleCard
@@ -158,7 +176,7 @@ const ProfitnLose = () => {
                 moduleSettings.profitSetting.includes('Least') && data !== null && <>
                 {img2 && (
                     <div className="h-full w-auto flex bg-[#A6B0CF] bg-opacity-5 rounded-xl items-center justify-center overflow-hidden p-4">
-                        <img className="w-full h-full aspect-square object-contain rounded-full" src={img1 || propImage} alt={data[0].currency} width={200} height={200} quality={100} />
+                        <img className="w-full h-full aspect-square object-contain rounded-full" src={img2 || propImage} alt={data[0].currency} width={200} height={200} quality={100} />
                     </div>
                 )}
                 <div className='w-full flex flex-col  relative justify-center h-full'>

@@ -27,8 +27,8 @@ const defaultSettings = {
 };
 
 const RichList = () => {
-  const [title, setTitle] = useState('SOLO');
-  const [toFetch, setToFetch] = useState('534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz');
+  const [title, setTitle] = useState('Greyhound');
+  const [toFetch, setToFetch] = useState('47726579686F756E640000000000000000000000:rJWBaKCpQw47vF4rr7XUNqr34i4CoXqhKJ');
   const [data, setData] = useState(testData);
   const [filteredData, setFilteredData] = useState(testData);
   const [sortConfig, setSortConfig] = useState(null);
