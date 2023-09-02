@@ -34,29 +34,16 @@ const PriceInfo = () => {
     const [subLabel, setSubLabel] = useState('');
     const [currency, setCurrency] = useState('XRP');
     const [image, setImage] = useState(propImage);
-    const [toFetch, setToFetch] = useState('534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz');
+    const [toFetch, setToFetch] = useState('USD:rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq');
     const [website, setWebsite] = useState('');
     const [loading, setLoading] = useState(true);
     const [toggleSettings, setToggleSettings] = useState(false);
-    const [isXrp, setIsXrp] = useState(false); 
+    const [isXrp, setIsXrp] = useState(true); 
     const { houndPrice, xrpPrice } = useCoinPrices();
 
     const apiUrl = config.api_url;
 
     const fetchToken = async () => {
-        // if (toFetch === "XRP" || toFetch === "xrp") {
-        //     setToken("XRP");
-        //     setPriceInXrp(1);
-        //     setPrice(1);
-        //     setPriceChange(0);
-        //     setSubLabel("XRP");
-        //     setImage("/images/xrp.png");
-        //     setWebsite("https://ripple.com/xrp/");
-        //     setLoading(false);
-        //     setToggleSettings(false);
-        //     return;
-        // }
-
         const res = await axios.get(`${apiUrl}/token/${toFetch}`, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
