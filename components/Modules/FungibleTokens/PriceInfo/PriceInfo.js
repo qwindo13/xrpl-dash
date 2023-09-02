@@ -38,11 +38,25 @@ const PriceInfo = () => {
     const [website, setWebsite] = useState('');
     const [loading, setLoading] = useState(true);
     const [toggleSettings, setToggleSettings] = useState(false);
+    const [isXrp, setIsXrp] = useState(false); 
     const { houndPrice, xrpPrice } = useCoinPrices();
 
     const apiUrl = config.api_url;
 
     const fetchToken = async () => {
+        // if (toFetch === "XRP" || toFetch === "xrp") {
+        //     setToken("XRP");
+        //     setPriceInXrp(1);
+        //     setPrice(1);
+        //     setPriceChange(0);
+        //     setSubLabel("XRP");
+        //     setImage("/images/xrp.png");
+        //     setWebsite("https://ripple.com/xrp/");
+        //     setLoading(false);
+        //     setToggleSettings(false);
+        //     return;
+        // }
+
         const res = await axios.get(`${apiUrl}/token/${toFetch}`, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -51,7 +65,6 @@ const PriceInfo = () => {
         });
         const data = res.data;
         // console.log(data);
-        setToken(data.name);
 
         let priceString = data.price.toString().split('.')[1];
         if (priceString[0] === '0') {
@@ -73,12 +86,28 @@ const PriceInfo = () => {
             setPrice(Math.round(data.price * 1000) / 1000);
             setPriceInXrp(Math.round(data.price * 1000) / 1000);
         }
-        setPriceChange(Math.round(data.twenty_four_hour_changes.price.change * 1000) / 1000);
-        setSubLabel(data.issuerName);
-        setImage(data.icon);
-        setWebsite(data.website_link || '');
-        setLoading(false);
-        setToggleSettings(false);
+        if (!isXrp){
+            setPriceChange(Math.round(data.twenty_four_hour_changes.price.change * 1000) / 1000);
+            setSubLabel(data.issuerName);
+            setImage(data.icon);
+            setWebsite(data.website_link || '');
+            setLoading(false);
+            setToggleSettings(false);
+            setToken(data.name);
+        } else {
+            //the price is USD/XRP, so we need to convert it to XRP/USD
+            setPriceChange(Math.round((1 / data.twenty_four_hour_changes.price.change) * 1000) / 1000);
+            setSubLabel("XRP");
+            setImage("/images/xrp.png");
+            setWebsite("https://ripple.com/xrp/");
+            setLoading(false);
+            setToggleSettings(false);
+            setToken("XRP");
+            const price = Math.round((1 / data.price) * 1000) / 1000;
+            setPrice(price.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 3, maximumFractionDigits: 3 }));
+            setCurrency("USD")
+        }
+
     };
 
     useEffect(() => {
@@ -95,10 +124,19 @@ const PriceInfo = () => {
 
     const handleTokenSelect = (selectedToken) => {
         if (selectedToken === toFetch) return;
+        if (selectedToken === "XRP" || selectedToken === "xrp") {
+            setToFetch("USD:rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq")
+            setLoading(true);
+            setToggleSettings(true)
+            setIsXrp(true);
+            return;
+        }
         // Do something with the selected token
         setToFetch(selectedToken);
         setLoading(true);
         setToggleSettings(true)
+        setIsXrp(false);
+        setCurrency("XRP")
     };
 
     const updateSettings = (key, value) => {
@@ -122,6 +160,7 @@ const PriceInfo = () => {
 
     //change the price according to the currency selected
     useEffect(() => {
+        if (isXrp) return;
         //the default price of the token is displayed in XRP, if they select USD, then we need to convert the price to USD and if they select HOUND, then we need to convert the price to HOUND
         if (currency === 'USD') {
             let price = Math.round(priceInXrp * (xrpPrice) * 1000) / 1000;
@@ -158,11 +197,14 @@ const PriceInfo = () => {
                         onSelect={handleTokenSelect}
                         num={5}
                         selectToken={token || subLabel}
+                        showXrp={true}                        
                     />
-                    <DisplayPriceInTabs
-                        onTokenChange={handleCurrencySelect}
-                        selectToken={currency}
-                    />
+                    {!isXrp &&
+                        <DisplayPriceInTabs
+                            onTokenChange={handleCurrencySelect}
+                            selectToken={currency}
+                        />
+                    }
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}
@@ -201,7 +243,7 @@ const PriceInfo = () => {
                                 </span>
                             </div>
                             <div className='flex flex-col'>
-                                <span className="text-2xl font-bold"> {formatNumber(price)} {currency}</span>
+                                <span className="text-2xl font-bold"> {price} {currency}</span>
                                 <span className={`text-xs font-semibold opacity-50 flex flex-row items-center gap-2 whitespace-nowrap	 ${priceChange < 0 ? 'text-negative' : 'text-positive'}`}>
                                     <div style={{ transform: priceChange < 0 ? 'rotate(180deg)' : 'rotate(0)' }}>
                                         <svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg">

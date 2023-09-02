@@ -6,8 +6,9 @@ import SearchBar from '../../SearchBar/SearchBar';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import tokensJsonData from '../../../../public/jsons/tokens.json';
 import { config } from '@/configcomponents';
+// import xrpImg from '../../../../public/images/xrp.png'
 
-const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" }) => {
+const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" ,showXrp = false}) => {
     const [selectedToken, setSelectedToken] = useState(selectToken);
     const [tokens, setTokens] = useState([]);
     const [top10, setTop10] = useState([]);
@@ -95,6 +96,15 @@ const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" }) => {
 
     const handleSearch = (event) => {
         const searchQuery = event.target.value;
+        console.log(searchQuery);
+        if (searchQuery === "XRP" || searchQuery === "xrp" && showXrp) {
+            console.log("XRP");
+            setSearchImages(["/images/xrp.png"]);
+            setSearchIssuers(["XRP"]);
+            setTokens(["XRP"]);
+            return;
+        }
+
         if (searchQuery.length === 0) {
             setSearchImages([]);
             setSearchIssuers([]);
