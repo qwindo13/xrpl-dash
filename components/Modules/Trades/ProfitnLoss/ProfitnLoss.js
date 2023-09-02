@@ -60,6 +60,9 @@ const ProfitnLose = () => {
                             if (data.hasOwnProperty('error')) {
                                 return;
                             }
+                            if (!data.hasOwnProperty('data')) {
+                                return;
+                            }
                             // setImg1(data.icon);
                             if (data.hasOwnProperty('icon')) {
                                 setImg1(data.icon);
