@@ -157,7 +157,7 @@ const RichList = () => {
             value={moduleSettings.displaySearchBar}
             onChange={(value) => updateSettings("displaySearchBar", value)}
           />
-          <TokenDropdown onSelect={handleTokenSelect} num={5} />
+          <TokenDropdown onSelect={handleTokenSelect} num={5} selectToken={title} />
         </>
       }
       disableTitle={!moduleSettings.displayTitle}
