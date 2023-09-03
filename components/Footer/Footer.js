@@ -5,7 +5,7 @@ const Footer = () => {
   
   return (
     <footer className='w-full flex items-center justify-center'>
-      <span className='text-sm font-semibold opacity-60'>Created by Greyhound © {year}</span>
+      <span className='text-sm font-semibold opacity-60'>XRPLDash © {year}</span>
     </footer>
   );
 };

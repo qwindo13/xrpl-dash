@@ -18,8 +18,6 @@ import { config } from '@/configcomponents';
 import { useCookies } from "react-cookie";
 const xrpl = require('xrpl')
 
-import mockAlerts from "@/data/mockAlertscomponents";
-
 function Alerts({ children }) {
 
     const [showModal, setShowModal] = useState(false);
@@ -222,11 +220,11 @@ function Alerts({ children }) {
             <SettingsLayout>
                 <div className="w-full flex flex-col gap-8">
                     <div className="flex flex-col md:flex-row justify-between w-full items-center">
-                        <div className="flex flex-col">
-                            <span className="text-2xl font-semibold">Alerts</span>
+                        <div className="flex flex-col mb-4">
+                            <span className="text-2xl font-semibold mb-2">Alerts</span>
                             <span className="text-base font-semibold opacity-60 w-full lg:w-2/3">Stay updated on the XRPL market by managing and creating new alerts about price changes, volume increases, or other significant events.</span>
                         </div>
-                        <Button onClick={openModal} endIcon={<AddRoundedIcon />}>New alert</Button>
+                        <Button className='w-full md:w-auto' onClick={openModal} endIcon={<AddRoundedIcon sx={{ fontSize: 16 }}/>}>New alert</Button>
                     </div>
                     <div className="flex flex-col gap-4">
                         {/* {mockAlerts.map(project => (
@@ -258,8 +256,8 @@ function Alerts({ children }) {
                                     {project.map(alert => (
                                         <div className="flex flex-row w-full justify-between items-center" key={alert.id}>
                                             <div className="flex flex-col">
-                                                <span className="font-semibold">{alert.alert.type}</span>
-                                                <span className="font-semibold opacity-60">{alert.alert.value.price} XRP</span>
+                                                <span className="font-semibold">Price Alert</span>
+                                                <span className="font-semibold opacity-60">{alert.alert.type} {alert.alert.value.price} XRP</span>
                                             </div>
                                             <Button className="!p-0 bg-transparent"><DeleteOutlineRoundedIcon id={alert.id} onClick={deleteAlert} /></Button>
                                         </div>
