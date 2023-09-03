@@ -88,19 +88,22 @@ export default function App({ Component, pageProps }) {
   return( 
   <>
     <Component {...pageProps} api_url={config.api_url}/>
-    {/* <Toast /> */}
+   
+
+    {/* ALERTS */}
     {alerts.length > 0 && alerts.map(alert => {
         return (
             <Toast
                 key={alert.id}
                 // message={`Your alert for ${alert.alert.value.coin} has been triggered at ${alert.hit_at}, The price just went ${alert.alert.type} ${alert.alert.value.price}!`}
-                message={`Alert for ${alert.alert.value.coin} triggered at ${alert.hit_at}, The price just went ${alert.alert.type} ${alert.alert.value.price}!`}
+                message={`${alert.alert.value.coin} is trading ${alert.alert.type} your specified price of ${alert.alert.value.price} XRP.`}
                 icon={<img src={alert.alert.value.img} className="w-6 h-6 rounded-full" />}
                 onClose={(e) => deleteAlert(e, alert.id) }
-                title={`${alert.alert.value.coin} Alert`}
+                title={`Price Alert - ${alert.alert.value.coin}`}
             />
         )
     })}
+
   </>
   )
 }

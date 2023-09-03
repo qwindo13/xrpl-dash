@@ -21,12 +21,11 @@ export default function Toast({
             className={`fixed bottom-8 right-8 p-4 rounded-2xl drop-shadow-md bg-[#21212A] ${noBackground ? 'bg-transparent' : ''} ${className}`}
             id={key}
         >
-            <div className='flex flex-row items-center'>
+            <div className='flex flex-row items-start'>
 
                 {icon && (
-                    <div className="mr-3 inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:text-blue-300 dark:bg-blue-900">
+                    <div className="mr-3 inline-flex items-center justify-center flex-shrink-0 w-8 h-8 bg-[#A6B0CF] bg-opacity-5 rounded-xl">
                         {icon}
-                        <span className="sr-only">Icon</span>
                     </div>
                 )}
 
