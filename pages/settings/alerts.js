@@ -273,7 +273,6 @@ function Alerts({ children }) {
             </SettingsLayout>
 
             {/* CREATE ALERT MODAL */}
-
             <Modal
                 showModal={showModal}
                 closeModal={closeModal}
@@ -286,12 +285,24 @@ function Alerts({ children }) {
                     <div className="w-fit">
                         <TokenDropdown onSelect={onSelect} num={5} selectToken="Select token" />
                     </div>
-                    <div className="flex flex-col md:flex-row gap-8 w-full ">
+                    <div className="flex flex-row gap-8 w-full items-start">
+                       
+                        <div className="w-1/2">
+                            <InputField
+                                className="bg-[#A6B0CF] bg-opacity-5 rounded-xl text-sm !h-12"
+                                value={targetPrice}
+                                // description={`Current Price ≈ ${currentPrice}`}
+                                description={currentPrice ? `Current Price ≈ ${currentPrice} XRP` : ''}
+                                onChange={(e) => setTargetPrice(e.target.value)}
+                                label={'Set Target Price'}
+                            />
+
+                        </div>
                         <div className="w-1/2">
                             <Dropdown
                                 trigger={
                                     <Button
-                                        className="bg-[#A6B0CF] hover:bg-opacity-5 bg-opacity-5 rounded-xl text-medium py-4 w-full justify-between "
+                                        className="bg-[#A6B0CF] hover:bg-opacity-5 !bg-opacity-5 rounded-xl text-medium !h-12 w-full justify-between !mt-8"
                                         disableAnimation
                                         endIcon={<KeyboardArrowDownRoundedIcon />}
                                     >
@@ -305,17 +316,6 @@ function Alerts({ children }) {
                                 <button onClick={() => setAlertType('Below')} className="w-full text-left">
                                     Below</button>
                             </Dropdown>
-                        </div>
-                        <div className="w-full md:w-1/2">
-                            <InputField
-                                className="bg-[#A6B0CF] bg-opacity-5 rounded-xl text-sm "
-                                value={targetPrice}
-                                // description={`Current Price ≈ ${currentPrice}`}
-                                description={currentPrice ? `Current Price ≈ ${currentPrice} XRP` : ''}
-                                onChange={(e) => setTargetPrice(e.target.value)}
-                                label={'Set Target Price'}
-                            />
-
                         </div>
                     </div>
 

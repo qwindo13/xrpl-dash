@@ -13,7 +13,7 @@ const Button = ({ children, onClick, className, disableAnimation = false, endIco
             type="button"
         >
             {children}
-            {endIcon && <motion.span layout className="ml-2 flex">{endIcon}</motion.span>}
+            {endIcon && <motion.span className="ml-2 flex">{endIcon}</motion.span>}
         </motion.button>
     );
 };
