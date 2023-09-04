@@ -156,7 +156,7 @@ const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" ,showXrp = fal
             <div className='flex flex-col gap-2 w-full'>
                 <span className='font-semibold text-base'>Token</span>
                 <Dropdown
-                    className={"w-full gap-4"}
+                    className={"w-full gap-4 !max-h-44 overflow-hidden "}
                     trigger={
                         <Button className="text-sm w-full font-semibold justify-between" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>
                             {selectedToken || "Select token"}

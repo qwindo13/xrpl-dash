@@ -318,7 +318,7 @@ function Alerts({ children }) {
                     </div>
 
                 </div>
-                <div className="flex justify-end pt-4 md:pt-8">
+                <div className="flex justify-end pt-8">
                     {/* <Button className="bg-white !text-[#1A1921] w-full md:w-auto justify-center" onClick={() => (setDisabled(true); setAlert())} disabled={disabled}> */}
                     <Button className="bg-white !text-[#1A1921] w-full md:w-auto justify-center" onClick={setAlert} disabled={disabled}>
                         Set alert

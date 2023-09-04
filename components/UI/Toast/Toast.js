@@ -18,7 +18,7 @@ export default function Toast({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
             transition={{ duration: 0.3 }}
-            className={`fixed bottom-8 right-8 p-4 rounded-2xl drop-shadow-md bg-[#21212A] ${noBackground ? 'bg-transparent' : ''} ${className}`}
+            className={`fixed bottom-8 right-8 p-4 rounded-2xl drop-shadow-md bg-[#21212A] z-10 ${noBackground ? 'bg-transparent' : ''} ${className}`}
             id={key}
         >
             <div className='flex flex-row items-start'>
