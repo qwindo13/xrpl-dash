@@ -48,7 +48,7 @@ const Modal = ({ title, description, children, showModal, closeModal, className,
     <AnimatePresence mode="wait">
       {showModal && (
         <motion.div
-          className={`fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-hidden md:overflow-y-auto outline-none focus:outline-none bg-opacity-50 backdrop-blur-md `}
+          className={`fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-hidden md:overflow-y-auto outline-none focus:outline-none bg-opacity-50 backdrop-blur-md`}
           onClick={closeModal}
           initial="hidden"
           animate="visible"
@@ -62,7 +62,7 @@ const Modal = ({ title, description, children, showModal, closeModal, className,
           </div>
 
           <motion.div
-            className={`absolute bottom-0 m-0 overflow-y-scroll h-auto max-h-[66%] md:max-h-full md:relative w-full max-w-3xl p-8 bg-[#21212A] rounded-2xl shadow-lg border border-white border-opacity-5 ${className}`}
+            className={`absolute bottom-0 m-0 overflow-y-scroll h-auto max-h-[66%] md:max-h-full md:relative w-full max-w-3xl p-8 bg-[#21212A] rounded-2xl shadow-lg border border-white border-opacity-5 !overflow-visible ${className}`}
             onClick={(e) => e.stopPropagation()}
             variants={modalVariants}
             initial="hidden"

@@ -66,7 +66,7 @@ export default function ControlPanel( { onSelectTitle } ) {
                 </div>
             </div>
 
-            <Modal showModal={showModal} closeModal={closeModal} className='md:h-[480px]'>
+            <Modal showModal={showModal} closeModal={closeModal} className='md:h-[480px] !overflow-scroll'>
                 { /* STEP 1*/}
                 <div >
                     <h2 className="text-xl font-semibold mb-2">Add a module</h2>
