@@ -16,6 +16,12 @@ export const profitnLose = {
   sm: { w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
 };
 
+export const nftsSize = {
+  lg: { w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 3 },
+  md: { w: 2, h: 3, minW: 2, maxW: 3, minH: 2, maxH: 2 },
+  sm: { w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 2 },
+};
+
 export const richListSize = {
   lg: { w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 3 },
   md: { w: 2, h: 3, minW: 2, maxW: 3, minH: 2, maxH: 2 },

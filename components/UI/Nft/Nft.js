@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 
-const Nft = ({ displayName, displayPrice, imageSize, selected, onClick, videoFlag, src = '/images/nft.webp' }) => {
+const Nft = ({ displayName, displayPrice, imageSize, selected, onClick, videoFlag, src }) => {
     const [isImageLoaded, setImageLoaded] = useState(false);
 
     return (
@@ -13,7 +13,8 @@ const Nft = ({ displayName, displayPrice, imageSize, selected, onClick, videoFla
                 {
                     videoFlag ? (
                         <video className='w-full h-full rounded-xl' autoPlay loop muted playsInline src={src} />
-                    ) : (
+                    ) : 
+                    (
                         <>
                             {!isImageLoaded && <div className="w-full h-full rounded-xl bg-[#A6B0CF] bg-opacity-5 animate-pulse"></div>}
                             <Image className='w-full h-full rounded-xl' src={src} alt="NFT" fill onLoad={() => setImageLoaded(true)} />

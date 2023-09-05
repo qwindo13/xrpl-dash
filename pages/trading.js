@@ -8,8 +8,9 @@ import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfoco
 import Feed from '@/components/Modules/Feeds/Feed/Feedcomponents';
 import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
+import Nfts from '@/components/Modules/NonFungibleTokens/Nfts/Nftscomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
-import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize } from '@/components/Utils/ModuleSizescomponents';
+import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize } from '@/components/Utils/ModuleSizescomponents';
 
 
 export default function Home() {
@@ -47,7 +48,7 @@ export default function Home() {
         lg: [
             { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.lg },
             { i: 'priceInfo2', x: 2, y: 1, ...priceInfoSize.lg },
-            { i: 'richList', x: 0, y: 0, ...richListSize.lg },
+            { i: 'nfts', x: 0, y: 0, ...nftsSize.lg },
             { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.lg },
             { i: 'wallet', x: 0, y: 2, ...walletSize.lg },
             { i: 'feed', x: 2, y: 2, ...feedSize.lg },
@@ -91,21 +92,10 @@ export default function Home() {
                     autoSize={true}
                     onLayoutChange={handleLayoutChange}
                 >
-                    <div key="richList">
-                        <RichList />
+                    <div key="nfts">
+                       <Nfts />
                     </div>
-                    <div key="priceInfo">
-                        <PriceInfo />
-                    </div>
-                    <div key="priceInfo2">
-                        <PriceInfo />
-                    </div>
-                    <div key="quickswap">
-                        <QuickSwap />
-                    </div>
-                    <div key="wallet">
-                        <Wallet />
-                    </div>
+                    
                     <div key="feed">
                    
                     </div>

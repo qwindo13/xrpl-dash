@@ -175,6 +175,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-4  p-4 md:p-8">
             <Button className="w-full" onClick={openModal}><Image src="/images/xumm.png" height={30} width={30} className="mr-4" alt='xumm login' /> XUMM Wallet</Button>
+            <Button className="w-full" onClick={openModal}><Image src="/images/gem-logo.svg" height={30} width={30} className="mr-4" alt='xumm login' /> Gem APP Wallet</Button>
             <Button className="w-full" disabled onClick={() => setInterval(() => setSoloText('Coming soon!'), 3000)}>
               <Image src="/images/solo-logo.svg" height={30} width={30} className="mr-4" alt='sologenic login' /> 
                 {soloText}
