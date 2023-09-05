@@ -3,19 +3,13 @@ import Image from "next/image";
 import Modal from "@/components/UI/Modal/Modalcomponents";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-export default function TxModal({ showModal, closeModal, qrCode, qrCodeUrl, text='transaction' }) {
+export default function TxModal({ showModal, closeModal, qrCode, qrCodeUrl, text='transaction', wallet='xumm' }) {
 
   return (
-    <Modal showModal={showModal} closeModal={closeModal}>
+    <Modal showModal={showModal} closeModal={closeModal} className="!overflow-visible">
       {/* Login */}
       <div>
-        <Image
-          className="absolute p-0 top-[-38px] left-0"
-          src="/images/xumm-logo.svg"
-          height={130}
-          width={120}
-          alt="XUMM"
-        />
+      <Image className="absolute p-0 top-[-38px] left-0" src="/images/xumm-logo.svg" height={130} width={120} alt='XUMM' />
         <div className="w-full flex flex-row justify-between items-start pb-8 relative">
           <h3 className="font-semibold text-xl">
             Scan the QR code with XUMM app
