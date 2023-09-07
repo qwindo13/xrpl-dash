@@ -3,11 +3,14 @@ import Image from 'next/image';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import NftNameSwitch from "@/components/UI/ModuleCard/Settings/NftNameSwitchcomponents";
 import NftPriceSwitch from "@/components/UI/ModuleCard/Settings/NftPriceSwitchcomponents";
+import NftsSlider from "@/components/UI/ModuleCard/Settings/NftsSlidercomponents";
+import RandomSwitch from "@/components/UI/ModuleCard/Settings/RandomSwitchcomponents";
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 import Nft from "@/components/UI/Nft/Nftcomponents";
 import WalletPrompt from "@/components/UI/WalletPrompt/WalletPromptcomponents";
 
 const defaultSettings = {
+    RandomSwitch: true,
     displayNftName: true,
     displayNftPrice: false,
     backgroundSetting: "Solid",
@@ -40,18 +43,27 @@ const SingleNft = ({ data }) => {
             title="NFT - #23123"
             settings={
                 <>
+                    <RandomSwitch
+                        value={moduleSettings.backgroundSetting}
+                        onChange={(value) => updateSettings("backgroundSetting", value)}
+                    />
+                    <NftsSlider
+                        value={moduleSettings.backgroundSetting}
+                        onChange={(value) => updateSettings("backgroundSetting", value)}
+                    />
                     <NftNameSwitch
-                       value={moduleSettings.displayNftName}
-                       onChange={(value) => updateSettings("displayNftName", value)}
+                        value={moduleSettings.displayNftName}
+                        onChange={(value) => updateSettings("displayNftName", value)}
                     />
                     <NftPriceSwitch
-                       value={moduleSettings.displayNftPrice}
-                       onChange={(value) => updateSettings("displayNftPrice", value)}
+                        value={moduleSettings.displayNftPrice}
+                        onChange={(value) => updateSettings("displayNftPrice", value)}
                     />
                     <BackgroundTabs
                         value={moduleSettings.backgroundSetting}
                         onChange={(value) => updateSettings("backgroundSetting", value)}
                     />
+
                 </>
             }
             disableTitle="true"
