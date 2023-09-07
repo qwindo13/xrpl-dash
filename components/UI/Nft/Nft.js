@@ -2,24 +2,36 @@ import { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 
-const Nft = ({ displayName, displayPrice, imageSize, selected, onClick, videoFlag, src }) => {
+const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClick, videoFlag, src }) => {
     const [isImageLoaded, setImageLoaded] = useState(false);
 
     return (
         <div
-            className={`border ${selected ? 'border-opacity-100' : 'border-white border-opacity-5'} transition-colors duration-200 p-2 w-fit h-fit rounded-2xl flex flex-col gap-4 cursor-pointer`} onClick={onClick}
+            className={`border ${className} ${selected ? 'border-opacity-100' : 'border-white border-opacity-5'} transition-colors duration-200 p-2 w-fit h-fit rounded-2xl flex flex-col gap-4 cursor-pointer`} onClick={onClick}
         >
-            <div className={`w-40 h-40 relative ${imageSize}`}>
+            <div className={`w-fit h-fit relative ${imageSize}`}>
                 {
                     videoFlag ? (
                         <video className='w-full h-full rounded-xl' autoPlay loop muted playsInline src={src} />
-                    ) : 
-                    (
-                        <>
-                            {!isImageLoaded && <div className="w-full h-full rounded-xl bg-[#A6B0CF] bg-opacity-5 animate-pulse"></div>}
-                            <Image className='w-full h-full rounded-xl' src={src} alt="NFT" fill onLoad={() => setImageLoaded(true)} />
-                        </>
-                    )
+                    ) :
+                        (
+                            <>
+                                {!isImageLoaded && <div className="w-full h-full rounded-xl bg-[#A6B0CF] bg-opacity-5 animate-pulse"></div>}
+                                <Image
+                                    className={`rounded-xl ${imageSize}`} 
+                                    src={src}
+                                    alt="NFT"
+                                    style={{
+                                        width: '100%',
+                                        height: 'auto',
+                                    }}
+                                    width={500}
+                                    height={500}
+                                    onLoad={() => setImageLoaded(true)}
+                                    cover
+                                />
+                            </>
+                        )
                 }
             </div>
 

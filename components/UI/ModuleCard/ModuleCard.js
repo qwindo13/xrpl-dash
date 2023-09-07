@@ -19,7 +19,7 @@ const ModuleCard = ({ children, className, title, settings, disableTitle, callTo
       toggleSettings();
     }
   }, [callToggleSettings, toggleSettings]);
-  
+
   const settingsCard = useMemo(() => (
     <motion.div
       key="settings"
@@ -80,7 +80,7 @@ const ModuleCard = ({ children, className, title, settings, disableTitle, callTo
       </div>
 
       {
-        isSettingsVisible && 
+        isSettingsVisible &&
         <AnimatePresence> {settingsCard} </AnimatePresence>
       }
     </motion.div>

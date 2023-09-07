@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Image from 'next/image';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
-import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
+import NftNameSwitch from "@/components/UI/ModuleCard/Settings/NftNameSwitchcomponents";
+import NftPriceSwitch from "@/components/UI/ModuleCard/Settings/NftPriceSwitchcomponents";
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 import Nft from "@/components/UI/Nft/Nftcomponents";
 import WalletPrompt from "@/components/UI/WalletPrompt/WalletPromptcomponents";
 
 const defaultSettings = {
-    displayTitle: true,
+    displayNftName: true,
+    displayNftPrice: false,
     backgroundSetting: "Solid",
 };
 
-const Nfts = ({ data }) => {
+const SingleNft = ({ data }) => {
 
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const updateSettings = (key, value) => {
@@ -35,12 +37,16 @@ const Nfts = ({ data }) => {
 
     return (
         <ModuleCard
-            title="My Badges"
+            title="NFT - #23123"
             settings={
                 <>
-                    <TitleSwitch
-                        value={moduleSettings.displayTitle}
-                        onChange={(value) => updateSettings("displayTitle", value)}
+                    <NftNameSwitch
+                       value={moduleSettings.displayNftName}
+                       onChange={(value) => updateSettings("displayNftName", value)}
+                    />
+                    <NftPriceSwitch
+                       value={moduleSettings.displayNftPrice}
+                       onChange={(value) => updateSettings("displayNftPrice", value)}
                     />
                     <BackgroundTabs
                         value={moduleSettings.backgroundSetting}
@@ -48,18 +54,19 @@ const Nfts = ({ data }) => {
                     />
                 </>
             }
-            disableTitle="{!moduleSettings.displayTitle}"
-            className={`${backgroundClass}`}
+            disableTitle="true"
+            className={`${backgroundClass} !p-0`}
         >
             {xrpAddress !== null ? (
-                <div className="@container w-full">
 
-                    <div className="grid @sm:grid-cols-2 @md:grid-cols-3 @lg:grid-cols-3 @xl:grid-cols-4 @2xl:grid-cols-6 gap-4 ">
-                        {Array.from({ length: 12 }).map((_, index) => (
-                                <Nft displayName displayPrice className="w-full" src='/images/nft.webp' />
-                        ))}
-                    </div>
-                </div>
+                <Nft
+                    imageSize="object-cover !w-full !h-full"
+                    className="w-full h-full border-none"
+                    src='/images/nft.webp'
+                    displayName={moduleSettings.displayNftName}
+                    displayPrice={moduleSettings.displayNftPrice}
+                />
+
             ) : (
                 <WalletPrompt />
             )}
@@ -67,4 +74,4 @@ const Nfts = ({ data }) => {
     );
 };
 
-export default Nfts;
+export default SingleNft;
