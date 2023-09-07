@@ -135,6 +135,11 @@ export default function Home({ houndPrice, xrpPrice }) {
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
+            if (data.hasOwnProperty("error")) {
+              console.log("error from api");
+              return;
+            }
+
             if (data.data.layout.length === 2) {
                 localStorage.removeItem("modules");
                 localStorage.removeItem("layout");

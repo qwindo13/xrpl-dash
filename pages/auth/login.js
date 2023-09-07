@@ -5,6 +5,7 @@ import Button from "@/components/UI/Button/Buttoncomponents"
 import { config } from '@/configcomponents';
 import TxModal from '@/components/Modals/TxModal/TxModalcomponents';
 import { useCookies } from 'react-cookie';
+import { isInstalled, getPublicKey, signMessage } from "@gemwallet/api";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -70,7 +71,7 @@ export default function Home() {
             sameSite: 'strict',
             path: '/'
           })
-
+          localStorage.setItem('wallet', 'xumm')
           //check if user exists, post req to /checkUserExists
           setCustomMessage('Logging you in...')
           const checkUserExists = await fetch(`${api_url}/checkUserExists`, {
@@ -136,6 +137,59 @@ export default function Home() {
   const goToPrevStep = () => setCurrentStep((prevStep) => prevStep - 1);
 
 
+  const handleGem = () => {
+    isInstalled().then((response) => {
+      if (response.result.isInstalled) {
+        getPublicKey().then((response) => {
+          // console.log(`${response.result?.address} - ${response.result?.publicKey}`);
+          const pubkey = response.result?.publicKey;
+          //fetch nonce from /api/gem/nonce?pubkey=pubkey
+          fetch(
+            `/api/gem/nonce?pubkey=${pubkey}&address=${response.result?.address}`
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              const nonceToken = data.token;
+              const opts = {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${nonceToken}`,
+                },
+              };
+              signMessage(nonceToken).then((response) => {
+                const signedMessage = response.result?.signedMessage;
+                if (signedMessage !== undefined) {
+                  //post at /api/gem/checksign?signature=signature
+                  fetch(`/api/gem/checksign?signature=${signedMessage}`, opts)
+                    .then((response) => response.json())
+                    .then((data) => {
+                      const { token, address } = data;
+                      if (token === undefined) {
+                        console.log("error");
+                        return;
+                      }
+                      //set cookies
+                      setCookie("token", token, {
+                        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2), //2 days
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/",
+                      });
+                      //set address in local storage
+                      localStorage.setItem("address", address);
+                      localStorage.setItem("wallet", "gem");
+                      //redirect to dashboard
+                      window.location.href = "/";
+                    });
+                }
+              });
+            });
+        });
+      }
+    });
+  };
+
 
   return (
     <main className="p-0">
@@ -175,7 +229,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-4  p-4 md:p-8">
             <Button className="w-full" onClick={openModal}><Image src="/images/xumm.png" height={30} width={30} className="mr-4" alt='xumm login' /> XUMM Wallet</Button>
-            <Button className="w-full" onClick={openModal}><Image src="/images/gem-logo.svg" height={30} width={30} className="mr-4" alt='xumm login' /> Gem APP Wallet</Button>
+            <Button className="w-full" onClick={handleGem}><Image src="/images/gem-logo.svg" height={30} width={30} className="mr-4" alt='gem login' /> Gem Wallet</Button>
             <Button className="w-full" disabled onClick={() => setInterval(() => setSoloText('Coming soon!'), 3000)}>
               <Image src="/images/solo-logo.svg" height={30} width={30} className="mr-4" alt='sologenic login' /> 
                 {soloText}
