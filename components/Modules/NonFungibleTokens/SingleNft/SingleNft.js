@@ -60,7 +60,7 @@ const SingleNft = ({ data }) => {
             {xrpAddress !== null ? (
 
                 <Nft
-                    imageSize="object-cover !w-full !h-full"
+                    imageSize="object-cover !w-full !h-full min-h-0"
                     className="w-full h-full border-none"
                     src='/images/nft.webp'
                     displayName={moduleSettings.displayNftName}

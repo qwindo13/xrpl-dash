@@ -9,10 +9,10 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
         <div
             className={`border ${className} ${selected ? 'border-opacity-100' : 'border-white border-opacity-5'} transition-colors duration-200 p-2 w-fit h-fit rounded-2xl flex flex-col gap-4 cursor-pointer`} onClick={onClick}
         >
-            <div className={`w-fit h-fit relative ${imageSize}`}>
+            <div className={`w-fit h-fit relative grow ${imageSize}`}>
                 {
                     videoFlag ? (
-                        <video className='w-full h-full rounded-xl' autoPlay loop muted playsInline src={src} />
+                        <video className='w-full h-full rounded-xl ' autoPlay loop muted playsInline src={src} />
                     ) :
                         (
                             <>
