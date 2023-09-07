@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }) {
   };
 
   useEffect(() => {
-    if (!cookies.token) {
+    if (cookies.token) {
         //get alerts from api/getNotifiedAlerts
         fetch(`${config.api_url}/getNotifiedAlerts`, {
             method: 'POST',
