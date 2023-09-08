@@ -158,7 +158,7 @@ const TokenDropdown = ({ onSelect, num = 10, selectToken = "SOLO" ,showXrp = fal
                 <Dropdown
                     className={"w-full gap-4 !max-h-44 overflow-hidden "}
                     trigger={
-                        <Button className="text-sm w-full font-semibold justify-between" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>
+                        <Button className="text-sm w-full font-semibold justify-between" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon sx={{ fontSize: 16 }} />}>
                             {selectedToken || "Select token"}
                         </Button>
                     }

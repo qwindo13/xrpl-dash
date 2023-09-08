@@ -8,7 +8,7 @@ import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfoco
 import Feed from '@/components/Modules/Feeds/Feed/Feedcomponents';
 import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
 import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
-import Nfts from '@/components/Modules/NonFungibleTokens/Nfts/Nftscomponents';
+import Nfts from '@/components/Modules/NonFungibleTokens/MultipleNfts/MultipleNftscomponents';
 import SingleNft from '@/components/Modules/NonFungibleTokens/SingleNft/SingleNftcomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize } from '@/components/Utils/ModuleSizescomponents';

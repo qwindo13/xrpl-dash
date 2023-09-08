@@ -283,7 +283,7 @@ function Alerts({ children }) {
                     <div className="w-fit">
                         <TokenDropdown onSelect={onSelect} num={5} selectToken="Select token" />
                     </div>
-                    <div className="flex flex-row gap-8 w-full items-start">
+                    <div className="flex flex-row gap-4 w-full items-start">
                        
                         <div className="w-1/2">
                             <InputField

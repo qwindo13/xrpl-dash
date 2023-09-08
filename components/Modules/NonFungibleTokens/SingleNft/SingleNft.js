@@ -44,13 +44,16 @@ const SingleNft = ({ data }) => {
             settings={
                 <>
                     <RandomSwitch
-                        value={moduleSettings.backgroundSetting}
-                        onChange={(value) => updateSettings("backgroundSetting", value)}
+                        value={moduleSettings.randomNFT}
+                        onChange={(value) => updateSettings("randomNFT", value)}
                     />
-                    <NftsSlider
-                        value={moduleSettings.backgroundSetting}
-                        onChange={(value) => updateSettings("backgroundSetting", value)}
-                    />
+                    {!moduleSettings.randomNFT && (
+                        <NftsSlider
+                            value={moduleSettings.backgroundSetting}
+                            onChange={(value) => updateSettings("backgroundSetting", value)}
+                        />
+                    )}
+
                     <NftNameSwitch
                         value={moduleSettings.displayNftName}
                         onChange={(value) => updateSettings("displayNftName", value)}
@@ -69,19 +72,17 @@ const SingleNft = ({ data }) => {
             disableTitle="true"
             className={`${backgroundClass} !p-0`}
         >
-            {xrpAddress !== null ? (
 
-                <Nft
-                    imageSize="object-cover !w-full !h-full min-h-0"
-                    className="w-full h-full border-none"
-                    src='/images/nft.webp'
-                    displayName={moduleSettings.displayNftName}
-                    displayPrice={moduleSettings.displayNftPrice}
-                />
 
-            ) : (
-                <WalletPrompt />
-            )}
+            <Nft
+                imageSize="object-cover !w-full !h-full min-h-0"
+                className="w-full h-full border-none"
+                src='/images/nft.webp'
+                displayName={moduleSettings.displayNftName}
+                displayPrice={moduleSettings.displayNftPrice}
+            />
+
+
         </ModuleCard>
     );
 };
