@@ -24,8 +24,7 @@ function SettingsLayout({ children }) {
                                 <li key={path}>
                                     <Link href={path}>
                                         <span
-                                            className={`text-2xl font-semibold ${asPath === path ? 'opacity-100' : 'opacity-40'
-                                                }`}
+                                            className={`text-2xl font-semibold ${asPath === path ? 'opacity-100' : 'opacity-40'} hover:opacity-100 transition-all duration-300`}
                                         >
                                             {name}
                                         </span>

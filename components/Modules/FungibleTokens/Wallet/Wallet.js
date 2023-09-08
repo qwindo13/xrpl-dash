@@ -265,14 +265,15 @@ const Wallet = () => {
             value={moduleSettings.displayTitle}
             onChange={(value) => updateSettings("displayTitle", value)}
           />
-          <BackgroundTabs
-            value={moduleSettings.backgroundSetting}
-            onChange={(value) => { console.log(value); updateSettings("backgroundSetting", value) }}
-          />
           <WalletDetailsSwitch
             value={moduleSettings.displayWalletDetails}
             onChange={(value) => updateSettings("displayWalletDetails", value)}
           />
+          <BackgroundTabs
+            value={moduleSettings.backgroundSetting}
+            onChange={(value) => { console.log(value); updateSettings("backgroundSetting", value) }}
+          />
+          
         </>
       }
       disableTitle={!moduleSettings.displayTitle}

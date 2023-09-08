@@ -30,7 +30,7 @@ function Alerts({ children }) {
     const [disabled, setDisabled] = useState(true);
     const [token, setToken] = useState('');
     const [tokenImg, setTokenImg] = useState('');
-    const [alerts, setAlerts] = useState([]); 
+    const [alerts, setAlerts] = useState([]);
     const [cookies] = useCookies(["token"]);
     const router = useRouter();
 
@@ -209,7 +209,7 @@ function Alerts({ children }) {
         for (let i = 0; i < hex.length; i += 2) {
             const code = parseInt(hex.substr(i, 2), 16);
             if (code !== 0) {
-            string += String.fromCharCode(code);
+                string += String.fromCharCode(code);
             }
         }
         return string;
@@ -224,47 +224,39 @@ function Alerts({ children }) {
                             <span className="text-2xl font-semibold mb-2">Alerts</span>
                             <span className="text-base font-semibold opacity-60 w-full lg:w-2/3">Stay updated on the XRPL market by managing and creating new alerts about price changes, volume increases, or other significant events.</span>
                         </div>
-                        <Button className='w-full md:w-auto' onClick={openModal} endIcon={<AddRoundedIcon sx={{ fontSize: 16 }}/>}>New alert</Button>
+                        <Button className='w-full md:w-auto' onClick={openModal} endIcon={<AddRoundedIcon sx={{ fontSize: 16 }} />}>New alert</Button>
                     </div>
                     <div className="flex flex-col gap-4">
-                        {/* {mockAlerts.map(project => (
-                            <Accordion
-                                key={project.id}
-                                title={project.token}
-                                image={{ src: project.symbol, alt: project.title }}
-                            >
-                                {project.alerts.map(alert => (
-                                    <div className="flex flex-row w-full justify-between items-center" key={alert.id}>
-                                        <div className="flex flex-col">
-                                            <span className="font-semibold">{alert.type}</span>
-                                            <span className="font-semibold opacity-60">{alert.description}</span>
-                                        </div>
-                                        <Button className="!p-0 bg-transparent"><DeleteOutlineRoundedIcon /></Button>
+                        <div className="flex flex-col gap-4">
+                            {
+                                alerts && alerts.length > 0 ? (
+                                    alerts && alerts.map((project, index) => (
+                                        <Accordion
+                                            key={index}
+                                            // title={project[0].alert.value.coin} if its more than 3 letters, convert from hex to string
+                                            title={project[0].alert.value.coin.length > 3 ? hexToString(project[0].alert.value.coin) : project[0].alert.value.coin}
+                                            // image={{ src: project[0].alert.value.img, alt: project[0].alert.value.coin }} if image string is empty, use https://ui-avatars.com/api/?name='first letter of coin'
+                                            image={{ src: project[0].alert.value.img ? project[0].alert.value.img : project[0].alert.value.coin.length > 3 ? `https://ui-avatars.com/api/?name=${hexToString(project[0].alert.value.coin)[0]}&rounded=true` : `https://ui-avatars.com/api/?name=${project[0].alert.value.coin[0]}&rounded=true`, alt: project[0].alert.value.coin }}
+                                        >
+                                            {project.map(alert => (
+                                                <div className="flex flex-row w-full justify-between items-center" key={alert.id}>
+                                                    <div className="flex flex-col">
+                                                        <span className="font-semibold">Price Alert</span>
+                                                        <span className="font-semibold opacity-60">{alert.alert.type} {alert.alert.value.price} XRP</span>
+                                                    </div>
+                                                    <Button className="!p-0 bg-transparent"><DeleteOutlineRoundedIcon id={alert.id} onClick={deleteAlert} /></Button>
+                                                </div>
+                                            ))}
+                                        </Accordion>
+                                    ))
+                                ) : (
+                                    <div className="w-full border rounded-2xl p-32 border-white border-opacity-5 text-center">
+                                       <span className="opacity-60">No alerts have been set up.</span> 
                                     </div>
-                                ))}
-                            </Accordion>
-                        ))} */}
-                        {
-                            alerts && alerts.map((project, index) => (
-                                <Accordion
-                                    key={index}
-                                    // title={project[0].alert.value.coin} if its more than 3 letters, convert from hex to string
-                                    title={project[0].alert.value.coin.length > 3 ? hexToString(project[0].alert.value.coin) : project[0].alert.value.coin}
-                                    // image={{ src: project[0].alert.value.img, alt: project[0].alert.value.coin }} if image string is empty, use https://ui-avatars.com/api/?name='first letter of coin'
-                                    image={{ src: project[0].alert.value.img ? project[0].alert.value.img : project[0].alert.value.coin.length > 3 ? `https://ui-avatars.com/api/?name=${hexToString(project[0].alert.value.coin)[0]}&rounded=true` : `https://ui-avatars.com/api/?name=${project[0].alert.value.coin[0]}&rounded=true`, alt: project[0].alert.value.coin }}
-                                >
-                                    {project.map(alert => (
-                                        <div className="flex flex-row w-full justify-between items-center" key={alert.id}>
-                                            <div className="flex flex-col">
-                                                <span className="font-semibold">Price Alert</span>
-                                                <span className="font-semibold opacity-60">{alert.alert.type} {alert.alert.value.price} XRP</span>
-                                            </div>
-                                            <Button className="!p-0 bg-transparent"><DeleteOutlineRoundedIcon id={alert.id} onClick={deleteAlert} /></Button>
-                                        </div>
-                                    ))}
-                                </Accordion>
-                            ))
-                        }
+                                )
+                            }
+                        </div>
+
 
                     </div>
                 </div>
@@ -284,7 +276,7 @@ function Alerts({ children }) {
                         <TokenDropdown onSelect={onSelect} num={5} selectToken="Select token" />
                     </div>
                     <div className="flex flex-row gap-4 w-full items-start">
-                       
+
                         <div className="w-1/2">
                             <InputField
                                 className="bg-[#A6B0CF] bg-opacity-5 rounded-xl text-sm !h-12"
