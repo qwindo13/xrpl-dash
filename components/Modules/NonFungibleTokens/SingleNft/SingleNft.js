@@ -3,7 +3,7 @@ import Image from 'next/image';
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import NftNameSwitch from "@/components/UI/ModuleCard/Settings/NftNameSwitchcomponents";
 import NftPriceSwitch from "@/components/UI/ModuleCard/Settings/NftPriceSwitchcomponents";
-import NftsSlider from "@/components/UI/ModuleCard/Settings/NftsSlidercomponents";
+import SearchNftButton from "@/components/UI/ModuleCard/Settings/SearchNftButtoncomponents";
 import RandomSwitch from "@/components/UI/ModuleCard/Settings/RandomSwitchcomponents";
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 import Nft from "@/components/UI/Nft/Nftcomponents";
@@ -48,7 +48,7 @@ const SingleNft = ({ data, index }) => {
                         onChange={(value) => updateSettings("randomNFT", value)}
                     />
                     {!moduleSettings.randomNFT && (
-                        <NftsSlider
+                        <SearchNftButton
                             value={moduleSettings.backgroundSetting}
                             onChange={(value) => updateSettings("backgroundSetting", value)}
                         />

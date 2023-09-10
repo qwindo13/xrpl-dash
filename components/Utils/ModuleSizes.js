@@ -23,8 +23,8 @@ export const singleNftSize = {
 };
 
 export const nftsSize = {
-  lg: { w: 6, h: 4, minW: 2, maxW: 10, minH: 2, maxH: 10 },
-  md: { w: 2, h: 3, minW: 2, maxW: 3, minH: 2, maxH: 2 },
+  lg: { w: 6, h: 4, minW: 4, maxW: 10, minH: 2, maxH: 10 },
+  md: { w: 6, h: 4, minW: 4, maxW: 3, minH: 2, maxH: 2 },
   sm: { w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 2 },
 };
 

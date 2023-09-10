@@ -18,13 +18,14 @@ const Switch = ({ value, onChange, disabled = false }) => {
     };
 
     return (
-        <div
+        <motion.div
             className={`${styles.switch} ${disabled ? styles.disabled : ""}`} // Add the disabled class when disabled is true
             data-isOn={isOn}
             onClick={toggleSwitch}
+            layout
         >
             <motion.div className={styles.handle} layout transition={spring} />
-        </div>
+        </motion.div>
     );
 };
 
