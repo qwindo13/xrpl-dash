@@ -232,6 +232,7 @@ function Alerts({ children }) {
                                 alerts && alerts.length > 0 ? (
                                     alerts && alerts.map((project, index) => (
                                         <Accordion
+                                            hasChildCount
                                             key={index}
                                             // title={project[0].alert.value.coin} if its more than 3 letters, convert from hex to string
                                             title={project[0].alert.value.coin.length > 3 ? hexToString(project[0].alert.value.coin) : project[0].alert.value.coin}
