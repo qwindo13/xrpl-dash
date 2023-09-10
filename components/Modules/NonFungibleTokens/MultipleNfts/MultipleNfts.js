@@ -4,6 +4,8 @@ import Button from "@/components/UI/Button/Buttoncomponents";
 import SearchBar from "@/components/UI/SearchBar/SearchBarcomponents";
 import Accordion from "@/components/UI/Accordion/Accordioncomponents";
 import Dropdown from "@/components/UI/Dropdown/Dropdowncomponents";
+import Checkbox from "@/components/UI/Checkbox/Checkboxcomponents";
+import InputField from "@/components/UI/InputField/InputFieldcomponents";
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 import NftNameSwitch from "@/components/UI/ModuleCard/Settings/NftNameSwitchcomponents";
 import NftPriceSwitch from "@/components/UI/ModuleCard/Settings/NftPriceSwitchcomponents";
@@ -116,12 +118,32 @@ const Nfts = ({ data }) => {
                     <div className="flex flex-row w-full gap-2">
                         {filterVisible && (
                             <div className="w-1/3 h-fit bg-[#A6B0CF] bg-opacity-5 rounded-xl p-4">
-                                <ul>
+                                <ul className="flex flex-col gap-4">
                                     <li>
                                         <Accordion title="Price" className="border-none !p-0">
-
+                                            <div className="flex flex-row gap-4 items-center">
+                                                <InputField
+                                                    className="bg-[#A6B0CF] bg-opacity-5 rounded-xl text-sm !h-12"
+                                                    placeholder="Min"
+                                                />
+                                                <span className="opacity-60">to</span>
+                                                <InputField
+                                                    className="bg-[#A6B0CF] bg-opacity-5 rounded-xl text-sm !h-12"
+                                                    placeholder="Max"
+                                                />
+                                            </div>
+                                            <Button className="w-full justify-center bg-[#A6B0CF] bg-opacity-5 !hover:bg-opacity-5">Apply</Button>
                                         </Accordion>
+                                    </li>
+                                    <li>
+                                        <Accordion title="Marketplace" className="border-none !p-0">
+                                            <div className="flex flex-col gap-2 ">
+                                            <Checkbox label="Remember me" />
 
+
+                                            </div>
+                                            <Button className="w-full justify-center bg-[#A6B0CF] bg-opacity-5 !hover:bg-opacity-5">Apply</Button>
+                                        </Accordion>
                                     </li>
                                 </ul>
                             </div>
