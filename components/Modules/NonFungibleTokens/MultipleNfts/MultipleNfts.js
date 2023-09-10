@@ -5,6 +5,7 @@ import SearchBar from "@/components/UI/SearchBar/SearchBarcomponents";
 import Accordion from "@/components/UI/Accordion/Accordioncomponents";
 import Dropdown from "@/components/UI/Dropdown/Dropdowncomponents";
 import Checkbox from "@/components/UI/Checkbox/Checkboxcomponents";
+import Switch from "@/components/UI/Switch/Switchcomponents";
 import InputField from "@/components/UI/InputField/InputFieldcomponents";
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 import NftNameSwitch from "@/components/UI/ModuleCard/Settings/NftNameSwitchcomponents";
@@ -84,7 +85,7 @@ const Nfts = ({ data }) => {
                     {moduleSettings.displaySearchBar && (
                         <div className="w-full flex flex-row gap-4">
                             <div className="relative inline-block h-full aspect-square">
-                                <Button className='flex justify-center h-full !rounded-xl' onClick={() => setFilterVisible(!filterVisible)}><TuneRoundedIcon sx={{ fontSize: 18 }} /></Button>
+                                <Button className='flex justify-center h-full !rounded-xl !bg-[#A6B0CF] !bg-opacity-5' onClick={() => setFilterVisible(!filterVisible)}><TuneRoundedIcon sx={{ fontSize: 18 }} /></Button>
                             </div>
 
                             <SearchBar
@@ -138,12 +139,29 @@ const Nfts = ({ data }) => {
                                     <li>
                                         <Accordion title="Marketplace" className="border-none !p-0">
                                             <div className="flex flex-col gap-2 ">
-                                            <Checkbox label="Remember me" />
-
-
+                                                <Checkbox label="XRPCafe" />
+                                                <Checkbox label="Sologenic" />
+                                                <Checkbox label="onXRP" />
+                                                <Checkbox label="XRMarket" />
+                                                <Checkbox label="XRPNFT" />
                                             </div>
                                             <Button className="w-full justify-center bg-[#A6B0CF] bg-opacity-5 !hover:bg-opacity-5">Apply</Button>
                                         </Accordion>
+                                    </li>
+                                    <li>
+                                        <Accordion title="File Type" className="border-none !p-0">
+                                            <div className="flex flex-col gap-2 ">
+                                                <Checkbox label="PNG" />
+                                                <Checkbox label="MP4" />
+                                            </div>
+                                            <Button className="w-full justify-center bg-[#A6B0CF] bg-opacity-5 !hover:bg-opacity-5">Apply</Button>
+                                        </Accordion>
+                                    </li>
+                                    <li>
+                                        <div className="flex flex-row justify-between">
+                                            <span className="font-semibold text-xl">On sale</span>
+                                            <Switch />
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
