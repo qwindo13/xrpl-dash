@@ -117,11 +117,12 @@ const Nfts = ({ data }) => {
                     )}
 
                     <div className="flex flex-row w-full gap-2">
+
                         {filterVisible && (
                             <div className="w-1/3 h-fit bg-[#A6B0CF] bg-opacity-5 rounded-xl p-4">
                                 <ul className="flex flex-col gap-4">
-                                    <li>
-                                        <Accordion title="Price" className="border-none !p-0">
+                                    <li className="border-b last:border-b-0 border-white border-opacity-5">
+                                        <Accordion title="Price" className="border-none !p-0 !pb-2">
                                             <div className="flex flex-row gap-4 items-center">
                                                 <InputField
                                                     className="bg-[#A6B0CF] bg-opacity-5 rounded-xl text-sm !h-12"
@@ -136,8 +137,8 @@ const Nfts = ({ data }) => {
                                             <Button className="w-full justify-center bg-[#A6B0CF] bg-opacity-5 !hover:bg-opacity-5">Apply</Button>
                                         </Accordion>
                                     </li>
-                                    <li>
-                                        <Accordion title="Marketplace" className="border-none !p-0">
+                                    <li className="border-b last:border-b-0 border-white border-opacity-5">
+                                        <Accordion title="Marketplace" className="border-none !p-0 !pb-2">
                                             <div className="flex flex-col gap-2 ">
                                                 <Checkbox label="XRPCafe" />
                                                 <Checkbox label="Sologenic" />
@@ -148,8 +149,8 @@ const Nfts = ({ data }) => {
                                             <Button className="w-full justify-center bg-[#A6B0CF] bg-opacity-5 !hover:bg-opacity-5">Apply</Button>
                                         </Accordion>
                                     </li>
-                                    <li>
-                                        <Accordion title="File Type" className="border-none !p-0">
+                                    <li className="border-b last:border-b-0 border-white border-opacity-5">
+                                        <Accordion title="File Type" className="border-none !p-0 !pb-2">
                                             <div className="flex flex-col gap-2 ">
                                                 <Checkbox label="PNG" />
                                                 <Checkbox label="MP4" />
@@ -157,13 +158,14 @@ const Nfts = ({ data }) => {
                                             <Button className="w-full justify-center bg-[#A6B0CF] bg-opacity-5 !hover:bg-opacity-5">Apply</Button>
                                         </Accordion>
                                     </li>
-                                    <li>
+                                    <li className="border-b last:border-b-0 border-white border-opacity-5">
                                         <div className="flex flex-row justify-between">
                                             <span className="font-semibold text-xl">On sale</span>
                                             <Switch />
                                         </div>
                                     </li>
                                 </ul>
+
                             </div>
                         )}
 
