@@ -12,6 +12,7 @@ import QuickSwap from "@/components/Modules/Trades/QuickSwap/QuickSwapcomponents
 import Wallet from "@/components/Modules/FungibleTokens/Wallet/Walletcomponents";
 import Badges from "@/components/Modules/NonFungibleTokens/Badges/Badgescomponents";
 import ProfitnLose from "@/components/Modules/Trades/ProfitnLoss/ProfitnLosscomponents";
+import SingleNft from "@/components/Modules/NonFungibleTokens/SingleNft/SingleNftcomponents";
 import mockFeed from "@/data/mockFeedcomponents";
 import SaveIcon from '@mui/icons-material/Save';
 import {
@@ -22,21 +23,21 @@ import {
   feedSize,
   badges,
   profitnLose,
+  singleNftSize
 } from "@/components/Utils/ModuleSizescomponents";
 import { useCookies } from "react-cookie";
 import { config } from "@/configcomponents";
 import Loader from "@/components/UI/Loader/Loadercomponents";
-import Toast from "@/components/UI/Toast/Toastcomponents";
 
-export default function Home({ houndPrice, xrpPrice }) {
+export default function Home() {
   const gridContainerRef = useRef(null); // Create a reference to the parent
   const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
   const [xrpAddress, setXrpAddress] = useState(null);
-  // const [modules, setModules] = useState(['wallet', 'priceinfo', 'quickswap', 'badges']);
   const [modules, setModules] = useState([]);
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   const [loading, setLoading] = useState(false);
   const [changeCount, setChangeCount] = useState(0);
+  const [nftIndexes, setNftIndexes] = useState({});
   const router = useRouter();
   const api_url = config.api_url;
 
@@ -67,7 +68,6 @@ export default function Home({ houndPrice, xrpPrice }) {
   });
 
   const handleLayoutChange = (currentLayout) => {
-    console.log("Layout changed:", currentLayout);
     setChangeCount(changeCount + 1);
     if (currentLayout.length > 0) {
       const layout = localStorage.getItem("layout");
@@ -178,7 +178,6 @@ export default function Home({ houndPrice, xrpPrice }) {
   //every 10 seconds, send the current layout to the api
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log("sending layout to api");
       const token = cookies.token;
       const modules = [];
       const layout = [];
@@ -248,7 +247,9 @@ export default function Home({ houndPrice, xrpPrice }) {
                 ? feedSize
                 : title === "Badges"
                   ? badges
-                  : profitnLose;
+                  : title === "singlenft"
+                    ? singleNftSize
+                    : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
       lg: [],
       md: [],
@@ -259,12 +260,25 @@ export default function Home({ houndPrice, xrpPrice }) {
       md: [...layout.md, { i: name, x: 0, y: 0, ...size.md }],
       sm: [...layout.sm, { i: name, x: 0, y: 0, ...size.sm }],
     };
-    console.log(`newLayout: ${JSON.stringify(newLayout)}`)
 
     setLayout(newLayout);
     localStorage.setItem("layout", JSON.stringify(newLayout));
     localStorage.setItem("modules", JSON.stringify([...modules, name]));
   };
+
+  useEffect(() => {
+    const indexes = {};
+    var counter = 0;
+    modules.forEach((module,index) => {
+      if (module.startsWith("singlenft")) {
+        indexes[index] = counter;
+        counter++;
+      }
+    });
+    setNftIndexes(indexes);
+    //set modules so that the layout will update
+    setModules(modules); 
+  }, [modules]);
 
   return (
 
@@ -351,8 +365,15 @@ export default function Home({ houndPrice, xrpPrice }) {
                   <ProfitnLose />
                 </div>
               );
+            } else if (module.startsWith("singlenft")) {
+              return (
+                <div key={module}>
+                  <SingleNft index={nftIndexes[modules.indexOf(module)]} />
+                </div>
+              );
             }
           })}
+
         </ResponsiveGridLayout>
       </div>
     </AppLayout>

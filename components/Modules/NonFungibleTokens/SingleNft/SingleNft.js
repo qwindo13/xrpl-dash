@@ -16,7 +16,7 @@ const defaultSettings = {
     backgroundSetting: "Solid",
 };
 
-const SingleNft = ({ data }) => {
+const SingleNft = ({ data, index }) => {
 
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const updateSettings = (key, value) => {
@@ -81,7 +81,6 @@ const SingleNft = ({ data }) => {
                 displayName={moduleSettings.displayNftName}
                 displayPrice={moduleSettings.displayNftPrice}
             />
-
 
         </ModuleCard>
     );
