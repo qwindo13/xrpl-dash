@@ -118,7 +118,7 @@ const Nfts = ({ data }) => {
 
                     <div className="flex flex-row w-full gap-2">
 
-                        {filterVisible && (
+                        {filterVisible && moduleSettings.displaySearchBar && (
                             <div className="w-1/3 h-fit bg-[#A6B0CF] bg-opacity-5 rounded-xl p-4">
                                 <ul className="flex flex-col gap-4">
                                     <li className="border-b last:border-b-0 border-white border-opacity-5">
@@ -146,7 +146,6 @@ const Nfts = ({ data }) => {
                                                 <Checkbox label="XRMarket" />
                                                 <Checkbox label="XRPNFT" />
                                             </div>
-                                            <Button className="w-full justify-center bg-[#A6B0CF] bg-opacity-5 !hover:bg-opacity-5">Apply</Button>
                                         </Accordion>
                                     </li>
                                     <li className="border-b last:border-b-0 border-white border-opacity-5">
@@ -155,7 +154,6 @@ const Nfts = ({ data }) => {
                                                 <Checkbox label="PNG" />
                                                 <Checkbox label="MP4" />
                                             </div>
-                                            <Button className="w-full justify-center bg-[#A6B0CF] bg-opacity-5 !hover:bg-opacity-5">Apply</Button>
                                         </Accordion>
                                     </li>
                                     <li className="border-b last:border-b-0 border-white border-opacity-5">

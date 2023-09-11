@@ -8,7 +8,7 @@ const ModuleCard = ({ children, className, title, settings, disableTitle, callTo
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const defaultClass =
-    "block relative overflow-hidden items-start bg-[#21212A] flex flex-col w-full h-full rounded-2xl relative items-center p-4";
+    "block relative overflow-hidden items-start bg-[#21212A] flex flex-col w-full h-full rounded-2xl relative items-center p-4 transition-colors duration-300";
 
   const toggleSettings = useCallback(() => {
     setIsSettingsVisible((prevIsSettingsVisible) => !prevIsSettingsVisible);

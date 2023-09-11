@@ -25,7 +25,7 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                         <div className="flex flex-col text-left">
                             <span className="text-lg font-semibold">@{userData.username || ''}</span>
                             <Tooltip copyContent={xrpAddress}>
-                                <span className="text-base font-semibold opacity-60">{truncateAddress(xrpAddress)}</span>
+                                <span className="text-base  opacity-60">{truncateAddress(xrpAddress)}</span>
                             </Tooltip>
                         </div>
 
