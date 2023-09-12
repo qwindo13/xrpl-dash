@@ -11,7 +11,8 @@ import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents
 import Nfts from '@/components/Modules/NonFungibleTokens/MultipleNfts/MultipleNftscomponents';
 import SingleNft from '@/components/Modules/NonFungibleTokens/SingleNft/SingleNftcomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
-import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize } from '@/components/Utils/ModuleSizescomponents';
+import FearGreedIndex from '@/components/Modules/Trades/FearGreedIndex/FearGreedIndexcomponents';
+import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize, fearGreedSize } from '@/components/Utils/ModuleSizescomponents';
 
 
 export default function Home() {
@@ -55,6 +56,8 @@ export default function Home() {
             { i: 'quickswap', x: 3, y: 0, ...quickSwapSize.lg },
             { i: 'wallet', x: 0, y: 2, ...walletSize.lg },
             { i: 'feed', x: 2, y: 2, ...feedSize.lg },
+            { i: 'feargreed', x: 2, y: 2, ...fearGreedSize.lg },
+
         ],
         md: [
             { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.md },
@@ -96,15 +99,15 @@ export default function Home() {
                     onLayoutChange={handleLayoutChange}
                 >
                     <div key="nfts">
-                       <Nfts />
+                        <Nfts />
                     </div>
                     <div key="singleNft">
-                       <SingleNft />
+                        <SingleNft />
+                    </div>
+                    <div key="feargreed">
+                        <FearGreedIndex />
                     </div>
                     
-                    <div key="feed">
-                   
-                    </div>
                     {/* Add other modules wrapped in a <div> with their unique key */}
                 </ResponsiveGridLayout>
             </div>
