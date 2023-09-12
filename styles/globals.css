@@ -7,16 +7,22 @@
 
 @font-face {
   font-family: Mont;
+  src: url("/fonts/mont/Mont-Regular.ttf") format("truetype");
   src: url("/fonts/mont/Mont-Regular.otf") format("opentype");
   src: url("/fonts/mont/Mont-Regular.woff2") format('woff2');
   src: url("/fonts/mont/Mont-ExtraLight.otf") format("opentype");
+  src: url("/fonts/mont/Mont-ExtraLight.ttf") format("truetype");
   src: url("/fonts/mont/Mont-Light.woff2") format('woff2');
+  src: url("/fonts/mont/Mont-Light.ttf") format("truetype");
   src: url("/fonts/mont/Mont-Black.otf") format("opentype");
   src: url("/fonts/mont/Mont-Black.woff2") format('woff2');
+  src: url("/fonts/mont/Mont-Black.ttf") format("truetype");
   src: url("/fonts/mont/Mont-Bold.otf") format("opentype");
   src: url("/fonts/mont/Mont-Bold.woff2") format('woff2');
+  src: url("/fonts/mont/Mont-Bold.ttf") format("truetype");
   src: url("/fonts/mont/Mont-SemiBold.otf") format("opentype");
   src: url("/fonts/mont/Mont-SemiBold.woff2") format('woff2');
+  src: url("/fonts/mont/Mont-SemiBold.ttf") format("truetype");
 }
 
 :root {
