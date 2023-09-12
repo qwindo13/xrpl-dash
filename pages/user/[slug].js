@@ -8,6 +8,7 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { BsDiscord } from "react-icons/bs";
 import { config } from '@/configcomponents';
+import { useCookies } from 'react-cookie';
 
 
 function truncateAddress(address, maxLength = 12) {
@@ -29,6 +30,7 @@ export default function Profile() {
     const [isLoading, setLoading] = useState(true);
     const [userData, setUserData] = useState({});
     const [isOwner, setIsOwner] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
     const router = useRouter();
     const xrpAddress = router.query.slug;
     const api_url = config.api_url;
@@ -42,6 +44,7 @@ export default function Profile() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${cookies.token}`,
                 },
                 body: JSON.stringify({
                     address: xrpAddress,

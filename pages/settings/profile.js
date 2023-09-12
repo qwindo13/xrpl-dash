@@ -16,10 +16,10 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import ImageSearchRoundedIcon from "@mui/icons-material/ImageSearchRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { config } from "@/configcomponents";
-import axios from "axios";
 import TxModal from "@/components/Modals/TxModal/TxModalcomponents";
+import { useCookies } from "react-cookie";
 
-function ProfileSettings({ children }) {
+function ProfileSettings({ children, nfts }) {
   const variants = {
     hidden: {
       opacity: 0,
@@ -38,19 +38,14 @@ function ProfileSettings({ children }) {
   const [bio, setBio] = useState("");
   const [twitter, setTwitter] = useState("");
   const [telegram, setTelegram] = useState("");
-  const [qrCode, setQrCode] = useState("");
-  const [qrCodeUrl, setQrCodeUrl] = useState("");
-  const [xummButtonClicked, setXummButtonClicked] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [closeModal, setCloseModal] = useState(true);
-  const [nfts, setNfts] = useState([]);
-  const [nfts2, setNfts2] = useState([]);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const [selectedNft, setSelectedNft] = useState("");
   const [selectedNftImage, setSelectedNftImage] = useState("");
   const [selectedNft2, setSelectedNft2] = useState("");
   const [selectedNftImage2, setSelectedNftImage2] = useState("");
   const [selectedBanner, setSelectedBanner] = useState("");
   const [selectedBannerImage, setSelectedBannerImage] = useState("");
+  const [cookies] = useCookies(["token"]);
   const api_url = config.api_url;
 
   const closeAvatarModal = () => {
@@ -80,14 +75,6 @@ function ProfileSettings({ children }) {
   const [xrpAddress, setXrpAddress] = useState("");
   const router = useRouter();
 
-  const convertHexToString = (hex) => {
-    let string = "";
-    for (let i = 0; i < hex.length; i += 2) {
-      string += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    }
-    return string;
-  };
-
   useEffect(() => {
     if (localStorage.getItem("address")) {
       setXrpAddress(localStorage.getItem("address"));
@@ -102,7 +89,6 @@ function ProfileSettings({ children }) {
       compare = userDataJson.address.localeCompare(localStorage.getItem("address"));
     }
     if (compare === 0) {
-      console.log("matched");
       const userDataJson = JSON.parse(userData);
       setUserName(userDataJson.username);
       setBio(userDataJson.bio);
@@ -113,157 +99,71 @@ function ProfileSettings({ children }) {
       setSelectedBanner(userDataJson.banner_nft_id);
       setSelectedBannerImage(userDataJson.banner_nft_url);
     } else {
-      fetch(`${api_url}/checkUserExists`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          address: localStorage.getItem("address"),
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.exists) {
-            console.log("exists");
-            setUserName(data.username);
-            setBio(data.bio);
-            setTwitter(data.twitter);
-            setTelegram(data.telegram);
-            setSelectedNft(data.pfp_nft_id);
-            setSelectedNftImage(data.pfp_nft_url);
-            setSelectedBanner(data.banner_nft_id);
-            setSelectedBannerImage(data.banner_nft_url);
-          } else {
-            // setLoggedin(false);
-            console.log("failed");
-            // router.push("/auth/login");
+      // fetch(`${api_url}/checkUserExists`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "Authorization": "Bearer " + cookies.token,
+      //   },
+      //   body: JSON.stringify({
+      //     address: xrpAddress,
+      //   }),
+      // })
+        // .then((res) => res.json())
+        // .then((data) => {
+        //   if (data.exists) {
+        //     setUserName(data.username);
+        //     setBio(data.bio);
+        //     setTwitter(data.twitter);
+        //     setTelegram(data.telegram);
+        //     setSelectedNft(data.pfp_nft_id);
+        //     setSelectedNftImage(data.pfp_nft_url);
+        //     setSelectedBanner(data.banner_nft_id);
+        //     setSelectedBannerImage(data.banner_nft_url);
+        //     sessionStorage.setItem("userData", JSON.stringify(data));
+        //   } else {
+        //     console.log("failed");
+        //   }
+        // });
+      
+        async function getUserData() {
+          const userData = await fetch(`${api_url}/checkUserExists`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + cookies.token,
+            },
+            body: JSON.stringify({  
+              address: xrpAddress,
+            }),
+          });
+          const userDataJson = await userData.json();
+          if (userDataJson.exists) {
+            setUserName(userDataJson.username);
+            setBio(userDataJson.bio);
+            setTwitter(userDataJson.twitter);
+            setTelegram(userDataJson.telegram);
+            setSelectedNft(userDataJson.pfp_nft_id);
+            setSelectedNftImage(userDataJson.pfp_nft_url);
+            setSelectedBanner(userDataJson.banner_nft_id);
+            setSelectedBannerImage(userDataJson.banner_nft_url);
+            sessionStorage.setItem("userData", JSON.stringify(userDataJson.data));
+            window.location.reload();
           }
-        });
+        }    
+        
+        getUserData();
     }
   }, []);
 
   useEffect(() => {
-    if (xrpAddress) {
-      const url = `${api_url}/walletnfts/${xrpAddress}`;
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data.nfts);
-          setNfts(data.nfts);
-        });
-    }
-  }, [xrpAddress]);
-
-  useEffect(() => {
-    console.log(nfts.length);
-    if (nfts.length > 0) {
-      fetchNfts()
-    }
-
-    async function fetchNfts() {
-      nfts.forEach(async (nft) => {
-        //if URI field is not present, then skip
-        if (nft.URI) {
-          const decoded = convertHexToString(nft.URI);
-          if (decoded.startsWith('https://')) {
-            const data = await axios.get(decoded);
-            decodeImage(data, nft);
-          } else if (decoded.startsWith('ipfs://')) {
-            //detect the cid from the decoded string
-            const cid = decoded.replace('ipfs://', 'https://ipfs.io/ipfs/');
-            const data = await axios.get(cid);
-            decodeImage(data, nft);
-          } else {
-            // finalNfts.push(`https://ipfs.io/ipfs/${decoded}`);
-            const data = await axios.get(`https://ipfs.io/ipfs/${decoded}`);
-            decodeImage(data, nft);
-          }
-        }
-      });
-
-      function decodeImage(data, nft) {
-        if (data.data.image === undefined) {
-          return
-        }
-        if (!('video' in data.data) && data.data.video === undefined && data.data.video === '' && !('animation' in data.data) && data.data.animation === undefined && data.data.animation === '') {
-          if (data.data.image.startsWith('ipfs://')) {
-            const image = data.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
-            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image, videoFlag: false }]);
-          } else if (data.data.image.startsWith('https://')) {
-            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.image, videoFlag: false }]);
-          } else {
-            setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.image}`, videoFlag: false }]);
-          }
-        } else {
-          if ('video' in data.data && data.data.video !== undefined && data.data.video !== '') {
-            if (data.data.video.startsWith('ipfs://')) {
-              const image = data.data.video.replace('ipfs://', 'https://ipfs.io/ipfs/');
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image, videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
-            } else if (data.data.video.startsWith('https://')) {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.video, videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
-            } else {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.video}`, videoFlag: (data.data.video.substr(data.data.video.length - 3) === 'gif') ? false : true }]);
-            }
-          } else if ('animation' in data.data && data.data.animation !== undefined && data.data.animation !== '') {
-            console.log(`Animation: ${data.data.animation}\n${data.data.animation.substr(data.data.animation.length - 3)}`)
-            if (data.data.animation.startsWith('ipfs://')) {
-              const image = data.data.animation.replace('ipfs://', 'https://ipfs.io/ipfs/');
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image, videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
-            } else if (data.data.animation.startsWith('https://')) {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.animation, videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
-            } else {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.animation}`, videoFlag: (data.data.animation.substr(data.data.animation.length - 3) === 'gif') ? false : true }]);
-            }
-          } else {
-            //use image
-            if (data.data.image.startsWith('ipfs://')) {
-              const image = data.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: image, videoFlag: false }]);
-            } else if (data.data.image.startsWith('https://')) {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: data.data.image, videoFlag: false }]);
-            } else {
-              setNfts2((nfts2) => [...nfts2, { nftid: nft.NFTokenID, image: `https://ipfs.io/ipfs/${data.data.image}`, videoFlag: false }]);
-            }
-          }
-        }
-      }
-    }
-  }, [nfts]);
-
-  useEffect(() => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const getQrCode = async () => {
-      const payload = await fetch("/api/xumm/createpayload");
-      const data = await payload.json();
-
-      setQrCode(data.payload.refs.qr_png);
-      setQrCodeUrl(data.payload.next.always);
-
-      if (isMobile) {
-        //open in new tab
-        window.open(data.payload.next.always, "_blank");
-      }
-
-      const ws = new WebSocket(data.payload.refs.websocket_status);
-
-      ws.onmessage = async (e) => {
-        let responseObj = JSON.parse(e.data);
-        if (responseObj.signed !== null && responseObj.signed !== undefined) {
-          const payload = await fetch(
-            `/api/xumm/getpayload?payloadId=${responseObj.payload_uuidv4}`
-          );
-          const payloadJson = await payload.json();
-
-          const hex = payloadJson.payload.response.hex;
-          const checkSign = await fetch(`/api/xumm/checksign?hex=${hex}`);
-          const checkSignJson = await checkSign.json();
-          if (checkSignJson.xrpAddress === xrpAddress) {
             // setLoggedin(true);
             const updateUser = await fetch(`${api_url}/updateUser`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + cookies.token,
               },
               body: JSON.stringify({
                 address: xrpAddress,
@@ -289,31 +189,20 @@ function ProfileSettings({ children }) {
               //refresh page
               router.push("/settings/profile");
             }
-          } else {
-            // setLoggedin(false);
-            console.log("failed");
-          }
-        }
-      };
-    };
-
-    // getQrCode()
-    if (xummButtonClicked) {
-      setShowModal(true);
-      setCloseModal(false);
-      getQrCode();
-    } else {
-      setShowModal(false);
-      setCloseModal(true);
     }
-  }, [xummButtonClicked]);
+
+    if (buttonClicked) {
+      getQrCode();
+    }
+
+  }, [buttonClicked]);
 
   return (
     <>
       <SettingsLayout>
         <div className="w-full flex flex-col gap-16">
           <div className="relative w-full h-40 md:h-72 rounded-2xl bg-[#21212A] p-2" style={selectedBanner ? { backgroundImage: `url(${selectedBannerImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-            {nfts2.length > 0 && (
+            {nfts.length > 0 && (
               <motion.div
                 onClick={openBannerModal}
                 variants={variants}
@@ -327,7 +216,7 @@ function ProfileSettings({ children }) {
             <div className="absolute left-4 md:left-8 -bottom-8">
               {/* set image as https://ipfs.io/ipfs/bafybeiek4j6yn3p3jvoxxsmfttzprfn7en3togmslm6yjloolajcoqpzju/3436.png */}
               <div className="w-32 h-32 md:w-36 md:h-36 p-2 rounded-full border-2 border-[#1A1921] bg-default-avatar" style={selectedNft ? { backgroundImage: `url(${selectedNftImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-                {nfts2.length > 0 && (
+                {nfts.length > 0 && (
                   <motion.div
                     onClick={openAvatarModal}
                     variants={variants}
@@ -387,7 +276,7 @@ function ProfileSettings({ children }) {
           <div className="flex w-full lg:w-2/3 justify-end">
             <Button
               className="bg-white !text-[#1A1921]"
-              onClick={() => setXummButtonClicked(true)}
+              onClick={() => setButtonClicked(true)}
             >
               Save settings
             </Button>
@@ -407,23 +296,23 @@ function ProfileSettings({ children }) {
         </div>
         <div className="relative mb-4 md:mb-8">
           <div ref={sliderRef} className="keen-slider ">
-            {Array.from({ length: nfts2.length }).map((_, index) => (
+            {Array.from({ length: nfts.length }).map((_, index) => (
               <div
                 key={index}
                 className="keen-slider__slide"
                 style={{ maxWidth: "11.1rem", minWidth: "11.1rem" }}
               >
-                {/* { nfts.length > 0 && <Nft src={nfts2[index].image} /> } */}
-                {nfts2.length > 0 && (
+                {/* { nfts.length > 0 && <Nft src={nfts[index].image} /> } */}
+                {nfts.length > 0 && (
                   <Nft
-                    src={nfts2[index].image}
+                    src={nfts[index].image}
                     onClick={() => {
-                      // console.log(nfts2[index].nftid);
-                      setSelectedNft2(nfts2[index].nftid);
-                      setSelectedNftImage2(nfts2[index].image);
+                      // console.log(nfts[index].nftid);
+                      setSelectedNft2(nfts[index].nftid);
+                      setSelectedNftImage2(nfts[index].image);
                     }}
-                    selected={nfts2[index].nftid === selectedNft2}
-                    videoFlag={nfts2[index].videoFlag}
+                    selected={nfts[index].nftid === selectedNft2}
+                    videoFlag={nfts[index].videoFlag}
                   />
                 )}
               </div>
@@ -477,23 +366,23 @@ function ProfileSettings({ children }) {
         </div>
         <div className="relative mb-4 md:mb-8">
           <div ref={sliderRef} className="keen-slider ">
-            {Array.from({ length: nfts2.length }).map((_, index) => (
+            {Array.from({ length: nfts.length }).map((_, index) => (
               <div
                 key={index}
                 className="keen-slider__slide"
                 style={{ maxWidth: "11.1rem", minWidth: "11.1rem" }}
               >
-                {/* { nfts.length > 0 && <Nft src={nfts2[index].image} /> } */}
-                {nfts2.length > 0 && (
+                {/* { nfts.length > 0 && <Nft src={nfts[index].image} /> } */}
+                {nfts.length > 0 && (
                   <Nft
-                    src={nfts2[index].image}
+                    src={nfts[index].image}
                     onClick={() => {
-                      // console.log(nfts2[index].nftid);
-                      setSelectedBanner(nfts2[index].nftid);
-                      setSelectedBannerImage(nfts2[index].image);
+                      // console.log(nfts[index].nftid);
+                      setSelectedBanner(nfts[index].nftid);
+                      setSelectedBannerImage(nfts[index].image);
                     }}
-                    selected={nfts2[index].nftid === selectedBanner}
-                    videoFlag={nfts2[index].videoFlag}
+                    selected={nfts[index].nftid === selectedBanner}
+                    videoFlag={nfts[index].videoFlag}
                   />
                 )}
               </div>
@@ -530,8 +419,6 @@ function ProfileSettings({ children }) {
         </div>
 
       </Modal>
-
-      <TxModal showModal={showModal} closeModal={closeModal} qrCode={qrCode} qrCodeUrl={qrCodeUrl} text='verification process' />
 
     </>
   );

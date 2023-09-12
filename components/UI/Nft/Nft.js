@@ -23,13 +23,15 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
                                     src={src}
                                     alt="NFT"
                                     style={{
-                                        width: '100%',
-                                        height: 'auto',
+                                        // width: '100%',
+                                        height: '200px',
                                     }}
                                     width={500}
                                     height={500}
                                     onLoad={() => setImageLoaded(true)}
                                     cover
+                                    //allow for all domains
+                                    unoptimized
                                 />
                             </>
                         )
