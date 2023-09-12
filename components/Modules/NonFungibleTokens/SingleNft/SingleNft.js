@@ -22,7 +22,7 @@ const defaultSettings = {
   nft: false
 };
 
-const SingleNft = ({ data, index }) => {
+const SingleNft = ({ data, index, changeModal, setIndex}) => {
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => setShowModal(false);
 
@@ -72,9 +72,13 @@ const SingleNft = ({ data, index }) => {
     useEffect(() => {
         // console.log(moduleSettings)
         if (moduleSettings.nft === true) {
-            openModal()
+            // openModal()
+            changeModal(true)
+            setIndex(index)
         } else {
-            closeModal()
+            // closeModal()
+            changeModal(false)
+            setIndex(null)
         }
     }, [moduleSettings])
     
@@ -115,60 +119,12 @@ const SingleNft = ({ data, index }) => {
         <Nft
           imageSize="object-cover !w-full !h-full min-h-0"
           className="w-full h-full border-none"
-          src="/images/nft.webp"
+          // src="/images/nft.webp"
+          src={data && data[index] && data[index].image ? data[index].image : "/images/nft.webp"}
           displayName={moduleSettings.displayNftName}
           displayPrice={moduleSettings.displayNftPrice}
         />
       </ModuleCard>
-
-      <Modal
-        title="Change avatar"
-        description="Select an NFT from your wallet to be displayed."
-        showModal={showModal}
-        closeModal={closeModal}
-      >
-        <div className="relative mb-4 md:mb-8">
-          <div ref={sliderRef} className="keen-slider ">
-            {/* Put array map here */}
-          </div>
-          <div className="absolute top-1/2 left-0 transform -translate-y-1/2  flex flex-row justify-between">
-            {loaded && instanceRef.current && (
-              <>
-                <SliderButton
-                  left
-                  onClick={(e) =>
-                    e.stopPropagation() || instanceRef.current?.prev()
-                  }
-                  disabled={currentSlide === 0}
-                />
-              </>
-            )}
-          </div>
-          <div className="absolute top-1/2 right-0 transform -translate-y-1/2  flex flex-row justify-between">
-            {loaded && instanceRef.current && (
-              <>
-                <SliderButton
-                  right
-                  onClick={(e) =>
-                    e.stopPropagation() || instanceRef.current?.next()
-                  }
-                  disabled={
-                    currentSlide === instanceRef.current.slides.length - 3
-                  }
-                />
-              </>
-            )}
-          </div>
-        </div>
-        <div className="flex justify-end">
-          <Button
-            className="bg-white !text-[#1A1921]"
-            onClick={closeModal}
-          >
-            Select
-          </Button>
-        </div>
-      </Modal>
     </>
   );
 };

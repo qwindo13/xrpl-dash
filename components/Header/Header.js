@@ -51,6 +51,7 @@ export default function Header({ fixed }) {
         if (cached !== null) {
             const address = localStorage.getItem('address');
             const cachedJson = JSON.parse(cached);
+            console.log(cachedJson);
             const compare = cachedJson.address.localeCompare(address);
             if (compare !== 0) {
                 sessionStorage.removeItem('userData');
@@ -62,10 +63,11 @@ export default function Header({ fixed }) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${cookies.token}`
                 },
                 body: JSON.stringify({
-                    address: localStorage.getItem('address'),
-                }),
+                    address: xrpAddress
+                })
             })
                 .then((res) => res.json())
                 .then((data) => {

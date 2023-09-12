@@ -27,18 +27,38 @@ import {
 } from "@/components/Utils/ModuleSizescomponents";
 import { useCookies } from "react-cookie";
 import { config } from "@/configcomponents";
-import Loader from "@/components/UI/Loader/Loadercomponents";
+import SliderButton from "@/components/UI/SliderButton/SliderButtoncomponents";
+import Button from "@/components/UI/Button/Buttoncomponents";
+import Modal from "@/components/UI/Modal/Modalcomponents";
+import Nft from "@/components/UI/Nft/Nftcomponents";
+import { useKeenSlider } from "keen-slider/react";
 
-export default function Home() {
+export default function Home({ nfts }) {
   const gridContainerRef = useRef(null); // Create a reference to the parent
   const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
-  const [xrpAddress, setXrpAddress] = useState(null);
   const [modules, setModules] = useState([]);
   const [cookies] = useCookies(["token"]);
   const [loading, setLoading] = useState(false);
   const [changeCount, setChangeCount] = useState(0);
   const [nftIndexes, setNftIndexes] = useState({});
-  const router = useRouter();
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedNft, setSelectedNft] = useState(null);
+  const [selectedNftImage, setSelectedNftImage] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+  const [sliderRef, instanceRef] = useKeenSlider({
+    mode: "snap",
+    rtl: false,
+    slides: { perView: "auto", spacing: 16 },
+    initial: 0,
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
+    created() {
+      setLoaded(true);
+    },
+  });
   const api_url = config.api_url;
 
   // Update the gridWidth on window resize and component mount
@@ -120,8 +140,6 @@ export default function Home() {
     } else {
       const addy = localStorage.getItem("address");
       if (addy !== null) {
-        // console.log("setting address");
-        setXrpAddress(addy);
         //getLayout from api
         fetch(`${api_url}/getLayout`, {
           method: "POST",
@@ -280,6 +298,21 @@ export default function Home() {
     setModules(modules); 
   }, [modules]);
 
+  const changeModal = (value) => {
+    setShowModal(value);
+  };
+
+  const saveNft = (index) => {
+    console.log(index);
+    console.log(selectedNft);
+    console.log(selectedNftImage);
+    setShowModal(false);
+  };
+
+  const setIndex = (index) => {
+    setSelectedIndex(index);
+  };
+
   return (
 
     <AppLayout
@@ -368,7 +401,7 @@ export default function Home() {
             } else if (module.startsWith("singlenft")) {
               return (
                 <div key={module}>
-                  <SingleNft index={nftIndexes[modules.indexOf(module)]} />
+                  <SingleNft index={nftIndexes[modules.indexOf(module)]} changeModal={changeModal} setIndex={setIndex}/>
                 </div>
               );
             }
@@ -376,6 +409,73 @@ export default function Home() {
 
         </ResponsiveGridLayout>
       </div>
+
+      <Modal showModal={showModal} closeModal={() => setShowModal(false)}>
+        <div className="pb-4 md:pb-8">
+          <h2 className="text-xl font-semibold mb-2">Select NFT</h2>
+          <span className="text-base font-semibold opacity-60">
+            Select an NFT from your wallet or buy a new one to display
+          </span>
+        </div>
+        <div className="relative mb-4 md:mb-8">
+          <div ref={sliderRef} className="keen-slider ">
+            {Array.from({ length: nfts.length }).map((_, index) => (
+              <div
+                key={index}
+                className="keen-slider__slide"
+                style={{ maxWidth: "11.1rem", minWidth: "11.1rem" }}
+              >
+                {/* { nfts.length > 0 && <Nft src={nfts2[index].image} /> } */}
+                {nfts.length > 0 && (
+                  <Nft
+                    src={nfts[index].image}
+                    onClick={() => {
+                      // console.log(nfts2[index].nftid);
+                      setSelectedNft(nfts[index].nftid);
+                      setSelectedNftImage(nfts[index].image);
+                    }}
+                    selected={nfts[index].nftid === selectedNft}
+                    videoFlag={nfts[index].videoFlag}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="absolute top-1/2 left-0 transform -translate-y-1/2  flex flex-row justify-between">
+            {loaded && instanceRef.current && (
+              <>
+                <SliderButton
+                  left
+                  onClick={(e) =>
+                    e.stopPropagation() || instanceRef.current?.prev()
+                  }
+                  disabled={currentSlide === 0}
+                />
+              </>
+            )}
+          </div>
+          <div className="absolute top-1/2 right-0 transform -translate-y-1/2  flex flex-row justify-between">
+            {loaded && instanceRef.current && (
+              <>
+                <SliderButton
+                  right
+                  onClick={(e) =>
+                    e.stopPropagation() || instanceRef.current?.next()
+                  }
+                  disabled={
+                    currentSlide === instanceRef.current.track.details.slides.length - 3
+                  }
+                />
+              </>
+            )}
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <Button className="bg-white !text-[#1A1921]" onClick={() => saveNft(selectedIndex)}>
+            Save
+          </Button>
+        </div>
+      </Modal>
     </AppLayout>
   );
 }
