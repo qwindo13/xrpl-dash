@@ -10,7 +10,9 @@ const SearchNftButton = ({value, onChange, disabled = false }) => {
                 <span className='opacity-60 font-semibold text-xs'>Random NFT if none is selected</span>
             </div>
             <div className='h-auto flex items-center'>
-                <Button className="aspect-square !rounded-full !p-3"><ImageSearchRoundedIcon sx={{ fontSize: 16 }}/></Button>
+                <Button className="aspect-square !rounded-full !p-3" disabled={disabled} onClick={() => onChange(!value)}>
+                    <ImageSearchRoundedIcon sx={{ fontSize: 16 }}/>
+                </Button>
             </div>
         </div>
     );

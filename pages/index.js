@@ -23,7 +23,7 @@ import {
   feedSize,
   badges,
   profitnLose,
-  singleNftSize
+  singleNftSize,
 } from "@/components/Utils/ModuleSizescomponents";
 import { useCookies } from "react-cookie";
 import { config } from "@/configcomponents";
