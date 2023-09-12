@@ -3,8 +3,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from 'framer-motion';
 
+function truncateAddress(address, maxLength = 12) {
+    if (!address) {
+        return '';
+    }
+
+    if (address.length <= maxLength) {
+        return address;
+    }
+
+    const halfLength = maxLength / 2;
+    const start = address.slice(0, halfLength);
+    const end = address.slice(-halfLength);
+    return `${start}...${end}`;
+}
+
+
 const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClick, videoFlag, src }) => {
     const [isImageLoaded, setImageLoaded] = useState(false);
+    const xrpAddress = "xrpAddress";
 
     return (
         <motion.div
@@ -46,12 +63,12 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
             {displayPrice &&
                 <motion.div layout className="p-3 bg-[#A6B0CF] bg-opacity-5 rounded-xl flex flex-row justify-between">
                     <div className="flex flex-col gap-2">
-                        <span className="text-xs font-semibold opacity-60">Price</span>
-                        <span className="text-sm font-semibold">333 XRP</span>
+                        <span className="text-xs font-semibold opacity-60">Owned by</span>
+                        <span className="text-sm font-semibold">{truncateAddress(xrpAddress)}</span>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <span className="text-xs font-semibold opacity-60">Bids</span>
-                        <span className="text-sm font-semibold">No bids yet</span>
+                        <span className="text-xs font-semibold opacity-60">Price</span>
+                        <span className="text-sm font-semibold">333 XRP</span>
                     </div>
                 </motion.div>
             }

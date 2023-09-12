@@ -95,10 +95,10 @@ const FearGreedIndex = () => {
                     <circle cx={circlePosition.cx} cy={circlePosition.cy} r="5" fill="red" />
                     </svg>
 
-                    {data[1] && (
+                    {data[0] && (
                         <div className="absolute text-center mt-8" >
                             <h5 className="font-semibold text-2xl">{data[0].value_classification}</h5>
-                            <span className="opacity-60 font-normal text-base">{data[1].value}</span>
+                            <span className="opacity-60 font-normal text-base">{data[0].value}</span>
                         </div>
                     )}
 
