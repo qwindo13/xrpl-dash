@@ -173,6 +173,7 @@ const Nfts = ({ data }) => {
                                     <Nft
                                         className="w-full"
                                         src='/images/nft.webp'
+                                        key={index}
                                         displayName={moduleSettings.displayNftName}
                                         displayPrice={moduleSettings.displayNftPrice}
                                     />
