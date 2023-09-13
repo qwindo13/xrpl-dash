@@ -265,7 +265,7 @@ export default function Home({ nfts }) {
                 ? feedSize
                 : title === "Badges"
                   ? badges
-                  : title === "singlenft"
+                  : title === "Single NFT"
                     ? singleNftSize
                     : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
