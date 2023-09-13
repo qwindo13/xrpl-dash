@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const Tabs = ({ options, onChange, className, tabsId , bgColor = "#1A1921", selectedTab, setSelectedTab}) => {
-  const [selectedOption, setSelectedOption] = useState(`${tabsId}-${options[0].value}`);
+const Tabs = ({ options, onChange, className, tabsId, bgColor = "#1A1921", value, setSelectedTab }) => {
+  const [selectedOption, setSelectedOption] = useState(`${tabsId}-${value || options[0].value}`);
 
   const handleOptionClick = (value) => {
     setSelectedOption(`${tabsId}-${value}`);
@@ -16,11 +16,10 @@ const Tabs = ({ options, onChange, className, tabsId , bgColor = "#1A1921", sele
   };
 
   useEffect(() => {
-    if (selectedTab) {
-      handleOptionClick(selectedTab);
+    if (value) {
+      setSelectedOption(`${tabsId}-${value}`);
     }
-  }, [selectedTab]);
-
+  }, [value]);
 
   return (
     <div className={`flex flex-row md:flex-row gap-4 justify-center items-center rounded-2xl ${className}`}>

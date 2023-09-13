@@ -29,7 +29,7 @@ const DonutChart = ({ data, colorScale, valueXRP, valueFiat, loading }) => {
   };
 
   return (
-    <motion.div className='relative flex justify-center h-full w-auto overflow-visible'>
+    <motion.div className='relative flex justify-center h-full w-full overflow-visible'>
       <svg className='w-full h-auto' viewBox="-5 -5 62 62">
         {sortedData.map((entry, index) => {
           const { value, token, change, balance } = entry;

@@ -56,7 +56,7 @@ export default function Header({ fixed }) {
             if (compare !== 0) {
                 sessionStorage.removeItem('userData');
                 cached = null;
-            } 
+            }
         }
         if (xrpAddress !== '' && cached === null && xrpAddress !== null) {
             fetch(`${api_url}/checkUserExists`, {

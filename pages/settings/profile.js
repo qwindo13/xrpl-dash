@@ -311,6 +311,8 @@ function ProfileSettings({ children, nfts }) {
                       setSelectedNft2(nfts[index].nftid);
                       setSelectedNftImage2(nfts[index].image);
                     }}
+                    imageSize="!w-full !h-full object-cover"
+                    className=" w-full h-auto"
                     selected={nfts[index].nftid === selectedNft2}
                     videoFlag={nfts[index].videoFlag}
                   />
@@ -383,6 +385,8 @@ function ProfileSettings({ children, nfts }) {
                     }}
                     selected={nfts[index].nftid === selectedBanner}
                     videoFlag={nfts[index].videoFlag}
+                    imageSize="!w-full !h-full object-cover"
+                    className=" w-full h-auto"
                   />
                 )}
               </div>

@@ -73,7 +73,7 @@ const Modal = ({ title, description, children, showModal, closeModal, className,
             {(title || description) && (
                 <div className="pb-4 md:pb-8">
                   {title && <h2 className="text-xl font-semibold mb-2"> {title} </h2>}
-                  {description && <span className="text-base font-semibold opacity-60 hidden md:block">{description}</span>}
+                  {description && <span className="text-base opacity-60 hidden md:block">{description}</span>}
                 </div>
               )}
 

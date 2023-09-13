@@ -134,7 +134,7 @@ export default function Home({ nfts }) {
       if (layout !== null && layout !== undefined && layout !== "" && layout !== "null" && layout !== "undefined") {
         setLayout(JSON.parse(localStorage.getItem("layout")));
       }
-      if (modules !== null && modules !== undefined && modules !== "" && modules !== "null" && modules !== "undefined") { 
+      if (modules !== null && modules !== undefined && modules !== "" && modules !== "null" && modules !== "undefined") {
         setModules(JSON.parse(localStorage.getItem("modules")));
       }
     } else {
@@ -159,25 +159,25 @@ export default function Home({ nfts }) {
             }
 
             if (data.data.layout.length === 2) {
-                localStorage.removeItem("modules");
-                localStorage.removeItem("layout");
-                //set the layout in local storage
-                if (data.data.layout[1].layout.length === 0) {
-                  localStorage.setItem("layout", JSON.stringify({
-                    lg: [],
-                    md: [],
-                    sm: [],
-                  }));
-                } else {
-                  localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[0]));
-                  setLayout(data.data.layout[1].layout[0]);
-                }
-                if (data.data.layout[0].modules.length === 0) {
-                  localStorage.setItem("modules", JSON.stringify([]));
-                } else {
-                  localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules));
-                  setModules(data.data.layout[0].modules);
-                }
+              localStorage.removeItem("modules");
+              localStorage.removeItem("layout");
+              //set the layout in local storage
+              if (data.data.layout[1].layout.length === 0) {
+                localStorage.setItem("layout", JSON.stringify({
+                  lg: [],
+                  md: [],
+                  sm: [],
+                }));
+              } else {
+                localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[0]));
+                setLayout(data.data.layout[1].layout[0]);
+              }
+              if (data.data.layout[0].modules.length === 0) {
+                localStorage.setItem("modules", JSON.stringify([]));
+              } else {
+                localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules));
+                setModules(data.data.layout[0].modules);
+              }
             }
           });
       } else {
@@ -223,8 +223,8 @@ export default function Home({ nfts }) {
             body: JSON.stringify({
               token: token,
               layout: [
-                { "modules" : modules },
-                { "layout" : layout },
+                { "modules": modules },
+                { "layout": layout },
               ],
             }),
           })
@@ -287,7 +287,7 @@ export default function Home({ nfts }) {
   useEffect(() => {
     const indexes = {};
     var counter = 0;
-    modules.forEach((module,index) => {
+    modules.forEach((module, index) => {
       if (module.startsWith("singlenft")) {
         indexes[index] = counter;
         counter++;
@@ -295,7 +295,7 @@ export default function Home({ nfts }) {
     });
     setNftIndexes(indexes);
     //set modules so that the layout will update
-    setModules(modules); 
+    setModules(modules);
   }, [modules]);
 
   const changeModal = (value) => {
@@ -401,7 +401,7 @@ export default function Home({ nfts }) {
             } else if (module.startsWith("singlenft")) {
               return (
                 <div key={module}>
-                  <SingleNft index={nftIndexes[modules.indexOf(module)]} changeModal={changeModal} setIndex={setIndex}/>
+                  <SingleNft index={nftIndexes[modules.indexOf(module)]} changeModal={changeModal} setIndex={setIndex} />
                 </div>
               );
             }
@@ -436,6 +436,8 @@ export default function Home({ nfts }) {
                     }}
                     selected={nfts[index].nftid === selectedNft}
                     videoFlag={nfts[index].videoFlag}
+                    imageSize="!w-full !h-full object-cover"
+                    className=" w-full h-auto"
                   />
                 )}
               </div>

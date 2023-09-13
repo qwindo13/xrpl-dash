@@ -4,11 +4,8 @@ import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import AppLayout from '@/components/Layouts/AppLayoutcomponents';
-import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfocomponents';
-import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
-import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
-import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
-import ProfitnLose from '@/components/Modules/Trades/ProfitnLoss/ProfitnLosscomponents';
+
+
 import Loader from '@/components/UI/Loader/Loadercomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize } from '@/components/Utils/ModuleSizescomponents';
 
@@ -74,8 +71,10 @@ export default function Home() {
     return (
         <AppLayout showControlPanel>
             <div ref={gridContainerRef} className="w-full"> {/* Attach the reference to the parent */}
-            <Loader />
-            asdasd
+
+                <div>
+                    <Loader />
+                </div>
             </div>
         </AppLayout>
     );

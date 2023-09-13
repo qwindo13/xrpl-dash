@@ -185,7 +185,7 @@ const Wallet = () => {
       React.memo(({ moduleSettings, totXrp, totFiat, loading }) => (
         <motion.div
           layout
-          className={`aspect-square h-full ${moduleSettings.displayWalletDetails ? "w-6/12" : "w-10/12"
+          className={`aspect-square h-full ${moduleSettings.displayWalletDetails ? "w-8/12" : "w-full"
             }`}
         >
           <DonutChart
