@@ -63,7 +63,7 @@ const SingleNft = ({ data, index, changeModal, setIndex}) => {
     moduleSettings.backgroundSetting === "Solid"
       ? ""
       : moduleSettings.backgroundSetting === "Highlight"
-      ? "bg-[#525567] "
+      ? "relative bg-transparent w-full h-full before:absolute before:w-full before:h-full before:scale-110	before:opacity-40 before:bg-[url('/images/nft.webp')] before:bg-cover before:bg-center before:blur-2xl before:z-[-1] "
       : moduleSettings.backgroundSetting === "Transparent"
       ? "bg-transparent backdrop-blur-lg border border-white border-opacity-5"
       : "";
@@ -108,6 +108,7 @@ const SingleNft = ({ data, index, changeModal, setIndex}) => {
               onChange={(value) => updateSettings("displayNftPrice", value)}
             />
             <BackgroundTabs
+              hasHighlight
               value={moduleSettings.backgroundSetting}
               onChange={(value) => updateSettings("backgroundSetting", value)}
             />
