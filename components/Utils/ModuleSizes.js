@@ -23,9 +23,9 @@ export const profitnLose = {
 };
 
 export const singleNftSize = {
-  lg: { w: 1, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 3 },
-  md: { w: 1, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 6 },
-  sm: { w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 2 },
+  lg: { w: 1, h: 2, minW: 1, maxW: 2, minH: 1, maxH: 3 },
+  md: { w: 1, h: 2, minW: 1, maxW: 3, minH: 1, maxH: 6 },
+  sm: { w: 2, h: 2, minW: 1, maxW: 2, minH: 1, maxH: 2 },
 };
 
 export const nftsSize = {
