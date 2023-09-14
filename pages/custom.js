@@ -6,7 +6,7 @@ import 'react-resizable/css/styles.css';
 import AppLayout from '@/components/Layouts/AppLayoutcomponents';
 
 
-import Loader from '@/components/UI/Loader/Loadercomponents';
+import Loader from '@/components/UI/Spinner/Spinnercomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize } from '@/components/Utils/ModuleSizescomponents';
 
 
