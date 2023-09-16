@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import ModuleCard from "@/components/UI/ModuleCard/ModuleCardcomponents";
 import NftNameSwitch from "@/components/UI/ModuleCard/Settings/NftNameSwitchcomponents";
 import NftPriceSwitch from "@/components/UI/ModuleCard/Settings/NftPriceSwitchcomponents";
@@ -7,41 +6,22 @@ import SearchNftButton from "@/components/UI/ModuleCard/Settings/SearchNftButton
 import RandomSwitch from "@/components/UI/ModuleCard/Settings/RandomSwitchcomponents";
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 import Nft from "@/components/UI/Nft/Nftcomponents";
-import Modal from "@/components/UI/Modal/Modalcomponents";
-import Button from "@/components/UI/Button/Buttoncomponents";
-import WalletPrompt from "@/components/UI/WalletPrompt/WalletPromptcomponents";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
-import SliderButton from "@/components/UI/SliderButton/SliderButtoncomponents";
+import { config } from "@/configcomponents";
+import { useCookies } from "react-cookie";
 
 const defaultSettings = {
-  RandomSwitch: true,
   displayNftName: true,
   displayNftPrice: false,
-  backgroundSetting: "Solid",
-  nft: false
+  backgroundSetting: "Solid"
 };
 
-const SingleNft = ({ data, index, changeModal, setIndex}) => {
-  const [showModal, setShowModal] = useState(false);
-  const closeModal = () => setShowModal(false);
+const SingleNft = ({ data, changeModal, keyy, refresh}) => {
 
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [loaded, setLoaded] = useState(false);
-
-  const [sliderRef, instanceRef] = useKeenSlider({
-    mode: "snap",
-    rtl: false,
-    slides: { perView: "auto", spacing: 16 },
-    initial: 0,
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel);
-    },
-    created() {
-      setLoaded(true);
-    },
-  });
-
+  const [cookies] = useCookies(["token"]);
+  const [nftData, setNftData] = useState(null);
+  const [price, setPrice] = useState(null);
   const [moduleSettings, setModuleSettings] = useState(defaultSettings);
   const updateSettings = (key, value) => {
     setModuleSettings((prevSettings) => ({
@@ -55,9 +35,45 @@ const SingleNft = ({ data, index, changeModal, setIndex}) => {
   useEffect(() => {
     const address = localStorage.getItem("address");
     setXrpAddress(address);
-  }, []);
+    if (keyy && cookies.token) {
+      const api_url = `${config.api_url}/getNftById`;
+      const data = {
+        token: cookies.token,
+        div_id: keyy,
+      };
+      fetch(api_url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success:", data);
+            setNftData(data.data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [refresh]);
 
-  const openModal = () => setShowModal(true);
+  //get price
+  useEffect(() => {
+    if (nftData && nftData.nft_id) {
+      const api_url = `${config.api_url}/nft_price/${nftData.nft_id}`;
+      fetch(api_url)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success:", data);
+          setPrice(data.price);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [nftData]);
 
   const backgroundClass =
     moduleSettings.backgroundSetting === "Solid"
@@ -69,35 +85,19 @@ const SingleNft = ({ data, index, changeModal, setIndex}) => {
       : "";
 
 
-    useEffect(() => {
-        // console.log(moduleSettings)
-        if (moduleSettings.nft === true) {
-            // openModal()
-            changeModal(true)
-            setIndex(index)
-        } else {
-            // closeModal()
-            changeModal(false)
-            setIndex(null)
-        }
-    }, [moduleSettings])
-    
   return (
     <>
       <ModuleCard
-        title="NFT - #23123"
+        title= {data && data[index] && data[index].name ? data[index].name : "NFT"}
         settings={
           <>
-            <RandomSwitch
+            {/* <RandomSwitch
               value={moduleSettings.randomNFT}
               onChange={(value) => updateSettings("randomNFT", value)}
-            />
-            {!moduleSettings.randomNFT && (
+            /> */}
               <SearchNftButton
-                value={moduleSettings.nft}
-                onChange={(value) => updateSettings("nft", value)}
+                onChange={() => changeModal(true, keyy)}
               />
-            )}
 
             <NftNameSwitch
               value={moduleSettings.displayNftName}
@@ -121,9 +121,12 @@ const SingleNft = ({ data, index, changeModal, setIndex}) => {
           imageSize="object-cover !w-full !h-full min-h-0"
           className="w-full h-full border-none"
           // src="/images/nft.webp"
-          src={data && data[index] && data[index].image ? data[index].image : "/images/nft.webp"}
+          // src={data && data[index] && data[index].image ? data[index].image : "/images/nft.webp"}
+          src={nftData && nftData.nft_image ? nftData.nft_image : "/images/nft.webp"}
           displayName={moduleSettings.displayNftName}
           displayPrice={moduleSettings.displayNftPrice}
+          name={nftData && nftData.nft_name ? nftData.nft_name : "Select NFT"}
+          price={price}
         />
       </ModuleCard>
     </>

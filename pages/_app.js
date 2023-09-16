@@ -131,7 +131,7 @@ export default function App({ Component, pageProps }) {
                           );
                           setNfts2((nfts2) => [
                             ...nfts2,
-                            { nftid: nft.NFTokenID, image: image, videoFlag: false },
+                            { nftid: nft.NFTokenID, image: image, videoFlag: false, name: data.data.name },
                           ]);
                         } else if (data.data.image.startsWith("https://")) {
                           setNfts2((nfts2) => [
@@ -140,6 +140,7 @@ export default function App({ Component, pageProps }) {
                               nftid: nft.NFTokenID,
                               image: data.data.image,
                               videoFlag: false,
+                              name: data.data.name,
                             },
                           ]);
                         } else {
@@ -149,6 +150,7 @@ export default function App({ Component, pageProps }) {
                               nftid: nft.NFTokenID,
                               image: `https://ipfs.io/ipfs/${data.data.image}`,
                               videoFlag: false,
+                              name: data.data.name,
                             },
                           ]);
                         }
@@ -174,6 +176,7 @@ export default function App({ Component, pageProps }) {
                                   ) === "gif"
                                     ? false
                                     : true,
+                                name: data.data.name,
                               },
                             ]);
                           } else if (data.data.video.startsWith("https://")) {
@@ -188,6 +191,7 @@ export default function App({ Component, pageProps }) {
                                   ) === "gif"
                                     ? false
                                     : true,
+                                name: data.data.name,
                               },
                             ]);
                           } else {
@@ -202,6 +206,7 @@ export default function App({ Component, pageProps }) {
                                   ) === "gif"
                                     ? false
                                     : true,
+                                name: data.data.name,
                               },
                             ]);
                           }
@@ -233,6 +238,7 @@ export default function App({ Component, pageProps }) {
                                   ) === "gif"
                                     ? false
                                     : true,
+                                name: data.data.name,
                               },
                             ]);
                           } else if (data.data.animation.startsWith("https://")) {
@@ -247,6 +253,7 @@ export default function App({ Component, pageProps }) {
                                   ) === "gif"
                                     ? false
                                     : true,
+                                name: data.data.name,
                               },
                             ]);
                           } else {
@@ -261,6 +268,7 @@ export default function App({ Component, pageProps }) {
                                   ) === "gif"
                                     ? false
                                     : true,
+                                name: data.data.name,
                               },
                             ]);
                           }
@@ -277,6 +285,7 @@ export default function App({ Component, pageProps }) {
                                 nftid: nft.NFTokenID,
                                 image: image,
                                 videoFlag: false,
+                                name: data.data.name,
                               },
                             ]);
                           } else if (data.data.image.startsWith("https://")) {
@@ -286,6 +295,7 @@ export default function App({ Component, pageProps }) {
                                 nftid: nft.NFTokenID,
                                 image: data.data.image,
                                 videoFlag: false,
+                                name: data.data.name,
                               },
                             ]);
                           } else {
@@ -295,6 +305,7 @@ export default function App({ Component, pageProps }) {
                                 nftid: nft.NFTokenID,
                                 image: `https://ipfs.io/ipfs/${data.data.image}`,
                                 videoFlag: false,
+                                name: data.data.name,
                               },
                             ]);
                           }
