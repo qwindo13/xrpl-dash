@@ -21,7 +21,9 @@ function truncateAddress(address, maxLength = 12) {
 
 const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClick, videoFlag, src, name, price = 0 }) => {
     const [isImageLoaded, setImageLoaded] = useState(false);
-    const xrpAddress = localStorage.getItem('address')
+    if (typeof window !== 'undefined') {
+        const xrpAddress = localStorage.getItem("address")
+    }
 
     return (
         <motion.div
