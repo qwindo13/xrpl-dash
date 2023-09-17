@@ -40,13 +40,15 @@ export default function Home({ nfts }) {
   const [cookies] = useCookies(["token"]);
   const [loading, setLoading] = useState(false);
   const [changeCount, setChangeCount] = useState(0);
-  const [nftIndexes, setNftIndexes] = useState({});
-  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedModule, setSelectedModule] = useState(null);
+  const [selectedName, setSelectedName] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedNft, setSelectedNft] = useState(null);
   const [selectedNftImage, setSelectedNftImage] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
   const [sliderRef, instanceRef] = useKeenSlider({
     mode: "snap",
     rtl: false,
@@ -284,33 +286,46 @@ export default function Home({ nfts }) {
     localStorage.setItem("modules", JSON.stringify([...modules, name]));
   };
 
-  useEffect(() => {
-    const indexes = {};
-    var counter = 0;
-    modules.forEach((module, index) => {
-      if (module.startsWith("singlenft")) {
-        indexes[index] = counter;
-        counter++;
-      }
-    });
-    setNftIndexes(indexes);
-    //set modules so that the layout will update
-    setModules(modules);
-  }, [modules]);
-
-  const changeModal = (value) => {
+  const changeModal = (value,value2) => {
     setShowModal(value);
+    setSelectedModule(value2);
   };
 
-  const saveNft = (index) => {
-    console.log(index);
-    console.log(selectedNft);
-    console.log(selectedNftImage);
+  const saveNft = () => {
+    if (selectedNft !== null && selectedNft !== undefined && selectedNftImage !== null && selectedNftImage !== undefined) {
+        //api_url/addNftMod, post request, token, nftid, image, token
+        const token = cookies.token;
+        fetch(`${api_url}/addNftMod`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: token,
+            nft_data: {
+              id: selectedNft,
+              image: selectedNftImage,
+              name: selectedName,
+              div_id: selectedModule,
+            },
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if ('error' in data) {
+              console.log(data.error);
+              return;
+            }
+            // console.log(`nft mod added`);
+            setRefresh(!refresh);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    } else {
+      return;
+    }
     setShowModal(false);
-  };
-
-  const setIndex = (index) => {
-    setSelectedIndex(index);
   };
 
   return (
@@ -401,7 +416,7 @@ export default function Home({ nfts }) {
             } else if (module.startsWith("singlenft")) {
               return (
                 <div key={module}>
-                  <SingleNft index={nftIndexes[modules.indexOf(module)]} changeModal={changeModal} setIndex={setIndex} />
+                  <SingleNft changeModal={changeModal} keyy={module} refresh={refresh}/>
                 </div>
               );
             }
@@ -433,6 +448,7 @@ export default function Home({ nfts }) {
                       // console.log(nfts2[index].nftid);
                       setSelectedNft(nfts[index].nftid);
                       setSelectedNftImage(nfts[index].image);
+                      setSelectedName(nfts[index].name);
                     }}
                     selected={nfts[index].nftid === selectedNft}
                     videoFlag={nfts[index].videoFlag}
@@ -473,7 +489,7 @@ export default function Home({ nfts }) {
           </div>
         </div>
         <div className="flex justify-end">
-          <Button className="bg-white !text-[#1A1921]" onClick={() => saveNft(selectedIndex)}>
+          <Button className="bg-white !text-[#1A1921]" onClick={() => saveNft()}>
             Save
           </Button>
         </div>

@@ -19,9 +19,11 @@ function truncateAddress(address, maxLength = 12) {
 }
 
 
-const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClick, videoFlag, src }) => {
+const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClick, videoFlag, src, name, price = 0 }) => {
     const [isImageLoaded, setImageLoaded] = useState(false);
-    const xrpAddress = "xrpAddress";
+    if (typeof window !== 'undefined') {
+        const xrpAddress = localStorage.getItem("address")
+    }
 
     return (
         <motion.div layout
@@ -40,7 +42,7 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
                                     src={src}
                                     alt="NFT"
                                     style={{
-                                        // width: '100%',
+                                        width: '100px',
                                         height: '200px',
                                     }}
                                     width={500}
@@ -57,8 +59,8 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
 
             {displayName &&
                 <motion.div layout className="flex flex-col px-2">
-                    <span className="text-xs font-semibold opacity-60">Houndies</span>
-                    <span className="text-base font-semibold">Houndie #1313</span>
+                    {/* <span className="text-xs font-semibold opacity-60">Houndies</span> */}
+                    <span className="text-base font-semibold">{name || 'nft'}</span>
                 </motion.div>
             }
 
@@ -70,7 +72,7 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
                     </div>
                     <div className="flex flex-col gap-2">
                         <span className="text-xs font-semibold opacity-60">Price</span>
-                        <span className="text-sm font-semibold">333 XRP</span>
+                        <span className="text-sm font-semibold">{price} XRP</span>
                     </div>
                 </motion.div>
             }
