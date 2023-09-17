@@ -101,9 +101,6 @@ export default function Home() {
                     <div key="nfts">
                         <Nfts />
                     </div>
-                    <div key="singleNft">
-                        <SingleNft />
-                    </div>
                     <div key="feargreed">
                         <FearGreedIndex />
                     </div>

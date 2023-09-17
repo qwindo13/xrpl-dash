@@ -24,7 +24,7 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
     const xrpAddress = "xrpAddress";
 
     return (
-        <motion.div
+        <motion.div layout
             className={`border ${className} ${selected ? 'border-opacity-100' : 'border-white border-opacity-5'} transition-colors duration-300 p-2 w-fit h-fit rounded-2xl flex flex-col gap-4 cursor-pointer`} onClick={onClick}
         >
             <motion.div layout className={`w-fit h-fit relative grow ${imageSize}`}>
@@ -36,7 +36,7 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
                             <>
                                 {!isImageLoaded && <div className="w-full h-full rounded-xl bg-[#A6B0CF] bg-opacity-5 animate-pulse"></div>}
                                 <Image
-                                    className={`rounded-xl ${imageSize}`} 
+                                    className={`rounded-xl object-cover ${imageSize}`} 
                                     src={src}
                                     alt="NFT"
                                     style={{

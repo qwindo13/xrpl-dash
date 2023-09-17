@@ -75,6 +75,9 @@ textarea:focus, input:focus{
   100% {opacity: 1;}
 }
 
+.react-grid-item {
+  @apply transition-shadow duration-300;	
+}
 .react-grid-item .react-resizable-handle {
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
