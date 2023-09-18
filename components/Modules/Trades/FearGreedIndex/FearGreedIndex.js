@@ -26,12 +26,47 @@ const FearGreedIndex = () => {
         }));
     };
 
-    const backgroundClass = moduleSettings.backgroundSetting === 'Solid' ? 'border-white border-opacity-0' :
-        moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#525567] ' :
-            moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
+    const getBackgroundColor = (value) => {
+        let rgbaColor;
+        if (value >= 0 && value <= 20) rgbaColor = "rgba(206, 92, 109, 0.6)";
+        else if (value >= 21 && value <= 40) rgbaColor = "rgba(231,174,55, 0.6)";
+        else if (value >= 41 && value <= 60) rgbaColor = "rgba(243, 215, 28, 0.6)";
+        else if (value >= 61 && value <= 80) rgbaColor = "rgba(176,	211, 560, 0.6)";
+        else if (value >= 81 && value <= 100) rgbaColor = "rgba(109, 206, 92, 0.6)";
+        return `radial-gradient(circle at center, ${rgbaColor} 0%, transparent 120%)`;
+    };
+    
+    
 
+    const backgroundClass = moduleSettings.backgroundSetting === 'Solid' 
+    ? 'border-white border-opacity-0'
+    : moduleSettings.backgroundSetting === 'Highlight'
+    ? `backdrop-blur-lg`
+    : moduleSettings.backgroundSetting === 'Transparent' 
+    ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' 
+    : '';
+
+    const backgroundStyle = moduleSettings.backgroundSetting === 'Highlight' ? 
+    { 
+        background: getBackgroundColor(data[0]?.value || 0) 
+    } : {};
+
+
+
+    // State to hold the circle's position
+    const [circlePosition, setCirclePosition] = useState({ x: 0, y: 0 });
+
+    const calculateCirclePosition = (value) => {
+        const path = document.querySelector("#motionPath");
+        const pathLength = path.getTotalLength();
+        const position = path.getPointAtLength((value / 100) * pathLength); // converting value to a percentage of path length
+        return { x: position.x, y: position.y };
+    };
 
     useEffect(() => {
+        // Set default position to 0% when component mounts
+        setCirclePosition(calculateCirclePosition(0));
+
         const fetchData = async () => {
             try {
                 const response = await fetch(API_URL);
@@ -47,9 +82,14 @@ const FearGreedIndex = () => {
         fetchData();
     }, []);
 
-    const value = data[0]?.value || 0;
-    const position = value / 100;
-    const keyPointsValue = `0;${position}`;
+    useEffect(() => {
+        if (data[0]) {
+            const value = data[0].value;
+            setCirclePosition(calculateCirclePosition(value));
+        }
+    }, [data]);
+
+
 
     return (
         <ModuleCard
@@ -61,6 +101,7 @@ const FearGreedIndex = () => {
                         onChange={(value) => updateSettings("displayTitle", value)}
                     />
                     <BackgroundTabs
+                        hasHighlight
                         value={moduleSettings.backgroundSetting}
                         onChange={(value) => updateSettings("backgroundSetting", value)}
                     />
@@ -68,6 +109,8 @@ const FearGreedIndex = () => {
             }
             disableTitle={!moduleSettings.displayTitle}
             className={`${backgroundClass}`}
+            contentClassName="!overflow-visible"
+            style={backgroundStyle}
         >
             <div className="relative w-full h-full">
                 <div className="w-full h-full flex items-center aspect-auto justify-center">
@@ -78,32 +121,23 @@ const FearGreedIndex = () => {
                         <path id="path4" d="M60.1455 7.80322C59.5852 6.19848 57.8286 5.34566 56.2435 5.95929C41.7314 11.5772 28.9667 20.9284 19.2489 33.0606C18.1823 34.3922 18.4716 36.3318 19.842 37.3481V37.3481C21.2083 38.3612 23.1323 38.0731 24.1989 36.7482C33.1738 25.6002 44.9213 16.992 58.2681 11.7833C59.8547 11.1641 60.707 9.41116 60.1455 7.80322V7.80322Z" fill="#E7AE37"></path>
                         <path id="path5" d="M17.7126 40.3161C16.3039 39.3625 14.3841 39.7265 13.4772 41.1658C5.1935 54.313 0.544063 69.4152 0.00210452 84.935C-0.0573952 86.6388 1.3307 88.0212 3.03561 88.0208V88.0208C4.74051 88.0203 6.11617 86.6374 6.18018 84.9337C6.71672 70.6522 10.9931 56.7581 18.5827 44.6376C19.4882 43.1915 19.1255 41.2726 17.7126 40.3161V40.3161Z" fill="#CE5C6D"></path>
 
-                        <path id="motionPath" d="M176.29,84.91a3,3,0,0,1-3,3.09,3.17,3.17,0,0,1-3.14-3.09,81.8,81.8,0,0,0-12.48-40.39c-1.45-2.4-4.46-6.37-5-7.1l-.09-.11A81.88,81.88,0,0,0,118.44,12a96.17,96.17,0,0,0-9.27-3.06A82.23,82.23,0,0,0,66.89,9h0a66.68,66.68,0,0,0-8.57,2.81,82,82,0,0,0-34.07,25,3.19,3.19,0,0,1-.45.45,73.86,73.86,0,0,0-5.17,7.44A81.72,81.72,0,0,0,6.18,84.93a3.23,3.23,0,0,1-1,2.19A3.07,3.07,0,0,1,3,88a3,3,0,0,1-3-3.09A87.76,87.76,0,0,1,13.48,41.17a0,0,0,0,1,0,0,49.27,49.27,0,0,1,5.76-8.09A88.23,88.23,0,0,1,56.24,6l0,0a45.26,45.26,0,0,1,8.79-2.87A88.32,88.32,0,0,1,111,3c2.61.65,8,2.56,9.24,3h0l.25.08h0a88.36,88.36,0,0,1,37,27.53c1.65,2,4.4,6.15,5.06,7.16l.11.16,0,.06A87.77,87.77,0,0,1,176.29,84.91Z"
-                            stroke="red" fill=""></path>
+                        <path id="motionPath" d="M3.09,85v-.09a84.74,84.74,0,0,1,13-41.95h0a58.31,58.31,0,0,1,5.47-7.76c.15-.16.3-.32.44-.49A85.13,85.13,0,0,1,57.28,8.9h0A53,53,0,0,1,66,6.07,85.18,85.18,0,0,1,110.08,6c2.84.74,7,2.2,9.14,3h0l.25.09h0A85.06,85.06,0,0,1,155,35.46l.09.11c1.09,1.37,3.86,5.27,4.93,7a1.4,1.4,0,0,0,.1.16s0,0,0,.06A84.44,84.44,0,0,1,173.1,82.94a4.42,4.42,0,0,1-1.33,3.51"
+                            stroke="" fill=""></path>
 
-<circle
+                        <circle
+                            cx={circlePosition.x}
+                            cy={circlePosition.y}
                             r="6"
                             strokeWidth="2"
                             fill="#FFFFFF"
                             stroke="#21212A"
-                        >
-                            <animateMotion
-                                begin="0s"
-                                dur="infinite"
-                                repeatCount="infinite"
-                                keyPoints={keyPointsValue}
-                                fill="freeze"
-                                keyTimes="0;1"
-                                calcMode="linear"
-                                path="M176.29,84.91a3,3,0,0,1-3,3.09,3.17,3.17,0,0,1-3.14-3.09,81.8,81.8,0,0,0-12.48-40.39c-1.45-2.4-4.46-6.37-5-7.1l-.09-.11A81.88,81.88,0,0,0,118.44,12a96.17,96.17,0,0,0-9.27-3.06A82.23,82.23,0,0,0,66.89,9h0a66.68,66.68,0,0,0-8.57,2.81,82,82,0,0,0-34.07,25,3.19,3.19,0,0,1-.45.45,73.86,73.86,0,0,0-5.17,7.44A81.72,81.72,0,0,0,6.18,84.93a3.23,3.23,0,0,1-1,2.19A3.07,3.07,0,0,1,3,88a3,3,0,0,1-3-3.09A87.76,87.76,0,0,1,13.48,41.17a0,0,0,0,1,0,0,49.27,49.27,0,0,1,5.76-8.09A88.23,88.23,0,0,1,56.24,6l0,0a45.26,45.26,0,0,1,8.79-2.87A88.32,88.32,0,0,1,111,3c2.61.65,8,2.56,9.24,3h0l.25.08h0a88.36,88.36,0,0,1,37,27.53c1.65,2,4.4,6.15,5.06,7.16l.11.16,0,.06A87.77,87.77,0,0,1,176.29,84.91Z"
-                            ></animateMotion>
-                        </circle>
+                        />
                     </svg>
 
                     {data[0] && (
                         <div className="absolute text-center mt-8" >
                             <h5 className="font-semibold text-2xl">{data[0].value_classification}</h5>
-                            <span className="opacity-60 font-normal text-base">{data[0].value}</span>
+                            <span className="opacity-60 font-normal text-lg">{data[0].value}</span>
                         </div>
                     )}
 

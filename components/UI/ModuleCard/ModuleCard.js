@@ -6,7 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PushPinRoundedIcon from '@mui/icons-material/PushPinRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-const ModuleCard = ({ children, className, title, settings, disableTitle, callToggleSettings = false }) => {
+const ModuleCard = ({ children, className, contentClassName, style, title, settings, disableTitle, callToggleSettings = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const defaultClass =
@@ -58,6 +58,7 @@ const ModuleCard = ({ children, className, title, settings, disableTitle, callTo
       className={`${defaultClass} ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      style={style}
     >
       {/* CARD TITLE */}
       {!disableTitle && (
@@ -88,7 +89,7 @@ const ModuleCard = ({ children, className, title, settings, disableTitle, callTo
       </AnimatePresence>
 
       {/* CARD CONTENT */}
-      <div className="w-full h-full flex items-start overflow-x-hidden">
+      <div className={`w-full h-full flex items-start overflow-x-hidden ${contentClassName}`}>
         {children}
       </div>
 

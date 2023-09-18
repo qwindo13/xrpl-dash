@@ -98,11 +98,12 @@ export default function Home() {
                     autoSize={true}
                     onLayoutChange={handleLayoutChange}
                 >
-                    <div key="nfts">
-                        <Nfts />
-                    </div>
+                    
                     <div key="feargreed">
                         <FearGreedIndex />
+                    </div>
+                    <div key="nfts">
+                        <Nfts />
                     </div>
                     
                     {/* Add other modules wrapped in a <div> with their unique key */}

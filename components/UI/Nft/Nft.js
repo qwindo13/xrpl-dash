@@ -26,7 +26,7 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
     }
 
     return (
-        <motion.div
+        <motion.div layout
             className={`border ${className} ${selected ? 'border-opacity-100' : 'border-white border-opacity-5'} transition-colors duration-300 p-2 w-fit h-fit rounded-2xl flex flex-col gap-4 cursor-pointer`} onClick={onClick}
         >
             <motion.div className={`w-fit h-fit relative grow ${imageSize}`}>
