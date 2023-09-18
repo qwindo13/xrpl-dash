@@ -109,86 +109,86 @@ function ProfileSettings({ children, nfts }) {
       //     address: xrpAddress,
       //   }),
       // })
-        // .then((res) => res.json())
-        // .then((data) => {
-        //   if (data.exists) {
-        //     setUserName(data.username);
-        //     setBio(data.bio);
-        //     setTwitter(data.twitter);
-        //     setTelegram(data.telegram);
-        //     setSelectedNft(data.pfp_nft_id);
-        //     setSelectedNftImage(data.pfp_nft_url);
-        //     setSelectedBanner(data.banner_nft_id);
-        //     setSelectedBannerImage(data.banner_nft_url);
-        //     sessionStorage.setItem("userData", JSON.stringify(data));
-        //   } else {
-        //     console.log("failed");
-        //   }
-        // });
-      
-        async function getUserData() {
-          const userData = await fetch(`${api_url}/checkUserExists`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": "Bearer " + cookies.token,
-            },
-            body: JSON.stringify({  
-              address: xrpAddress,
-            }),
-          });
-          const userDataJson = await userData.json();
-          if (userDataJson.exists) {
-            setUserName(userDataJson.username);
-            setBio(userDataJson.bio);
-            setTwitter(userDataJson.twitter);
-            setTelegram(userDataJson.telegram);
-            setSelectedNft(userDataJson.pfp_nft_id);
-            setSelectedNftImage(userDataJson.pfp_nft_url);
-            setSelectedBanner(userDataJson.banner_nft_id);
-            setSelectedBannerImage(userDataJson.banner_nft_url);
-            sessionStorage.setItem("userData", JSON.stringify(userDataJson.data));
-            window.location.reload();
-          }
-        }    
-        
-        getUserData();
+      // .then((res) => res.json())
+      // .then((data) => {
+      //   if (data.exists) {
+      //     setUserName(data.username);
+      //     setBio(data.bio);
+      //     setTwitter(data.twitter);
+      //     setTelegram(data.telegram);
+      //     setSelectedNft(data.pfp_nft_id);
+      //     setSelectedNftImage(data.pfp_nft_url);
+      //     setSelectedBanner(data.banner_nft_id);
+      //     setSelectedBannerImage(data.banner_nft_url);
+      //     sessionStorage.setItem("userData", JSON.stringify(data));
+      //   } else {
+      //     console.log("failed");
+      //   }
+      // });
+
+      async function getUserData() {
+        const userData = await fetch(`${api_url}/checkUserExists`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + cookies.token,
+          },
+          body: JSON.stringify({
+            address: xrpAddress,
+          }),
+        });
+        const userDataJson = await userData.json();
+        if (userDataJson.exists) {
+          setUserName(userDataJson.username);
+          setBio(userDataJson.bio);
+          setTwitter(userDataJson.twitter);
+          setTelegram(userDataJson.telegram);
+          setSelectedNft(userDataJson.pfp_nft_id);
+          setSelectedNftImage(userDataJson.pfp_nft_url);
+          setSelectedBanner(userDataJson.banner_nft_id);
+          setSelectedBannerImage(userDataJson.banner_nft_url);
+          sessionStorage.setItem("userData", JSON.stringify(userDataJson.data));
+          window.location.reload();
+        }
+      }
+
+      getUserData();
     }
   }, []);
 
   useEffect(() => {
     const getQrCode = async () => {
-            // setLoggedin(true);
-            const updateUser = await fetch(`${api_url}/updateUser`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + cookies.token,
-              },
-              body: JSON.stringify({
-                address: xrpAddress,
-                username: userName,
-                bio: bio,
-                twitter: twitter,
-                telegram: telegram,
-                pfp_id: selectedNft,
-                pfp_img: selectedNftImage,
-                banner_id: selectedBanner,
-                banner_img: selectedBannerImage,
-              }),
-            });
+      // setLoggedin(true);
+      const updateUser = await fetch(`${api_url}/updateUser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + cookies.token,
+        },
+        body: JSON.stringify({
+          address: xrpAddress,
+          username: userName,
+          bio: bio,
+          twitter: twitter,
+          telegram: telegram,
+          pfp_id: selectedNft,
+          pfp_img: selectedNftImage,
+          banner_id: selectedBanner,
+          banner_img: selectedBannerImage,
+        }),
+      });
 
-            const updateUserJson = await updateUser.json();
-            if (updateUserJson.success) {
-              //delete session storage
-              sessionStorage.removeItem("userData");
-              router.push("/user/" + xrpAddress);
-            } else {
-              // setLoggedin(false);
-              console.log("failed");
-              //refresh page
-              router.push("/settings/profile");
-            }
+      const updateUserJson = await updateUser.json();
+      if (updateUserJson.success) {
+        //delete session storage
+        sessionStorage.removeItem("userData");
+        router.push("/user/" + xrpAddress);
+      } else {
+        // setLoggedin(false);
+        console.log("failed");
+        //refresh page
+        router.push("/settings/profile");
+      }
     }
 
     if (buttonClicked) {
@@ -201,10 +201,11 @@ function ProfileSettings({ children, nfts }) {
     <>
       <SettingsLayout>
         <div className="w-full flex flex-col gap-16">
-          <div className="relative w-full h-40 md:h-72 rounded-2xl bg-[#21212A] p-2" style={selectedBanner ? { backgroundImage: `url(${selectedBannerImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
+          <div className="relative w-full h-40 md:h-72 rounded-2xl bg-[#21212A] p-1" style={selectedBanner ? { backgroundImage: `url(${selectedBannerImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
             {nfts.length > 0 && (
               <motion.div
                 onClick={openBannerModal}
+                whileTap={{ scale: 0.95 }}
                 variants={variants}
                 initial="hidden"
                 whileHover="visible"
@@ -214,11 +215,11 @@ function ProfileSettings({ children, nfts }) {
               </motion.div>
             )}
             <div className="absolute left-4 md:left-8 -bottom-8">
-              {/* set image as https://ipfs.io/ipfs/bafybeiek4j6yn3p3jvoxxsmfttzprfn7en3togmslm6yjloolajcoqpzju/3436.png */}
-              <div className="w-32 h-32 md:w-36 md:h-36 p-2 rounded-full border-2 border-[#1A1921] bg-default-avatar" style={selectedNft ? { backgroundImage: `url(${selectedNftImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
+              <div className="w-32 h-32 md:w-36 md:h-36 p-1 rounded-full border-2 border-[#1A1921] bg-default-avatar" style={selectedNft ? { backgroundImage: `url(${selectedNftImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
                 {nfts.length > 0 && (
                   <motion.div
                     onClick={openAvatarModal}
+                    whileTap={{ scale: 0.95 }}
                     variants={variants}
                     initial="hidden"
                     whileHover="visible"
@@ -285,7 +286,6 @@ function ProfileSettings({ children, nfts }) {
       </SettingsLayout>
 
       {/* AVATAR MODAL */}
-
       <Modal showModal={showAvatarModal} closeModal={closeAvatarModal}>
         <div className="pb-4 md:pb-8">
           <h2 className="text-xl font-semibold mb-2">Change avatar</h2>
@@ -357,7 +357,6 @@ function ProfileSettings({ children, nfts }) {
       </Modal>
 
       {/* BANNER MODAL */}
-
       <Modal showModal={showBannerModal} closeModal={closeBannerModal}>
         <div className="pb-4 md:pb-8">
           <h2 className="text-xl font-semibold mb-2">Change banner</h2>

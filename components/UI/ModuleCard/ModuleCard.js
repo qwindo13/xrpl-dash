@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Button from "../Button/Button";
 import ModuleCardSettings from "./ModuleCardSettings";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import PushPinRoundedIcon from '@mui/icons-material/PushPinRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 const ModuleCard = ({ children, className, title, settings, disableTitle, callToggleSettings = false }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -28,7 +30,18 @@ const ModuleCard = ({ children, className, title, settings, disableTitle, callTo
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
     >
-      <ModuleCardSettings> {settings} </ModuleCardSettings>
+      <ModuleCardSettings>
+        {settings}
+
+        <div className="w-full flex flex-row items-center gap-4">
+          <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
+            <PushPinRoundedIcon  />
+          </Button>
+          <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
+            <DeleteRoundedIcon />
+          </Button>
+        </div>
+      </ModuleCardSettings>
     </motion.div>
   ), [isSettingsVisible, settings]);
 
