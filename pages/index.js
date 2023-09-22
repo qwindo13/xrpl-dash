@@ -253,6 +253,7 @@ export default function Home({ nfts }) {
   }, [changeCount]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onClickTitle = (title) => {
+    console.log(title);
     const name = `${title.toLowerCase().replace(/\s/g, "")}_${Date.now()}`;
     console.log(name);
     setModules([...modules, name]);
@@ -271,7 +272,7 @@ export default function Home({ nfts }) {
                   ? badges
                   : title === "Single NFT"
                     ? singleNftSize
-                    : title === "multiplenfts"
+                    : title === "Multiple NFTs"
                       ? nftsSize
                       : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
