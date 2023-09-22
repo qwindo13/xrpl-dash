@@ -13,6 +13,7 @@ import Wallet from "@/components/Modules/FungibleTokens/Wallet/Walletcomponents"
 import Badges from "@/components/Modules/NonFungibleTokens/Badges/Badgescomponents";
 import ProfitnLose from "@/components/Modules/Trades/ProfitnLoss/ProfitnLosscomponents";
 import SingleNft from "@/components/Modules/NonFungibleTokens/SingleNft/SingleNftcomponents";
+import Nfts from "@/components/Modules/NonFungibleTokens/MultipleNfts/MultipleNftscomponents";
 import mockFeed from "@/data/mockFeedcomponents";
 import SaveIcon from '@mui/icons-material/Save';
 import {
@@ -24,6 +25,7 @@ import {
   badges,
   profitnLose,
   singleNftSize,
+  nftsSize
 } from "@/components/Utils/ModuleSizescomponents";
 import { useCookies } from "react-cookie";
 import { config } from "@/configcomponents";
@@ -269,7 +271,9 @@ export default function Home({ nfts }) {
                   ? badges
                   : title === "Single NFT"
                     ? singleNftSize
-                    : profitnLose;
+                    : title === "multiplenfts"
+                      ? nftsSize
+                      : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
       lg: [],
       md: [],
@@ -417,6 +421,12 @@ export default function Home({ nfts }) {
               return (
                 <div key={module}>
                   <SingleNft changeModal={changeModal} keyy={module} refresh={refresh}/>
+                </div>
+              );
+            } else if (module.startsWith("multiplenfts")) {
+              return (
+                <div key={module}>
+                  <Nfts />
                 </div>
               );
             }
