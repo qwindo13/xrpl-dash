@@ -409,7 +409,7 @@ export default function Home({ nfts }) {
             } else if (module.startsWith("badges")) {
               return (
                 <div key={module}>
-                  <Badges />
+                  <Badges nfts={nfts} />
                 </div>
               );
             } else if (module.startsWith("profitandloss")) {

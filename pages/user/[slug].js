@@ -26,11 +26,12 @@ function truncateAddress(address, maxLength = 12) {
     return `${start}...${end}`;
 }
 
-export default function Profile() {
+export default function Profile({ nfts }) {
     const [isLoading, setLoading] = useState(true);
     const [userData, setUserData] = useState({});
     const [isOwner, setIsOwner] = useState(false);
-    const [cookies, setCookie, removeCookie] = useCookies(['token']);
+    const [cookies] = useCookies(['token']);
+    const [badges, setBadges] = useState([]);
     const router = useRouter();
     const xrpAddress = router.query.slug;
     const api_url = config.api_url;
@@ -70,6 +71,12 @@ export default function Profile() {
             setIsOwner(true);
         }
     }, [xrpAddress]);
+    
+    useEffect(() => {
+        //if nft.taxon === 2 and nft.Issuer === "rpZidWw84xGD3dp7F81ajM36NZnJFLpSZW", then add to badges
+        const filteredBadges = nfts.filter(nft => nft.taxon === 2 && nft.issuer === "rpZidWw84xGD3dp7F81ajM36NZnJFLpSZW")
+        setBadges(filteredBadges)
+    }, [nfts])
 
     return (
         <AppLayout className='overflow-hidden'>
@@ -130,6 +137,13 @@ export default function Profile() {
                             <span className="text-lg font-semibold opacity-60 cursor-pointer">{xrpAddress}</span>
                         </Tooltip>
                     )}
+
+                    {/* show badges */}
+                    <div className="flex flex-row gap-2">
+                        {badges.map((badge, index) => (
+                            <div key={index} className="w-8 h-8 rounded-full bg-[#A6B0CF] bg-opacity-5" style={{ backgroundImage: `url(${badge.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                        ))}
+                    </div>
                 </div>
                 {isLoading ? (
                     <div className='animate-pulse flex flex-col w-auto gap-2'>

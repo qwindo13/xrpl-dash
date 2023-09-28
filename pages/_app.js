@@ -73,250 +73,111 @@ export default function App({ Component, pageProps }) {
     }
   }, []);
 
-    useEffect(() => {
-        if (cookies.token) {
-            const xrpAddress = localStorage.getItem("address");
-            if (xrpAddress !== null && xrpAddress !== undefined) {
-              const url = `${config.api_url}/walletnfts/${xrpAddress}`;
-              fetch(url)
-                .then((res) => res.json())
-                .then((data) => {
-                  // setNfts(data.nfts);
-                  if (data && 'nfts' in data) {
-                      fetchNfts();
-                  }
-      
-                  async function fetchNfts() {
-                    data.nfts.forEach(async (nft) => {
-                        //if URI field is not present, then skip
-                        if (nft.URI) {
-                          const decoded = convertHexToString(nft.URI);
-                          if (decoded.startsWith("https://")) {
-                            const data = await axios.get(decoded);
-                            decodeImage(data, nft);
-                          } else if (decoded.startsWith("ipfs://")) {
-                            //detect the cid from the decoded string
-                            const cid = decoded.replace(
-                              "ipfs://",
-                              "https://ipfs.io/ipfs/"
-                            );
-                            const data = await axios.get(cid);
-                            decodeImage(data, nft);
-                          } else {
-                            // finalNfts.push(`https://ipfs.io/ipfs/${decoded}`);
-                            const data = await axios.get(
-                              `https://ipfs.io/ipfs/${decoded}`
-                            );
-                            decodeImage(data, nft);
-                          }
-                        }
-                      })
-      
-                    function decodeImage(data, nft) {
-                      if (data.data.image === undefined) {
-                        return;
-                      }
-                      if (
-                        !("video" in data.data) &&
-                        data.data.video === undefined &&
-                        data.data.video === "" &&
-                        !("animation" in data.data) &&
-                        data.data.animation === undefined &&
-                        data.data.animation === ""
-                      ) {
-                        if (data.data.image.startsWith("ipfs://")) {
-                          const image = data.data.image.replace(
-                            "ipfs://",
-                            "https://ipfs.io/ipfs/"
-                          );
-                          setNfts2((nfts2) => [
-                            ...nfts2,
-                            { nftid: nft.NFTokenID, image: image, videoFlag: false, name: data.data.name },
-                          ]);
-                        } else if (data.data.image.startsWith("https://")) {
-                          setNfts2((nfts2) => [
-                            ...nfts2,
-                            {
-                              nftid: nft.NFTokenID,
-                              image: data.data.image,
-                              videoFlag: false,
-                              name: data.data.name,
-                            },
-                          ]);
-                        } else {
-                          setNfts2((nfts2) => [
-                            ...nfts2,
-                            {
-                              nftid: nft.NFTokenID,
-                              image: `https://ipfs.io/ipfs/${data.data.image}`,
-                              videoFlag: false,
-                              name: data.data.name,
-                            },
-                          ]);
-                        }
-                      } else {
-                        if (
-                          "video" in data.data &&
-                          data.data.video !== undefined &&
-                          data.data.video !== ""
-                        ) {
-                          if (data.data.video.startsWith("ipfs://")) {
-                            const image = data.data.video.replace(
-                              "ipfs://",
-                              "https://ipfs.io/ipfs/"
-                            );
-                            setNfts2((nfts2) => [
-                              ...nfts2,
-                              {
-                                nftid: nft.NFTokenID,
-                                image: image,
-                                videoFlag:
-                                  data.data.video.substr(
-                                    data.data.video.length - 3
-                                  ) === "gif"
-                                    ? false
-                                    : true,
-                                name: data.data.name,
-                              },
-                            ]);
-                          } else if (data.data.video.startsWith("https://")) {
-                            setNfts2((nfts2) => [
-                              ...nfts2,
-                              {
-                                nftid: nft.NFTokenID,
-                                image: data.data.video,
-                                videoFlag:
-                                  data.data.video.substr(
-                                    data.data.video.length - 3
-                                  ) === "gif"
-                                    ? false
-                                    : true,
-                                name: data.data.name,
-                              },
-                            ]);
-                          } else {
-                            setNfts2((nfts2) => [
-                              ...nfts2,
-                              {
-                                nftid: nft.NFTokenID,
-                                image: `https://ipfs.io/ipfs/${data.data.video}`,
-                                videoFlag:
-                                  data.data.video.substr(
-                                    data.data.video.length - 3
-                                  ) === "gif"
-                                    ? false
-                                    : true,
-                                name: data.data.name,
-                              },
-                            ]);
-                          }
-                        } else if (
-                          "animation" in data.data &&
-                          data.data.animation !== undefined &&
-                          data.data.animation !== ""
-                        ) {
-                          console.log(
-                            `Animation: ${
-                              data.data.animation
-                            }\n${data.data.animation.substr(
-                              data.data.animation.length - 3
-                            )}`
-                          );
-                          if (data.data.animation.startsWith("ipfs://")) {
-                            const image = data.data.animation.replace(
-                              "ipfs://",
-                              "https://ipfs.io/ipfs/"
-                            );
-                            setNfts2((nfts2) => [
-                              ...nfts2,
-                              {
-                                nftid: nft.NFTokenID,
-                                image: image,
-                                videoFlag:
-                                  data.data.animation.substr(
-                                    data.data.animation.length - 3
-                                  ) === "gif"
-                                    ? false
-                                    : true,
-                                name: data.data.name,
-                              },
-                            ]);
-                          } else if (data.data.animation.startsWith("https://")) {
-                            setNfts2((nfts2) => [
-                              ...nfts2,
-                              {
-                                nftid: nft.NFTokenID,
-                                image: data.data.animation,
-                                videoFlag:
-                                  data.data.animation.substr(
-                                    data.data.animation.length - 3
-                                  ) === "gif"
-                                    ? false
-                                    : true,
-                                name: data.data.name,
-                              },
-                            ]);
-                          } else {
-                            setNfts2((nfts2) => [
-                              ...nfts2,
-                              {
-                                nftid: nft.NFTokenID,
-                                image: `https://ipfs.io/ipfs/${data.data.animation}`,
-                                videoFlag:
-                                  data.data.animation.substr(
-                                    data.data.animation.length - 3
-                                  ) === "gif"
-                                    ? false
-                                    : true,
-                                name: data.data.name,
-                              },
-                            ]);
-                          }
-                        } else {
-                          //use image
-                          if (data.data.image.startsWith("ipfs://")) {
-                            const image = data.data.image.replace(
-                              "ipfs://",
-                              "https://ipfs.io/ipfs/"
-                            );
-                            setNfts2((nfts2) => [
-                              ...nfts2,
-                              {
-                                nftid: nft.NFTokenID,
-                                image: image,
-                                videoFlag: false,
-                                name: data.data.name,
-                              },
-                            ]);
-                          } else if (data.data.image.startsWith("https://")) {
-                            setNfts2((nfts2) => [
-                              ...nfts2,
-                              {
-                                nftid: nft.NFTokenID,
-                                image: data.data.image,
-                                videoFlag: false,
-                                name: data.data.name,
-                              },
-                            ]);
-                          } else {
-                            setNfts2((nfts2) => [
-                              ...nfts2,
-                              {
-                                nftid: nft.NFTokenID,
-                                image: `https://ipfs.io/ipfs/${data.data.image}`,
-                                videoFlag: false,
-                                name: data.data.name,
-                              },
-                            ]);
-                          }
-                        }
-                      }
-                    }
-                  }
-                });
-            }
+  useEffect(() => {
+    async function fetchNfts(nfts) {
+      const nfts2 = [];
+
+      for (const nft of nfts) {
+        if (!nft.URI) continue;
+
+        const decoded = convertHexToString(nft.URI);
+        let image = "";
+        let urlNft = "";
+
+        if (decoded.startsWith("https://")) {
+          image = await getImageFromUrl(decoded);
+          urlNft = decoded;
+        } else if (decoded.startsWith("ipfs://")) {
+          const cid = decoded.replace("ipfs://", "https://ipfs.io/ipfs/");
+          image = await getImageFromUrl(cid);
+          urlNft = cid;
+        } else {
+          image = await getImageFromUrl(`https://ipfs.io/ipfs/${decoded}`);
+          urlNft = `https://ipfs.io/ipfs/${decoded}`;
         }
-    }, [refresh]);
+
+        if (!image) continue;
+        const { data: nftData } = await axios.get(urlNft);
+
+        const videoFlag = isVideo(nftData);
+        const imageSrc = getImageSrc(image);
+
+        // setNfts2((nfts2) => [
+        //   ...nfts2,
+        //   {
+        //     nftid: nft.NFTokenID,
+        //     image: imageSrc,
+        //     videoFlag,
+        //     name: nftData.name,
+        //     taxon: nft.NFTokenTaxon,
+        //     issuer: nft.Issuer,
+        //   },
+        // ]);
+        nfts2.push({
+          nftid: nft.NFTokenID,
+          image: imageSrc,
+          videoFlag,
+          name: nftData.name,
+          taxon: nft.NFTokenTaxon,
+          issuer: nft.Issuer,
+        });
+      }
+
+      setNfts2(nfts2);
+    }
+
+    function convertHexToString(hex) {
+      return hex.match(/.{1,2}/g).map((byte) => String.fromCharCode(parseInt(byte, 16))).join("");
+    }
+
+    async function getImageFromUrl(url) {
+      try {
+        const { data } = await axios.get(url);
+        return data.image;
+      } catch (error) {
+        console.error(`Failed to fetch image from ${url}: ${error.message}`);
+        return null;
+      }
+    }
+
+    function isVideo(nftData) {
+      return (
+        "video" in nftData &&
+        nftData.video !== undefined &&
+        nftData.video !== "" &&
+        !nftData.video.endsWith(".gif")
+      ) || (
+        "animation" in nftData &&
+        nftData.animation !== undefined &&
+        nftData.animation !== "" &&
+        !nftData.animation.endsWith(".gif")
+      );
+    }
+
+    function getImageSrc(image) {
+      if (image.startsWith("ipfs://")) {
+        return `https://ipfs.io/ipfs/${image.replace("ipfs://", "")}`;
+      } else if (image.startsWith("https://")) {
+        return image;
+      } else {
+        return `https://ipfs.io/ipfs/${image}`;
+      }
+    }
+
+    if (cookies.token) {
+      const xrpAddress = localStorage.getItem("address");
+      if (xrpAddress) {
+        const url = `${config.api_url}/walletnfts/${xrpAddress}`;
+        fetch(url)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data && "nfts" in data) {
+              fetchNfts(data.nfts);
+            }
+          });
+      }
+    }
+  }, [refresh]);
 
     const refreshNfts = () => {
         setRefresh(!refresh);
