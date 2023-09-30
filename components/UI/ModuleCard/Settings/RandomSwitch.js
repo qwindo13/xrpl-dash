@@ -2,6 +2,7 @@ import React from 'react';
 import Switch from '../../Switch/Switch';
 
 const RandomSwitch = ({ value, onChange, disabled = false }) => {
+    
     return (
         <div className='flex flex-row justify-between align-middle gap-2'>
             <div className='flex flex-col'>

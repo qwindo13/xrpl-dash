@@ -421,7 +421,7 @@ export default function Home({ nfts }) {
             } else if (module.startsWith("singlenft")) {
               return (
                 <div key={module}>
-                  <SingleNft changeModal={changeModal} keyy={module} refresh={refresh}/>
+                  <SingleNft changeModal={changeModal} keyy={module} refresh={refresh} nfts={nfts} />
                 </div>
               );
             } else if (module.startsWith("multiplenfts")) {

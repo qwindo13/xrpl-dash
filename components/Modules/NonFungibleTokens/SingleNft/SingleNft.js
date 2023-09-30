@@ -14,22 +14,24 @@ import { useCookies } from "react-cookie";
 const defaultSettings = {
   displayNftName: true,
   displayNftPrice: false,
-  backgroundSetting: "Solid"
+  backgroundSetting: "Solid",
+  randomNFT: false,
 };
 
-const SingleNft = ({ data, changeModal, keyy, refresh}) => {
+const SingleNft = ({ changeModal, keyy, refresh, nfts }) => {
 
   const [cookies] = useCookies(["token"]);
   const [nftData, setNftData] = useState(null);
   const [price, setPrice] = useState(null);
   const [moduleSettings, setModuleSettings] = useState(defaultSettings);
+  const [dis, setDis] = useState(false);
   const updateSettings = (key, value) => {
     setModuleSettings((prevSettings) => ({
       ...prevSettings,
       [key]: value,
     }));
   };
-
+  const api_url = config.api_url;
   const [xrpAddress, setXrpAddress] = useState(null);
 
   useEffect(() => {
@@ -51,7 +53,19 @@ const SingleNft = ({ data, changeModal, keyy, refresh}) => {
         .then((response) => response.json())
         .then((data) => {
           console.log("Success:", data);
-            setNftData(data.data);
+            // setNftData(data.data); if its random nft, then set random nft
+            if (data.data.nft_id === 'random') {
+              const randNft = nfts[Math.floor(Math.random() * nfts.length)];
+              console.log(randNft);
+              setNftData({
+                nft_id: randNft.nftid,
+                nft_image: randNft.image,
+                nft_name: randNft.name,
+              });
+              updateSettings("randomNFT", true);
+            } else {
+              setNftData(data.data);
+            }
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -84,20 +98,61 @@ const SingleNft = ({ data, changeModal, keyy, refresh}) => {
       ? "bg-transparent backdrop-blur-lg border border-white border-opacity-5"
       : "";
 
+  const setRandomNFT = () => {
+    fetch(`${api_url}/addNftMod`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: cookies.token,
+        nft_data: {
+          id: 'random',
+          image: 'random',
+          name: 'random',
+          div_id: keyy,
+        },
+      }),
+    })
+
+      .then((response) => response.json())
+      .then((dataReq) => {
+        console.log("Success:", dataReq);
+        //select random nft and update
+        const randNft = nfts[Math.floor(Math.random() * nfts.length)];
+        setNftData({
+          nft_id: randNft.nftid,
+          nft_image: randNft.image,
+          nft_name: randNft.name,
+        });
+      })
+    };
 
   return (
     <>
       <ModuleCard
-        title= {data && data[index] && data[index].name ? data[index].name : "NFT"}
+        title= "NFT"
         settings={
           <>
-            {/* <RandomSwitch
+            <RandomSwitch
               value={moduleSettings.randomNFT}
-              onChange={(value) => updateSettings("randomNFT", value)}
-            /> */}
-              <SearchNftButton
-                onChange={() => changeModal(true, keyy)}
-              />
+              // onChange={(value) => updateSettings("randomNFT", value)}
+              onChange={(value) => {
+                setRandomNFT();
+                updateSettings("randomNFT", value);
+                //disabling the button for 2 seconds, then enabling it again
+                setDis(true);
+                setTimeout(() => {
+                  setDis(false);
+                }, 20000);
+              }}
+              disabled={dis}
+            />
+            { !moduleSettings.randomNFT && xrpAddress && (
+            <SearchNftButton
+              onChange={() => changeModal(true, keyy)}
+            />
+            )}
 
             <NftNameSwitch
               value={moduleSettings.displayNftName}
@@ -121,7 +176,6 @@ const SingleNft = ({ data, changeModal, keyy, refresh}) => {
           imageSize="object-cover !w-full !h-full min-h-0"
           className="w-full h-full border-none"
           // src="/images/nft.webp"
-          // src={data && data[index] && data[index].image ? data[index].image : "/images/nft.webp"}
           src={nftData && nftData.nft_image ? nftData.nft_image : "/images/nft.webp"}
           displayName={moduleSettings.displayNftName}
           displayPrice={moduleSettings.displayNftPrice}
