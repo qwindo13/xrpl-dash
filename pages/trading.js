@@ -11,6 +11,7 @@ import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents
 import Nfts from '@/components/Modules/NonFungibleTokens/MultipleNfts/MultipleNftscomponents';
 import SingleNft from '@/components/Modules/NonFungibleTokens/SingleNft/SingleNftcomponents';
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
+import PriceChart from '@/components/Modules/Trades/PriceChart/PriceChartcomponents';
 import FearGreedIndex from '@/components/Modules/Trades/FearGreedIndex/FearGreedIndexcomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize, fearGreedSize } from '@/components/Utils/ModuleSizescomponents';
 
@@ -98,13 +99,16 @@ export default function Home() {
                     autoSize={true}
                     onLayoutChange={handleLayoutChange}
                 >
-                    
+                    <div key="richlist">
+                        <PriceChart />
+                    </div>
                     <div key="feargreed">
                         <FearGreedIndex />
                     </div>
                     <div key="nfts">
                         <Nfts />
                     </div>
+
                     
                     {/* Add other modules wrapped in a <div> with their unique key */}
                 </ResponsiveGridLayout>

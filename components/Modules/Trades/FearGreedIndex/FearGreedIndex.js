@@ -7,7 +7,7 @@ import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabsco
 const API_URL = 'https://api.alternative.me/fng/?limit=2';
 
 const defaultSettings = {
-    displayTitle: true,
+    displayTitle: false,
     backgroundSetting: "Solid",
 };
 
@@ -127,7 +127,7 @@ const FearGreedIndex = () => {
                         <circle
                             cx={circlePosition.x}
                             cy={circlePosition.y}
-                            r="6"
+                            r="8"
                             strokeWidth="2"
                             fill="#FFFFFF"
                             stroke="#21212A"
@@ -136,8 +136,8 @@ const FearGreedIndex = () => {
 
                     {data[0] && (
                         <div className="absolute text-center mt-8" >
-                            <h5 className="font-semibold text-2xl">{data[0].value_classification}</h5>
-                            <span className="opacity-60 font-normal text-lg">{data[0].value}</span>
+                            <h5 className="font-semibold text-2xl">{data[0].value}</h5>
+                            <span className="opacity-60 font-normal text">{data[0].value_classification}</span>
                         </div>
                     )}
 
