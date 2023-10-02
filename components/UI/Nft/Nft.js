@@ -19,11 +19,8 @@ function truncateAddress(address, maxLength = 12) {
 }
 
 
-const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClick, videoFlag, src, name, price = 0 }) => {
+const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClick, videoFlag, src, name, issuer,price = 0 }) => {
     const [isImageLoaded, setImageLoaded] = useState(false);
-    if (typeof window !== 'undefined') {
-        const xrpAddress = localStorage.getItem("address")
-    }
 
     return (
         <motion.div layout
@@ -64,16 +61,23 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
                 </motion.div>
             }
 
-            {displayPrice &&
+            {displayPrice && !issuer &&
                 <motion.div layout className="p-3 bg-[#A6B0CF] bg-opacity-5 rounded-xl flex flex-row justify-between">
                     <div className="flex flex-col gap-2">
                         <span className="text-xs font-semibold opacity-60">Owned by</span>
-                        <span className="text-sm font-semibold">{truncateAddress(xrpAddress)}</span>
+                        <span className="text-sm font-semibold">{truncateAddress(localStorage.getItem('address'))}</span>
                     </div>
                     <div className="flex flex-col gap-2">
                         <span className="text-xs font-semibold opacity-60">Price</span>
                         <span className="text-sm font-semibold">{price} XRP</span>
                     </div>
+                </motion.div>
+            }
+            {
+                issuer && displayPrice &&
+                <motion.div layout className="flex flex-col px-2">
+                    <span className="text-xs font-semibold opacity-60">Issuer</span>
+                    <span className="text-sm font-semibold">{issuer}</span>
                 </motion.div>
             }
 

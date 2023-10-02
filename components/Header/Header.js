@@ -75,6 +75,12 @@ export default function Header({ fixed }) {
                     if (data.exists) {
                         setUserData(data.data);
                         sessionStorage.setItem('userData', JSON.stringify(data.data));
+                    } else {
+                        //redirect to login
+                        removeCookie("token");
+                        localStorage.removeItem("address");
+                        window.location.href = "/auth/login";
+                        
                     }
                 })
                 .catch((err) => {

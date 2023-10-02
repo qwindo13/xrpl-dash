@@ -32,7 +32,7 @@ const PriceInfo = () => {
     const [priceInXrp, setPriceInXrp] = useState('');
     const [priceChange, setPriceChange] = useState(0);
     const [subLabel, setSubLabel] = useState('');
-    const [currency, setCurrency] = useState('XRP');
+    const [currency, setCurrency] = useState('Ripple');
     const [image, setImage] = useState(propImage);
     const [toFetch, setToFetch] = useState('USD:rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq');
     const [website, setWebsite] = useState('');
@@ -84,7 +84,7 @@ const PriceInfo = () => {
         } else {
             //the price is USD/XRP, so we need to convert it to XRP/USD
             setPriceChange(Math.round((1 / data.twenty_four_hour_changes.price.change) * 1000) / 1000);
-            setSubLabel("XRP");
+            setSubLabel("Ripple");
             setImage("/images/xrp.png");
             setWebsite("https://ripple.com/xrp/");
             setLoading(false);

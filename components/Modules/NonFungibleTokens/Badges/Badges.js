@@ -13,7 +13,7 @@ const defaultSettings = {
     backgroundSetting: "Transparent",
 };
 
-const Badges = ({ data }) => {
+const Badges = ({ nfts }) => {
     
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const updateSettings = (key, value) => {
@@ -50,6 +50,16 @@ const Badges = ({ data }) => {
         moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#525567] ' :
             moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5' : '';
 
+    const [badges, setBadges] = useState([])
+    
+    useEffect(() => {
+        // console.log(nfts)
+        //if nft.taxon === 2 and nft.Issuer === "rpZidWw84xGD3dp7F81ajM36NZnJFLpSZW", then add to badges
+        const filteredBadges = nfts.filter(nft => nft.taxon === 2 && nft.issuer === "rpZidWw84xGD3dp7F81ajM36NZnJFLpSZW")
+        setBadges(filteredBadges)
+    }, [nfts])
+
+
     return (
         <ModuleCard
         title="My Badges"
@@ -71,11 +81,18 @@ const Badges = ({ data }) => {
         {xrpAddress !== null ? (
             <div className="relative w-full">
                 <div ref={sliderRef} className="keen-slider w-full ">
-                    {Array.from({ length: 5 }).map((_, index) => (
+                    {/* {Array.from({ length: 5 }).map((_, index) => (
                         <div key={index} className="keen-slider__slide" style={{ maxWidth: '7rem', minWidth: '7rem' }}>
                             <Image src='/images/badge.webp' width={300} height={300} alt='Badge' />
                         </div>
-                    ))}
+                    ))} */}
+                    {
+                        badges.map((badge, index) => (
+                            <div key={index} className="keen-slider__slide" style={{ maxWidth: '7rem', minWidth: '7rem' }}>
+                                <Image src={badge.image} width={300} height={300} alt='Badge' />
+                            </div>
+                        ))
+                    }
                 </div>
                 <div className="absolute top-1/2 left-0 transform -translate-y-1/2 flex flex-row justify-between">
                     {loaded && instanceRef.current && (

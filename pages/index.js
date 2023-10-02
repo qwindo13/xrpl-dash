@@ -13,6 +13,7 @@ import Wallet from "@/components/Modules/FungibleTokens/Wallet/Walletcomponents"
 import Badges from "@/components/Modules/NonFungibleTokens/Badges/Badgescomponents";
 import ProfitnLose from "@/components/Modules/Trades/ProfitnLoss/ProfitnLosscomponents";
 import SingleNft from "@/components/Modules/NonFungibleTokens/SingleNft/SingleNftcomponents";
+import Nfts from "@/components/Modules/NonFungibleTokens/MultipleNfts/MultipleNftscomponents";
 import mockFeed from "@/data/mockFeedcomponents";
 import SaveIcon from '@mui/icons-material/Save';
 import {
@@ -24,6 +25,7 @@ import {
   badges,
   profitnLose,
   singleNftSize,
+  nftsSize
 } from "@/components/Utils/ModuleSizescomponents";
 import { useCookies } from "react-cookie";
 import { config } from "@/configcomponents";
@@ -251,6 +253,7 @@ export default function Home({ nfts }) {
   }, [changeCount]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onClickTitle = (title) => {
+    console.log(title);
     const name = `${title.toLowerCase().replace(/\s/g, "")}_${Date.now()}`;
     console.log(name);
     setModules([...modules, name]);
@@ -269,7 +272,9 @@ export default function Home({ nfts }) {
                   ? badges
                   : title === "Single NFT"
                     ? singleNftSize
-                    : profitnLose;
+                    : title === "Multiple NFTs"
+                      ? nftsSize
+                      : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
       lg: [],
       md: [],
@@ -404,7 +409,7 @@ export default function Home({ nfts }) {
             } else if (module.startsWith("badges")) {
               return (
                 <div key={module}>
-                  <Badges />
+                  <Badges nfts={nfts} />
                 </div>
               );
             } else if (module.startsWith("profitandloss")) {
@@ -416,7 +421,13 @@ export default function Home({ nfts }) {
             } else if (module.startsWith("singlenft")) {
               return (
                 <div key={module}>
-                  <SingleNft changeModal={changeModal} keyy={module} refresh={refresh}/>
+                  <SingleNft changeModal={changeModal} keyy={module} refresh={refresh} nfts={nfts} />
+                </div>
+              );
+            } else if (module.startsWith("multiplenfts")) {
+              return (
+                <div key={module}>
+                  <Nfts />
                 </div>
               );
             }

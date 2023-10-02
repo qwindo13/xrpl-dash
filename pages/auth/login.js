@@ -180,7 +180,61 @@ export default function Home() {
                       localStorage.setItem("address", address);
                       localStorage.setItem("wallet", "gem");
                       //redirect to dashboard
-                      window.location.href = "/";
+                      // window.location.href = "/";
+                      //check if user exists, post req to /checkUserExists
+                      setCustomMessage('Logging you in...')
+                      fetch(`${api_url}/checkUserExists`, {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                          address: address
+                        })
+                      })
+                        .then((res) => res.json())
+                        .then((data) => {
+                          console.log(data);
+                          if (data.exists) {
+                            //redirect to dashboard
+                            window.location.href = '/'
+                          } else {
+                            //createUser
+                            const payload = {
+                              address: address,
+                              username: address,
+                              bio: null,
+                              pfp_id: null,
+                              banner_id: null,
+                              twitter: null,
+                              telegram: null
+                            }
+                            fetch(`${api_url}/createUser`, {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify(payload)
+                            })
+                              .then((res) => res.json())
+                              .then((data) => {
+                                console.log(data);
+                                if (data.success) {
+                                  //redirect to dashboard
+                                  window.location.href = '/'
+                                } else {
+                                  //error
+                                  console.log(data)
+                                }
+                              })
+                              .catch((err) => {
+                                console.log(err);
+                              });
+                          }
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
                     });
                 }
               });

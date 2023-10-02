@@ -10,12 +10,12 @@ const Switch = ({ value, onChange, disabled = false }) => {
     }, [value]);
 
     const toggleSwitch = () => {
-        if (disabled) return; // Add this line to disable toggle when disabled is true
+        if (disabled) return;
         setIsOn(!isOn);
-        if (onChange) {
-            onChange(!isOn);
-        }
-    };
+        onChange(!isOn);
+    }
+
+
 
     return (
         <motion.div
