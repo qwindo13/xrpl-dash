@@ -25,7 +25,8 @@ import {
   badges,
   profitnLose,
   singleNftSize,
-  nftsSize
+  nftsSize,
+  fearGreedSize
 } from "@/components/Utils/ModuleSizescomponents";
 import { useCookies } from "react-cookie";
 import { config } from "@/configcomponents";
@@ -33,6 +34,7 @@ import SliderButton from "@/components/UI/SliderButton/SliderButtoncomponents";
 import Button from "@/components/UI/Button/Buttoncomponents";
 import Modal from "@/components/UI/Modal/Modalcomponents";
 import Nft from "@/components/UI/Nft/Nftcomponents";
+import FearGreedIndex from "@/components/Modules/Trades/FearGreedIndex/FearGreedIndexcomponents";
 import { useKeenSlider } from "keen-slider/react";
 
 export default function Home({ nfts }) {
@@ -274,7 +276,9 @@ export default function Home({ nfts }) {
                     ? singleNftSize
                     : title === "Multiple NFTs"
                       ? nftsSize
-                      : profitnLose;
+                      : title === "Fear and Greed" 
+                        ? fearGreedSize
+                        : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
       lg: [],
       md: [],
@@ -290,6 +294,64 @@ export default function Home({ nfts }) {
     localStorage.setItem("layout", JSON.stringify(newLayout));
     localStorage.setItem("modules", JSON.stringify([...modules, name]));
   };
+
+  const onClickRemove = (name) => {
+    console.log(name);
+    if (name.startsWith("singlenft")) {
+      //api_url/deleteNftMod, post request, token, div_id
+      const token = cookies.token;
+      fetch(`${api_url}/deleteNftMod`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+          div_id: name,
+        }),
+      })
+    }
+    const newModules = modules.filter((module) => module !== name);
+    setModules(newModules);
+    localStorage.setItem("modules", JSON.stringify(newModules));
+    const layout = JSON.parse(localStorage.getItem("layout"));
+    const newLayout = {
+      lg: layout.lg.filter((module) => module.i !== name),
+      md: layout.md.filter((module) => module.i !== name),
+      sm: layout.sm.filter((module) => module.i !== name),
+    };
+    setLayout(newLayout);
+    localStorage.setItem("layout", JSON.stringify(newLayout));
+  }
+
+  const onClickStatic = (name) => { //set the static: true or false in the layout
+    const layout = JSON.parse(localStorage.getItem("layout"));
+    const newLayout = {
+      lg: layout.lg.map((module) => {
+        if (module.i === name) {
+          return { ...module, static: !module.static };
+        } else {
+          return module;
+        }
+      }),
+      md: layout.md.map((module) => {
+        if (module.i === name) {
+          return { ...module, static: !module.static };
+        } else {
+          return module;
+        }
+      }),
+      sm: layout.sm.map((module) => {
+        if (module.i === name) {
+          return { ...module, static: !module.static };
+        } else {
+          return module;
+        }
+      }),
+    };
+    setLayout(newLayout);
+    localStorage.setItem("layout", JSON.stringify(newLayout));
+  }
 
   const changeModal = (value,value2) => {
     setShowModal(value);
@@ -379,55 +441,61 @@ export default function Home({ nfts }) {
             if (module.startsWith("priceinfo")) {
               return (
                 <div key={module}>
-                  <PriceInfo />
+                  <PriceInfo onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("feed")) {
               return (
                 <div key={module}>
-                  <Feed feed={mockFeed} />
+                  <Feed feed={mockFeed} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("richlist")) {
               return (
                 <div key={module}>
-                  <RichList />
+                  <RichList onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("quickswap")) {
               return (
                 <div key={module}>
-                  <QuickSwap />
+                  <QuickSwap onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("wallet")) {
               return (
                 <div key={module}>
-                  <Wallet />
+                  <Wallet onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("badges")) {
               return (
                 <div key={module}>
-                  <Badges nfts={nfts} />
+                  <Badges nfts={nfts} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("profitandloss")) {
               return (
                 <div key={module}>
-                  <ProfitnLose />
+                  <ProfitnLose onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("singlenft")) {
               return (
                 <div key={module}>
-                  <SingleNft changeModal={changeModal} keyy={module} refresh={refresh} nfts={nfts} />
+                  <SingleNft changeModal={changeModal} keyy={module} refresh={refresh} nfts={nfts} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("multiplenfts")) {
               return (
                 <div key={module}>
-                  <Nfts />
+                  <Nfts onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                </div>
+              );
+            } else if (module.startsWith("fearandgreed")) {
+              return (
+                <div key={module}>
+                  <FearGreedIndex onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             }

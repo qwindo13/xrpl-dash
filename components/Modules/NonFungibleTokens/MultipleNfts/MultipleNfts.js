@@ -26,7 +26,7 @@ const defaultSettings = {
 
 const api_url = config.api_url;
 
-const Nfts = () => {
+const Nfts = ({onClickRemove, onClickStatic}) => {
   const [moduleSettings, setModuleSettings] = useState(defaultSettings);
   const updateSettings = (key, value) => {
     setModuleSettings((prevSettings) => ({
@@ -83,6 +83,8 @@ const Nfts = () => {
   }, [searchBarText, data]);
   return (
     <ModuleCard
+      onClickRemove={onClickRemove}
+      onClickStatic={onClickStatic}
       title="Explore NFTs"
       settings={
         <>

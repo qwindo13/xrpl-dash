@@ -17,7 +17,7 @@ const defaultSettings = {
     profitSetting: "Most profitable",
 };
 
-const ProfitnLose = () => {
+const ProfitnLose = ({onClickRemove,onClickStatic}) => {
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const [xrpAddress, setXrpAddress] = useState(null);
     const [data, setData] = useState(null);
@@ -119,6 +119,8 @@ const ProfitnLose = () => {
 
     return (
         <ModuleCard
+            onClickRemove={onClickRemove}
+            onClickStatic={onClickStatic}
             title={`${moduleSettings.profitSetting.split(" ")[0]} profitable`}
             settings={
                 <>

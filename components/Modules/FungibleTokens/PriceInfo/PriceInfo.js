@@ -24,7 +24,7 @@ const defaultSettings = {
     backgroundSetting: "Solid"
 };
 
-const PriceInfo = () => {
+const PriceInfo = ({ onClickRemove, onClickStatic }) => {
     const [ref, dimensions] = useResizeObserver();
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const [token, setToken] = useState('');
@@ -164,6 +164,8 @@ const PriceInfo = () => {
 
     return (
         <ModuleCard
+            onClickRemove={onClickRemove}
+            onClickStatic={onClickStatic}
             title={`Price - ${token || subLabel}`}
             settings={
                 <>
@@ -192,6 +194,7 @@ const PriceInfo = () => {
                             selectToken={currency}
                         />
                     }
+                    
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}

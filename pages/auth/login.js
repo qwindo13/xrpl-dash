@@ -194,7 +194,6 @@ export default function Home() {
                       })
                         .then((res) => res.json())
                         .then((data) => {
-                          console.log(data);
                           if (data.exists) {
                             //redirect to dashboard
                             window.location.href = '/'

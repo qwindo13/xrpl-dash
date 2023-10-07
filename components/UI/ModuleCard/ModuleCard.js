@@ -6,7 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PushPinRoundedIcon from '@mui/icons-material/PushPinRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-const ModuleCard = ({ children, className, contentClassName, style, title, settings, disableTitle, callToggleSettings = false }) => {
+const ModuleCard = ({ children, className, contentClassName, style, title, settings, disableTitle, onClickRemove,onClickStatic,callToggleSettings = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const defaultClass =
@@ -35,10 +35,10 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
 
         <div className="w-full flex flex-row items-center gap-4">
           <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
-            <PushPinRoundedIcon  />
+            <PushPinRoundedIcon  onClick={onClickStatic}/>
           </Button>
           <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
-            <DeleteRoundedIcon />
+            <DeleteRoundedIcon onClick={onClickRemove} />
           </Button>
         </div>
       </ModuleCardSettings>
