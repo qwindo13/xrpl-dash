@@ -18,7 +18,7 @@ const defaultSettings = {
   randomNFT: false,
 };
 
-const SingleNft = ({ changeModal, keyy, refresh, nfts }) => {
+const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStatic }) => {
 
   const [cookies] = useCookies(["token"]);
   const [nftData, setNftData] = useState(null);
@@ -131,6 +131,8 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts }) => {
   return (
     <>
       <ModuleCard
+        onClickRemove={onClickRemove}
+        onClickStatic={onClickStatic}
         title= "NFT"
         settings={
           <>
@@ -140,13 +142,14 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts }) => {
               onChange={(value) => {
                 setRandomNFT();
                 updateSettings("randomNFT", value);
-                //disabling the button for 2 seconds, then enabling it again
-                setDis(true);
-                setTimeout(() => {
-                  setDis(false);
-                }, 20000);
               }}
-              disabled={dis}
+              //   //disabling the button for 2 seconds, then enabling it again
+              //   setDis(true);
+              //   setTimeout(() => {
+              //     setDis(false);
+              //   }, 20000);
+              // }}
+              // disabled={dis}
             />
             { !moduleSettings.randomNFT && xrpAddress && (
             <SearchNftButton

@@ -13,7 +13,7 @@ const defaultSettings = {
     backgroundSetting: "Transparent",
 };
 
-const Badges = ({ nfts }) => {
+const Badges = ({ nfts,onClickRemove, onClickStatic }) => {
     
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const updateSettings = (key, value) => {
@@ -55,13 +55,15 @@ const Badges = ({ nfts }) => {
     useEffect(() => {
         // console.log(nfts)
         //if nft.taxon === 2 and nft.Issuer === "rpZidWw84xGD3dp7F81ajM36NZnJFLpSZW", then add to badges
-        const filteredBadges = nfts.filter(nft => nft.taxon === 2 && nft.issuer === "rpZidWw84xGD3dp7F81ajM36NZnJFLpSZW")
+        const filteredBadges = nfts.filter(nft => nft.taxon === 2 && nft.issuer === "rpZidWw84xGD3dp7F81ajM36NZnJFLpSZW") || []
         setBadges(filteredBadges)
     }, [nfts])
 
 
     return (
         <ModuleCard
+        onClickRemove={onClickRemove}
+        onClickStatic={onClickStatic}
         title="My Badges"
         settings={
             <>
@@ -81,11 +83,6 @@ const Badges = ({ nfts }) => {
         {xrpAddress !== null ? (
             <div className="relative w-full">
                 <div ref={sliderRef} className="keen-slider w-full ">
-                    {/* {Array.from({ length: 5 }).map((_, index) => (
-                        <div key={index} className="keen-slider__slide" style={{ maxWidth: '7rem', minWidth: '7rem' }}>
-                            <Image src='/images/badge.webp' width={300} height={300} alt='Badge' />
-                        </div>
-                    ))} */}
                     {
                         badges.map((badge, index) => (
                             <div key={index} className="keen-slider__slide" style={{ maxWidth: '7rem', minWidth: '7rem' }}>
@@ -106,7 +103,7 @@ const Badges = ({ nfts }) => {
                     )}
                 </div>
                 <div className="absolute top-1/2 right-0 transform -translate-y-1/2 flex flex-row justify-between">
-                    {loaded && instanceRef.current && (
+                    {loaded && instanceRef.current && 'track' in instanceRef.current && 'details' in instanceRef.current.track && 'slides' in instanceRef.current.track.details && (
                         <>
                             <SliderButton
                                 right

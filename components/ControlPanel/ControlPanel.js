@@ -95,6 +95,7 @@ export default function ControlPanel( { onSelectTitle } ) {
                             <span className="text-sm font-semibold text-white opacity-60 ">Trades Modules</span>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                 <ModuleItem title="Quick Swap" desc="Exhibit the badges you've earned on the platform" />
+                                <ModuleItem title="Fear and Greed" desc="Exhibit the badges you've earned on the platform" />
                             </div>
                         </div>
                     </div>

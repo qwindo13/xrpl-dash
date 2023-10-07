@@ -12,7 +12,7 @@ const defaultSettings = {
 };
 
 
-const FearGreedIndex = () => {
+const FearGreedIndex = ({onClickRemove,onClickStatic}) => {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -93,6 +93,8 @@ const FearGreedIndex = () => {
 
     return (
         <ModuleCard
+            onClickRemove={onClickRemove}
+            onClickStatic={onClickStatic}
             title="Fear and Greed Index"
             settings={
                 <>
