@@ -5,10 +5,37 @@ import SearchBar from "../UI/SearchBar/SearchBar";
 import Button from "../UI/Button/Button";
 import Dropdown from "../UI/Dropdown/Dropdown";
 import Modal from "../UI/Modal/Modal";
+import EditIcon from '@mui/icons-material/Edit';
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 
-export default function ControlPanel( { onSelectTitle } ) {
+const LayoutItem = ({ href, label }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+        <Link href={href} className="w-full">
+            <div 
+                className="p-2 rounded-xl hover:bg-[#21212A] hover:bg-opacity-60 w-full flex justify-between leading-normal items-center transition-all duration-200"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
+                <span className="text-xl">{label}</span>
+                <div className="flex gap-2">
+                    <Button className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+                        <EditIcon sx={{ fontSize: 18 }} />
+                    </Button>
+                    <Button className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+                        <ClearRoundedIcon sx={{ fontSize: 18 }} />
+                    </Button>
+                </div>
+            </div>
+        </Link>
+    );
+};
+
+
+export default function ControlPanel({ onSelectTitle }) {
     const rotateAnimation = useAnimation();
 
     const handleToggle = (isOpen) => {
@@ -34,32 +61,18 @@ export default function ControlPanel( { onSelectTitle } ) {
             <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12">
                 <div className="relative pr-4">
                     <div className="text-xs absolute -top-2 font-semibold opacity-60">Choose Dash:</div>
-                    <Dropdown className="w-auto" isBlurred trigger={<Button className="!px-0 !text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Explore</Button>}>
-                        <Link href="/"><span className="text-2xl">Explore</span></Link>
-                        <Link href="/trading"> <span className="text-2xl">Trading</span></Link>
-                        <Link href="/custom"><span className="text-2xl">Custom</span></Link>
+                    <Dropdown className="w-60 !gap-0 !overflow-hidden" isBlurred trigger={<Button className="!px-0 !text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Explore</Button>}>
+                        <LayoutItem href="/" label="Explore" />
+                        <LayoutItem href="/trading" label="Trading" />
+                        <LayoutItem href="/custom" label="Custom" />
+                        <div className="border-top border-white pt-4">
+                        <Button className='w-full !text-lg bg-white !text-[#1A1921] '> <AddRoundedIcon sx={{ fontSize: 18 }} className="mr-2"/>New layout</Button>
+                        </div>
                     </Dropdown>
                 </div>
                 <div className="flex flex-row w-full h-12 gap-4 items-center">
 
                     <SearchBar className="h-full" placeholder={"Search for modules, tokens, etc..."} />
-                    {/* 
-                    <Dropdown className="aspect-square !bg-[#111015] !bg-opacity-60 !backdrop-blur-xl h-max !w-72 !gap-4" position="right" onToggle={handleToggle} trigger={<Button className="h-full aspect-square p-0 items-center flex flex-col !rounded-2xl">
-                        <motion.div className="flex" animate={rotateAnimation}>
-                            <AddRoundedIcon />
-                        </motion.div>
-                    </Button>}>
-                        <div className="flex flex-col gap-2 w-full">
-                            <span className="text-xs font-semibold text-white opacity-60 ">Fungible Tokens (XRP or issued tokens)</span>
-                            <ModuleItem text="Price Info" />
-                            <ModuleItem text="Richlist" />
-                        </div>
-                        <div className="flex flex-col gap-2 w-full ">
-                            <span className="text-xs font-semibold text-white opacity-60 ">Trades Modules</span>
-                            <ModuleItem text="Quick Swap" />
-                        </div>
-                    </Dropdown>
-                    */}
                     <Button onClick={openModal} className='aspect-square flex justify-center !rounded-2xl'>
                         <AddRoundedIcon />
                     </Button>
@@ -112,7 +125,7 @@ export default function ControlPanel( { onSelectTitle } ) {
                         <div>
 
                         </div>
-                       
+
                     </div>
                 </div>
 

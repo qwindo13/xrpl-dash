@@ -57,7 +57,7 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
             {displayName &&
                 <motion.div layout className="flex flex-col px-2">
                     {/* <span className="text-xs font-semibold opacity-60">Houndies</span> */}
-                    <span className="text-base font-semibold">{name || 'nft'}</span>
+                    <span className="text-base font-semibold truncate">{name || 'nft'}</span>
                 </motion.div>
             }
 
