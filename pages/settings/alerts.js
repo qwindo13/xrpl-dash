@@ -23,6 +23,7 @@ function Alerts({ children }) {
     const closeModal = () => setShowModal(false);
     const openModal = () => setShowModal(true);
     const [xrpAddress, setXrpAddress] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [alertType, setAlertType] = useState('Above');
     const [targetPrice, setTargetPrice] = useState(0);
     const [currentPrice, setCurrentPrice] = useState(0);
@@ -37,7 +38,7 @@ function Alerts({ children }) {
         if (!cookies.token) {
             router.push('/login');
         }
-
+        setIsLoading(true);
         //get alerts from api/getAlerts
         fetch(`${config.api_url}/getAlerts`, {
             method: 'POST',
@@ -64,6 +65,9 @@ function Alerts({ children }) {
                 console.log(alertsArray);
                 setAlerts(alertsArray);
             })
+            .finally(() => {
+                setIsLoading(false); // set loading to false after the API call
+            });
     }, []);
 
     const onSelect = (token) => {
@@ -227,35 +231,45 @@ function Alerts({ children }) {
                     </div>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-4">
-                            {
-                                alerts && alerts.length > 0 ? (
-                                    alerts && alerts.map((project, index) => (
-                                        <Accordion
-                                            hasChildCount
-                                            key={index}
-                                            // title={project[0].alert.value.coin} if its more than 3 letters, convert from hex to string
-                                            title={project[0].alert.value.coin.length > 3 ? hexToString(project[0].alert.value.coin) : project[0].alert.value.coin}
-                                            // image={{ src: project[0].alert.value.img, alt: project[0].alert.value.coin }} if image string is empty, use https://ui-avatars.com/api/?name='first letter of coin'
-                                            image={{ src: project[0].alert.value.img ? project[0].alert.value.img : project[0].alert.value.coin.length > 3 ? `https://ui-avatars.com/api/?name=${hexToString(project[0].alert.value.coin)[0]}&rounded=true` : `https://ui-avatars.com/api/?name=${project[0].alert.value.coin[0]}&rounded=true`, alt: project[0].alert.value.coin }}
-                                        >
-                                            {project.map(alert => (
-                                                <div className="flex flex-row w-full justify-between items-center" key={alert.id}>
-                                                    <div className="flex flex-col">
-                                                        <span className="font-semibold">Price Alert</span>
-                                                        <span className="font-semibold opacity-60">{alert.alert.type} {alert.alert.value.price} XRP</span>
-                                                    </div>
-                                                    <Button className="!p-0 bg-transparent"><DeleteOutlineRoundedIcon id={alert.id} onClick={deleteAlert} /></Button>
+                            {isLoading ? (
+                                <div className="w-full h-40 justify-center items-center">
+                                    <Spinner />
+                                </div>
+                            ) : alerts && alerts.length > 0 ? (
+                                alerts.map((project, index) => (
+                                    <Accordion
+                                        hasChildCount
+                                        key={index}
+                                        title={project[0].alert.value.coin.length > 3 ? hexToString(project[0].alert.value.coin) : project[0].alert.value.coin}
+                                        image={{
+                                            src: project[0].alert.value.img
+                                                ? project[0].alert.value.img
+                                                : project[0].alert.value.coin.length > 3
+                                                    ? `https://ui-avatars.com/api/?name=${hexToString(project[0].alert.value.coin)[0]}&rounded=true`
+                                                    : `https://ui-avatars.com/api/?name=${project[0].alert.value.coin[0]}&rounded=true`,
+                                            alt: project[0].alert.value.coin
+                                        }}
+                                    >
+                                        {project.map(alert => (
+                                            <div className="flex flex-row w-full justify-between items-center" key={alert.id}>
+                                                <div className="flex flex-col">
+                                                    <span className="font-semibold">Price Alert</span>
+                                                    <span className="font-semibold opacity-60">{alert.alert.type} {alert.alert.value.price} XRP</span>
                                                 </div>
-                                            ))}
-                                        </Accordion>
-                                    ))
-                                ) : (
-                                    <div className="w-full border rounded-2xl p-32 border-white border-opacity-5 text-center">
-                                       <span className="opacity-60">No alerts have been set up.</span> 
-                                    </div>
-                                )
-                            }
+                                                <Button className="!p-0 bg-transparent">
+                                                    <DeleteOutlineRoundedIcon id={alert.id} onClick={deleteAlert} />
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </Accordion>
+                                ))
+                            ) : (
+                                <div className="w-full border rounded-2xl p-32 border-white border-opacity-5 text-center">
+                                    <span className="opacity-60">No alerts have been set up.</span>
+                                </div>
+                            )}
                         </div>
+
 
 
                     </div>
