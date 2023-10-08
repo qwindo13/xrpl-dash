@@ -5,7 +5,7 @@ export const priceInfoSize = {
 };
 
 export const fearGreedSize = {
-  lg: { w: 2, h: 2, minW: 1, maxW: 2, minH: 1, maxH: 1 },
+  lg: { w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
   md: { w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
   sm: { w: 1, h: 1, minW: 1, maxW: 2, minH: 1, maxH: 1 },
 };

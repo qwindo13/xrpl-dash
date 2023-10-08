@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import Link from 'next/link';
 import AppLayout from '@/components/Layouts/AppLayoutcomponents';
 import Button from '@/components/UI/Button/Buttoncomponents';
@@ -71,7 +72,7 @@ export default function Profile({ nfts }) {
             setIsOwner(true);
         }
     }, [xrpAddress]);
-    
+
     useEffect(() => {
         //if nft.taxon === 2 and nft.Issuer === "rpZidWw84xGD3dp7F81ajM36NZnJFLpSZW", then add to badges
         const filteredBadges = nfts.filter(nft => nft.taxon === 2 && nft.issuer === "rpZidWw84xGD3dp7F81ajM36NZnJFLpSZW")
@@ -106,42 +107,49 @@ export default function Profile({ nfts }) {
                         </div>
                     </div>
                 )}
-                <div className="flex flex-col text-left gap-2">
-                    {isOwner ? (
-                        isLoading ? (
-                            <div className='flex flex-row gap-4 items-center animate-pulse'>
-                                <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-32 h-6 "></div>
-                            </div>
+                <div className="flex flex-row justify-between w-full gap-16">
+                    <div className="flex flex-col text-left gap-2">
+                        {isOwner ? (
+                            isLoading ? (
+                                <div className='flex flex-row gap-4 items-center animate-pulse'>
+                                    <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-32 h-6 "></div>
+                                </div>
+                            ) : (
+                                <div className='flex flex-row gap-4 items-center'>
+                                    <span className="text-2xl font-semibold">{userData.username || truncateAddress(xrpAddress)}</span>
+                                    <Link href="/settings/profile"><Button className="text-xs">Edit Profile</Button></Link>
+                                </div>
+                            )
                         ) : (
-                            <div className='flex flex-row gap-4 items-center'>
-                                <span className="text-2xl font-semibold">{userData.username || truncateAddress(xrpAddress)}</span>
-                                <Link href="/settings/profile"><Button className="text-xs">Edit Profile</Button></Link>
-                            </div>
-                        )
-                    ) : (
-                        isLoading ? (
-                            <div className='flex flex-row gap-4 items-center animate-pulse'>
-                                <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-32 h-6 "></div>
-                                <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-24 h-6"></div>
-                            </div>
+                            isLoading ? (
+                                <div className='flex flex-row gap-4 items-center animate-pulse'>
+                                    <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-32 h-6 "></div>
+                                    <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-24 h-6"></div>
+                                </div>
+                            ) : (
+                                <div className='flex flex-row gap-4 items-center'>
+                                    <span className="text-2xl font-semibold">{userData.username || truncateAddress(xrpAddress)}</span>
+                                </div>
+                            )
+                        )}
+                        {isLoading ? (
+                            <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-40 h-5 animate-pulse"></div>
                         ) : (
-                            <div className='flex flex-row gap-4 items-center'>
-                                <span className="text-2xl font-semibold">{userData.username || truncateAddress(xrpAddress)}</span>
-                            </div>
-                        )
-                    )}
-                    {isLoading ? (
-                        <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-40 h-5 animate-pulse"></div>
-                    ) : (
-                        <Tooltip copyContent={xrpAddress} className="w-fit">
-                            <span className="text-lg font-semibold opacity-60 cursor-pointer">{xrpAddress}</span>
-                        </Tooltip>
-                    )}
+                            <Tooltip copyContent={xrpAddress} className="w-fit">
+                                <span className="text-lg opacity-60 cursor-pointer flex gap-2 items-center leading-normal">
+                                    <Image className='text-white' src="/images/xrp-logo.svg" width={20} height={20} />
+                                    {truncateAddress(xrpAddress)}
+                                </span>
+                            </Tooltip>
+                        )}
 
-                    {/* show badges */}
+
+
+                    </div>
+                    {/* BADGES */}
                     <div className="flex flex-row gap-2">
                         {badges.map((badge, index) => (
-                            <div key={index} className="w-8 h-8 rounded-full bg-[#A6B0CF] bg-opacity-5" style={{ backgroundImage: `url(${badge.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                            <div key={index} className="w-12 h-12" style={{ backgroundImage: `url(${badge.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
                         ))}
                     </div>
                 </div>

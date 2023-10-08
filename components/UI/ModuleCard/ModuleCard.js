@@ -6,7 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PushPinRoundedIcon from '@mui/icons-material/PushPinRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-const ModuleCard = ({ children, className, contentClassName, style, title, settings, disableTitle, onClickRemove,onClickStatic,callToggleSettings = false }) => {
+const ModuleCard = ({ children, className, contentClassName, style, title, settings, disableTitle, onClickRemove, onClickStatic, callToggleSettings = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const defaultClass =
@@ -35,7 +35,7 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
 
         <div className="w-full flex flex-row items-center gap-4">
           <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
-            <PushPinRoundedIcon  onClick={onClickStatic}/>
+            <PushPinRoundedIcon onClick={onClickStatic} />
           </Button>
           <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
             <DeleteRoundedIcon onClick={onClickRemove} />
@@ -67,26 +67,52 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
         </div>
       )}
 
-      {/* CARD SETTINGS ICON */}
-      <AnimatePresence>
-        <motion.div
-          key="button"
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: isSettingsVisible ? 1 : isHovered || !disableTitle ? 1 : 0,
-          }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <Button
-            className="!p-0 bg-[transparent] rounded-full absolute top-4 right-4 z-20"
-            disableAnimation
-            onClick={toggleSettings}
+      <div className="absolute top-4 right-4 z-20 flex gap-2">
+
+        {/* PINNED ICON */}
+
+        <AnimatePresence>
+          <motion.div
+            key="button"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: isSettingsVisible ? 1 : isHovered || !disableTitle ? 1 : 0,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
-            <MoreVertIcon />
-          </Button>
-        </motion.div>
-      </AnimatePresence>
+            <Button
+              className="!p-0 bg-[transparent] rounded-full "
+              disableAnimation
+              onClick={onClickStatic}
+            >
+              <PushPinRoundedIcon />
+            </Button>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* CARD SETTINGS ICON */}
+        <AnimatePresence>
+          <motion.div
+            key="button"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: isSettingsVisible ? 1 : isHovered || !disableTitle ? 1 : 0,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Button
+              className="!p-0 bg-[transparent] rounded-full "
+              disableAnimation
+              onClick={toggleSettings}
+            >
+              <MoreVertIcon />
+            </Button>
+          </motion.div>
+        </AnimatePresence>
+
+      </div>
 
       {/* CARD CONTENT */}
       <div className={`w-full h-full flex items-start overflow-x-hidden ${contentClassName}`}>

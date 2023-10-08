@@ -13,9 +13,9 @@ import { useCookies } from "react-cookie";
 
 const defaultSettings = {
   displayNftName: true,
-  displayNftPrice: false,
-  backgroundSetting: "Solid",
-  randomNFT: false,
+  displayNftPrice: true,
+  backgroundSetting: "Transparent",
+  randomNFT: true,
 };
 
 const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStatic }) => {

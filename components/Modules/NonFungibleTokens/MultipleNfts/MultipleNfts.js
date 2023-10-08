@@ -217,7 +217,7 @@ const Nfts = ({onClickRemove, onClickStatic}) => {
             )}
 
             <div className="@container w-full ">
-              <div className="grid @sm:grid-cols-2 @md:grid-cols-3 @lg:grid-cols-3 @xl:grid-cols-3 @2xl:grid-cols-4 gap-4 ">
+              <div className="grid @sm:grid-cols-2 @md:grid-cols-2 @xl:grid-cols-3 @2xl:grid-cols-4 @5xl:grid-cols-5 gap-4 ">
                 {Array.from({ length: filteredData.length }).map((_, index) => (
                   <Nft
                     imageSize="!w-full"
