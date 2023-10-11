@@ -395,6 +395,10 @@ export default function Home({ nfts }) {
     setShowModal(false);
   };
 
+  useEffect(() => {
+    console.log(nfts)
+  }, [nfts])
+
   return (
 
     <AppLayout

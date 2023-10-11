@@ -10,6 +10,7 @@ import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { config } from "@/configcomponents";
 import { useCookies } from "react-cookie";
+import WalletPrompt from "@/components/UI/WalletPrompt/WalletPromptcomponents";
 
 const defaultSettings = {
   displayNftName: true,
@@ -52,7 +53,15 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStat
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Success:", data);
+            console.log("Success:", data);
+            if ('exists' in data) {
+              if (!data.exists) {
+                setRandomNFT();
+                updateSettings("randomNFT", true);
+              } else {
+                updateSettings("randomNFT", false);
+              }
+            }
             // setNftData(data.data); if its random nft, then set random nft
             if (data.data.nft_id === 'random') {
               const randNft = nfts[Math.floor(Math.random() * nfts.length)];
@@ -64,6 +73,7 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStat
               });
               updateSettings("randomNFT", true);
             } else {
+              console.log(data.data);
               setNftData(data.data);
             }
         })
@@ -75,6 +85,7 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStat
 
   //get price
   useEffect(() => {
+    console.log(nftData);
     if (nftData && nftData.nft_id) {
       const api_url = `${config.api_url}/nft_price/${nftData.nft_id}`;
       fetch(api_url)
@@ -175,16 +186,19 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStat
         disableTitle="true"
         className={`${backgroundClass} !p-0`}
       >
-        <Nft
-          imageSize="object-cover !w-full !h-full min-h-0"
-          className="w-full h-full border-none"
-          // src="/images/nft.webp"
-          src={nftData && nftData.nft_image ? nftData.nft_image : "/images/nft.webp"}
-          displayName={moduleSettings.displayNftName}
-          displayPrice={moduleSettings.displayNftPrice}
-          name={nftData && nftData.nft_name ? nftData.nft_name : "Select NFT"}
-          price={price}
-        />
+        {xrpAddress === null && <WalletPrompt />}
+        { xrpAddress !== null &&
+          <Nft
+            imageSize="object-cover !w-full !h-full min-h-0"
+            className="w-full h-full border-none"
+            // src="/images/nft.webp"
+            src={nftData && nftData.nft_image ? nftData.nft_image : "/images/nft.webp"}
+            displayName={moduleSettings.displayNftName}
+            displayPrice={moduleSettings.displayNftPrice}
+            name={nftData && nftData.nft_name ? nftData.nft_name : "Select NFT"}
+            price={price}
+          />
+        }
       </ModuleCard>
     </>
   );
