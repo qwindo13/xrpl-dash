@@ -13,7 +13,7 @@ const defaultSettings = {
     backgroundSetting: "Transparent",
 };
 
-const Badges = ({ nfts,onClickRemove, onClickStatic }) => {
+const Badges = ({ nfts,onClickRemove, onClickStatic, isPinned=False}) => {
     
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const updateSettings = (key, value) => {
@@ -64,6 +64,7 @@ const Badges = ({ nfts,onClickRemove, onClickStatic }) => {
         <ModuleCard
         onClickRemove={onClickRemove}
         onClickStatic={onClickStatic}
+        isPinned={isPinned}
         title="My Badges"
         settings={
             <>

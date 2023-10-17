@@ -12,7 +12,7 @@ const defaultSettings = {
     displaySearchBar: true,
 };
 
-const Feed = ({ data,onClickRemove, onClickStatic }) => {
+const Feed = ({ data,onClickRemove, onClickStatic, isPinned=False}) => {
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const updateSettings = (key, value) => {
         setModuleSettings((prevSettings) => ({
@@ -26,6 +26,7 @@ const Feed = ({ data,onClickRemove, onClickStatic }) => {
         <ModuleCard
             onClickRemove={onClickRemove}
             onClickStatic={onClickStatic}
+            isPinned={isPinned}
             title="Feed"
             settings={
                 <>

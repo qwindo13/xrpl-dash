@@ -19,13 +19,12 @@ const defaultSettings = {
   randomNFT: true,
 };
 
-const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStatic }) => {
+const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStatic, isPinned=False}) => {
 
   const [cookies] = useCookies(["token"]);
   const [nftData, setNftData] = useState(null);
   const [price, setPrice] = useState(null);
   const [moduleSettings, setModuleSettings] = useState(defaultSettings);
-  const [dis, setDis] = useState(false);
   const updateSettings = (key, value) => {
     setModuleSettings((prevSettings) => ({
       ...prevSettings,
@@ -144,6 +143,7 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStat
       <ModuleCard
         onClickRemove={onClickRemove}
         onClickStatic={onClickStatic}
+        isPinned={isPinned}
         title= "NFT"
         settings={
           <>

@@ -22,14 +22,6 @@ export default function App({ Component, pageProps }) {
     return string;
   };
 
-  const convertHexToString = (hex) => {
-    let string = "";
-    for (let i = 0; i < hex.length; i += 2) {
-      string += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    }
-    return string;
-  };
-
   useEffect(() => {
     if (cookies.token) {
       //get alerts from api/getNotifiedAlerts

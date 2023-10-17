@@ -6,7 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PushPinRoundedIcon from '@mui/icons-material/PushPinRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-const ModuleCard = ({ children, className, contentClassName, style, title, settings, disableTitle, onClickRemove, onClickStatic, callToggleSettings = false }) => {
+const ModuleCard = ({ children, className, contentClassName, style, title, settings, disableTitle, onClickRemove, onClickStatic, isPinned = false,callToggleSettings = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const defaultClass =
@@ -76,7 +76,7 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
             key="button"
             initial={{ opacity: 0 }}
             animate={{
-              opacity: isSettingsVisible ? 1 : isHovered || !disableTitle ? 1 : 0,
+              opacity: isSettingsVisible ? 1 : isHovered ? 1 : 0,
             }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
@@ -86,7 +86,14 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
               disableAnimation
               onClick={onClickStatic}
             >
-              <PushPinRoundedIcon />
+              {
+                !isPinned && isHovered &&
+                <PushPinRoundedIcon className="opacity-60 hover:opacity-100" />
+              }
+              {
+                isPinned && isHovered &&
+                <PushPinRoundedIcon className="opacity-100" />
+              }
             </Button>
           </motion.div>
         </AnimatePresence>

@@ -52,6 +52,7 @@ export default function Home({ nfts }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [pins, setPins] = useState([]);
 
   const [sliderRef, instanceRef] = useKeenSlider({
     mode: "snap",
@@ -120,6 +121,7 @@ export default function Home({ nfts }) {
       }
     }
   };
+
 
   useEffect(() => {
     const token = cookies.token;
@@ -353,6 +355,19 @@ export default function Home({ nfts }) {
     localStorage.setItem("layout", JSON.stringify(newLayout));
   }
 
+  //on layout change, check if the module is static or not, if it is then add it to the pins array
+  useEffect(() => {
+    const layout = JSON.parse(localStorage.getItem("layout"));
+    const newPins = [];
+    layout.lg.forEach((module) => {
+      if (module.static) {
+        newPins.push(module.i);
+      }
+    });
+    setPins(newPins);
+    console.log(newPins);
+  }, [layout]);
+
   const changeModal = (value,value2) => {
     setShowModal(value);
     setSelectedModule(value2);
@@ -394,10 +409,6 @@ export default function Home({ nfts }) {
     }
     setShowModal(false);
   };
-
-  useEffect(() => {
-    console.log(nfts)
-  }, [nfts])
 
   return (
 
@@ -445,61 +456,61 @@ export default function Home({ nfts }) {
             if (module.startsWith("priceinfo")) {
               return (
                 <div key={module}>
-                  <PriceInfo onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <PriceInfo onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
                 </div>
               );
             } else if (module.startsWith("feed")) {
               return (
                 <div key={module}>
-                  <Feed feed={mockFeed} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <Feed feed={mockFeed} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
                 </div>
               );
             } else if (module.startsWith("richlist")) {
               return (
                 <div key={module}>
-                  <RichList onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <RichList onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
                 </div>
               );
             } else if (module.startsWith("quickswap")) {
               return (
                 <div key={module}>
-                  <QuickSwap onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <QuickSwap onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
                 </div>
               );
             } else if (module.startsWith("wallet")) {
               return (
                 <div key={module}>
-                  <Wallet onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <Wallet onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
                 </div>
               );
             } else if (module.startsWith("badges")) {
               return (
                 <div key={module}>
-                  <Badges nfts={nfts} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <Badges nfts={nfts} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
                 </div>
               );
             } else if (module.startsWith("profitandloss")) {
               return (
                 <div key={module}>
-                  <ProfitnLose onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <ProfitnLose onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
                 </div>
               );
             } else if (module.startsWith("singlenft")) {
               return (
                 <div key={module}>
-                  <SingleNft changeModal={changeModal} keyy={module} refresh={refresh} nfts={nfts} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <SingleNft changeModal={changeModal} keyy={module} refresh={refresh} nfts={nfts} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
                 </div>
               );
             } else if (module.startsWith("multiplenfts")) {
               return (
                 <div key={module}>
-                  <Nfts onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <Nfts onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
                 </div>
               );
             } else if (module.startsWith("fearandgreed")) {
               return (
                 <div key={module}>
-                  <FearGreedIndex onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <FearGreedIndex onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
                 </div>
               );
             }
