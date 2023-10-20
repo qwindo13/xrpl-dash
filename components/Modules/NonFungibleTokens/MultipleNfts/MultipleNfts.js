@@ -26,7 +26,7 @@ const defaultSettings = {
 
 const api_url = config.api_url;
 
-const Nfts = ({onClickRemove, onClickStatic, isPinned=False}) => {
+const Nfts = ({onClickRemove, onClickStatic, isPinned=false}) => {
   const [moduleSettings, setModuleSettings] = useState(defaultSettings);
   const updateSettings = (key, value) => {
     setModuleSettings((prevSettings) => ({

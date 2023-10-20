@@ -12,7 +12,7 @@ const defaultSettings = {
 };
 
 
-const FearGreedIndex = ({onClickRemove, onClickStatic, isPinned=False}) => {
+const FearGreedIndex = ({onClickRemove, onClickStatic, isPinned=false}) => {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);

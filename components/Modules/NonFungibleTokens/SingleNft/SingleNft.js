@@ -19,7 +19,7 @@ const defaultSettings = {
   randomNFT: true,
 };
 
-const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStatic, isPinned=False}) => {
+const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStatic, isPinned=false}) => {
 
   const [cookies] = useCookies(["token"]);
   const [nftData, setNftData] = useState(null);

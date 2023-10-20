@@ -16,7 +16,7 @@ const defaultSettings = {
     backgroundSetting: "Transparent",
 };
 
-const QuickSwap = ({onClickRemove, onClickStatic, isPinned=False}) => {
+const QuickSwap = ({onClickRemove, onClickStatic, isPinned=false}) => {
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const [payWithToken, setPayWithToken] = useState(null);
     const [receiveToken, setReceiveToken] = useState(null);

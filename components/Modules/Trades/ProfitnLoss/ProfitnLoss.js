@@ -17,7 +17,7 @@ const defaultSettings = {
     profitSetting: "Most profitable",
 };
 
-const ProfitnLose = ({onClickRemove,onClickStatic,isPinned=False}) => {
+const ProfitnLose = ({onClickRemove,onClickStatic,isPinned=false}) => {
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const [xrpAddress, setXrpAddress] = useState(null);
     const [data, setData] = useState(null);

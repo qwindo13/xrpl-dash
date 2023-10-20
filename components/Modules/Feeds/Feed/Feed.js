@@ -12,7 +12,7 @@ const defaultSettings = {
     displaySearchBar: true,
 };
 
-const Feed = ({ data,onClickRemove, onClickStatic, isPinned=False}) => {
+const Feed = ({ data,onClickRemove, onClickStatic, isPinned=false}) => {
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const updateSettings = (key, value) => {
         setModuleSettings((prevSettings) => ({

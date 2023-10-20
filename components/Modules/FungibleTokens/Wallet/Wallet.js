@@ -27,7 +27,7 @@ const defaultSettings = {
 };
 
 
-const Wallet = ({onClickRemove, onClickStatic, isPinned=False}) => {
+const Wallet = ({onClickRemove, onClickStatic, isPinned=false}) => {
   const [moduleSettings, setModuleSettings] = useState(defaultSettings);
   const [sortConfig, setSortConfig] = useState(null);
   const [data, setData] = useState([]);

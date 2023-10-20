@@ -13,7 +13,7 @@ const defaultSettings = {
     backgroundSetting: "Transparent",
 };
 
-const Badges = ({ nfts,onClickRemove, onClickStatic, isPinned=False}) => {
+const Badges = ({ nfts,onClickRemove, onClickStatic, isPinned=false}) => {
     
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const updateSettings = (key, value) => {
