@@ -83,8 +83,22 @@ const PriceChart = () => {
           wickUpColor: '#838ca1',
         });
     
-        candleSeries.setData(priceData);
-    
+        // candleSeries.setData(priceData);
+        const priceData = [
+            { time: '2018-10-19', open: 54.62, high: 55.5, low: 54.52, close: 54.9 },
+            { time: '2018-10-22', open: 55.08, high: 55.27, low: 54.61, close: 54.98 },
+            { time: '2018-10-23', open: 55.09, high: 55.09, low: 54.47, close: 54.71 },
+            { time: '2018-10-24', open: 54.54, high: 54.9, low: 54.33, close: 54.61 },
+            { time: '2018-10-25', open: 54.22, high: 54.9, low: 54.1, close: 54.82 },
+            { time: '2018-10-26', open: 54.64, high: 55.5, low: 54.6, close: 55.27 },
+            { time: '2018-10-29', open: 55.3, high: 55.32, low: 54.46, close: 54.98 },
+            { time: '2018-10-30', open: 54.98, high: 55.19, low: 54.61, close: 54.69 },
+            { time: '2018-10-31', open: 54.4, high: 54.66, low: 53.74, close: 54.61 },
+            { time: '2018-11-01', open: 54.65, high: 54.93, low: 54.3, close: 54.9 },
+            { time: '2018-11-02', open: 54.91, high: 55.18, low: 54.4, close: 54.73 },
+            { time: '2018-11-05', open: 54.73, high: 55.35, low: 54.5, close: 55.04 },
+          ];
+          candleSeries.setData(priceData);
         // const areaSeries = chart.current.addAreaSeries({
         //   topColor: 'rgba(38,198,218, 0.56)',
         //   bottomColor: 'rgba(38,198,218, 0.04)',
@@ -107,7 +121,22 @@ const PriceChart = () => {
           },
         });
     
-        volumeSeries.setData(volumeData);
+        // volumeSeries.setData(volumeData);
+        const volumeData = [
+            { time: '2018-10-19', value: 111 },
+            { time: '2018-10-22', value: 222 },
+            { time: '2018-10-23', value: 333 },
+            { time: '2018-10-24', value: 444 },
+            { time: '2018-10-25', value: 555 },
+            { time: '2018-10-26', value: 666 },
+            { time: '2018-10-29', value: 777 },
+            { time: '2018-10-30', value: 888 },
+            { time: '2018-10-31', value: 999 },
+            { time: '2018-11-01', value: 111 },
+            { time: '2018-11-02', value: 222 },
+            { time: '2018-11-05', value: 333 },
+          ];
+          volumeSeries.setData(volumeData);
       }, []);
     
 

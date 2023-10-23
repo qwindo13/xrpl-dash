@@ -12,7 +12,7 @@ const defaultSettings = {
 };
 
 
-const FearGreedIndex = ({onClickRemove,onClickStatic}) => {
+const FearGreedIndex = ({onClickRemove, onClickStatic, isPinned=false}) => {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -35,8 +35,6 @@ const FearGreedIndex = ({onClickRemove,onClickStatic}) => {
         else if (value >= 81 && value <= 100) rgbaColor = "rgba(109, 206, 92, 0.6)";
         return `radial-gradient(circle at center, ${rgbaColor} 0%, transparent 120%)`;
     };
-    
-    
 
     const backgroundClass = moduleSettings.backgroundSetting === 'Solid' 
     ? 'border-white border-opacity-0'
@@ -50,8 +48,6 @@ const FearGreedIndex = ({onClickRemove,onClickStatic}) => {
     { 
         background: getBackgroundColor(data[0]?.value || 0) 
     } : {};
-
-
 
     // State to hold the circle's position
     const [circlePosition, setCirclePosition] = useState({ x: 0, y: 0 });
@@ -95,6 +91,7 @@ const FearGreedIndex = ({onClickRemove,onClickStatic}) => {
         <ModuleCard
             onClickRemove={onClickRemove}
             onClickStatic={onClickStatic}
+            isPinned={isPinned}
             title="Fear and Greed Index"
             settings={
                 <>

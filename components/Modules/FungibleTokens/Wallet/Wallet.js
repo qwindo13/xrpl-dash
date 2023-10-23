@@ -27,7 +27,7 @@ const defaultSettings = {
 };
 
 
-const Wallet = ({onClickRemove, onClickStatic}) => {
+const Wallet = ({onClickRemove, onClickStatic, isPinned=false}) => {
   const [moduleSettings, setModuleSettings] = useState(defaultSettings);
   const [sortConfig, setSortConfig] = useState(null);
   const [data, setData] = useState([]);
@@ -260,6 +260,7 @@ const Wallet = ({onClickRemove, onClickStatic}) => {
     <ModuleCard
       onClickRemove={onClickRemove}
       onClickStatic={onClickStatic}
+      isPinned={isPinned}
       title="Wallet"
       settings={
         <>

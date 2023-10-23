@@ -24,7 +24,7 @@ const defaultSettings = {
     backgroundSetting: "Solid"
 };
 
-const PriceInfo = ({ onClickRemove, onClickStatic }) => {
+const PriceInfo = ({ onClickRemove, onClickStatic, isPinned = false }) => {
     const [ref, dimensions] = useResizeObserver();
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const [token, setToken] = useState('');
@@ -166,6 +166,7 @@ const PriceInfo = ({ onClickRemove, onClickStatic }) => {
         <ModuleCard
             onClickRemove={onClickRemove}
             onClickStatic={onClickStatic}
+            isPinned={isPinned}
             title={`Price - ${token || subLabel}`}
             settings={
                 <>

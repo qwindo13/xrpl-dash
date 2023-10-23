@@ -10,6 +10,7 @@ import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { config } from "@/configcomponents";
 import { useCookies } from "react-cookie";
+import WalletPrompt from "@/components/UI/WalletPrompt/WalletPromptcomponents";
 
 const defaultSettings = {
   displayNftName: true,
@@ -18,13 +19,12 @@ const defaultSettings = {
   randomNFT: true,
 };
 
-const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove, onClickStatic }) => {
+const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStatic, isPinned=false}) => {
 
   const [cookies] = useCookies(["token"]);
   const [nftData, setNftData] = useState(null);
   const [price, setPrice] = useState(null);
   const [moduleSettings, setModuleSettings] = useState(defaultSettings);
-  const [dis, setDis] = useState(false);
   const updateSettings = (key, value) => {
     setModuleSettings((prevSettings) => ({
       ...prevSettings,
@@ -52,20 +52,29 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove, onClickSta
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Success:", data);
-          // setNftData(data.data); if its random nft, then set random nft
-          if (data.data.nft_id === 'random') {
-            const randNft = nfts[Math.floor(Math.random() * nfts.length)];
-            console.log(randNft);
-            setNftData({
-              nft_id: randNft.nftid,
-              nft_image: randNft.image,
-              nft_name: randNft.name,
-            });
-            updateSettings("randomNFT", true);
-          } else {
-            setNftData(data.data);
-          }
+            console.log("Success:", data);
+            if ('exists' in data) {
+              if (!data.exists) {
+                setRandomNFT();
+                updateSettings("randomNFT", true);
+              } else {
+                updateSettings("randomNFT", false);
+              }
+            }
+            // setNftData(data.data); if its random nft, then set random nft
+            if (data.data.nft_id === 'random') {
+              const randNft = nfts[Math.floor(Math.random() * nfts.length)];
+              console.log(randNft);
+              setNftData({
+                nft_id: randNft.nftid,
+                nft_image: randNft.image,
+                nft_name: randNft.name,
+              });
+              updateSettings("randomNFT", true);
+            } else {
+              console.log(data.data);
+              setNftData(data.data);
+            }
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -75,6 +84,7 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove, onClickSta
 
   //get price
   useEffect(() => {
+    console.log(nftData);
     if (nftData && nftData.nft_id) {
       const api_url = `${config.api_url}/nft_price/${nftData.nft_id}`;
       fetch(api_url)
@@ -133,7 +143,8 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove, onClickSta
       <ModuleCard
         onClickRemove={onClickRemove}
         onClickStatic={onClickStatic}
-        title="NFT"
+        isPinned={isPinned}
+        title= "NFT"
         settings={
           <>
             <RandomSwitch
@@ -175,16 +186,19 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove, onClickSta
         disableTitle="true"
         className={`${backgroundClass} !p-0`}
       >
-        <Nft
-          imageSize="object-cover !w-full !h-full min-h-0"
-          className="w-full h-full border-none"
-          // src="/images/nft.webp"
-          src={nftData && nftData.nft_image ? nftData.nft_image : "/images/nft.webp"}
-          displayName={moduleSettings.displayNftName}
-          displayPrice={moduleSettings.displayNftPrice}
-          name={nftData && nftData.nft_name ? nftData.nft_name : "Select NFT"}
-          price={price}
-        />
+        {xrpAddress === null && <WalletPrompt />}
+        { xrpAddress !== null &&
+          <Nft
+            imageSize="object-cover !w-full !h-full min-h-0"
+            className="w-full h-full border-none"
+            // src="/images/nft.webp"
+            src={nftData && nftData.nft_image ? nftData.nft_image : "/images/nft.webp"}
+            displayName={moduleSettings.displayNftName}
+            displayPrice={moduleSettings.displayNftPrice}
+            name={nftData && nftData.nft_name ? nftData.nft_name : "Select NFT"}
+            price={price}
+          />
+        }
       </ModuleCard>
     </>
   );

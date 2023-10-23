@@ -26,7 +26,7 @@ const defaultSettings = {
   displaySearchBar: true,
 };
 
-const RichList = ({onClickRemove, onClickStatic}) => {
+const RichList = ({onClickRemove, onClickStatic, isPinned=false}) => {
   const [title, setTitle] = useState('Greyhound');
   const [toFetch, setToFetch] = useState('47726579686F756E640000000000000000000000:rJWBaKCpQw47vF4rr7XUNqr34i4CoXqhKJ');
   const [data, setData] = useState(testData);
@@ -148,6 +148,7 @@ const RichList = ({onClickRemove, onClickStatic}) => {
     <ModuleCard
       onClickRemove={onClickRemove}
       onClickStatic={onClickStatic}
+      isPinned={isPinned}
       title={"Richlist - " + title}
       settings={
         <>

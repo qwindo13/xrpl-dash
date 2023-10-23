@@ -22,14 +22,6 @@ export default function App({ Component, pageProps }) {
     return string;
   };
 
-  const convertHexToString = (hex) => {
-    let string = "";
-    for (let i = 0; i < hex.length; i += 2) {
-      string += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    }
-    return string;
-  };
-
   useEffect(() => {
     if (cookies.token) {
       //get alerts from api/getNotifiedAlerts
@@ -99,20 +91,20 @@ export default function App({ Component, pageProps }) {
         if (!image) continue;
         const { data: nftData } = await axios.get(urlNft);
 
-        const videoFlag = isVideo(nftData);
-        const imageSrc = getImageSrc(image);
+        let videoFlag = isVideo(nftData);
+        const gifFlag = isGif(nftData);
+        // const imageSrc = getImageSrc(image);
+        let imageSrc;
+        if (gifFlag === "video") {
+          // videoFlag = true;
+          imageSrc = getImageSrc(nftData.video);
+        } else if (gifFlag === "animation") {
+          // videoFlag = true;
+          imageSrc = getImageSrc(nftData.animation);
+        } else {
+          imageSrc = getImageSrc(image);
+        }
 
-        // setNfts2((nfts2) => [
-        //   ...nfts2,
-        //   {
-        //     nftid: nft.NFTokenID,
-        //     image: imageSrc,
-        //     videoFlag,
-        //     name: nftData.name,
-        //     taxon: nft.NFTokenTaxon,
-        //     issuer: nft.Issuer,
-        //   },
-        // ]);
         nfts2.push({
           nftid: nft.NFTokenID,
           image: imageSrc,
@@ -154,14 +146,38 @@ export default function App({ Component, pageProps }) {
       );
     }
 
-    function getImageSrc(image) {
-      if (image.startsWith("ipfs://")) {
-        return `https://ipfs.io/ipfs/${image.replace("ipfs://", "")}`;
-      } else if (image.startsWith("https://")) {
-        return image;
+    function isGif(nftData) {
+      const detectFlag = (
+        "video" in nftData &&
+        nftData.video !== undefined &&
+        nftData.video !== "" &&
+        nftData.video.endsWith(".gif")
+      ) || (
+        "animation" in nftData &&
+        nftData.animation !== undefined &&
+        nftData.animation !== "" &&
+        nftData.animation.endsWith(".gif")
+      );
+      //return the field that contains the gif
+      if (detectFlag) {
+        if ("video" in nftData) {
+          return "video";
+        } else {
+          return "animation";
+        }
       } else {
-        return `https://ipfs.io/ipfs/${image}`;
+        return false;
       }
+    }
+
+    function getImageSrc(image) {
+        if (image.startsWith("ipfs://")) {
+          return `https://ipfs.io/ipfs/${image.replace("ipfs://", "")}`;
+        } else if (image.startsWith("https://")) {
+          return image;
+        } else {
+          return `https://ipfs.io/ipfs/${image}`;
+        }
     }
 
     if (cookies.token) {
