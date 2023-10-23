@@ -16,7 +16,7 @@ const LayoutItem = ({ href, label }) => {
     return (
         <Link href={href} className="w-full">
             <div 
-                className="p-2 rounded-xl hover:bg-[#21212A] hover:bg-opacity-60 w-full flex justify-between leading-normal items-center transition-all duration-200"
+                className="p-2 rounded-xl hover:bg-[#A6B0CF]  hover:bg-opacity-5 w-full flex justify-between leading-normal items-center transition-all duration-200"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >

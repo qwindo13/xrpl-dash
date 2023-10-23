@@ -33,7 +33,7 @@ const Nft = ({ displayName, displayPrice, className, imageSize, selected, onClic
                     ) :
                         (
                             <>
-                                {!isImageLoaded && <div className="w-full h-full rounded-xl bg-[#A6B0CF] bg-opacity-5 animate-pulse"></div>}
+                                {!isImageLoaded && <div className="w-full h-full h-40 object-cover rounded-xl bg-[#A6B0CF] bg-opacity-5 animate-pulse"></div>}
                                 <Image
                                     className={`rounded-xl object-cover ${imageSize}`} 
                                     src={src}

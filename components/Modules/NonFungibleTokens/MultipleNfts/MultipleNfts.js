@@ -220,7 +220,7 @@ const Nfts = ({onClickRemove, onClickStatic}) => {
               <div className="grid @sm:grid-cols-2 @md:grid-cols-2 @xl:grid-cols-3 @2xl:grid-cols-4 @5xl:grid-cols-5 gap-4 ">
                 {Array.from({ length: filteredData.length }).map((_, index) => (
                   <Nft
-                    imageSize="!w-full"
+                    imageSize="!w-full !h-full"
                     className="w-full"
                     // src='/images/nft.webp'
                     src={filteredData[index].metadata.image.replace(

@@ -18,7 +18,7 @@ const defaultSettings = {
   randomNFT: true,
 };
 
-const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStatic }) => {
+const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove, onClickStatic }) => {
 
   const [cookies] = useCookies(["token"]);
   const [nftData, setNftData] = useState(null);
@@ -53,19 +53,19 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStat
         .then((response) => response.json())
         .then((data) => {
           console.log("Success:", data);
-            // setNftData(data.data); if its random nft, then set random nft
-            if (data.data.nft_id === 'random') {
-              const randNft = nfts[Math.floor(Math.random() * nfts.length)];
-              console.log(randNft);
-              setNftData({
-                nft_id: randNft.nftid,
-                nft_image: randNft.image,
-                nft_name: randNft.name,
-              });
-              updateSettings("randomNFT", true);
-            } else {
-              setNftData(data.data);
-            }
+          // setNftData(data.data); if its random nft, then set random nft
+          if (data.data.nft_id === 'random') {
+            const randNft = nfts[Math.floor(Math.random() * nfts.length)];
+            console.log(randNft);
+            setNftData({
+              nft_id: randNft.nftid,
+              nft_image: randNft.image,
+              nft_name: randNft.name,
+            });
+            updateSettings("randomNFT", true);
+          } else {
+            setNftData(data.data);
+          }
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -93,10 +93,10 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStat
     moduleSettings.backgroundSetting === "Solid"
       ? ""
       : moduleSettings.backgroundSetting === "Highlight"
-      ? "relative bg-transparent w-full h-full before:absolute before:w-full before:h-full before:scale-120	before:opacity-80 before:bg-[url('/images/nft.webp')] before:bg-cover before:bg-center before:blur-[80px] before:z-[-1] "
-      : moduleSettings.backgroundSetting === "Transparent"
-      ? "bg-transparent backdrop-blur-lg border border-white border-opacity-5"
-      : "";
+        ? "relative bg-transparent w-full h-full before:absolute before:w-full before:h-full before:scale-120	before:opacity-80 before:bg-[url('/images/nft.webp')] before:bg-cover before:bg-center before:blur-[80px] before:z-[-1] "
+        : moduleSettings.backgroundSetting === "Transparent"
+          ? "bg-transparent backdrop-blur-lg border border-white border-opacity-5"
+          : "";
 
   const setRandomNFT = () => {
     fetch(`${api_url}/addNftMod`, {
@@ -126,14 +126,14 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStat
           nft_name: randNft.name,
         });
       })
-    };
+  };
 
   return (
     <>
       <ModuleCard
         onClickRemove={onClickRemove}
         onClickStatic={onClickStatic}
-        title= "NFT"
+        title="NFT"
         settings={
           <>
             <RandomSwitch
@@ -143,18 +143,18 @@ const SingleNft = ({ changeModal, keyy, refresh, nfts, onClickRemove,onClickStat
                 setRandomNFT();
                 updateSettings("randomNFT", value);
               }}
-              //   //disabling the button for 2 seconds, then enabling it again
-              //   setDis(true);
-              //   setTimeout(() => {
-              //     setDis(false);
-              //   }, 20000);
-              // }}
-              // disabled={dis}
+            //   //disabling the button for 2 seconds, then enabling it again
+            //   setDis(true);
+            //   setTimeout(() => {
+            //     setDis(false);
+            //   }, 20000);
+            // }}
+            // disabled={dis}
             />
-            { !moduleSettings.randomNFT && xrpAddress && (
-            <SearchNftButton
-              onChange={() => changeModal(true, keyy)}
-            />
+            {!moduleSettings.randomNFT && xrpAddress && (
+              <SearchNftButton
+                onChange={() => changeModal(true, keyy)}
+              />
             )}
 
             <NftNameSwitch
