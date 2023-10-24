@@ -1,16 +1,18 @@
 import React from 'react';
 import Tabs from '../../Tabs/Tabs';
+import CandlestickChartRoundedIcon from '@mui/icons-material/CandlestickChartRounded';
+import ShowChartRoundedIcon from '@mui/icons-material/ShowChartRounded';
 
 const ChartTypeTabs = ({ value, onChange }) => {
     const tabOptions = [
         {
             label:
-                <span className='text-sm'>Lines</span>
+                <ShowChartRoundedIcon />
             , value: 'lines'
         },
         {
             label:
-            <span className='text-sm'>Candles</span>
+            <CandlestickChartRoundedIcon />
             , value: 'candles'
         },
     ];
@@ -18,7 +20,7 @@ const ChartTypeTabs = ({ value, onChange }) => {
         <div className='flex flex-row flex-wrap justify-between items-center gap-2'>
             <span className='font-semibold text-base mb-2 md:mb-0'>Chart Type</span>
             <Tabs 
-                tabsId="background" 
+                tabsId="chart-type" 
                 className="px-0 h-full bg-transparent flex-wrap !justify-start" 
                 options={tabOptions} 
                 bgColor="#21212A" 

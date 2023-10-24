@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const Tabs = ({ options, onChange, className, tabsId, bgColor = "#1A1921", value, setSelectedTab }) => {
+const Tabs = ({ options, onChange, className, tabsId, bgColor = "#1A1921", borderRadius = 12, value, setSelectedTab }) => {
   const [selectedOption, setSelectedOption] = useState(`${tabsId}-${value || options[0].value}`);
 
   const handleOptionClick = (value) => {
@@ -36,7 +36,7 @@ const Tabs = ({ options, onChange, className, tabsId, bgColor = "#1A1921", value
             <motion.span
               layoutId={`bubble-${tabsId}`}
               className="absolute inset-0 z-0"
-              style={{ backgroundColor: bgColor, borderRadius: 12 }}
+              style={{ backgroundColor: bgColor, borderRadius: borderRadius }}
               transition={{ type: "spring", bounce: 0.2, duration: 0.3 }}
             />
           )}
