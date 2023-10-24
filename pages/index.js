@@ -417,6 +417,7 @@ export default function Home({ nfts }) {
       onClickTitle={onClickTitle}
       className="overflow-hidden"
     >
+      {/* LAYOUT SAVE ICON */}
       <AnimatePresence>
         {loading && (
           <motion.div
@@ -427,12 +428,13 @@ export default function Home({ nfts }) {
               opacity: { duration: 0.3 },
               scale: { type: 'spring', stiffness: 500, damping: 30 }
             }}
-            className={`fixed bottom-8 right-8`}
+            className={`fixed bottom-8 right-8 z-50`}
           >
             <span className="animate-pulse"><SaveIcon sx={{ fontSize: 40 }} /></span>
           </motion.div>
         )}
       </AnimatePresence>
+
       {/* <Toast title={'target hit!'} message={'your target of 0.01 on solo was hit at 10:00!'} /> */}
       <div ref={gridContainerRef} className="w-full flex-grow">
         {" "}

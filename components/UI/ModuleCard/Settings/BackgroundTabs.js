@@ -31,11 +31,16 @@ const BackgroundTabs = ({ value, onChange, hasHighlight }) => {
     const filteredTabOptions = hasHighlight ? tabOptions : tabOptions.filter(option => option.value !== 'Highlight');
 
     return (
-        <div className='flex flex-row justify-between align-middle gap-2'>
-            <div className='flex flex-col gap-2'>
-                <span className='font-semibold text-base'>Background</span>
-                <Tabs tabsId="background" className="px-0 h-full hidden md:flex bg-transparent flex-wrap !justify-start" options={filteredTabOptions} bgColor="#21212A" onChange={onChange} value={value} />
-            </div>
+        <div className='flex flex-row flex-wrap justify-between items-center gap-2'>
+            <span className='font-semibold text-base mb-2 md:mb-0'>Background</span>
+            <Tabs
+                tabsId="background"
+                className="px-0 h-full hidden md:flex bg-transparent flex-wrap !justify-start"
+                options={filteredTabOptions}
+                bgColor="#21212A"
+                onChange={onChange}
+                value={value}
+            />
         </div>
     );
 };

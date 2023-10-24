@@ -10,17 +10,21 @@ const ProfitTabs = ({ value, onChange }) => {
         },
         {
             label:
-            <span className='text-sm'>Least</span>
+                <span className='text-sm'>Least</span>
             , value: 'Least profitable'
         },
     ];
     return (
 
-        <div className='flex flex-row justify-between align-middle gap-2'>
-            <div className='flex flex-col gap-2'>
-                <span className='font-semibold text-base'>Show Profit</span>
-                <Tabs tabsId="background" className="px-0 h-full hidden md:flex bg-transparent flex-wrap !justify-start" options={tabOptions} bgColor="#21212A" onChange={onChange} />
-            </div>
+        <div className='flex flex-row flex-wrap justify-between items-center gap-2'>
+            <span className='font-semibold text-base mb-2 md:mb-0'>Show Profit</span>
+            <Tabs
+                tabsId="background"
+                className="px-0 h-full hidden md:flex bg-transparent flex-wrap !justify-start"
+                options={tabOptions}
+                bgColor="#21212A"
+                onChange={onChange}
+            />
 
         </div>
     );
