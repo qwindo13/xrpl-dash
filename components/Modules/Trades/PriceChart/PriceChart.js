@@ -5,6 +5,7 @@ import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponen
 import ChartRangeSwitch from "@/components/UI/ModuleCard/Settings/ChartRangeSwitchcomponents";
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
 import ChartTypeTabs from "@/components/UI/ModuleCard/Settings/ChartTypeTabscomponents";
+import ChartLineColorTabs from "@/components/UI/ModuleCard/Settings/ChartLineColorTabscomponents";
 import Tabs from "@/components/UI/Tabs/Tabscomponents";
 
 const defaultSettings = {
@@ -348,10 +349,17 @@ const PriceChart = () => {
             value={moduleSettings.chartType}
             onChange={(value) => updateSettings("chartType", value)}
           />
+          {moduleSettings.chartType && (
+            <ChartLineColorTabs
+              value={moduleSettings.chartLineColor}
+              onChange={(value) => updateSettings("chartLineColor", value)}
+            />
+          )}
           <ChartRangeSwitch
             value={moduleSettings.displayRange}
             onChange={(value) => updateSettings("displayRange", value)}
           />
+
 
         </>
       }
