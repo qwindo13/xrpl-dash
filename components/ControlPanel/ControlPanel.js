@@ -14,7 +14,7 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
-{/* MENU ITEM FOR LAYOUT MENU */}
+{/* MENU ITEM FOR LAYOUT MENU */ }
 const LayoutItem = ({ href, label, icon, custom }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -37,22 +37,22 @@ const LayoutItem = ({ href, label, icon, custom }) => {
                     {icon}
                     {isEditing ? (
                         <div className="flex items-center gap-2 w-full">
-                        <input 
-                            autoFocus
-                            type="text" 
-                            value={inputValue} 
-                            maxLength={15}  
-                            onChange={(e) => setInputValue(e.target.value)}
-                            className="text-lg bg-transparent w-full" 
-                        />
-                        <CheckRoundedIcon onClick={handleCheckClick} sx={{ fontSize: 18 }} />
-                    </div>
+                            <input
+                                autoFocus
+                                type="text"
+                                value={inputValue}
+                                maxLength={15}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                className="text-lg bg-transparent w-full"
+                            />
+                            <CheckRoundedIcon onClick={handleCheckClick} sx={{ fontSize: 18 }} />
+                        </div>
                     ) : (
                         <span className="text-lg ">{inputValue}</span>
                     )}
                 </div>
 
-                {custom && !isEditing &&  
+                {custom && !isEditing &&
                     <div className="flex gap-2">
                         <Button onClick={handleEditClick} className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
                             <EditIcon sx={{ fontSize: 18 }} />
@@ -90,7 +90,7 @@ export default function ControlPanel({ onSelectTitle }) {
                     <div className="text-xs absolute -top-2 font-semibold opacity-60 ">Select Layout</div>
                     <Dropdown className="w-60 !gap-0 !overflow-hidden !max-h-96 !overflow-y-scroll" isBlurred trigger={<Button className="!px-0 !text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Explore</Button>}>
                         <div className="">
-                            <h5 className="uppercase opacity-60 text-xs mb-4">XRPLDash layouts</h5>
+                            <h5 className=" opacity-60 text-xs mb-4">XRPLDash Layouts</h5>
                             <LayoutItem
                                 icon={<LanguageRoundedIcon sx={{ fontSize: 20 }} />}
                                 href="/"
@@ -103,13 +103,14 @@ export default function ControlPanel({ onSelectTitle }) {
                             />
                         </div>
                         <div className="border-t border-white border-opacity-5 mt-4 pt-4">
-                            <h5 className="uppercase opacity-60 text-xs mb-4">Your layouts</h5>
+                            <h5 className="opacity-60 text-xs mb-4">Your Layouts</h5>
                             <LayoutItem
                                 custom
                                 icon={<DashboardRoundedIcon sx={{ fontSize: 20 }} />}
                                 href="/custom"
                                 label="Custom"
                             />
+
                         </div>
                         <div className="border-top border-white pt-4">
                             <Button className='w-full !text-base bg-white !text-[#1A1921] '> <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />New layout</Button>
@@ -126,13 +127,16 @@ export default function ControlPanel({ onSelectTitle }) {
                 </div>
             </div>
 
-            <Modal showModal={showModal} closeModal={closeModal} className='md:h-[480px] !overflow-scroll'>
+            <Modal
+                title="Add a Module"
+                description="Customize your XRPLDash by adding modules that provide specific functionalities and data."
+                showModal={showModal}
+                closeModal={closeModal}
+                className='md:h-[480px] !overflow-scroll'
+            >
                 { /* STEP 1*/}
                 <div >
-                    <h2 className="text-xl font-semibold mb-2">Add a module</h2>
-                    <span className="text-base font-semibold opacity-60">Customize your XRPLDash by adding modules that provide specific functionalities and data.</span>
-
-                    <div className="flex flex-col mt-8 gap-4">
+                    <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2 mt-4">
                             <span className="text-sm font-semibold text-white opacity-60 ">Fungible Tokens (XRP or issued tokens)</span>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -155,7 +159,13 @@ export default function ControlPanel({ onSelectTitle }) {
                             <span className="text-sm font-semibold text-white opacity-60 ">Trades Modules</span>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                 <ModuleItem title="Quick Swap" desc="Exhibit the badges you've earned on the platform" />
-                                <ModuleItem title="Fear and Greed" desc="Exhibit the badges you've earned on the platform" />
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2 mt-4">
+                            <span className="text-sm font-semibold text-white opacity-60 ">Misc</span>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                <ModuleItem title="Bitcoin Halving Countdown" desc="Track the time left until the next Bitcoin halving event." />
+                                <ModuleItem title="Fear and Greed Index" desc="Monitor the current market sentiment based on investor emotions" />
                             </div>
                         </div>
                     </div>

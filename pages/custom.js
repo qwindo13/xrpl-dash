@@ -4,7 +4,8 @@ import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import AppLayout from '@/components/Layouts/AppLayoutcomponents';
-
+import Countdown from '@/components/UI/Countdown/Countdowncomponents';
+import BitcoinHalving from '@/components/Modules/Misc/BitcoinHalving/BitcoinHalvingcomponents';
 
 import Loader from '@/components/UI/Spinner/Spinnercomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize } from '@/components/Utils/ModuleSizescomponents';
@@ -71,11 +72,11 @@ export default function Home() {
     return (
         <AppLayout showControlPanel>
             <div ref={gridContainerRef} className="w-full"> {/* Attach the reference to the parent */}
-
                 <div>
-                    <Loader />
+                    <BitcoinHalving />
                 </div>
+                <Loader />
             </div>
-        </AppLayout>
+        </AppLayout >
     );
 }

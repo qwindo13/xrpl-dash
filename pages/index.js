@@ -34,7 +34,7 @@ import SliderButton from "@/components/UI/SliderButton/SliderButtoncomponents";
 import Button from "@/components/UI/Button/Buttoncomponents";
 import Modal from "@/components/UI/Modal/Modalcomponents";
 import Nft from "@/components/UI/Nft/Nftcomponents";
-import FearGreedIndex from "@/components/Modules/Trades/FearGreedIndex/FearGreedIndexcomponents";
+import FearGreedIndex from "@/components/Modules/Misc/FearGreedIndex/FearGreedIndexcomponents";
 import { useKeenSlider } from "keen-slider/react";
 
 export default function Home({ nfts }) {
