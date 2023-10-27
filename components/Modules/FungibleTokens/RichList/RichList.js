@@ -183,7 +183,7 @@ const RichList = ({onClickRemove, onClickStatic, isPinned=false}) => {
               return (
                 <div
                   key={column.sortKey}
-                  className={`cursor-pointer text-left text-xs font-semibold flex flex-row items-center gap-2 transition-all duration-300 ${isActive ? 'opacity-100' : 'opacity-60'
+                  className={`cursor-pointer text-left text-xs uppercase flex flex-row items-center gap-2 transition-all duration-300 hover:opacity-100 ${isActive ? 'opacity-100' : 'opacity-60'
                     } ${column.width}`}
                   onClick={() => sortBy(column.sortKey)}
                 >

@@ -6,17 +6,17 @@ const ChartLineColorTabs = ({ value, onChange }) => {
         {
             label:
                 <div className='h-4 w-4 rounded-full bg-[#85A8D8]' />
-            , value: '85A8D8'
+            , value: '#85A8D8'
         },
         {
             label:
             <div className='h-4 w-4 rounded-full bg-[#F280A3]' />
-            , value: 'F280A3'
+            , value: '#F280A3'
         },
         {
             label:
             <div className='h-4 w-4 rounded-full bg-[#97509F]' />
-            , value: '97509F'
+            , value: '#97509F'
         },
     ];
     return (

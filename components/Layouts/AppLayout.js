@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Header from "../Header/Header";
 import ControlPanel from "../ControlPanel/ControlPanel";
 import Footer from "../Footer/Footer";
@@ -20,7 +21,6 @@ function AppLayout({ children, showControlPanel, onClickTitle, className }) {
                     />
                 </div>
                 */}
-
 
                 {showControlPanel && <ControlPanel onSelectTitle={onClickTitle} />}
                 {children}

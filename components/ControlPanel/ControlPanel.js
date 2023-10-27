@@ -8,42 +8,69 @@ import Modal from "../UI/Modal/Modal";
 import EditIcon from '@mui/icons-material/Edit';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import AutoGraphRoundedIcon from '@mui/icons-material/AutoGraphRounded';
+import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
-const LayoutItem = ({ href, label }) => {
+{/* MENU ITEM FOR LAYOUT MENU */}
+const LayoutItem = ({ href, label, icon, custom }) => {
     const [isHovered, setIsHovered] = useState(false);
-
+    const [isEditing, setIsEditing] = useState(false);
+    const [inputValue, setInputValue] = useState(label);
+    const handleEditClick = () => {
+        setIsEditing(!isEditing);
+    };
+    const handleCheckClick = () => {
+        setIsEditing(false);
+        // Here, you can also add any logic to save or confirm the changes made in the input
+    };
     return (
         <Link href={href} className="w-full">
-            <div 
-                className="p-2 rounded-xl hover:bg-[#A6B0CF]  hover:bg-opacity-5 w-full flex justify-between leading-normal items-center transition-all duration-200"
+            <div
+                className="px-4 py-2 rounded-xl hover:bg-[#A6B0CF]  hover:bg-opacity-5 w-full flex justify-between !leading-none items-center transition-all duration-200"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <span className="text-xl">{label}</span>
-                <div className="flex gap-2">
-                    <Button className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
-                        <EditIcon sx={{ fontSize: 18 }} />
-                    </Button>
-                    <Button className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
-                        <ClearRoundedIcon sx={{ fontSize: 18 }} />
-                    </Button>
+                <div className="flex items-center gap-2 leading-normal">
+                    {icon}
+                    {isEditing ? (
+                        <div className="flex items-center gap-2 w-full">
+                        <input 
+                            autoFocus
+                            type="text" 
+                            value={inputValue} 
+                            maxLength={15}  
+                            onChange={(e) => setInputValue(e.target.value)}
+                            className="text-lg bg-transparent w-full" 
+                        />
+                        <CheckRoundedIcon onClick={handleCheckClick} sx={{ fontSize: 18 }} />
+                    </div>
+                    ) : (
+                        <span className="text-lg ">{inputValue}</span>
+                    )}
                 </div>
+
+                {custom && !isEditing &&  
+                    <div className="flex gap-2">
+                        <Button onClick={handleEditClick} className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+                            <EditIcon sx={{ fontSize: 18 }} />
+                        </Button>
+                        <Button className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+                            <ClearRoundedIcon sx={{ fontSize: 18 }} />
+                        </Button>
+                    </div>
+                }
             </div>
         </Link>
     );
 };
 
-
 export default function ControlPanel({ onSelectTitle }) {
-    const rotateAnimation = useAnimation();
-
-    const handleToggle = (isOpen) => {
-        rotateAnimation.start({ rotate: isOpen ? 45 : 0 });
-    };
 
     const ModuleItem = ({ title, desc }) => (
-        <div className="flex flex-col p-4 rounded-xl bg-transparent border border-white border-opacity-5 font-semibold gap-2 w-full cursor-pointer" onClick={() => onSelectTitle(title)}>
+        <div className="flex flex-col p-3 rounded-xl bg-transparent border border-white border-opacity-5 font-semibold gap-2 w-full cursor-pointer" onClick={() => onSelectTitle(title)}>
             <span className="text-base">{title}</span>
             <span className="text-xs opacity-60">{desc}</span>
         </div>
@@ -53,23 +80,43 @@ export default function ControlPanel({ onSelectTitle }) {
     const closeModal = () => setShowModal(false);
     const openModal = () => setShowModal(true);
 
-
-
     return (
 
         <>
             <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12">
+
+                {/* LAYOUT MENU DROPDOWN */}
                 <div className="relative pr-4">
-                    <div className="text-xs absolute -top-2 font-semibold opacity-60">Choose Dash:</div>
-                    <Dropdown className="w-60 !gap-0 !overflow-hidden" isBlurred trigger={<Button className="!px-0 !text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Explore</Button>}>
-                        <LayoutItem href="/" label="Explore" />
-                        <LayoutItem href="/trading" label="Trading" />
-                        <LayoutItem href="/custom" label="Custom" />
+                    <div className="text-xs absolute -top-2 font-semibold opacity-60 ">Select Layout</div>
+                    <Dropdown className="w-60 !gap-0 !overflow-hidden !max-h-96 !overflow-y-scroll" isBlurred trigger={<Button className="!px-0 !text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Explore</Button>}>
+                        <div className="">
+                            <h5 className="uppercase opacity-60 text-xs mb-4">XRPLDash layouts</h5>
+                            <LayoutItem
+                                icon={<LanguageRoundedIcon sx={{ fontSize: 20 }} />}
+                                href="/"
+                                label="Discover" // Other names could be Hub, Main, Feed or Home
+                            />
+                            <LayoutItem
+                                icon={<AutoGraphRoundedIcon sx={{ fontSize: 20 }} />}
+                                href="/trading"
+                                label="Trading"
+                            />
+                        </div>
+                        <div className="border-t border-white border-opacity-5 mt-4 pt-4">
+                            <h5 className="uppercase opacity-60 text-xs mb-4">Your layouts</h5>
+                            <LayoutItem
+                                custom
+                                icon={<DashboardRoundedIcon sx={{ fontSize: 20 }} />}
+                                href="/custom"
+                                label="Custom"
+                            />
+                        </div>
                         <div className="border-top border-white pt-4">
-                        <Button className='w-full !text-lg bg-white !text-[#1A1921] '> <AddRoundedIcon sx={{ fontSize: 18 }} className="mr-2"/>New layout</Button>
+                            <Button className='w-full !text-base bg-white !text-[#1A1921] '> <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />New layout</Button>
                         </div>
                     </Dropdown>
                 </div>
+
                 <div className="flex flex-row w-full h-12 gap-4 items-center">
 
                     <SearchBar className="h-full" placeholder={"Search for modules, tokens, etc..."} />

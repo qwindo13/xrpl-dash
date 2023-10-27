@@ -13,6 +13,7 @@ const defaultSettings = {
   displayRange: true,
   backgroundSetting: "Solid",
   chartType: "line",
+  chartLineColor: "#85A8D8",
 };
 
 const PriceChart = () => {

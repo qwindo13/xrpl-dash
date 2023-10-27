@@ -33,13 +33,16 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
       <ModuleCardSettings>
         {settings}
 
-        <div className="w-full flex flex-row items-center gap-4">
+    <div className="border-t border-white border-opacity-5">
+        <div className="w-full flex flex-row items-center gap-4 mt-4">
+          <span className="font-semibold text-base mb-2 md:mb-0">Drag & Drop Settings</span>
           <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
             <PushPinRoundedIcon onClick={onClickStatic} />
           </Button>
           <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
             <DeleteRoundedIcon onClick={onClickRemove} />
           </Button>
+        </div>
         </div>
       </ModuleCardSettings>
     </motion.div>

@@ -30,17 +30,19 @@ const Dropdown = ({ trigger, children, className, position = 'left', onToggle, i
         };
     }, []);
 
-    // This function will be called when an item inside the dropdown is clicked
     const handleItemClick = (event) => {
-        // We call the closeDropdown function passed as a prop
+        // Prevent click event from bubbling up to the trigger
+        event.stopPropagation();
+
         if (closeDropdown) {
             closeDropdown(event);
         }
     };
 
     return (
-        <div ref={dropdownRef} className={`relative inline-block h-full w-full `} onClick={toggleDropdown}>
-            {React.cloneElement(trigger, { isOpen })}
+        <div ref={dropdownRef} className={`relative inline-block h-full w-full`}>
+            {/* Moved the onClick event to the trigger element */}
+            {React.cloneElement(trigger, { isOpen, onClick: toggleDropdown })}
             {isOpen && (
                 <motion.div
                     onClick={handleItemClick}
