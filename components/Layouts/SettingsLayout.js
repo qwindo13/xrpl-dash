@@ -7,11 +7,13 @@ function SettingsLayout({ children }) {
     const { asPath } = useRouter()
     return (
         <>
-            <AppLayout>
-                <div className="flex flex-start">
+            <AppLayout
+                className="py-4 md:py-8 max-w-screen-xl"
+            >
+                <div className="flex flex-start ">
                     <h2 className="text-4xl font-semibold">Settings</h2>
                 </div>
-                <div className="w-full flex flex-col lg:flex-row gap-16 relative h-full">
+                <div className="w-full flex flex-col lg:flex-row gap-8 relative h-full">
 
                     {/* SIDEMENU */}
                     <nav className="w-1/6 lg:min-h-screen flex flex-row lg:flex-col gap-8  ">

@@ -71,10 +71,8 @@ export default function Home() {
 
     return (
         <AppLayout showControlPanel>
-            <div ref={gridContainerRef} className="w-full"> {/* Attach the reference to the parent */}
-                <div>
-                    <BitcoinHalving />
-                </div>
+            <div ref={gridContainerRef} className="w-full flex flex-grow"> {/* Attach the reference to the parent */}
+                
                 <Loader />
             </div>
         </AppLayout >

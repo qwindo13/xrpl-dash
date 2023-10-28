@@ -87,8 +87,8 @@ export default function ControlPanel({ onSelectTitle }) {
 
                 {/* LAYOUT MENU DROPDOWN */}
                 <div className="relative pr-4">
-                    <div className="text-xs absolute -top-2 font-semibold opacity-60 ">Select Layout</div>
-                    <Dropdown className="w-60 !gap-0 !overflow-hidden !max-h-96 !overflow-y-scroll" isBlurred trigger={<Button className="!px-0 !text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Explore</Button>}>
+                    <div className="text-xs absolute -top-2 font-semibold opacity-60 hidden ">Select Layout</div>
+                    <Dropdown className="w-60 !gap-0 !overflow-hidden !max-h-96 !overflow-y-scroll" isBlurred trigger={<Button className="!px-0 !text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Discover</Button>}>
                         <div className="">
                             <h5 className=" opacity-60 text-xs mb-4">XRPLDash Layouts</h5>
                             <LayoutItem
