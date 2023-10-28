@@ -162,7 +162,7 @@ export default function ControlPanel({ onSelectTitle }) {
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 mt-4">
-                            <span className="text-sm font-semibold text-white opacity-60 ">Misc</span>
+                            <span className="text-sm font-semibold text-white opacity-60 ">Miscellaneous Modules</span>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                 <ModuleItem title="Bitcoin Halving Countdown" desc="Track the time left until the next Bitcoin halving event." />
                                 <ModuleItem title="Fear and Greed Index" desc="Monitor the current market sentiment based on investor emotions" />

@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import SideMenu from "./SideMenu";
 import Button from "../UI/Button/Button";
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
-import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import { config } from "@/configcomponents";
 import { useCookies } from "react-cookie";
 
@@ -24,6 +25,28 @@ function truncateAddress(address, maxLength = 12) {
     return `${start}...${end}`;
 }
 
+function NotificationBadge({ show, count }) {
+    return (
+        <div className="">
+            {show && (
+                <>
+                    <motion.div 
+                        className="absolute top-0 right-0 rounded-full border-4 h-2 w-2 double border-negative"
+                        initial={{ scale: 1, opacity: 1 }}
+                        animate={{ scale: 1.4, opacity: 0 }}
+                        transition={{
+                            repeat: Infinity,
+                            duration: 1
+                        }}
+                    />
+                    <span className="absolute top-0 right-0 bg-negative text-white text-xs rounded-full h-2 w-2 flex items-center justify-center ">
+                        {count > 9 ? '9+' : count}
+                    </span>
+                </>
+            )}
+        </div>
+    );
+}
 export default function Header({ fixed }) {
     const [xrpAddress, setXrpAddress] = useState('')
     const [showModal, setShowModal] = useState(false);
@@ -80,7 +103,7 @@ export default function Header({ fixed }) {
                         removeCookie("token");
                         localStorage.removeItem("address");
                         window.location.href = "/auth/login";
-                        
+
                     }
                 })
                 .catch((err) => {
@@ -103,9 +126,18 @@ export default function Header({ fixed }) {
                     </div>
                     <div className="relative flex flex-row items-center justify-between gap-8 lg:gap-16 overflow-visible">
                         <div className="flex flex-row gap-8 items-center ">
-                            <Link href="#" className="h-6 w-6 self-center"> <LightbulbOutlinedIcon /> </Link>
-                            <Link href="/settings/profile" className="h-6 w-6 self-center"> <SettingsOutlinedIcon /> </Link>
-                            <Link href="#" className="h-6 w-6 self-center"> <NotificationsNoneRoundedIcon /> </Link>
+                            <Link href="#" className="h-6 w-6 self-center relative">
+                                <ChatOutlinedIcon />
+                                <NotificationBadge show />
+                            </Link>
+
+                            <Link href="/settings/profile" className="h-6 w-6 self-center relative">
+                                <SettingsOutlinedIcon />
+                            </Link>
+                            <Link href="#" className="h-6 w-6 self-center relative"> 
+                            <NotificationsNoneRoundedIcon /> 
+                            <NotificationBadge show />
+                            </Link>
                         </div>
                         <div className="flex flex-row gap-8">
                             {xrpAddress ?
