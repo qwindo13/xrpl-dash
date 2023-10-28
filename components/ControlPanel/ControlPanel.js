@@ -83,7 +83,7 @@ export default function ControlPanel({ onSelectTitle }) {
     return (
 
         <>
-            <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12">
+            <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12 pt-[2px]">
 
                 {/* LAYOUT MENU DROPDOWN */}
                 <div className="relative pr-4">
