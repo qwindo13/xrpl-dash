@@ -13,6 +13,7 @@ import SingleNft from '@/components/Modules/NonFungibleTokens/SingleNft/SingleNf
 import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
 import PriceChart from '@/components/Modules/Trades/PriceChart/PriceChartcomponents';
 import FearGreedIndex from '@/components/Modules/Misc/FearGreedIndex/FearGreedIndexcomponents';
+import OrderBook from '@/components/Modules/Trades/OrderBook/OrderBookcomponents';
 import BitcoinHalving from '@/components/Modules/Misc/BitcoinHalving/BitcoinHalvingcomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize, fearGreedSize } from '@/components/Utils/ModuleSizescomponents';
 
@@ -104,7 +105,7 @@ export default function Home() {
                         <PriceChart />
                     </div>
                     <div key="feargreed">
-                        <FearGreedIndex />
+                        <OrderBook />
                     </div>
                     <div key="nfts">
                         <Nfts />
