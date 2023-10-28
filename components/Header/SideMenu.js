@@ -36,7 +36,7 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                             removeCookie('token')
                             window.location.href = '/auth/login'
                         }}
-                        className="hidden md:flex opacity-60">
+                        className="hidden md:flex opacity-60 hover:opacity-100">
                         <LogoutRoundedIcon />
                     </Button>
                 </div>
