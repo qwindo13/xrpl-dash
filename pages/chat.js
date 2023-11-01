@@ -74,7 +74,7 @@ const messagesData = [
                 {/* Messages List */}
                 <div className="w-1/4 h-full overflow-y-auto flex flex-col gap-8 overflow-hidden">
                     <h1 className="text-2xl">Messages</h1>
-                    <SearchBar />
+                    <SearchBar placeholder='Search messages'/>
                     <div className="flex flex-col gap-4">
                         {messagesData.map((message, index) => (
                             <MessagePreview

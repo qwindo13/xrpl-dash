@@ -32,7 +32,7 @@ function NotificationBadge({ show, count }) {
                 <>
                     <motion.div 
                         className="absolute top-0 right-0 rounded-full border-4 h-2 w-2 double border-negative"
-                        initial={{ scale: 1, opacity: 1 }}
+                        initial={{ scale: 1, opacity: 0.8 }}
                         animate={{ scale: 1.4, opacity: 0 }}
                         transition={{
                             repeat: Infinity,
