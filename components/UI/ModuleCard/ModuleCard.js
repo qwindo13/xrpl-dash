@@ -3,10 +3,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import Button from "../Button/Button";
 import ModuleCardSettings from "./ModuleCardSettings";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import PushPinRoundedIcon from '@mui/icons-material/PushPinRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import PushPinRoundedIcon from "@mui/icons-material/PushPinRounded";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
-const ModuleCard = ({ children, className, contentClassName, style, title, settings, disableTitle, onClickRemove, onClickStatic, isPinned = false,callToggleSettings = false }) => {
+const ModuleCard = ({
+  children,
+  className,
+  contentClassName,
+  style,
+  title,
+  settings,
+  disableTitle,
+  onClickRemove,
+  onClickStatic,
+  isPinned = false,
+  callToggleSettings = false,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const defaultClass =
@@ -22,31 +34,36 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
     }
   }, [callToggleSettings, toggleSettings]);
 
-  const settingsCard = useMemo(() => (
-    <motion.div
-      key="settings"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: isSettingsVisible ? 1 : 0 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-    >
-      <ModuleCardSettings>
-        {settings}
+  const settingsCard = useMemo(
+    () => (
+      <motion.div
+        key="settings"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isSettingsVisible ? 1 : 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        <ModuleCardSettings>
+          {settings}
 
-    <div className="border-t border-white border-opacity-5">
-        <div className="w-full flex flex-row items-center gap-4 mt-4">
-          <span className="font-semibold text-base mb-2 md:mb-0">Drag & Drop Settings</span>
-          <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
-            <PushPinRoundedIcon onClick={onClickStatic} />
-          </Button>
-          <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
-            <DeleteRoundedIcon onClick={onClickRemove} />
-          </Button>
-        </div>
-        </div>
-      </ModuleCardSettings>
-    </motion.div>
-  ), [isSettingsVisible, settings]);
+          <div className="border-t border-white border-opacity-5">
+            <div className="w-full flex flex-row items-center gap-4 mt-4">
+              <span className="font-semibold text-base mb-2 md:mb-0">
+                Drag & Drop Settings
+              </span>
+              <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
+                <PushPinRoundedIcon onClick={onClickStatic} />
+              </Button>
+              <Button className="!p-0 bg-[transparent] opacity-60 hover:opacity-100">
+                <DeleteRoundedIcon onClick={onClickRemove} />
+              </Button>
+            </div>
+          </div>
+        </ModuleCardSettings>
+      </motion.div>
+    ),
+    [isSettingsVisible, settings]
+  );
 
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
@@ -71,7 +88,6 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
       )}
 
       <div className="absolute top-4 right-4 z-20 flex gap-2">
-
         {/* PINNED ICON */}
 
         <AnimatePresence>
@@ -84,20 +100,15 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Button
-              className="!p-0 bg-[transparent] rounded-full "
-              disableAnimation
-              onClick={onClickStatic}
-            >
-              {
-                !isPinned && isHovered &&
-                <PushPinRoundedIcon className="opacity-60 hover:opacity-100" />
-              }
-              {
-                isPinned && isHovered &&
+            {isPinned && isHovered && (
+              <Button
+                className="!p-0 bg-[transparent] rounded-full "
+                disableAnimation
+                onClick={onClickStatic}
+              >
                 <PushPinRoundedIcon className="opacity-100" />
-              }
-            </Button>
+              </Button>
+            )}
           </motion.div>
         </AnimatePresence>
 
@@ -107,7 +118,11 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
             key="button"
             initial={{ opacity: 0 }}
             animate={{
-              opacity: isSettingsVisible ? 1 : isHovered || !disableTitle ? 1 : 0,
+              opacity: isSettingsVisible
+                ? 1
+                : isHovered || !disableTitle
+                ? 1
+                : 0,
             }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
@@ -121,18 +136,16 @@ const ModuleCard = ({ children, className, contentClassName, style, title, setti
             </Button>
           </motion.div>
         </AnimatePresence>
-
       </div>
 
       {/* CARD CONTENT */}
-      <div className={`w-full h-full flex items-start overflow-x-hidden ${contentClassName}`}>
+      <div
+        className={`w-full h-full flex items-start overflow-x-hidden ${contentClassName}`}
+      >
         {children}
       </div>
 
-      {
-        isSettingsVisible &&
-        <AnimatePresence> {settingsCard} </AnimatePresence>
-      }
+      {isSettingsVisible && <AnimatePresence> {settingsCard} </AnimatePresence>}
     </motion.div>
   );
 };

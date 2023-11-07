@@ -134,12 +134,12 @@ export default function App({ Component, pageProps }) {
 
     function isVideo(nftData) {
       return (
-        "video" in nftData &&
+        "video" in nftData && nftData.video !== undefined && nftData.video !== "" && nftData.video !== null &&
         nftData.video !== undefined &&
         nftData.video !== "" &&
         !nftData.video.endsWith(".gif")
       ) || (
-        "animation" in nftData &&
+        "animation" in nftData && nftData.animation !== undefined && nftData.animation !== "" && nftData.animation !== null &&
         nftData.animation !== undefined &&
         nftData.animation !== "" &&
         !nftData.animation.endsWith(".gif")
@@ -148,12 +148,12 @@ export default function App({ Component, pageProps }) {
 
     function isGif(nftData) {
       const detectFlag = (
-        "video" in nftData &&
-        nftData.video !== undefined &&
+        "video" in nftData && nftData.video !== undefined && nftData.video !== "" && nftData.video !== null &&
+        nftData.video !== undefined && 
         nftData.video !== "" &&
         nftData.video.endsWith(".gif")
       ) || (
-        "animation" in nftData &&
+        "animation" in nftData && nftData.animation !== undefined && nftData.animation !== "" && nftData.animation !== null &&
         nftData.animation !== undefined &&
         nftData.animation !== "" &&
         nftData.animation.endsWith(".gif")

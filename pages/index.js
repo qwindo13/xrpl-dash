@@ -357,9 +357,11 @@ export default function Home({ nfts }) {
 
   //on layout change, check if the module is static or not, if it is then add it to the pins array
   useEffect(() => {
-    const layout = JSON.parse(localStorage.getItem("layout"));
+    if (!layout) return;
+    const layoutLocal = JSON.parse(localStorage.getItem("layout"));
+    if (!layoutLocal) return;
     const newPins = [];
-    layout.lg.forEach((module) => {
+    layoutLocal.lg.forEach((module) => {
       if (module.static) {
         newPins.push(module.i);
       }
