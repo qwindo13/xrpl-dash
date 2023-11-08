@@ -86,7 +86,7 @@ export default function ControlPanel({ onSelectTitle }) {
             <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12 pt-[2px]">
 
                 {/* LAYOUT MENU DROPDOWN */}
-                <div className="relative pr-4">
+                <div className="relative">
                     <div className="text-xs absolute -top-2 font-semibold opacity-60 hidden ">Select Layout</div>
                     <Dropdown className="w-60 !gap-0 !overflow-hidden !max-h-96 !overflow-y-scroll" isBlurred trigger={<Button className="!px-0 !text-2xl bg-transparent" disableAnimation endIcon={<KeyboardArrowDownRoundedIcon />}>Discover</Button>}>
                         <div className="">

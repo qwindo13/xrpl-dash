@@ -41,7 +41,7 @@ const MessagePreview = ({ avatarUrl, userName, messagePreview, messageTimestamp,
                 <div className='w-full flex justify-between items-center gap-4'>
                     <p className="text-sm opacity-40 truncate">{messagePreview}</p>
                     {unreadCount > 0 && (
-                        <div class="flex items-center justify-center h-6 w-6 rounded-full bg-[#A6B0CF] bg-opacity-5 aspect-square"><span class="font-semibold text-xs">{unreadCount}</span></div>
+                        <div class="flex items-center justify-center h-6 w-6 rounded-full bg-negative aspect-square"><span class="font-semibold text-xs">{unreadCount}</span></div>
                     )}
                 </div>
             </div>

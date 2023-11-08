@@ -4,15 +4,9 @@ import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import TestLayout from '@/components/Layouts/TestLayoutcomponents';
-import PriceInfo from '@/components/Modules/FungibleTokens/PriceInfo/PriceInfocomponents';
-import Feed from '@/components/Modules/Feeds/Feed/Feedcomponents';
-import RichList from '@/components/Modules/FungibleTokens/RichList/RichListcomponents';
-import QuickSwap from '@/components/Modules/Trades/QuickSwap/QuickSwapcomponents';
 import Nfts from '@/components/Modules/NonFungibleTokens/MultipleNfts/MultipleNftscomponents';
-import SingleNft from '@/components/Modules/NonFungibleTokens/SingleNft/SingleNftcomponents';
-import Wallet from '@/components/Modules/FungibleTokens/Wallet/Walletcomponents';
 import PriceChart from '@/components/Modules/Trades/PriceChart/PriceChartcomponents';
-import FearGreedIndex from '@/components/Modules/Misc/FearGreedIndex/FearGreedIndexcomponents';
+import AIChatBot from '@/components/Modules/Misc/AIChatBot/AIChatBotcomponents';
 import OrderBook from '@/components/Modules/Trades/OrderBook/OrderBookcomponents';
 import BitcoinHalving from '@/components/Modules/Misc/BitcoinHalving/BitcoinHalvingcomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize, fearGreedSize } from '@/components/Utils/ModuleSizescomponents';
@@ -101,6 +95,9 @@ export default function Home() {
                     autoSize={true}
                     onLayoutChange={handleLayoutChange}
                 >
+                    <div key="aiChatBot">
+                        <AIChatBot />
+                    </div>
                     <div key="richlist">
                         <PriceChart />
                     </div>
