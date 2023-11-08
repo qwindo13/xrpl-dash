@@ -50,6 +50,7 @@ const PriceChart = () => {
   const [chartLineColor, setChartLineColor] = useState(
     moduleSettings.chartLineColor
   );
+  const [data, setData] = useState([]); // [time, value]
   const chartContainerRef = useRef(null);
   const chart = useRef(null);
   const resizeObserver = useRef();
@@ -132,6 +133,7 @@ const PriceChart = () => {
                 }
               });
               lineSeriesRef.current.setData(lineData);
+              setData(lineData);
             }
           });
       }
@@ -201,18 +203,19 @@ const PriceChart = () => {
             return { time: unnixt, value: Number(d.value) };
           });
           lineSeriesRef.current.setData(lineData);
+          setData(lineData);
         }
       }
     );
   }, [selectedToken, timeRange]);
 
   useEffect(() => {
-    if (chartType === "line") {
-      lineSeriesRef.current.applyOptions({
-        color: chartLineColor,
-      });
+    if (chartType === "line" && lineSeriesRef.current) {
+      console.log(`Update chart line color: ${chartLineColor}`);
+      lineSeriesRef.current.applyOptions({ color: chartLineColor });
     }
   }, [chartLineColor]);
+
 
   return (
     <ModuleCard
@@ -234,7 +237,11 @@ const PriceChart = () => {
           {moduleSettings.chartType && (
             <ChartLineColorTabs
               value={moduleSettings.chartLineColor}
-              onChange={(value) => updateSettings("chartLineColor", value)}
+              // onChange={(value) => updateSettings("chartLineColor", value)}
+              onChange={(value) => {
+                updateSettings("chartLineColor", value);
+                setChartLineColor(value);
+              }}
             />
           )}
           <TokenDropdown
