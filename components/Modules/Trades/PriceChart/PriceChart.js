@@ -24,7 +24,7 @@ const defaultSettings = {
 
 const xrpMap = "USD:rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq";
 
-const PriceChart = () => {
+const PriceChart = ({ title = "Price Chart",type = "price" }) => {
   {
     /* MODULE SETTINGS */
   }
@@ -113,11 +113,11 @@ const PriceChart = () => {
         if (selectedToken === "XRP") {
           api_url =
             `${config.api_url}/token/ohlc/${xrpMap}/` +
-            moduleSettings.selectedRange;
+            moduleSettings.selectedRange + "/" + type;
         } else {
           api_url =
             `${config.api_url}/token/ohlc/${moduleSettings.selectToken}/` +
-            moduleSettings.selectedRange;
+            moduleSettings.selectedRange + "/" + type;
         }
         fetch(api_url)
           .then((res) => res.json())
@@ -185,10 +185,10 @@ const PriceChart = () => {
     let api_url;
     if (selectedToken === "XRP") {
       api_url =
-        `${config.api_url}/token/ohlc/${xrpMap}/` + moduleSettings.selectedRange;
+        `${config.api_url}/token/ohlc/${xrpMap}/` + moduleSettings.selectedRange + "/" + type;
     } else {
       api_url =
-        `${config.api_url}/token/ohlc/${moduleSettings.token}/` + moduleSettings.selectedRange;
+        `${config.api_url}/token/ohlc/${moduleSettings.token}/` + moduleSettings.selectedRange + "/" + type;
     }
     fetch(api_url)
       .then((res) => res.json())
@@ -219,7 +219,7 @@ const PriceChart = () => {
 
   return (
     <ModuleCard
-      title={`Price Chart (${selectedToken}/${selectedToken === "XRP" ? "USD" : "XRP"})`}
+      title={`${title} (${selectedToken}/${selectedToken === "XRP" ? "USD" : "XRP"})`}
       settings={
         <>
           <TitleSwitch

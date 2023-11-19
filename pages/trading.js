@@ -45,7 +45,6 @@ export default function Home() {
     // Define the layout configuration
     const [layout, setLayout] = useState({
         lg: [
-
             { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.lg },
             { i: 'priceInfo2', x: 2, y: 1, ...priceInfoSize.lg },
             { i: 'nfts', x: 0, y: 0, ...nftsSize.lg },
@@ -101,6 +100,12 @@ export default function Home() {
                     <div key="richlist">
                         <PriceChart />
                     </div>
+                    <div key="richlist2">
+                        <PriceChart title='Marketcap' type='marketcap'/>
+                    </div>
+                    {/* <div key="richlist3">
+                        <PriceChart title='Volume' type='volume'/>
+                    </div> */}
                     <div key="feargreed">
                         <OrderBook />
                     </div>
