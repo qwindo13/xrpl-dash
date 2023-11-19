@@ -98,7 +98,7 @@ export default function Home() {
                         <AIChatBot />
                     </div>
                     <div key="richlist">
-                        <PriceChart />
+                        {/* <PriceChart /> */}
                     </div>
                     <div key="richlist2">
                         <PriceChart title='Marketcap' type='marketcap'/>

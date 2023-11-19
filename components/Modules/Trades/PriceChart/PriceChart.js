@@ -126,7 +126,8 @@ const PriceChart = ({ title = "Price Chart",type = "price" }) => {
             if (chartType === "line") {
               const lineData = data.map((d) => {
                 const unnixt = d.time;
-                if (selectedToken === "XRP") {
+                if (selectedToken === "XRP" && type === "price") {
+                  console.log("XRP");
                   return { time: unnixt, value: Number(1 / d.value) };
                 } else {
                   return { time: unnixt, value: Number(d.value) };
@@ -197,7 +198,7 @@ const PriceChart = ({ title = "Price Chart",type = "price" }) => {
         if (chartType === "line") {
           const lineData = data.map((d) => {
             const unnixt = d.time;
-            if (selectedToken === "XRP") {
+            if (selectedToken === "XRP" && type === "price") {
               return { time: unnixt, value: Number(1 / d.value) };
             }
             return { time: unnixt, value: Number(d.value) };
