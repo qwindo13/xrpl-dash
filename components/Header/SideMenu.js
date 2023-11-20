@@ -23,7 +23,9 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                     <Button onClick={openModal} className="!px-0 text-2xl bg-transparent font-semibold" disableAnimation>
                         <div className="rounded-full h-12 w-12 mr-4 bg-default-avatar" title={xrpAddress} style={userData.pfp_nft_url ? { backgroundImage: `url(${userData.pfp_nft_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}></div>
                         <div className="flex flex-col text-left">
-                            <span className="text-lg font-semibold">@{userData.username || ''}</span>
+                            {userData.username && (
+                            <span className="text-lg font-semibold">@{userData.username.length > 20 ? userData.username.substring(0, 20) + '...' : userData.username}</span>
+                            )}
                             <Tooltip copyContent={xrpAddress}>
                                 <span className="text-base opacity-60">{truncateAddress(xrpAddress)}</span>
                             </Tooltip>

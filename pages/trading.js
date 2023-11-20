@@ -11,7 +11,6 @@ import OrderBook from '@/components/Modules/Trades/OrderBook/OrderBookcomponents
 import BitcoinHalving from '@/components/Modules/Misc/BitcoinHalving/BitcoinHalvingcomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize, fearGreedSize } from '@/components/Utils/ModuleSizescomponents';
 
-
 export default function Home() {
     const gridContainerRef = useRef(null); // Create a reference to the parent
     const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null

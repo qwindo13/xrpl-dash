@@ -13,6 +13,7 @@ import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import PriceChart from '@/components/Modules/Trades/PriceChart/PriceChartcomponents';
 
 {/* MENU ITEM FOR LAYOUT MENU */ }
 const LayoutItem = ({ href, label, icon, custom }) => {
@@ -144,6 +145,8 @@ export default function ControlPanel({ onSelectTitle }) {
                                 <ModuleItem title="Profit and Loss" desc="Monitor and analyze profit and loss data for XRPL issued tokens" />
                                 <ModuleItem title="Richlist" desc="Discover the richlist of a specific XRPL Token, showing top token holders" />
                                 <ModuleItem title="Wallet" desc="Track your crypto portfolio with a donut chart and table view" />
+                                <ModuleItem title="Price Chart" desc="Track the price of a specific XRPL issued token" />
+                                <ModuleItem title="Marketcap Chart" desc="Track the marketcap of a specific XRPL issued token" />
                             </div>
 
                         </div>
