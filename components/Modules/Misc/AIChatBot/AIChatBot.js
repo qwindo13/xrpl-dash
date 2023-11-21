@@ -58,7 +58,7 @@ const AIChatBot = () => {
 
             <div
                 onMouseMove={handleMouseMove}
-                className="group w-full h-full relative overflow-hidden flex flex-col gap-4 rounded-xl justify-between"
+                className="group w-full h-full relative overflow-hidden flex flex-col rounded-xl justify-between"
             >
                 {/* Gradient */}
                 <motion.div
@@ -67,7 +67,7 @@ const AIChatBot = () => {
                         background: useMotionTemplate`
                           radial-gradient(
                             400px circle at ${mouseX}px ${mouseY}px,
-                            rgba(151, 80, 159, 0.15),
+                            rgba(151, 80, 159, 0.05),
                             transparent 80%
                           )
                         `,
@@ -76,42 +76,47 @@ const AIChatBot = () => {
                 {/* Title */}
                 {moduleSettings.displayTitle && (
                     <div className="w-full flex flex-row justify-between items-start p-4 relative">
-                        <h3 className="font-semibold text-xl">AI Assistant</h3>
+                        <h3 className="font-semibold text-xl">Hound AI Bot</h3>
                     </div>
                 )}
 
-                {/* Image */}
-                <motion.div layout className="flex w-full h-auto justify-center overflow-hidden z-[2] hidden">
-                    <motion.img layout src="/images/3dhound.png" className="w-auto h-full shrink object-cover min-h-0 min-w-0 rounded-full" />
-                </motion.div>
+                <div className="flex flex-col h-full overflow-hidden justify-between">
+                    
+                    {/* Image */}
+                    <motion.div layout className="flex w-full h-auto justify-center overflow-hidden z-[2] hidden">
+                        <motion.img layout src="/images/3dhound.png" className="w-auto h-full shrink object-cover min-h-0 min-w-0 rounded-full" />
+                    </motion.div>
 
-                {/* Chat Container */}
-                <motion.div layout className="flex flex-col gap-4 w-full h-full justify-center overflow-y-auto z-[2]">
-                    <ChatBox
-                        chatBox
-                        timestamp={new Date().toISOString()}
-                        userName="You"
-                        type="sent"
-                        messages={[
-                            "What's the current marketcap of XRP? ",
-                        ]}
-                    />
+                    {/* Chat Container */}
+                    <motion.div layout className="flex flex-col gap-4 w-full h-auto justify-center overflow-y-auto z-[2] p-4 shrink">
+                        <ChatBox
+                            chatBot
+                            timestamp={new Date().toISOString()}
+                            userName="You"
+                            type="sent"
+                            messages={[
+                                "What's the current marketcap of XRP? ",
+                            ]}
+                        />
 
-                    <ChatBox
-                        timestamp={new Date().toISOString()}
-                        userName="You"
-                        type="received"
-                        messages={[
-                            'Hi! I have a question regarding transactions.',
-                            'Sure, I was wondering about the fees.',
-                            // ... More sent messages
-                        ]}
-                    />
-                </motion.div>
+                        <ChatBox
+                            chatBot
+                            timestamp={new Date().toISOString()}
+                            avatarUrl={"/images/3dhound.png"}
+                            userName="Hound Bot"
+                            type="received"
+                            messages={[
+                                "As of the latest data, the market capitalization of XRP is approximately $10 billion USD.",
+                            ]}
+                        />
+                    </motion.div>
 
-                <div className="p-4 shrink-0 z-[2]">
-                    <InputField sendIcon placeholder="Type something..." className="text-sm bg-[#A6B0CF] bg-opacity-5 backdrop-blur-xl rounded-xl" />
+                    <div className="p-4 shrink-0 z-[2]">
+                        <InputField sendIcon placeholder="Type something..." className="text-sm bg-[#A6B0CF] bg-opacity-5 backdrop-blur-xl rounded-xl" />
+                    </div>
                 </div>
+
+
 
             </div>
         </ModuleCard>
