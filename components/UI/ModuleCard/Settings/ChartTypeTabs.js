@@ -8,12 +8,12 @@ const ChartTypeTabs = ({ value, onChange }) => {
         {
             label:
                 <ShowChartRoundedIcon />
-            , value: 'lines'
+            , value: 'line'
         },
         {
             label:
             <CandlestickChartRoundedIcon />
-            , value: 'candles'
+            , value: 'candle'
         },
     ];
     return (
@@ -25,6 +25,7 @@ const ChartTypeTabs = ({ value, onChange }) => {
                 options={tabOptions} 
                 bgColor="#21212A" 
                 onChange={onChange} 
+                value={value}
             />
         </div>
     );
