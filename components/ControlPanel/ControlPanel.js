@@ -13,6 +13,7 @@ import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import PriceChart from '@/components/Modules/Trades/PriceChart/PriceChartcomponents';
 
 {/* MENU ITEM FOR LAYOUT MENU */ }
 const LayoutItem = ({ href, label, icon, custom }) => {
@@ -159,6 +160,9 @@ export default function ControlPanel({ onSelectTitle }) {
                             <span className="text-sm font-semibold text-white opacity-60 ">Trades Modules</span>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                 <ModuleItem title="Quick Swap" desc="Exhibit the badges you've earned on the platform" />
+                                <ModuleItem title="Price Chart" desc="Track the Price of a specific XRPL issued token" />
+                                <ModuleItem title="Marketcap Chart" desc="Track the Marketcap of a specific XRPL issued token" />
+                                <ModuleItem title="Volume Chart" desc="Track the Volume of a specific XRPL issued token" />
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 mt-4">

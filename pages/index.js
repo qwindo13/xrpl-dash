@@ -36,6 +36,7 @@ import Modal from "@/components/UI/Modal/Modalcomponents";
 import Nft from "@/components/UI/Nft/Nftcomponents";
 import FearGreedIndex from "@/components/Modules/Misc/FearGreedIndex/FearGreedIndexcomponents";
 import { useKeenSlider } from "keen-slider/react";
+import PriceChart from "@/components/Modules/Trades/PriceChart/PriceChartcomponents";
 
 export default function Home({ nfts }) {
   const gridContainerRef = useRef(null); // Create a reference to the parent
@@ -280,7 +281,14 @@ export default function Home({ nfts }) {
                       ? nftsSize
                       : title === "Fear and Greed" 
                         ? fearGreedSize
-                        : profitnLose;
+                        // : profitnLose;
+                        : title === "Price Chart"
+                          ? richListSize
+                          : title === "Marketcap Chart"
+                            ? richListSize
+                            : title === "Volume Chart"
+                              ? richListSize
+                              : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
       lg: [],
       md: [],
@@ -515,6 +523,24 @@ export default function Home({ nfts }) {
               return (
                 <div key={module}>
                   <FearGreedIndex onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} isPinned={pins.includes(module)} />
+                </div>
+              );
+            } else if (module.startsWith("pricechart")) {
+              return (
+                <div key={module}>
+                  <PriceChart />
+                </div>
+              );
+            } else if (module.startsWith("marketcapchart")) {
+              return (
+                <div key={module}>
+                  <PriceChart title='Marketcap' type='marketcap' />
+                </div>
+              );
+            } else if (module.startsWith("volumechart")) {
+              return (
+                <div key={module}>
+                  <PriceChart title='Volume' type='volume' />
                 </div>
               );
             }

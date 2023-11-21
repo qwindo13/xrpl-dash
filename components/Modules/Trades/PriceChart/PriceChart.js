@@ -24,7 +24,7 @@ const defaultSettings = {
 
 const xrpMap = "USD:rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq";
 
-const PriceChart = () => {
+const PriceChart = ({ title = "Price Chart", type = "price" }) => {
   {
     /* MODULE SETTINGS */
   }
@@ -47,9 +47,8 @@ const PriceChart = () => {
 
   const [chartType, setChartType] = useState(moduleSettings.chartType);
   const [timeRange, setTimeRange] = useState(moduleSettings.selectedRange); // ["1D", "7D", "1M", "1Y"
-  const [chartLineColor, setChartLineColor] = useState(
-    moduleSettings.chartLineColor
-  );
+  const [chartLineColor, setChartLineColor] = useState(moduleSettings.chartLineColor);
+  const [refresh, setRefresh] = useState(0);
   const [data, setData] = useState([]); // [time, value]
   const chartContainerRef = useRef(null);
   const chart = useRef(null);
@@ -113,31 +112,43 @@ const PriceChart = () => {
         if (selectedToken === "XRP") {
           api_url =
             `${config.api_url}/token/ohlc/${xrpMap}/` +
-            moduleSettings.selectedRange;
+            moduleSettings.selectedRange + "?isXRP=true"
         } else {
           api_url =
             `${config.api_url}/token/ohlc/${moduleSettings.selectToken}/` +
-            moduleSettings.selectedRange;
+            moduleSettings.selectedRange + "?isXRP=false"
         }
         fetch(api_url)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
+            // console.log(data);
             if (chartType === "line") {
               const lineData = data.map((d) => {
                 const unnixt = d.time;
-                if (selectedToken === "XRP") {
+                if (selectedToken === "XRP" && type === "price") {
+                  // console.log("XRP");
                   return { time: unnixt, value: Number(1 / d.value) };
-                } else {
-                  return { time: unnixt, value: Number(d.value) };
+                } else if (type === "marketcap") {
+                  return { time: unnixt, value: Number(d.marketcap) };
+                } else if (type === "volume" && selectedToken === "XRP") {
+                  return { time: unnixt, value: Number(d.volumeQ) };
+                } else if (type === "volume" && selectedToken !== "XRP") {
+                  return { time: unnixt, value: Number(d.volumeB) };
                 }
               });
               lineSeriesRef.current.setData(lineData);
               setData(lineData);
+              setRefresh(Math.random());
             }
           });
       }
     }
+
+    if (type === "volume") {
+      updateSettings("token", "534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz");
+      setSelectedToken("SOLO")
+    }
+
   }, []);
 
   // Resize chart on container resizes.
@@ -153,16 +164,14 @@ const PriceChart = () => {
     resizeObserver.current.observe(chartContainerRef.current);
 
     return () => resizeObserver.current.disconnect();
-  }, [chartContainerRef]);
+  }, [chartContainerRef, refresh]);
+  
 
   useEffect(() => {
-    console.log(
-      `Update module settings: ${JSON.stringify(moduleSettings, null, 2)}`
-    );
-
-    // if (chartType !== moduleSettings.chartType) {
-    //   setChartType(moduleSettings.chartType);
-    // }
+    // console.log("moduleSettings", moduleSettings);
+    if (chartType !== moduleSettings.chartType) {
+      setChartType(moduleSettings.chartType);
+    }
 
     if (timeRange !== moduleSettings.selectedRange) {
       setTimeRange(moduleSettings.selectedRange);
@@ -173,53 +182,76 @@ const PriceChart = () => {
       token = moduleSettings.token.split(":")[0];
     } else {
       //convert from hex to ascii in one line
-      token = Buffer.from(moduleSettings.token.split(":")[0], "hex").toString("ascii");
+      token = Buffer.from(moduleSettings.token.split(":")[0], "hex").toString(
+        "ascii"
+      );
     }
-    console.log(token);
     setSelectedToken(token);
   }, [moduleSettings]);
 
   useEffect(() => {
-    console.log(`Update time range: ${timeRange}`);
-    console.log(`Update selected token: ${selectedToken}`);
     let api_url;
     if (selectedToken === "XRP") {
       api_url =
-        `${config.api_url}/token/ohlc/${xrpMap}/` + moduleSettings.selectedRange;
+        `${config.api_url}/token/ohlc/${xrpMap}/` +
+        moduleSettings.selectedRange + "?isXRP=true"
     } else {
       api_url =
-        `${config.api_url}/token/ohlc/${moduleSettings.token}/` + moduleSettings.selectedRange;
+        `${config.api_url}/token/ohlc/${moduleSettings.token}/` +
+        moduleSettings.selectedRange + "?isXRP=false"
     }
     fetch(api_url)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (chartType === "line") {
           const lineData = data.map((d) => {
             const unnixt = d.time;
-            if (selectedToken === "XRP") {
+            if (selectedToken === "XRP" && type === "price") {
               return { time: unnixt, value: Number(1 / d.value) };
+            } else if (type === "marketcap") {
+              return { time: unnixt, value: Number(d.marketcap) };
+            } else if (type === "volume" && selectedToken === "XRP") {
+              return { time: unnixt, value: Number(d.volumeQ) };
+            } else if (type === "volume" && selectedToken !== "XRP") {
+              return { time: unnixt, value: Number(d.volumeB) };
+            } else if (type === "price") {
+              return { time: unnixt, value: Number(d.value) };
             }
-            return { time: unnixt, value: Number(d.value) };
+            // return { time: unnixt, value: Number(d.value) };
           });
           lineSeriesRef.current.setData(lineData);
           setData(lineData);
+          setRefresh(Math.random());
         }
-      }
-    );
+        // } else if (chartType === "candle") {
+        //   const candleData = data.map((d) => {
+        //     const unnixt = d.time;
+        //     return {
+        //       time: unnixt,
+        //       open: Number(d.open),
+        //       high: Number(d.high),
+        //       low: Number(d.low),
+        //       close: Number(d.close),
+        //     };
+        //   });
+        //   candleSeriesRef.current.setData(candleData);
+        //   setData(candleData);
+        //   setRefresh(Math.random());
+        // }
+      });
   }, [selectedToken, timeRange]);
 
   useEffect(() => {
     if (chartType === "line" && lineSeriesRef.current) {
-      console.log(`Update chart line color: ${chartLineColor}`);
       lineSeriesRef.current.applyOptions({ color: chartLineColor });
     }
   }, [chartLineColor]);
 
-
   return (
     <ModuleCard
-      title={`Price Chart (${selectedToken}/${selectedToken === "XRP" ? "USD" : "XRP"})`}
+      title={`${title} (${selectedToken}/${
+        selectedToken === "XRP" ? "USD" : "XRP"
+      })`}
       settings={
         <>
           <TitleSwitch
@@ -230,10 +262,12 @@ const PriceChart = () => {
             value={moduleSettings.backgroundSetting}
             onChange={(value) => updateSettings("backgroundSetting", value)}
           />
-          <ChartTypeTabs
-            value={moduleSettings.chartType}
-            onChange={(value) => updateSettings("chartType", value)}
-          />
+          {type === "price" && (
+            <ChartTypeTabs
+              value={moduleSettings.chartType}
+              onChange={(value) => updateSettings("chartType", value)}
+            />
+          )}
           {moduleSettings.chartType && (
             <ChartLineColorTabs
               value={moduleSettings.chartLineColor}
@@ -249,7 +283,8 @@ const PriceChart = () => {
             num={5}
             // selectToken={moduleSettings.token}
             selectToken={selectedToken}
-            showXrp={true}
+            // showXrp={true}
+            showXrp={type !== "volume" ? true : false}
           />
           <ChartRangeSwitch
             value={moduleSettings.displayRange}

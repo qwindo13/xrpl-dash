@@ -11,7 +11,6 @@ import OrderBook from '@/components/Modules/Trades/OrderBook/OrderBookcomponents
 import BitcoinHalving from '@/components/Modules/Misc/BitcoinHalving/BitcoinHalvingcomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize, fearGreedSize } from '@/components/Utils/ModuleSizescomponents';
 
-
 export default function Home() {
     const gridContainerRef = useRef(null); // Create a reference to the parent
     const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
@@ -45,7 +44,6 @@ export default function Home() {
     // Define the layout configuration
     const [layout, setLayout] = useState({
         lg: [
-
             { i: 'priceInfo', x: 2, y: 0, ...priceInfoSize.lg },
             { i: 'priceInfo2', x: 2, y: 1, ...priceInfoSize.lg },
             { i: 'nfts', x: 0, y: 0, ...nftsSize.lg },
@@ -99,8 +97,14 @@ export default function Home() {
                         <AIChatBot />
                     </div>
                     <div key="richlist">
-                        <PriceChart />
+                        {/* <PriceChart /> */}
                     </div>
+                    <div key="richlist2">
+                        <PriceChart title='Marketcap' type='marketcap'/>
+                    </div>
+                    {/* <div key="richlist3">
+                        <PriceChart title='Volume' type='volume'/>
+                    </div> */}
                     <div key="feargreed">
                         <OrderBook />
                     </div>
