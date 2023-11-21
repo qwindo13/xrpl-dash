@@ -528,19 +528,19 @@ export default function Home({ nfts }) {
             } else if (module.startsWith("pricechart")) {
               return (
                 <div key={module}>
-                  <PriceChart />
+                  <PriceChart isPinned={pins.includes(module)} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("marketcapchart")) {
               return (
                 <div key={module}>
-                  <PriceChart title='Marketcap' type='marketcap' />
+                  <PriceChart title='Marketcap' type='marketcap' isPinned={pins.includes(module)} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("volumechart")) {
               return (
                 <div key={module}>
-                  <PriceChart title='Volume' type='volume' />
+                  <PriceChart title='Volume' type='volume' isPinned={pins.includes(module)} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             }

@@ -26,7 +26,9 @@ const Tabs = ({ options, onChange, className, tabsId, bgColor = "#1A1921", borde
       {options.map((option) => (
         <motion.div
           key={option.value}
-          onClick={() => handleOptionClick(option.value)}
+          // onClick={() => handleOptionClick(option.value)}
+          //only allow click if the option is not selected
+          onClick={() => selectedOption !== `${tabsId}-${option.value}` && handleOptionClick(option.value)}
           className={`text-lg font-semibold cursor-pointer px-2 py-2 rounded-xl transition-all duration-300 hover:opacity-100 !no-select ${selectedOption === `${tabsId}-${option.value}` ? '' : 'opacity-70'
             } relative`}
           whileHover={{ scale: 1 }}

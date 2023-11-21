@@ -24,7 +24,7 @@ const defaultSettings = {
 
 const xrpMap = "USD:rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq";
 
-const PriceChart = ({ title = "Price Chart", type = "price" }) => {
+const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onClickStatic, isPinned=false }) => {
   {
     /* MODULE SETTINGS */
   }
@@ -132,7 +132,7 @@ const PriceChart = ({ title = "Price Chart", type = "price" }) => {
                   return { time: unnixt, value: Number(d.marketcap) };
                 } else if (type === "volume" && selectedToken === "XRP") {
                   return { time: unnixt, value: Number(d.volumeQ) };
-                } else if (type === "volume" && selectedToken !== "XRP") {
+                } else {
                   return { time: unnixt, value: Number(d.volumeB) };
                 }
               });
@@ -148,6 +148,11 @@ const PriceChart = ({ title = "Price Chart", type = "price" }) => {
       updateSettings("token", "534F4C4F00000000000000000000000000000000:rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz");
       setSelectedToken("SOLO")
     }
+
+    // if (type !== "price" && moduleSettings.chartType === "candle") {
+    //   updateSettings("chartType", "line");
+    //   setChartType("line");
+    // }
 
   }, []);
 
@@ -214,32 +219,67 @@ const PriceChart = ({ title = "Price Chart", type = "price" }) => {
               return { time: unnixt, value: Number(d.volumeQ) };
             } else if (type === "volume" && selectedToken !== "XRP") {
               return { time: unnixt, value: Number(d.volumeB) };
-            } else if (type === "price") {
+            } else {
               return { time: unnixt, value: Number(d.value) };
             }
-            // return { time: unnixt, value: Number(d.value) };
           });
-          lineSeriesRef.current.setData(lineData);
-          setData(lineData);
-          setRefresh(Math.random());
+
+          if (candleSeriesRef.current) {
+            chart.current.removeSeries(candleSeriesRef.current);
+            candleSeriesRef.current = null;
+          }
+
+          if (lineSeriesRef.current) {
+            lineSeriesRef.current.setData(lineData);
+            setData(lineData);
+            setRefresh(Math.random());
+          } else {
+            lineSeriesRef.current = chart.current.addLineSeries({
+              color: chartLineColor,
+              lineWidth: 2,
+            });
+            lineSeriesRef.current.setData(lineData);
+            setData(lineData);
+            setRefresh(Math.random());
+          }
+
+        } else if (chartType === "candle") {
+          const candleData = data.map((d) => {
+            const unnixt = d.time;
+            return {
+              time: unnixt,
+              open: Number(d.open),
+              high: Number(d.high),
+              low: Number(d.low),
+              close: Number(d.close),
+            };
+          });
+
+          if (lineSeriesRef.current) {
+            chart.current.removeSeries(lineSeriesRef.current);
+            lineSeriesRef.current = null;
+          }
+          
+          if (candleSeriesRef.current) {
+            candleSeriesRef.current.setData(candleData);
+            setData(candleData);
+            setRefresh(Math.random());
+          } else {
+            candleSeriesRef.current = chart.current.addCandlestickSeries({
+              upColor: "#6DCE5C",
+              downColor: "#CE5C6D",
+              borderDownColor: "#CE5C6D",
+              borderUpColor: "#6DCE5C",
+              wickDownColor: "#CE5C6D",
+              wickUpColor: "#6DCE5C",
+            });
+            candleSeriesRef.current.setData(candleData);
+            setData(candleData);
+            setRefresh(Math.random());
+          }
         }
-        // } else if (chartType === "candle") {
-        //   const candleData = data.map((d) => {
-        //     const unnixt = d.time;
-        //     return {
-        //       time: unnixt,
-        //       open: Number(d.open),
-        //       high: Number(d.high),
-        //       low: Number(d.low),
-        //       close: Number(d.close),
-        //     };
-        //   });
-        //   candleSeriesRef.current.setData(candleData);
-        //   setData(candleData);
-        //   setRefresh(Math.random());
-        // }
       });
-  }, [selectedToken, timeRange]);
+  }, [selectedToken, timeRange, chartType]);
 
   useEffect(() => {
     if (chartType === "line" && lineSeriesRef.current) {
@@ -294,6 +334,9 @@ const PriceChart = ({ title = "Price Chart", type = "price" }) => {
       }
       disableTitle={!moduleSettings.displayTitle}
       className={`${backgroundClass}`}
+      onClickRemove={onClickRemove}
+      onClickStatic={onClickStatic}
+      isPinned={isPinned}
     >
       <div className="relative w-full h-full flex flex-col">
         {moduleSettings.displayRange && (
