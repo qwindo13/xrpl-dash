@@ -214,15 +214,32 @@ const PriceChart = ({ title = "Price Chart", type = "price" }) => {
               return { time: unnixt, value: Number(d.volumeQ) };
             } else if (type === "volume" && selectedToken !== "XRP") {
               return { time: unnixt, value: Number(d.volumeB) };
+            } else if (type === "price") {
+              return { time: unnixt, value: Number(d.value) };
             }
             // return { time: unnixt, value: Number(d.value) };
           });
           lineSeriesRef.current.setData(lineData);
           setData(lineData);
           setRefresh(Math.random());
-        } else if (chartType === "candle") {}
+        }
+        // } else if (chartType === "candle") {
+        //   const candleData = data.map((d) => {
+        //     const unnixt = d.time;
+        //     return {
+        //       time: unnixt,
+        //       open: Number(d.open),
+        //       high: Number(d.high),
+        //       low: Number(d.low),
+        //       close: Number(d.close),
+        //     };
+        //   });
+        //   candleSeriesRef.current.setData(candleData);
+        //   setData(candleData);
+        //   setRefresh(Math.random());
+        // }
       });
-  }, [selectedToken, timeRange, chartType]);
+  }, [selectedToken, timeRange]);
 
   useEffect(() => {
     if (chartType === "line" && lineSeriesRef.current) {
