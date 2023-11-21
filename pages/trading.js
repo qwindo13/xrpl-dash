@@ -5,7 +5,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import TestLayout from '@/components/Layouts/TestLayoutcomponents';
 import Nfts from '@/components/Modules/NonFungibleTokens/MultipleNfts/MultipleNftscomponents';
-import PriceChart from '@/components/Modules/Trades/PriceChart/PriceChartcomponents';
+import PriceChart from '@/components/Modules/Trades/Chart/Chartcomponents';
 import AIChatBot from '@/components/Modules/Misc/AIChatBot/AIChatBotcomponents';
 import OrderBook from '@/components/Modules/Trades/OrderBook/OrderBookcomponents';
 import BitcoinHalving from '@/components/Modules/Misc/BitcoinHalving/BitcoinHalvingcomponents';

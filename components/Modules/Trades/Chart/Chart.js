@@ -24,7 +24,7 @@ const defaultSettings = {
 
 const xrpMap = "USD:rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq";
 
-const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onClickStatic, isPinned=false }) => {
+const Chart = ({ title = "Price Chart", type = "price", onClickRemove, onClickStatic, isPinned=false }) => {
   {
     /* MODULE SETTINGS */
   }
@@ -354,7 +354,7 @@ const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onCl
                   value: "7d",
                 },
                 {
-                  label: <span className="text-xs">30d</span>,
+                  label: <span className="text-xs">30D</span>,
                   value: "30d",
                 },
                 {
@@ -378,4 +378,4 @@ const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onCl
   );
 };
 
-export default PriceChart;
+export default Chart;

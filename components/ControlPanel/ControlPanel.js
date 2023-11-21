@@ -13,7 +13,7 @@ import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import PriceChart from '@/components/Modules/Trades/PriceChart/PriceChartcomponents';
+import PriceChart from '@/components/Modules/Trades/Chart/Chartcomponents';
 
 {/* MENU ITEM FOR LAYOUT MENU */ }
 const LayoutItem = ({ href, label, icon, custom }) => {
