@@ -23,18 +23,19 @@ const AIChatBot = () => {
 
     const backgroundClass = moduleSettings.backgroundSetting === 'Solid' ? '' :
         moduleSettings.backgroundSetting === 'Highlight' ? 'bg-[#525567] ' :
-            moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5 !p-0' : '';
+            moduleSettings.backgroundSetting === 'Transparent' ? 'bg-transparent backdrop-blur-lg border border-white border-opacity-5 !p-0 flex-col' : '';
 
     let mouseX = useMotionValue(0);
     let mouseY = useMotionValue(0);
-          
+
     function handleMouseMove(event) {
         let { currentTarget, clientX, clientY } = event;
         let { left, top } = currentTarget.getBoundingClientRect();
-          
+
         mouseX.set(clientX - left);
         mouseY.set(clientY - top);
     }
+
 
     return (
         <ModuleCard
@@ -51,12 +52,14 @@ const AIChatBot = () => {
                     />
                 </>
             }
-            disableTitle={!moduleSettings.displayTitle}
+            disableTitle="false"
             className={`${backgroundClass}`}
         >
+
             <div
                 onMouseMove={handleMouseMove}
-                className="group w-full h-full relative overflow-hidden flex flex-col gap-4 rounded-xl">
+                className="group w-full h-full relative overflow-hidden flex flex-col gap-4 rounded-xl justify-between"
+            >
                 {/* Gradient */}
                 <motion.div
                     className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
@@ -68,13 +71,46 @@ const AIChatBot = () => {
                             transparent 80%
                           )
                         `,
-                      }}
+                    }}
                 />
-                <div className="flex grow w-full z-[1] rounded-full">
-                      <img src="/images/3dhound.png" className="w-full h-full shrink object-contain "/>
-                </div>
-                <div className="p-4 shrink-0">
-                    <InputField sendIcon placeholder="Type something..." className="text-sm" />
+                {/* Title */}
+                {moduleSettings.displayTitle && (
+                    <div className="w-full flex flex-row justify-between items-start p-4 relative">
+                        <h3 className="font-semibold text-xl">AI Assistant</h3>
+                    </div>
+                )}
+
+                {/* Image */}
+                <motion.div layout className="flex w-full h-auto justify-center overflow-hidden z-[2] hidden">
+                    <motion.img layout src="/images/3dhound.png" className="w-auto h-full shrink object-cover min-h-0 min-w-0 rounded-full" />
+                </motion.div>
+
+                {/* Chat Container */}
+                <motion.div layout className="flex flex-col gap-4 w-full h-full justify-center overflow-y-auto z-[2]">
+                    <ChatBox
+                        chatBox
+                        timestamp={new Date().toISOString()}
+                        userName="You"
+                        type="sent"
+                        messages={[
+                            "What's the current marketcap of XRP? ",
+                        ]}
+                    />
+
+                    <ChatBox
+                        timestamp={new Date().toISOString()}
+                        userName="You"
+                        type="received"
+                        messages={[
+                            'Hi! I have a question regarding transactions.',
+                            'Sure, I was wondering about the fees.',
+                            // ... More sent messages
+                        ]}
+                    />
+                </motion.div>
+
+                <div className="p-4 shrink-0 z-[2]">
+                    <InputField sendIcon placeholder="Type something..." className="text-sm bg-[#A6B0CF] bg-opacity-5 backdrop-blur-xl rounded-xl" />
                 </div>
 
             </div>

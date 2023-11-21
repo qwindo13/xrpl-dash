@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 
 const Message = ({ type, content }) => {
-    const baseStyles = "py-2 px-4 rounded-2xl bg-[#21212A] w-auto max-w-2xl";
+    const baseStyles = "py-2 px-4 rounded-xl bg-[#21212A] w-auto max-w-2xl";
     const receivedStyles = "rounded-tl-none";
     const sentStyles = "bg-[#85A8D8] ml-auto text-white rounded-tr-none";
 
