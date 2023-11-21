@@ -82,6 +82,7 @@ const Chart = ({ title = "Price Chart", type = "price", onClickRemove, onClickSt
         rightPriceScale: {
           borderColor: "rgba(255, 255, 255, 0)",
         },
+        
         timeScale: {
           borderColor: "rgba(255, 255, 255, 0)",
         },
@@ -103,6 +104,10 @@ const Chart = ({ title = "Price Chart", type = "price", onClickRemove, onClickSt
         lineSeriesRef.current = chart.current.addLineSeries({
           color: chartLineColor,
           lineWidth: 2,
+          priceFormat: {
+            type: 'custom',
+            formatter: (price) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(price),
+          },
         });
 
         // Data for line chart
@@ -237,6 +242,10 @@ const Chart = ({ title = "Price Chart", type = "price", onClickRemove, onClickSt
             lineSeriesRef.current = chart.current.addLineSeries({
               color: chartLineColor,
               lineWidth: 2,
+              priceFormat: {
+                type: 'custom',
+                formatter: (price) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(price),
+              },
             });
             lineSeriesRef.current.setData(lineData);
             setData(lineData);
