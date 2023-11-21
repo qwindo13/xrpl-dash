@@ -145,8 +145,6 @@ export default function ControlPanel({ onSelectTitle }) {
                                 <ModuleItem title="Profit and Loss" desc="Monitor and analyze profit and loss data for XRPL issued tokens" />
                                 <ModuleItem title="Richlist" desc="Discover the richlist of a specific XRPL Token, showing top token holders" />
                                 <ModuleItem title="Wallet" desc="Track your crypto portfolio with a donut chart and table view" />
-                                <ModuleItem title="Price Chart" desc="Track the price of a specific XRPL issued token" />
-                                <ModuleItem title="Marketcap Chart" desc="Track the marketcap of a specific XRPL issued token" />
                             </div>
 
                         </div>
@@ -162,6 +160,9 @@ export default function ControlPanel({ onSelectTitle }) {
                             <span className="text-sm font-semibold text-white opacity-60 ">Trades Modules</span>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                 <ModuleItem title="Quick Swap" desc="Exhibit the badges you've earned on the platform" />
+                                <ModuleItem title="Price Chart" desc="Track the Price of a specific XRPL issued token" />
+                                <ModuleItem title="Marketcap Chart" desc="Track the Marketcap of a specific XRPL issued token" />
+                                <ModuleItem title="Volume Chart" desc="Track the Volume of a specific XRPL issued token" />
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 mt-4">

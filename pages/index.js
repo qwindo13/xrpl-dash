@@ -286,7 +286,9 @@ export default function Home({ nfts }) {
                           ? richListSize
                           : title === "Marketcap Chart"
                             ? richListSize
-                            : profitnLose;
+                            : title === "Volume Chart"
+                              ? richListSize
+                              : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
       lg: [],
       md: [],
@@ -533,6 +535,12 @@ export default function Home({ nfts }) {
               return (
                 <div key={module}>
                   <PriceChart title='Marketcap' type='marketcap' />
+                </div>
+              );
+            } else if (module.startsWith("volumechart")) {
+              return (
+                <div key={module}>
+                  <PriceChart title='Volume' type='volume' />
                 </div>
               );
             }
