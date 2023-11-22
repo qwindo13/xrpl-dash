@@ -246,13 +246,30 @@ const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onCl
         } else if (chartType === "candle") {
           const candleData = data.map((d) => {
             const unnixt = d.time;
-            return {
-              time: unnixt,
-              open: Number(d.open),
-              high: Number(d.high),
-              low: Number(d.low),
-              close: Number(d.close),
-            };
+            // return {
+            //   time: unnixt,
+            //   open: Number(d.open),
+            //   high: Number(d.high),
+            //   low: Number(d.low),
+            //   close: Number(d.close),
+            // };
+            if (selectedToken === "XRP") {
+              return {
+                time: unnixt,
+                open: Number(1 / d.open),
+                high: Number(1 / d.high),
+                low: Number(1 / d.low),
+                close: Number(1 / d.close),
+              };
+            } else {
+              return {
+                time: unnixt,
+                open: Number(d.open),
+                high: Number(d.high),
+                low: Number(d.low),
+                close: Number(d.close),
+              };
+            }
           });
 
           if (lineSeriesRef.current) {
