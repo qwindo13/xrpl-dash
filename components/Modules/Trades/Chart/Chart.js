@@ -24,7 +24,7 @@ const defaultSettings = {
 
 const xrpMap = "USD:rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq";
 
-const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onClickStatic, isPinned=false }) => {
+const Chart = ({ title = "Price Chart", type = "price", onClickRemove, onClickStatic, isPinned=false }) => {
   {
     /* MODULE SETTINGS */
   }
@@ -82,6 +82,7 @@ const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onCl
         rightPriceScale: {
           borderColor: "rgba(255, 255, 255, 0)",
         },
+        
         timeScale: {
           borderColor: "rgba(255, 255, 255, 0)",
         },
@@ -103,6 +104,10 @@ const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onCl
         lineSeriesRef.current = chart.current.addLineSeries({
           color: chartLineColor,
           lineWidth: 2,
+          priceFormat: {
+            type: 'custom',
+            formatter: (price) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(price),
+          },
         });
 
         // Data for line chart
@@ -237,6 +242,10 @@ const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onCl
             lineSeriesRef.current = chart.current.addLineSeries({
               color: chartLineColor,
               lineWidth: 2,
+              priceFormat: {
+                type: 'custom',
+                formatter: (price) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(price),
+              },
             });
             lineSeriesRef.current.setData(lineData);
             setData(lineData);
@@ -371,7 +380,7 @@ const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onCl
                   value: "7d",
                 },
                 {
-                  label: <span className="text-xs">30d</span>,
+                  label: <span className="text-xs">30D</span>,
                   value: "30d",
                 },
                 {
@@ -395,4 +404,4 @@ const PriceChart = ({ title = "Price Chart", type = "price", onClickRemove, onCl
   );
 };
 
-export default PriceChart;
+export default Chart;

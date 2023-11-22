@@ -19,6 +19,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import {
   priceInfoSize,
   richListSize,
+  chartSize,
   quickSwapSize,
   walletSize,
   feedSize,
@@ -36,7 +37,7 @@ import Modal from "@/components/UI/Modal/Modalcomponents";
 import Nft from "@/components/UI/Nft/Nftcomponents";
 import FearGreedIndex from "@/components/Modules/Misc/FearGreedIndex/FearGreedIndexcomponents";
 import { useKeenSlider } from "keen-slider/react";
-import PriceChart from "@/components/Modules/Trades/PriceChart/PriceChartcomponents";
+import Chart from "@/components/Modules/Trades/Chart/Chartcomponents";
 
 export default function Home({ nfts }) {
   const gridContainerRef = useRef(null); // Create a reference to the parent
@@ -283,11 +284,11 @@ export default function Home({ nfts }) {
                         ? fearGreedSize
                         // : profitnLose;
                         : title === "Price Chart"
-                          ? richListSize
+                          ? chartSize
                           : title === "Marketcap Chart"
-                            ? richListSize
+                            ? chartSize
                             : title === "Volume Chart"
-                              ? richListSize
+                              ? chartSize
                               : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
       lg: [],
@@ -528,19 +529,19 @@ export default function Home({ nfts }) {
             } else if (module.startsWith("pricechart")) {
               return (
                 <div key={module}>
-                  <PriceChart isPinned={pins.includes(module)} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <Chart isPinned={pins.includes(module)} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("marketcapchart")) {
               return (
                 <div key={module}>
-                  <PriceChart title='Marketcap' type='marketcap' isPinned={pins.includes(module)} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <Chart title='Marketcap' type='marketcap' isPinned={pins.includes(module)} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             } else if (module.startsWith("volumechart")) {
               return (
                 <div key={module}>
-                  <PriceChart title='Volume' type='volume' isPinned={pins.includes(module)} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
+                  <Chart title='Volume' type='volume' isPinned={pins.includes(module)} onClickRemove={() => onClickRemove(module)} onClickStatic={() => onClickStatic(module)} />
                 </div>
               );
             }
@@ -548,7 +549,8 @@ export default function Home({ nfts }) {
 
         </ResponsiveGridLayout>
       </div>
-
+      
+      {/* SELECT NFT MODAL */}
       <Modal showModal={showModal} closeModal={() => setShowModal(false)}>
         <div className="pb-4 md:pb-8">
           <h2 className="text-xl font-semibold mb-2">Select NFT</h2>
@@ -618,6 +620,7 @@ export default function Home({ nfts }) {
           </Button>
         </div>
       </Modal>
+      
     </AppLayout>
   );
 }

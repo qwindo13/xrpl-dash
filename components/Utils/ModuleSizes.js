@@ -40,6 +40,12 @@ export const richListSize = {
   sm: { w: 2, h: 2, minW: 2, maxW: 2, minH: 2, maxH: 2 },
 };
 
+export const chartSize = {
+  lg: { w: 2, h: 2, minW: 1, maxW: 4, minH: 2, maxH: 6 },
+  md: { w: 2, h: 2, minW: 1, maxW: 4, minH: 2, maxH: 6 },
+  sm: { w: 2, h: 2, minW: 1, maxW: 4, minH: 2, maxH: 6 },
+};
+
 export const quickSwapSize = {
   lg: { w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
   md: { w: 2, h: 2, minW: 2, maxW: 3, minH: 2, maxH: 2 },
