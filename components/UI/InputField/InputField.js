@@ -1,7 +1,7 @@
 import React from 'react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 
-const InputField = ({ children, onClick, className, label, placeholder, icon, isRequired, value, onChange, description, sendIcon = "false" }) => {
+const InputField = ({ children, onClick, className, label, placeholder, icon, isRequired, value, onChange, description, sendIcon = false }) => {
     return (
         <div className='w-full text-left'>
             {label &&
