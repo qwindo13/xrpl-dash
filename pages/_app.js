@@ -6,10 +6,13 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 
 export default function App({ Component, pageProps }) {
-  const [cookies] = useCookies(["token"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
   const [alerts, setAlerts] = useState([]);
   const [nfts2, setNfts2] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [customLayouts, setCustomLayouts] = useState([]);
+  const [address, setAddress] = useState("");
+  const [refreshLayouts, setRefreshLayouts] = useState(false);
 
   const hexToString = (hex) => {
     let string = "";
@@ -66,6 +69,57 @@ export default function App({ Component, pageProps }) {
   }, []);
 
   useEffect(() => {
+    if (cookies.token) {
+      fetch(`${config.api_url}/checkUserExists`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${cookies.token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.exists) {
+            localStorage.setItem("address", data.data.address);
+            // console.log("address", data.data.address);
+            setAddress(data.data.address);
+          } else {
+            // console.log("user does not exist");
+            localStorage.removeItem("address");
+            removeCookie("token");
+            //refresh 
+            window.location.reload();
+          }
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    //getCustomLayouts
+    if (cookies.token && address) {
+      fetch(`${config.api_url}/getCustomLayouts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: cookies.token,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // console.log('Success:', data.data);
+          // setAlerts(data.data); //type: array of objects, each object has: {alert:{type,value:{coin,issuer,price,img}},created_at,hit_at,notified} For now we group the same coin alerts together and put them in an array
+          if (!data.hasOwnProperty("data")) {
+            return;
+          }
+          const customLayouts = data.data;
+          setCustomLayouts(customLayouts);
+        });
+      }
+    }, [address, refreshLayouts]);
+
+  useEffect(() => {
     async function fetchNfts(nfts) {
       const nfts2 = [];
 
@@ -119,7 +173,10 @@ export default function App({ Component, pageProps }) {
     }
 
     function convertHexToString(hex) {
-      return hex.match(/.{1,2}/g).map((byte) => String.fromCharCode(parseInt(byte, 16))).join("");
+      return hex
+        .match(/.{1,2}/g)
+        .map((byte) => String.fromCharCode(parseInt(byte, 16)))
+        .join("");
     }
 
     async function getImageFromUrl(url) {
@@ -134,30 +191,39 @@ export default function App({ Component, pageProps }) {
 
     function isVideo(nftData) {
       return (
-        "video" in nftData && nftData.video !== undefined && nftData.video !== "" && nftData.video !== null &&
-        nftData.video !== undefined &&
-        nftData.video !== "" &&
-        !nftData.video.endsWith(".gif")
-      ) || (
-        "animation" in nftData && nftData.animation !== undefined && nftData.animation !== "" && nftData.animation !== null &&
-        nftData.animation !== undefined &&
-        nftData.animation !== "" &&
-        !nftData.animation.endsWith(".gif")
+        ("video" in nftData &&
+          nftData.video !== undefined &&
+          nftData.video !== "" &&
+          nftData.video !== null &&
+          nftData.video !== undefined &&
+          nftData.video !== "" &&
+          !nftData.video.endsWith(".gif")) ||
+        ("animation" in nftData &&
+          nftData.animation !== undefined &&
+          nftData.animation !== "" &&
+          nftData.animation !== null &&
+          nftData.animation !== undefined &&
+          nftData.animation !== "" &&
+          !nftData.animation.endsWith(".gif"))
       );
     }
 
     function isGif(nftData) {
-      const detectFlag = (
-        "video" in nftData && nftData.video !== undefined && nftData.video !== "" && nftData.video !== null &&
-        nftData.video !== undefined && 
-        nftData.video !== "" &&
-        nftData.video.endsWith(".gif")
-      ) || (
-        "animation" in nftData && nftData.animation !== undefined && nftData.animation !== "" && nftData.animation !== null &&
-        nftData.animation !== undefined &&
-        nftData.animation !== "" &&
-        nftData.animation.endsWith(".gif")
-      );
+      const detectFlag =
+        ("video" in nftData &&
+          nftData.video !== undefined &&
+          nftData.video !== "" &&
+          nftData.video !== null &&
+          nftData.video !== undefined &&
+          nftData.video !== "" &&
+          nftData.video.endsWith(".gif")) ||
+        ("animation" in nftData &&
+          nftData.animation !== undefined &&
+          nftData.animation !== "" &&
+          nftData.animation !== null &&
+          nftData.animation !== undefined &&
+          nftData.animation !== "" &&
+          nftData.animation.endsWith(".gif"));
       //return the field that contains the gif
       if (detectFlag) {
         if ("video" in nftData) {
@@ -171,13 +237,13 @@ export default function App({ Component, pageProps }) {
     }
 
     function getImageSrc(image) {
-        if (image.startsWith("ipfs://")) {
-          return `https://ipfs.io/ipfs/${image.replace("ipfs://", "")}`;
-        } else if (image.startsWith("https://")) {
-          return image;
-        } else {
-          return `https://ipfs.io/ipfs/${image}`;
-        }
+      if (image.startsWith("ipfs://")) {
+        return `https://ipfs.io/ipfs/${image.replace("ipfs://", "")}`;
+      } else if (image.startsWith("https://")) {
+        return image;
+      } else {
+        return `https://ipfs.io/ipfs/${image}`;
+      }
     }
 
     if (cookies.token) {
@@ -195,9 +261,14 @@ export default function App({ Component, pageProps }) {
     }
   }, [refresh]);
 
-    const refreshNfts = () => {
-        setRefresh(!refresh);
-    }
+  const refreshNfts = () => {
+    setRefresh(!refresh);
+  };
+
+  const refreshCustomLayouts = () => {
+    console.log("refreshing custom layouts");
+    setRefreshLayouts(!refreshLayouts);
+  }
 
   const deleteAlert = (e, id) => {
     e.preventDefault();
@@ -226,7 +297,14 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
-      <Component {...pageProps} api_url={config.api_url} nfts={nfts2} refreshNfts={refreshNfts} />
+      <Component
+        {...pageProps}
+        api_url={config.api_url}
+        nfts={nfts2}
+        refreshNfts={refreshNfts}
+        customLayout={customLayouts}
+        refreshCustomLayouts={refreshCustomLayouts}
+      />
 
       {/* ALERTS */}
       {alerts.length > 0 &&

@@ -3,7 +3,7 @@ import Header from "../Header/Header";
 import ControlPanel from "../ControlPanel/ControlPanel";
 import Footer from "../Footer/Footer";
 
-function AppLayout({ children, showControlPanel, onClickTitle, className }) {
+function AppLayout({ children, showControlPanel, onClickTitle, className, customLayout, refreshCustomLayouts }) {
     return (
         <>
             <Header fixed/>
@@ -22,7 +22,7 @@ function AppLayout({ children, showControlPanel, onClickTitle, className }) {
                 </div>
                 */}
 
-                {showControlPanel && <ControlPanel onSelectTitle={onClickTitle} />}
+                {showControlPanel && <ControlPanel onSelectTitle={onClickTitle} customLayout={customLayout} refreshCustomLayouts={refreshCustomLayouts} />}
                 {children}
                 <Footer />
             </main>

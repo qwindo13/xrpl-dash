@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import { AnimatePresence, motion } from 'framer-motion';
 import { Responsive as ResponsiveGridLayout } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import AppLayout from "@/components/Layouts/AppLayoutcomponents";
+import { useCookies } from "react-cookie";
+import { config } from "@/configcomponents";
+import { AnimatePresence, motion } from 'framer-motion';
 import PriceInfo from "@/components/Modules/FungibleTokens/PriceInfo/PriceInfocomponents";
 import Feed from "@/components/Modules/Feeds/Feed/Feedcomponents";
 import RichList from "@/components/Modules/FungibleTokens/RichList/RichListcomponents";
@@ -29,8 +31,6 @@ import {
   nftsSize,
   fearGreedSize
 } from "@/components/Utils/ModuleSizescomponents";
-import { useCookies } from "react-cookie";
-import { config } from "@/configcomponents";
 import SliderButton from "@/components/UI/SliderButton/SliderButtoncomponents";
 import Button from "@/components/UI/Button/Buttoncomponents";
 import Modal from "@/components/UI/Modal/Modalcomponents";
@@ -39,13 +39,20 @@ import FearGreedIndex from "@/components/Modules/Misc/FearGreedIndex/FearGreedIn
 import { useKeenSlider } from "keen-slider/react";
 import Chart from "@/components/Modules/Trades/Chart/Chartcomponents";
 
-export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
+export default function Home({ customLayout, nfts, refreshCustomLayouts }) {
   const gridContainerRef = useRef(null); // Create a reference to the parent
   const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
+  const [xrpAddress, setXrpAddress] = useState("");
+  const [selectedLayout, setSelectedLayout] = useState("");
+  const [changeCount, setChangeCount] = useState(0);
+  const [layout, setLayout] = useState({
+    lg: [],
+    md: [],
+    sm: [],
+  });
   const [modules, setModules] = useState([]);
   const [cookies] = useCookies(["token"]);
   const [loading, setLoading] = useState(false);
-  const [changeCount, setChangeCount] = useState(0);
   const [selectedModule, setSelectedModule] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -68,7 +75,76 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
       setLoaded(true);
     },
   });
+  const router = useRouter();
   const api_url = config.api_url;
+
+  //get slug from router
+  const { slug } = router.query;
+
+  useEffect(() => {
+    if (slug) {
+      setSelectedLayout(slug);
+      //get custom layout from api
+      if (cookies.token) {
+        fetch(`${api_url}/getCustomLayout`, {
+          //send token:, layout_name:
+          method: "POST",
+          body: JSON.stringify({
+            token: cookies.token,
+            layout_name: slug,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.exists) {
+              console.log(data.data);
+              if (data.data.layout.length === 2) {
+                localStorage.removeItem("layout");
+                localStorage.removeItem("modules");
+                if (data.data.layout[1].layout.length === 0) {
+                  localStorage.setItem(
+                    "layout",
+                    JSON.stringify({
+                      lg: [],
+                      md: [],
+                      sm: [],
+                    })
+                  );
+                } else {
+                  localStorage.setItem(
+                    "layout",
+                    JSON.stringify(data.data.layout[1].layout[0])
+                  );
+                  setLayout(data.data.layout[1].layout[0]);
+                }
+                if (data.data.layout[0].modules.length === 0) {
+                  localStorage.setItem("modules", JSON.stringify([]));
+                } else {
+                  localStorage.setItem(
+                    "modules",
+                    JSON.stringify(data.data.layout[0].modules)
+                  );
+                  setModules(data.data.layout[0].modules);
+                }
+              }
+            } else {
+              console.log(data);
+              //redirect to /
+            router.push("/");
+            }
+            
+          })
+          .catch((err) => {
+            console.log(err);
+            //redirect to /
+            router.push("/");
+          });
+      }
+    }
+  }, [slug]);
 
   // Update the gridWidth on window resize and component mount
   useEffect(() => {
@@ -84,120 +160,8 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+
   }, []);
-
-  // Define the layout configuration
-  const [layout, setLayout] = useState({
-    lg: [],
-    md: [],
-    sm: [],
-  });
-
-  const handleLayoutChange = (currentLayout) => {
-    setChangeCount(changeCount + 1);
-    if (currentLayout.length > 0) {
-      const layout = localStorage.getItem("layout");
-      if (layout !== null && layout !== undefined && layout !== "" && layout !== "null" && layout !== "undefined") {
-        const layoutInStorage = JSON.parse(localStorage.getItem("layout"));
-        if (layoutInStorage !== null) {
-          layoutInStorage.lg = currentLayout;
-          layoutInStorage.md = currentLayout;
-          layoutInStorage.sm = currentLayout;
-          localStorage.setItem("layout", JSON.stringify(layoutInStorage));
-        } else {
-          localStorage.setItem("layout", JSON.stringify({
-            lg: currentLayout,
-            md: currentLayout,
-            sm: currentLayout,
-          }));
-        }
-      } else {
-        localStorage.setItem("layout", JSON.stringify({
-          lg: currentLayout,
-          md: currentLayout,
-          sm: currentLayout,
-        }));
-      }
-    }
-  };
-
-
-  useEffect(() => {
-    const token = cookies.token;
-    const layout = localStorage.getItem("layout");
-    const modules = localStorage.getItem("modules");
-    if (modules === undefined || modules === null || modules === "" || modules === "null" || modules === "undefined") {
-      localStorage.removeItem("modules");
-      localStorage.removeItem("layout");
-    }
-    if (layout === undefined || layout === null || layout === "" || layout === "null" || layout === "undefined") {
-      localStorage.removeItem("modules");
-      localStorage.removeItem("layout");
-    }
-    if (token === undefined || token === null || token === "") {
-      localStorage.removeItem("address");
-
-      //get the layout from local storage
-      if (layout !== null && layout !== undefined && layout !== "" && layout !== "null" && layout !== "undefined") {
-        setLayout(JSON.parse(localStorage.getItem("layout")));
-      }
-      if (modules !== null && modules !== undefined && modules !== "" && modules !== "null" && modules !== "undefined") {
-        setModules(JSON.parse(localStorage.getItem("modules")));
-      }
-    } else {
-      const addy = localStorage.getItem("address");
-      if (addy !== null) {
-        //getLayout from api
-        fetch(`${api_url}/getLayout`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: token,
-          }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.hasOwnProperty("error")) {
-              console.log("error from api");
-              return;
-            }
-
-            if (data.data.layout.length === 2) {
-              localStorage.removeItem("modules");
-              localStorage.removeItem("layout");
-              //set the layout in local storage
-              if (data.data.layout[1].layout.length === 0) {
-                localStorage.setItem("layout", JSON.stringify({
-                  lg: [],
-                  md: [],
-                  sm: [],
-                }));
-              } else {
-                localStorage.setItem("layout", JSON.stringify(data.data.layout[1].layout[0]));
-                setLayout(data.data.layout[1].layout[0]);
-              }
-              if (data.data.layout[0].modules.length === 0) {
-                localStorage.setItem("modules", JSON.stringify([]));
-              } else {
-                localStorage.setItem("modules", JSON.stringify(data.data.layout[0].modules));
-                setModules(data.data.layout[0].modules);
-              }
-            }
-          });
-      } else {
-        // console.log("redirecting");
-        //get the layout from local storage
-        if (layout !== null && layout !== undefined && layout !== "" && layout !== "null" && layout !== "undefined") {
-          setLayout(JSON.parse(localStorage.getItem("layout")));
-        }
-        if (modules !== null && modules !== undefined && modules !== "" && modules !== "null" && modules !== "undefined") {
-          setModules(JSON.parse(localStorage.getItem("modules")));
-        }
-      }
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   //every 10 seconds, send the current layout to the api
   useEffect(() => {
@@ -207,13 +171,25 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
       const layout = [];
       const localModules = localStorage.getItem("modules");
       const localLayout = localStorage.getItem("layout");
-      if (localModules !== null && localModules !== undefined && localModules !== "" && localModules !== "null" && localModules !== "undefined") {
+      if (
+        localModules !== null &&
+        localModules !== undefined &&
+        localModules !== "" &&
+        localModules !== "null" &&
+        localModules !== "undefined"
+      ) {
         // modules = JSON.parse(localStorage.getItem("modules"));
         JSON.parse(localStorage.getItem("modules")).forEach((module) => {
           modules.push(module);
         });
       }
-      if (localLayout !== null && localLayout !== undefined && localLayout !== "" && localLayout !== "null" && localLayout !== "undefined") {
+      if (
+        localLayout !== null &&
+        localLayout !== undefined &&
+        localLayout !== "" &&
+        localLayout !== "null" &&
+        localLayout !== "undefined"
+      ) {
         layout.push(JSON.parse(localStorage.getItem("layout")));
       }
       if (token === undefined || token === null || token === "") {
@@ -221,17 +197,15 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
       } else {
         if (changeCount > 0) {
           //update the layout in the api
-          fetch(`${api_url}/updateLayout`, {
+          fetch(`${api_url}/updateCustomLayout`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
               token: token,
-              layout: [
-                { "modules": modules },
-                { "layout": layout },
-              ],
+              layout: [{ modules: modules }, { layout: layout }],
+              layout_name: selectedLayout,
             }),
           })
             .then((res) => res.json())
@@ -254,6 +228,15 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
     return () => clearInterval(interval);
   }, [changeCount]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (localStorage.getItem("address")) {
+      setXrpAddress(localStorage.getItem("address"));
+    } else {
+      // setLoggedin(false);
+      // router.push('/auth/login');
+    }
+  }, []);
+
   const onClickTitle = (title) => {
     console.log(title);
     const name = `${title.toLowerCase().replace(/\s/g, "")}_${Date.now()}`;
@@ -263,29 +246,29 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
       title === "Price Info"
         ? priceInfoSize
         : title === "Richlist"
-          ? richListSize
-          : title === "Quick Swap"
-            ? quickSwapSize
-            : title === "Wallet"
-              ? walletSize
-              : title === "Feed"
-                ? feedSize
-                : title === "Badges"
-                  ? badges
-                  : title === "Single NFT"
-                    ? singleNftSize
-                    : title === "Multiple NFTs"
-                      ? nftsSize
-                      : title === "Fear and Greed" 
-                        ? fearGreedSize
-                        // : profitnLose;
-                        : title === "Price Chart"
-                          ? chartSize
-                          : title === "Marketcap Chart"
-                            ? chartSize
-                            : title === "Volume Chart"
-                              ? chartSize
-                              : profitnLose;
+        ? richListSize
+        : title === "Quick Swap"
+        ? quickSwapSize
+        : title === "Wallet"
+        ? walletSize
+        : title === "Feed"
+        ? feedSize
+        : title === "Badges"
+        ? badges
+        : title === "Single NFT"
+        ? singleNftSize
+        : title === "Multiple NFTs"
+        ? nftsSize
+        : title === "Fear and Greed"
+        ? fearGreedSize
+        : // : profitnLose;
+        title === "Price Chart"
+        ? chartSize
+        : title === "Marketcap Chart"
+        ? chartSize
+        : title === "Volume Chart"
+        ? chartSize
+        : profitnLose;
     const layout = JSON.parse(localStorage.getItem("layout")) || {
       lg: [],
       md: [],
@@ -315,7 +298,7 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
           token: token,
           div_id: name,
         }),
-      })
+      });
     }
     const newModules = modules.filter((module) => module !== name);
     setModules(newModules);
@@ -328,9 +311,10 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
     };
     setLayout(newLayout);
     localStorage.setItem("layout", JSON.stringify(newLayout));
-  }
+  };
 
-  const onClickStatic = (name) => { //set the static: true or false in the layout
+  const onClickStatic = (name) => {
+    //set the static: true or false in the layout
     const layout = JSON.parse(localStorage.getItem("layout"));
     const newLayout = {
       lg: layout.lg.map((module) => {
@@ -357,9 +341,48 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
     };
     setLayout(newLayout);
     localStorage.setItem("layout", JSON.stringify(newLayout));
-  }
+  };
 
-  //on layout change, check if the module is static or not, if it is then add it to the pins array
+  const handleLayoutChange = (currentLayout) => {
+    setChangeCount(changeCount + 1);
+    if (currentLayout.length > 0) {
+      const layout = localStorage.getItem("layout");
+      if (
+        layout !== null &&
+        layout !== undefined &&
+        layout !== "" &&
+        layout !== "null" &&
+        layout !== "undefined"
+      ) {
+        const layoutInStorage = JSON.parse(localStorage.getItem("layout"));
+        if (layoutInStorage !== null) {
+          layoutInStorage.lg = currentLayout;
+          layoutInStorage.md = currentLayout;
+          layoutInStorage.sm = currentLayout;
+          localStorage.setItem("layout", JSON.stringify(layoutInStorage));
+        } else {
+          localStorage.setItem(
+            "layout",
+            JSON.stringify({
+              lg: currentLayout,
+              md: currentLayout,
+              sm: currentLayout,
+            })
+          );
+        }
+      } else {
+        localStorage.setItem(
+          "layout",
+          JSON.stringify({
+            lg: currentLayout,
+            md: currentLayout,
+            sm: currentLayout,
+          })
+        );
+      }
+    }
+  };
+
   useEffect(() => {
     if (!layout) return;
     const layoutLocal = JSON.parse(localStorage.getItem("layout"));
@@ -416,17 +439,21 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
     setShowModal(false);
   };
 
-  return (
 
-    <AppLayout
-      showControlPanel
-      onClickTitle={onClickTitle}
-      className="overflow-hidden"
-      customLayout={customLayout}
-      refreshCustomLayouts={refreshCustomLayouts}
+  return (
+    <AppLayout 
+        showControlPanel
+        onClickTitle={onClickTitle}
+        className="overflow-hidden"
+        customLayout={customLayout}
+        refreshCustomLayouts={refreshCustomLayouts}
     >
-      {/* LAYOUT SAVE ICON */}
-      <AnimatePresence>
+      {/* <div ref={gridContainerRef} className="w-full flex flex-grow">
+        {" "}
+        <Loader />
+      </div> */}
+            {/* LAYOUT SAVE ICON */}
+            <AnimatePresence>
         {loading && (
           <motion.div
             initial={{ opacity: 0, scale: 0.7 }}

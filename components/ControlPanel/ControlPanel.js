@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion, useAnimation } from "framer-motion";
 import SearchBar from "../UI/SearchBar/SearchBar";
 import Button from "../UI/Button/Button";
 import Dropdown from "../UI/Dropdown/Dropdown";
@@ -13,26 +12,120 @@ import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import PriceChart from '@/components/Modules/Trades/Chart/Chartcomponents';
+import { config } from "@/configcomponents";
+import { useCookies } from "react-cookie";
 
 {/* MENU ITEM FOR LAYOUT MENU */ }
-const LayoutItem = ({ href, label, icon, custom }) => {
+const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [inputValue, setInputValue] = useState(label);
-    const handleEditClick = () => {
+    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+    const [loading, setLoading] = useState(false);
+    const api_url = config.api_url;
+
+    const handleEditClick = (event) => {
+        event.preventDefault();
         setIsEditing(!isEditing);
     };
-    const handleCheckClick = () => {
+    const handleCheckClick = (e) => {
         setIsEditing(false);
         // Here, you can also add any logic to save or confirm the changes made in the input
+        updateCustomLayoutName(e);
     };
+
+    const deleteCustomLayout = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        if (cookies.token) {
+            fetch(`${api_url}/deleteCustomLayout`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    token: cookies.token,
+                    layout_name: label.toLowerCase(),
+                }),
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    console.log(res);
+                    if (res.success) {
+                        if (window.location.pathname === `/custom/${label.toLowerCase()}`) {
+                            alert("Layout deleted successfully");
+                            window.location.replace("/");
+                        } else {
+                            alert("Layout deleted successfully");
+                            refreshCustomLayouts();
+                        }
+                    } else {
+                        console.log(res);
+                        alert("Something went wrong, please try again! err-1");
+                    }
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    alert("Something went wrong, please try again! err-1");
+                    setLoading(false);
+                })
+        }
+    }
+
+    const updateCustomLayoutName = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        //check if new name is valid, it should not be empty and should not contain any special characters
+        const regex = /^[a-zA-Z0-9]+$/;
+        if (inputValue === "" || !regex.test(inputValue)) {
+            alert("Invalid layout name");
+            setIsEditing(true);
+            return;
+        }
+        if (cookies.token) {
+            fetch(`${api_url}/updateCustomLayoutName`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    token: cookies.token,
+                    layout_name: label.toLowerCase(),
+                    new_layout_name: inputValue.toLowerCase(),
+                }),
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    console.log(res);
+                    if (res.success) {
+                        console.log("success");
+                        alert("Layout name updated successfully");
+                        refreshCustomLayouts();
+                        setIsEditing(false);
+                        setLoading(false);
+                    } else {
+                        console.log(res);
+                        alert("Something went wrong, please try again! Make sure you are not using a layout name that already exists. err-2");
+                        setIsEditing(true);
+                        setLoading(false);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    alert("Something went wrong, please try again! Make sure you are not using a layout name that already exists. err-2");
+                    setIsEditing(true);
+                    setLoading(false);
+                });
+        }
+    }
+
     return (
-        <Link href={href} className="w-full">
             <div
                 className="px-4 py-2 rounded-xl hover:bg-[#A6B0CF]  hover:bg-opacity-5 w-full flex justify-between !leading-none items-center transition-all duration-200"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
+                onClick={() => window.location.replace(href)}
             >
                 <div className="flex items-center gap-2 leading-normal">
                     {icon}
@@ -46,7 +139,7 @@ const LayoutItem = ({ href, label, icon, custom }) => {
                                 onChange={(e) => setInputValue(e.target.value)}
                                 className="text-lg bg-transparent w-full"
                             />
-                            <CheckRoundedIcon onClick={handleCheckClick} sx={{ fontSize: 18 }} />
+                            <CheckRoundedIcon onClick={(e) => handleCheckClick(e)} sx={{ fontSize: 18 }} />
                         </div>
                     ) : (
                         <span className="text-lg ">{inputValue}</span>
@@ -55,20 +148,19 @@ const LayoutItem = ({ href, label, icon, custom }) => {
 
                 {custom && !isEditing &&
                     <div className="flex gap-2">
-                        <Button onClick={handleEditClick} className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+                        <Button onClick={(e) => handleEditClick(e)} className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
                             <EditIcon sx={{ fontSize: 18 }} />
                         </Button>
-                        <Button className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+                        <Button className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`} onClick={(e) => deleteCustomLayout(e)} disableAnimation>
                             <ClearRoundedIcon sx={{ fontSize: 18 }} />
                         </Button>
                     </div>
                 }
             </div>
-        </Link>
     );
 };
 
-export default function ControlPanel({ onSelectTitle }) {
+export default function ControlPanel({ onSelectTitle,customLayout,refreshCustomLayouts }) {
 
     const ModuleItem = ({ title, desc }) => (
         <div className="flex flex-col p-3 rounded-xl bg-transparent border border-white border-opacity-5 font-semibold gap-2 w-full cursor-pointer" onClick={() => onSelectTitle(title)}>
@@ -78,8 +170,79 @@ export default function ControlPanel({ onSelectTitle }) {
     );
 
     const [showModal, setShowModal] = useState(false);
+    const [showNameModal, setShowNameModal] = useState(false);
+    const [name, setName] = useState("");
+    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+    const api_url = config.api_url;
+
     const closeModal = () => setShowModal(false);
     const openModal = () => setShowModal(true);
+    const closeNameModal = () => {
+        setShowNameModal(false);
+        setName("");
+    }
+    const openNameModal = () => setShowNameModal(true);
+
+    const addNewLayout = (e) => {
+        e.preventDefault();
+        //check if new name is valid, it should not be empty and should not contain any special characters
+        const regex = /^[a-zA-Z0-9]+$/;
+        if (name === "" || !regex.test(name)) {
+            alert("Invalid layout name");
+            return;
+        }
+
+        //check all layout names, if name already exists, alert user
+        if (customLayout) {
+            for (let i = 0; i < customLayout.length; i++) {
+                if (customLayout[i].name.toLowerCase() === name.toLowerCase()) {
+                    alert("Layout name already exists");
+                    return;
+                }
+            }
+        }
+        if (cookies.token) {
+            fetch(`${api_url}/addCustomLayout`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    token: cookies.token,
+                    layout_name: name.toLowerCase(),
+                    layout: [
+                            {
+                              "modules": []
+                            },
+                            {
+                              "layout": []
+                            }
+                    ]
+                }),
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    console.log(res);
+                    if (res.success) {
+                        console.log("success");
+                        alert("Layout created successfully");
+                        refreshCustomLayouts();
+                        closeNameModal();
+                    } else {
+                        console.log(res);
+                        alert("Something went wrong, please try again! Make sure you are not using a layout name that already exists. err-2");
+                        closeNameModal();
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    alert("Something went wrong, please try again! Make sure you are not using a layout name that already exists. err-2");
+                    closeNameModal();
+                });
+        }
+    }
+
+
 
     return (
 
@@ -105,16 +268,42 @@ export default function ControlPanel({ onSelectTitle }) {
                         </div>
                         <div className="border-t border-white border-opacity-5 mt-4 pt-4">
                             <h5 className="opacity-60 text-xs mb-4">Your Layouts</h5>
-                            <LayoutItem
+                            {/* <LayoutItem
                                 custom
                                 icon={<DashboardRoundedIcon sx={{ fontSize: 20 }} />}
                                 href="/custom"
                                 label="Custom"
-                            />
+                            /> */}
+                            {
+                                customLayout ?
+                                    customLayout.map((item, index) => (
+                                        <LayoutItem
+                                            key={index}
+                                            custom
+                                            icon={<DashboardRoundedIcon sx={{ fontSize: 20 }} />}
+                                            href={`/custom/${item.name}`}
+                                            label={item.name}
+                                            refreshCustomLayouts={refreshCustomLayouts}
+                                        />
+                                    ))
+                                    :
+                                    <div className="flex flex-col gap-2">
+                                        <span className="text-sm font-semibold text-white opacity-60 ">You don&apos;t have any layouts yet.</span>
+                                        <span className="text-sm font-semibold text-white opacity-60 ">Create a new one by clicking on the button below.</span>
+                                    </div>
+                            }
 
                         </div>
                         <div className="border-top border-white pt-4">
-                            <Button className='w-full !text-base bg-white !text-[#1A1921] '> <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />New layout</Button>
+                            {/* <Button className='w-full !text-base bg-white !text-[#1A1921] '> <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />New layout</Button> */}
+                            {
+                                customLayout ? customLayout.length < 3 ?
+                                    <Button className='w-full !text-base bg-white !text-[#1A1921] ' onClick={openNameModal}> <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />New layout</Button>
+                                    :
+                                    <Button className='w-full !text-base bg-gray-400 !text-[#1A1921] ' disabled> <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />New layout</Button>
+                                    :
+                                    <Button className='w-full !text-base bg-gray-400 !text-[#1A1921] ' disabled> <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />New layout</Button>
+                            }
                         </div>
                     </Dropdown>
                 </div>
@@ -190,6 +379,30 @@ export default function ControlPanel({ onSelectTitle }) {
                     </div>
                 </div>
 
+            </Modal>
+
+            <Modal
+                title="New Layout"
+                description="Create a new layout by giving it a name."
+                showModal={showNameModal}
+                closeModal={closeNameModal}
+                className='md:h-[480px] !overflow-scroll'
+            >
+                {/* an input and a submit button */}
+                <div className="flex flex-col gap-4">
+                    <span className="text-sm font-semibold text-white opacity-60 ">Enter a name for your new layout</span>
+                    <div className="flex flex-col gap-2 mt-4">
+                        <input
+                            autoFocus
+                            type="text"
+                            maxLength={15}
+                            className="text-lg bg-transparent w-full"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <Button className='w-full !text-base bg-white !text-[#1A1921] ' onClick={addNewLayout}> <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />Create</Button>
+                    </div>
+                </div>
             </Modal>
 
         </>
