@@ -11,7 +11,7 @@ import OrderBook from '@/components/Modules/Trades/OrderBook/OrderBookcomponents
 import BitcoinHalving from '@/components/Modules/Misc/BitcoinHalving/BitcoinHalvingcomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize, fearGreedSize } from '@/components/Utils/ModuleSizescomponents';
 
-export default function Home() {
+export default function Home({customLayout,refreshCustomLayouts }) {
     const gridContainerRef = useRef(null); // Create a reference to the parent
     const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
     const [xrpAddress, setXrpAddress] = useState('');
@@ -76,7 +76,7 @@ export default function Home() {
     };
 
     return (
-        <TestLayout showControlPanel className='w-1/2'>
+        <TestLayout showControlPanel className='w-1/2' customLayout={customLayout} refreshCustomLayouts={refreshCustomLayouts}>
             <div ref={gridContainerRef} className="w-full"> {/* Attach the reference to the parent */}
                 <ResponsiveGridLayout
                     className="layout"
