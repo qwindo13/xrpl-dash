@@ -38,48 +38,12 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
     updateCustomLayoutName(e);
   };
 
-  const deleteCustomLayout = (e) => {
-    e.preventDefault();
-    if (cookies.token) {
-      fetch(`${api_url}/deleteCustomLayout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: cookies.token,
-          layout_name: label,
-        }),
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res);
-          if (res.success) {
-            console.log("success");
-            if (window.location.pathname === `/custom/${label.toLowerCase()}`) {
-              alert("Layout deleted successfully");
-              window.location.replace("/");
-            } else {
-              alert("Layout deleted successfully");
-              refreshCustomLayouts();
-            }
-          } else {
-            console.log(res);
-            alert("Something went wrong, please try again! err-11");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("Something went wrong, please try again! err-21");
-        });
-    }
-  };
 
   const updateCustomLayoutName = (e) => {
     e.preventDefault();
     setLoading(true);
-    //check if new name is valid, it should not be empty and should not contain any special characters
-    const regex = /^[a-zA-Z0-9]+$/;
+    //check if new name is valid, it should not be empty and should not contain any special characters, lowercase letters only and numbers
+    const regex = /^[a-z0-9]+$/;
     if (inputValue === "" || !regex.test(inputValue)) {
       alert("Invalid layout name");
       setIsEditing(true);
@@ -93,7 +57,7 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
         },
         body: JSON.stringify({
           token: cookies.token,
-          layout_name: label,
+          layout_name: label.toLowerCase(),
           new_layout_name: inputValue,
         }),
       })
@@ -133,7 +97,7 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="flex items-center gap-2 leading-normal">
+        <div className="flex items-center gap-2 leading-normal" onClick={() => window.location.pathname === `/custom/${label.toLowerCase()}` ? null : window.location.href = href}>
           {icon}
           {isEditing ? (
             <div className="flex items-center gap-2 w-full">
@@ -221,7 +185,7 @@ export default function ControlPanel({
     const name = `custom${Math.floor(1000 + Math.random() * 9000)}`;
     console.log(name);
     //check if new name is valid, it should not be empty and should not contain any special characters
-    const regex = /^[a-zA-Z0-9]+$/;
+    const regex = /^[a-z0-9]+$/;
     if (name === "" || !regex.test(name)) {
       alert("Invalid layout name");
       return;
@@ -244,7 +208,7 @@ export default function ControlPanel({
         },
         body: JSON.stringify({
           token: cookies.token,
-          layout_name: name,
+          layout_name: name.toLowerCase(),
           layout: [
             {
               modules: [],
@@ -294,7 +258,7 @@ export default function ControlPanel({
         },
         body: JSON.stringify({
           token: cookies.token,
-          layout_name: deleteModalLayoutName,
+          layout_name: deleteModalLayoutName.toLowerCase(),
         }),
       })
         .then((res) => res.json())
