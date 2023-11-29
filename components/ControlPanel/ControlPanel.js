@@ -32,18 +32,12 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
     setIsEditing(!isEditing);
   };
 
-  const handleCheckClick = (e) => {
-    setIsEditing(false);
-    // Here, you can also add any logic to save or confirm the changes made in the input
-    updateCustomLayoutName(e);
-  };
-
-
   const updateCustomLayoutName = (e) => {
     e.preventDefault();
     setLoading(true);
+    setIsEditing(false);
     //check if new name is valid, it should not be empty and should not contain any special characters, lowercase letters only and numbers
-    const regex = /^[a-z0-9]+$/;
+    const regex = /^[a-zA-Z0-9]+$/;
     if (inputValue === "" || !regex.test(inputValue)) {
       alert("Invalid layout name");
       setIsEditing(true);
@@ -57,7 +51,7 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
         },
         body: JSON.stringify({
           token: cookies.token,
-          layout_name: label.toLowerCase(),
+          layout_name: label,
           new_layout_name: inputValue,
         }),
       })
@@ -70,11 +64,15 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
             refreshCustomLayouts();
             setIsEditing(false);
             setLoading(false);
+            // if (window.location.pathname === `/custom/${label}`) {
+            //   window.location.href = `/custom/${inputValue}`;
+            // }
           } else {
             console.log(res);
             alert(
               "Something went wrong, please try again! Make sure you are not using a layout name that already exists. err-12"
             );
+            
             setIsEditing(true);
             setLoading(false);
           }
@@ -82,7 +80,8 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
         .catch((err) => {
           console.log(err);
           alert(
-            "Something went wrong, please try again! Make sure you are not using a layout name that already exists. err-22"
+            "Something went wrong, please try again! Make sure you are not using a layout name that already exists. err-22\n" +
+              err
           );
           setIsEditing(true);
           setLoading(false);
@@ -97,8 +96,8 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="flex items-center gap-2 leading-normal" onClick={() => window.location.pathname === `/custom/${label.toLowerCase()}` ? null : window.location.href = href}>
-          {icon}
+        <div className="flex items-center gap-2 leading-normal">
+          <span onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}>{icon}</span>
           {isEditing ? (
             <div className="flex items-center gap-2 w-full">
               <input
@@ -110,12 +109,13 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
                 className="text-lg bg-transparent w-full"
               />
               <CheckRoundedIcon
-                onClick={(e) => handleCheckClick(e)}
+                onClick={(e) => updateCustomLayoutName(e)}
                 sx={{ fontSize: 18 }}
               />
             </div>
           ) : (
-            <span className="text-lg ">{inputValue}</span>
+        // onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}
+            <span className="text-lg" onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}>{inputValue}</span>
           )}
         </div>
 
@@ -181,11 +181,17 @@ export default function ControlPanel({
   const openModal = () => setShowModal(true);
 
   const addNewLayout = (e) => {
-    //generate cust_4digit_random_number
-    const name = `custom${Math.floor(1000 + Math.random() * 9000)}`;
+    //generate next layout, i.e if they already have 1 layout, then name it custom2, if they have 2 layouts, name it custom3, etc.
+    e.preventDefault();
+    let name = "";
+    if (customLayout) {
+      name = `custom${customLayout.length + 1}`;
+    } else {
+      name = "custom1";
+    }
     console.log(name);
     //check if new name is valid, it should not be empty and should not contain any special characters
-    const regex = /^[a-z0-9]+$/;
+    const regex = /^[a-zA-Z0-9]+$/;
     if (name === "" || !regex.test(name)) {
       alert("Invalid layout name");
       return;
@@ -194,7 +200,7 @@ export default function ControlPanel({
     //check all layout names, if name already exists, alert user
     if (customLayout) {
       for (let i = 0; i < customLayout.length; i++) {
-        if (customLayout[i].name.toLowerCase() === name.toLowerCase()) {
+        if (customLayout[i].name === name) {
           alert("Layout name already exists");
           return;
         }
@@ -205,10 +211,11 @@ export default function ControlPanel({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
           token: cookies.token,
-          layout_name: name.toLowerCase(),
+          layout_name: name,
           layout: [
             {
               modules: [],
@@ -258,7 +265,7 @@ export default function ControlPanel({
         },
         body: JSON.stringify({
           token: cookies.token,
-          layout_name: deleteModalLayoutName.toLowerCase(),
+          layout_name: deleteModalLayoutName,
         }),
       })
         .then((res) => res.json())
@@ -267,8 +274,12 @@ export default function ControlPanel({
           if (res.success) {
             console.log("success");
             alert("Layout deleted successfully");
-            refreshCustomLayouts();
-            setOpenDeleteModal(false);
+            if (window.location.pathname === `/custom/${deleteModalLayoutName}`) {
+              window.location.href = `/`;
+            } else {
+              refreshCustomLayouts();
+              setOpenDeleteModal(false);
+            }
           } else {
             console.log(res);
             alert("Something went wrong, please try again! err-14");
@@ -351,7 +362,7 @@ export default function ControlPanel({
             </div>
             <div className="border-top border-white pt-4">
               {/* <Button className='w-full !text-base bg-white !text-[#1A1921] '> <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />New layout</Button> */}
-              {customLayout ? (
+              {cookies.token && customLayout ? (
                 customLayout.length < 3 ? (
                   <Button
                     className="w-full !text-base bg-white !text-[#1A1921] "

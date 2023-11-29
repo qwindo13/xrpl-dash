@@ -108,9 +108,10 @@ export default function App({ Component, pageProps }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          // console.log('Success:', data.data);
+          console.log('Success:', data.data);
           // setAlerts(data.data); //type: array of objects, each object has: {alert:{type,value:{coin,issuer,price,img}},created_at,hit_at,notified} For now we group the same coin alerts together and put them in an array
           if (!data.hasOwnProperty("data")) {
+            setCustomLayouts([]);
             return;
           }
           const customLayouts = data.data;

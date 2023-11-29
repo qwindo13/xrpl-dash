@@ -5,7 +5,7 @@ import Footer from "../Footer/Footer";
 
 import mockFeed from "@/data/mockFeedcomponents";
 
-function TestLayout({ children, showControlPanel }) {
+function TestLayout({ children, showControlPanel, customLayout,refreshCustomLayouts }) {
     return (
         <>
             <Header />
@@ -26,7 +26,7 @@ function TestLayout({ children, showControlPanel }) {
                 */}
 
 
-                {showControlPanel && <ControlPanel />}
+                {showControlPanel && <ControlPanel customLayout={customLayout} refreshCustomLayouts={refreshCustomLayouts} />}
                 {children}
                 <Footer />
             </main>
