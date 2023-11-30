@@ -16,9 +16,7 @@ import { config } from "@/configcomponents";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 
-{
-  /* MENU ITEM FOR LAYOUT MENU */
-}
+{/* MENU ITEM FOR LAYOUT MENU */ }
 const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDeleteLayout }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -59,8 +57,6 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
         .then((res) => {
           console.log(res);
           if (res.success) {
-            console.log("success");
-            alert("Layout name updated successfully");
             refreshCustomLayouts();
             setIsEditing(false);
             setLoading(false);
@@ -72,7 +68,7 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
             alert(
               "Something went wrong, please try again! Make sure you are not using a layout name that already exists. err-12"
             );
-            
+
             setIsEditing(true);
             setLoading(false);
           }
@@ -81,7 +77,7 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
           console.log(err);
           alert(
             "Something went wrong, please try again! Make sure you are not using a layout name that already exists. err-22\n" +
-              err
+            err
           );
           setIsEditing(true);
           setLoading(false);
@@ -92,7 +88,7 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
   return (
     <>
       <div
-        className="px-4 py-2 rounded-xl hover:bg-[#A6B0CF]  hover:bg-opacity-5 w-full flex justify-between !leading-none items-center transition-all duration-200"
+        className="px-4 py-2 rounded-xl hover:bg-[#A6B0CF]  hover:bg-opacity-5 w-full flex justify-between !leading-none items-center transition-all duration-200 cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -114,26 +110,24 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
               />
             </div>
           ) : (
-        // onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}
+            // onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}
             <span className="text-lg" onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}>{inputValue}</span>
           )}
         </div>
 
         {custom && !isEditing && (
-          <div className="flex gap-2">
+          <div className="flex gap-2 ml-4">
             <Button
               onClick={(e) => handleEditClick(e)}
-              className={`!p-0 !bg-transparent transition-all duration-200 ${
-                isHovered ? "opacity-100" : "opacity-0"
-              }`}
+              className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"
+                }`}
             >
               <EditIcon sx={{ fontSize: 18 }} />
             </Button>
             {/* TODO: Add a delete modal when this button is clicked */}
             <Button
-              className={`!p-0 !bg-transparent transition-all duration-200 ${
-                isHovered ? "opacity-100" : "opacity-0"
-              }`}
+              className={`!p-0 !bg-transparent transition-all duration-200 ${isHovered ? "opacity-100" : "opacity-0"
+                }`}
               onClick={(e) => onClickDeleteLayout(e, label)}
               disableAnimation
             >
@@ -230,8 +224,6 @@ export default function ControlPanel({
         .then((res) => {
           console.log(res);
           if (res.success) {
-            console.log("success");
-            alert("Layout created successfully");
             refreshCustomLayouts();
           } else {
             console.log(res);
@@ -272,8 +264,6 @@ export default function ControlPanel({
         .then((res) => {
           console.log(res);
           if (res.success) {
-            console.log("success");
-            alert("Layout deleted successfully");
             if (window.location.pathname === `/custom/${deleteModalLayoutName}`) {
               window.location.href = `/`;
             } else {
@@ -297,13 +287,14 @@ export default function ControlPanel({
   return (
     <>
       <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12 pt-[2px]">
+        
         {/* LAYOUT MENU DROPDOWN */}
         <div className="relative">
           <div className="text-xs absolute -top-2 font-semibold opacity-60 hidden ">
             Select Layout
           </div>
           <Dropdown
-            className="w-60 !gap-0 !overflow-hidden !max-h-96 !overflow-y-scroll"
+            className="w-auto min-w-60 !gap-0 !overflow-auto !max-h-96"
             isBlurred
             trigger={
               <Button
@@ -337,7 +328,7 @@ export default function ControlPanel({
                                 href="/custom"
                                 label="Custom"
                             /> */}
-              {customLayout ? (
+              {customLayout && customLayout.length > 0 ? (
                 customLayout.map((item, index) => (
                   <LayoutItem
                     key={index}
@@ -350,13 +341,8 @@ export default function ControlPanel({
                   />
                 ))
               ) : (
-                <div className="flex flex-col gap-2">
-                  <span className="text-sm font-semibold text-white opacity-60 ">
-                    You don&apos;t have any layouts yet.
-                  </span>
-                  <span className="text-sm font-semibold text-white opacity-60 ">
-                    Create a new one by clicking on the button below.
-                  </span>
+                <div className="text-center p-2 text-xs opacity-40">
+                  You don't have any custom layouts yet.
                 </div>
               )}
             </div>
@@ -518,34 +504,24 @@ export default function ControlPanel({
       {/* TODO: Add a modal for deleting a custom layout */}
       <Modal
         title="Delete Layout"
-        description="Are you sure you want to delete this layout?"
+        description="Are you sure you want to delete this layout?  This action is irreversible."
         showModal={openDeleteModal}
         closeModal={() => setOpenDeleteModal(false)}
-        className="md:h-[480px] !overflow-scroll"
       >
         {/* a confirm or cancel button, and a warning saying this action is undoable */}
-        <div className="flex flex-col gap-4">
-          <span className="text-base font-semibold opacity-60">
-            This action is irreversible.
-          </span>
-          <div className="flex gap-2">
-            <Button
-              className="w-full !text-base bg-white !text-[#1A1921] "
-              onClick={() => setOpenDeleteModal(false)}
-            >
-              {" "}
-              <ClearRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />
-              Cancel
-            </Button>
-            <Button
-              className="w-full !text-base bg-red-600 !text-[#1A1921] "
-              onClick={(e) => deleteCustomLayout(e)}
-            >
-              {" "}
-              <CheckRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />
-              Confirm
-            </Button>
-          </div>
+        <div className="flex w-full justify-end gap-4">
+          <Button
+            className="!text-base"
+            onClick={() => setOpenDeleteModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            className="!text-base bg-white !text-[#1A1921] "
+            onClick={(e) => deleteCustomLayout(e)}
+          >
+            Delete
+          </Button>
         </div>
       </Modal>
     </>
