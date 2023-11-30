@@ -287,7 +287,7 @@ export default function ControlPanel({
   return (
     <>
       <div className="w-full flex flex-col md:flex-row gap-4 md:items-center md:h-12 pt-[2px]">
-        
+
         {/* LAYOUT MENU DROPDOWN */}
         <div className="relative">
           <div className="text-xs absolute -top-2 font-semibold opacity-60 hidden ">
@@ -347,14 +347,12 @@ export default function ControlPanel({
               )}
             </div>
             <div className="border-top border-white pt-4">
-              {/* <Button className='w-full !text-base bg-white !text-[#1A1921] '> <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />New layout</Button> */}
               {cookies.token && customLayout ? (
                 customLayout.length < 3 ? (
                   <Button
                     className="w-full !text-base bg-white !text-[#1A1921] "
                     onClick={addNewLayout}
                   >
-                    {" "}
                     <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />
                     New layout
                   </Button>
@@ -363,7 +361,6 @@ export default function ControlPanel({
                     className="w-full !text-base bg-gray-400 !text-[#1A1921] "
                     disabled
                   >
-                    {" "}
                     <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />
                     New layout
                   </Button>
@@ -373,7 +370,6 @@ export default function ControlPanel({
                   className="w-full !text-base bg-gray-400 !text-[#1A1921] "
                   disabled
                 >
-                  {" "}
                   <AddRoundedIcon sx={{ fontSize: 20 }} className="mr-2" />
                   New layout
                 </Button>
