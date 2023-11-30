@@ -17,7 +17,7 @@ import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 
 {/* MENU ITEM FOR LAYOUT MENU */ }
-const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDeleteLayout }) => {
+const LayoutItem = ({ href, label, icon, custom, layoutId, refreshCustomLayouts, onClickDeleteLayout, onEditStateChange }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState(label);
@@ -28,6 +28,7 @@ const LayoutItem = ({ href, label, icon, custom, refreshCustomLayouts, onClickDe
   const handleEditClick = (event) => {
     event.preventDefault();
     setIsEditing(!isEditing);
+    onEditStateChange(layoutId, !isEditing); // Inform parent component about the edit state
   };
 
   const updateCustomLayoutName = (e) => {
@@ -156,12 +157,18 @@ export default function ControlPanel({
   );
 
   const [showModal, setShowModal] = useState(false);
+  const [editingLayout, setEditingLayout] = useState(null);
+
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
   const [label, setLabel] = useState("Discover");
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleteModalLayoutName, setDeleteModalLayoutName] = useState("");
   const api_url = config.api_url;
   const router = useRouter();
+
+  const handleEditStateChange = (layoutId, isEditing) => {
+    setEditingLayout(isEditing ? layoutId : null);
+  };
 
   //check if there is a custom layout name in the url
   useEffect(() => {
@@ -336,8 +343,11 @@ export default function ControlPanel({
                     icon={<DashboardRoundedIcon sx={{ fontSize: 20 }} />}
                     href={`/custom/${item.name}`}
                     label={item.name}
+                    layoutId={item.name} // Unique identifier for each layout
                     refreshCustomLayouts={refreshCustomLayouts}
                     onClickDeleteLayout={onClickDeleteLayout}
+                    onEditStateChange={handleEditStateChange}
+                    isEditing={editingLayout === item.name} // Control edit state from parent
                   />
                 ))
               ) : (
