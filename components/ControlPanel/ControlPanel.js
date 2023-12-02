@@ -351,9 +351,10 @@ export default function ControlPanel({
                   />
                 ))
               ) : (
-                <div className="text-center p-2 text-xs opacity-40">
-                  You don't have any custom layouts yet.
-                </div>
+                <span className="text-center p-2 text-xs opacity-40">
+                You don&apos;t have any custom layouts yet.
+              </span>
+              
               )}
             </div>
             <div className="border-top border-white pt-4">
