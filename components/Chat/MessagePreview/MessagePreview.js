@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const formatTimestamp = (timestamp) => {
     const now = new Date();
@@ -19,9 +20,11 @@ const formatTimestamp = (timestamp) => {
     }
 }
 
-const MessagePreview = ({ avatarUrl, userName, messagePreview, messageTimestamp, unreadCount = '0' }) => {
+const MessagePreview = ({ avatarUrl, userName, messagePreview, messageTimestamp, unreadCount = '0', onClick }) => {
     return (
-        <div className='flex w-full hover:bg-[#21212A] transition-all duration-200 rounded-2xl cursor-pointer overflow-hidden gap-4 items-center p-4 leading-none'>
+        <div
+            onClick={onClick}
+            className='flex w-full hover:bg-[#21212A] transition-all duration-200 rounded-xl cursor-pointer overflow-hidden gap-4 items-center p-4 leading-none'>
             {avatarUrl ? (
                 <Image
                     src={avatarUrl}
@@ -31,17 +34,17 @@ const MessagePreview = ({ avatarUrl, userName, messagePreview, messageTimestamp,
                     height={40}
                 />
             ) : (
-                <div className="rounded-full bg-default-avatar h-12 w-12 aspect-square" />
+                <motion.div layoutId={`avatar-${userName}`}  className="rounded-full bg-default-avatar h-10 w-10 aspect-square" />
             )}
             <div className='w-full flex flex-col justify-between grow items-center overflow-hidden gap-1 '>
                 <div className='w-full flex justify-between items-center gap-4'>
-                    <span className="text-base font-semibold">{userName}</span>
-                    <span className='opacity-40 text-sm'>{formatTimestamp(messageTimestamp)}</span>
+                    <motion.span layoutId={`userName-${userName}`} className="text-sm font-semibold">{userName}</motion.span>
+                    <span className='opacity-40 text-xs'>{formatTimestamp(messageTimestamp)}</span>
                 </div>
                 <div className='w-full flex justify-between items-center gap-4'>
-                    <p className="text-sm opacity-40 truncate">{messagePreview}</p>
+                    <motion.p layoutId={`message-${userName}`} className="text-sm opacity-40 truncate">{messagePreview}</motion.p>
                     {unreadCount > 0 && (
-                        <div class="flex items-center justify-center h-6 w-6 rounded-full bg-negative aspect-square"><span class="font-semibold text-xs">{unreadCount}</span></div>
+                        <div class="flex items-center justify-center h-4 w-4 rounded-full bg-negative aspect-square"><span class="font-semibold text-xs">{unreadCount}</span></div>
                     )}
                 </div>
             </div>

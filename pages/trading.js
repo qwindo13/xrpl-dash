@@ -6,7 +6,7 @@ import 'react-resizable/css/styles.css';
 import TestLayout from '@/components/Layouts/TestLayoutcomponents';
 import Nfts from '@/components/Modules/NonFungibleTokens/MultipleNfts/MultipleNftscomponents';
 import PriceChart from '@/components/Modules/Trades/Chart/Chartcomponents';
-import AIChatBot from '@/components/Modules/Misc/AIChatBot/AIChatBotcomponents';
+import Messages from '@/components/Modules/Misc/Messages/Messagescomponents';
 import OrderBook from '@/components/Modules/Trades/OrderBook/OrderBookcomponents';
 import BitcoinHalving from '@/components/Modules/Misc/BitcoinHalving/BitcoinHalvingcomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize, fearGreedSize } from '@/components/Utils/ModuleSizescomponents';
@@ -94,7 +94,7 @@ export default function Home({customLayout,refreshCustomLayouts }) {
                     onLayoutChange={handleLayoutChange}
                 >
                     <div key="aiChatBot">
-                        <AIChatBot />
+                        <Messages />
                     </div>
                     <div key="richlist">
                         {/* <PriceChart /> */}

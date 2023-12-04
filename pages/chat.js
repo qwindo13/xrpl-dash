@@ -8,7 +8,6 @@ import MessagePreview from "@/components/Chat/MessagePreview/MessagePreviewcompo
 import AvatarInfoCard from "@/components/Chat/AvatarInfoCard/AvatarInfoCardcomponents";
 import ChatBox from "@/components/Chat/ChatBox/ChatBoxcomponents";
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import { Input } from "postcss";
 
 export default function Chat() {
 
