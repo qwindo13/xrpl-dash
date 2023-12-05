@@ -3,17 +3,21 @@ import { motion } from "framer-motion";
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
+import SearchBarSwitch from "@/components/UI/ModuleCard/Settings/SearchBarSwitchcomponents";
 import InputField from "@/components/UI/InputField/InputFieldcomponents";
 import Button from "@/components/UI/Button/Buttoncomponents";
 import MessagePreview from "@/components/Chat/MessagePreview/MessagePreviewcomponents";
 import ChatBox from "@/components/Chat/ChatBox/ChatBoxcomponents";
+import Dropdown from "@/components/UI/Dropdown/Dropdowncomponents";
 import SearchBar from "@/components/UI/SearchBar/SearchBarcomponents";
 import KeyboardBackspaceRoundedIcon from '@mui/icons-material/KeyboardBackspaceRounded';
 
 const defaultSettings = {
     displayTitle: true,
     backgroundSetting: "Transparent",
+    displaySearchBar: true,
 };
+
 // Dummy messages data
 const messagesData = [
     {
@@ -75,15 +79,32 @@ const FullMessage = ({ userName, message, onClose }) => {
                 <motion.h1 layoutId={`userName-${userName}`}>{userName}</motion.h1>
             </motion.div>
 
-            <motion.div className="flex grow">
-
-              
+            <motion.div className="flex grow flex-col gap-4 overflow-auto">
+                <ChatBox
+                    compactMode
+                    timestamp={new Date().toISOString()}
+                    userName={userName}
+                    type="received"
+                    messages={[
+                        'Hello! How can I help you with XRPL?',
+                        'Can you clarify your question?',
+                    ]}
+                />
+                <ChatBox
+                    compactMode
+                    timestamp={new Date().toISOString()}
+                    userName={userName}
+                    type="sent"
+                    messages={[
+                        'Hello! How can I help you with XRPL?',
+                        'Can you clarify your question?',
+                    ]}
+                />
             </motion.div>
             <InputField placeholder="Type something..." className="bg-[#A6B0CF] bg-opacity-5" sendIcon />
         </motion.div>
     );
 };
-
 
 const Messages = () => {
 
@@ -120,27 +141,37 @@ const Messages = () => {
                         value={moduleSettings.backgroundSetting}
                         onChange={(value) => updateSettings("backgroundSetting", value)}
                     />
+                    <SearchBarSwitch
+                        value={moduleSettings.displaySearchBar}
+                        onChange={(value) => updateSettings("displaySearchBar", value)}
+                    />
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}
             className={`${backgroundClass}`}
         >
             <div className="w-full h-auto flex flex-col">
-                <SearchBar placeholder='Search messages' />
-
+                {moduleSettings.displaySearchBar && (
+                    <div className="mb-4">
+                        <SearchBar placeholder='Search messages' />
+                    </div>
+                )}
                 {/* PREVIEW MESSAGES */}
-                {messagesData.map((message, index) => (
-                    <MessagePreview
-                        key={index}
-                        userName={message.userName}
-                        messagePreview={message.messagePreview}
-                        messageTimestamp={message.messageTimestamp}
-                        unreadCount={message.unreadCount}
-                        onClick={() => handlePreviewClick(message)}
-                        isSelected={selectedMessage && selectedMessage.userName === message.userName}
+                <motion.div layout>
+                    {messagesData.map((message, index) => (
+                        <MessagePreview
+                            key={index}
+                            userName={message.userName}
+                            messagePreview={message.messagePreview}
+                            messageTimestamp={message.messageTimestamp}
+                            unreadCount={message.unreadCount}
+                            onClick={() => handlePreviewClick(message)}
+                            isSelected={selectedMessage && selectedMessage.userName === message.userName}
 
-                    />
-                ))}
+                        />
+                    ))}
+                </motion.div>
+
                 {/* FULL MESSAGE */}
                 {selectedMessage && (
                     <FullMessage

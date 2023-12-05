@@ -42,7 +42,7 @@ const MessagePreview = ({ avatarUrl, userName, messagePreview, messageTimestamp,
                     <span className='opacity-40 text-xs'>{formatTimestamp(messageTimestamp)}</span>
                 </div>
                 <div className='w-full flex justify-between items-center gap-4'>
-                    <motion.p layoutId={`message-${userName}`} className="text-sm opacity-40 truncate">{messagePreview}</motion.p>
+                    <motion.p layoutId={`message-${userName}`} className={`text-sm ${unreadCount > 0 ? '!opacity-100' : '!opacity-40'} truncate`}>{messagePreview}</motion.p>
                     {unreadCount > 0 && (
                         <div class="flex items-center justify-center h-4 w-4 rounded-full bg-negative aspect-square"><span class="font-semibold text-xs">{unreadCount}</span></div>
                     )}

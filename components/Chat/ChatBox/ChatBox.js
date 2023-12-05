@@ -4,7 +4,7 @@ import Avatar from '@/components/UI/Avatar/Avatarcomponents';
 import Button from '@/components/UI/Button/Buttoncomponents';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 
-const Message = ({ type, content, avatarUrl, userName, timestamp, chatBot }) => {
+const Message = ({ type, content, avatarUrl, userName, timestamp, compactMode }) => {
     const baseStyles = "p-4 rounded-xl bg-[#21212A] w-auto max-w-2xl";
     const receivedStyles = "rounded-tl-none bg-[#A6B0CF] bg-opacity-5 backdrop-blur-xl";
     const sentStyles = "bg-[#85A8D8] ml-auto text-white rounded-tr-none";
@@ -13,31 +13,6 @@ const Message = ({ type, content, avatarUrl, userName, timestamp, chatBot }) => 
 
     return (
         <div className={styles}>
-            {chatBot && (
-                <div className='flex w-full justify-between items-center mb-2'>
-                    <div className="flex items-center gap-2 ">
-                        {avatarUrl ? (
-                            <Image
-                                src={avatarUrl}
-                                alt={userName}
-                                className="rounded-full aspect-square"
-                                width={32}
-                                height={32}
-                            />
-                        ) : (
-                            <Avatar className="h-40 w-40" />
-                        )}
-                        <div>
-                            <div className="font-semibold">{userName}</div>
-                        </div>
-                    </div>
-                    {type === "received" && (
-                        <Button className="!p-0 bg-transparent">
-                            <RefreshRoundedIcon sx={{ fontSize: 18 }}/>
-                        </Button>
-                    )}
-                </div>
-            )}
             <div className={`text-sm font-normal`}>{content}</div>
         </div>
     );
@@ -62,12 +37,12 @@ const formatTimestamp = (timestamp) => {
     }
 }
 
-const ChatBox = ({ avatarUrl, timestamp, userName, type, messages, chatBot }) => {
+const ChatBox = ({ avatarUrl, timestamp, userName, type, messages, compactMode }) => {
     const formattedTimestamp = formatTimestamp(timestamp);
 
     return (
         <div className={`flex w-auto ${type === 'sent' ? 'flex-row-reverse' : ''}`}>
-            {!chatBot && (
+            {!compactMode && (
                 <>
                     {/* Avatar */}
                     {avatarUrl ? (
@@ -86,7 +61,7 @@ const ChatBox = ({ avatarUrl, timestamp, userName, type, messages, chatBot }) =>
 
             {/* Messages and Timestamp */}
             <div className="w-auto flex flex-col gap-2">
-                {!chatBot && (
+                {!compactMode && (
                     <div className={`flex gap-4 items-center ${type === 'sent' ? 'justify-end' : 'justify-start'}`}>
                         <span className="font-semibold">{userName}</span>
                         <span className="text-sm text-gray-400">{formattedTimestamp}</span>
@@ -97,10 +72,10 @@ const ChatBox = ({ avatarUrl, timestamp, userName, type, messages, chatBot }) =>
                         key={index}
                         type={type}
                         content={message}
-                        avatarUrl={chatBot ? avatarUrl : null}
-                        userName={chatBot ? userName : null}
-                        timestamp={chatBot ? formattedTimestamp : null}
-                        chatBot={chatBot}
+                        avatarUrl={compactMode ? avatarUrl : null}
+                        userName={compactMode ? userName : null}
+                        timestamp={compactMode ? formattedTimestamp : null}
+                        compactMode={compactMode}
                     />
                 ))}
             </div>
