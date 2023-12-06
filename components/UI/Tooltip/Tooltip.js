@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 
-const Tooltip = ({ children, copyContent }) => {
+const Tooltip = ({ children, className, copyContent, enableCopy = false, tooltipContent = 'Copy', position = 'bottom-right' }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [tooltipText, setTooltipText] = useState('Copy');
+  const [tooltipText, setTooltipText] = useState(tooltipContent);
   
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -26,13 +26,32 @@ const Tooltip = ({ children, copyContent }) => {
 
   const handleHoverEnd = () => {
     setIsHovered(false);
-    setTooltipText('Copy'); // Reset tooltip text when not hovering
+    setTooltipText(tooltipContent); // Reset tooltip text to initial value when not hovering
   };
 
   const handleTooltipClick = async () => {
-    await navigator.clipboard.writeText(copyContent);
-    setTooltipText('Copied!');
+    if (enableCopy) {
+      await navigator.clipboard.writeText(copyContent);
+      setTooltipText('Copied!');
+    }
   };
+
+  const getTransformStyle = () => {
+    switch (position) {
+      case 'bottom-left':
+        return 'translate(-100%, 20%)';
+      case 'top-right':
+        return 'translate(20%, -100%)';
+      case 'top-left':
+        return 'translate(-100%, -100%)';
+      case 'top-center':
+        return 'translate(-50%, -120%)'; // Centered horizontally and above the cursor
+      default:
+        // default to 'bottom-right'
+        return 'translate(20%, 20%)';
+    }
+  };
+  
 
   return (
     <motion.div
@@ -41,7 +60,7 @@ const Tooltip = ({ children, copyContent }) => {
       onMouseEnter={handleHoverStart}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleHoverEnd}
-      onClick={handleTooltipClick}
+      onClick={enableCopy ? handleTooltipClick : undefined}
     >
       {children}
       <AnimatePresence>
@@ -55,11 +74,11 @@ const Tooltip = ({ children, copyContent }) => {
               position: 'absolute',
               top: springY,
               left: springX,
-              transform: 'translate(20%, 20%)',
+              transform: getTransformStyle(),
             }}
             className="flex px-4 py-2 border rounded-xl border-[#fff] border-opacity-10 bg-[#1A1921] backdrop-blur-xl z-10 cursor-pointer drop-shadow-md"
           >
-            <span className="text-sm font-semibold">{tooltipText}</span>
+            <span className={`text-sm font-semibold ${className}`}>{tooltipText}</span>
           </motion.div>
         )}
       </AnimatePresence>
