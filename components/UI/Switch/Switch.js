@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import styles from "./Switch.module.css";
 
-const Switch = ({ value, onChange, disabled = false }) => {
+const Switch = ({ value, onChange, disabled = false, size = 'md' }) => {
     const [isOn, setIsOn] = useState(value);
 
     useEffect(() => {
@@ -19,12 +19,12 @@ const Switch = ({ value, onChange, disabled = false }) => {
 
     return (
         <motion.div
-            className={`${styles.switch} ${disabled ? styles.disabled : ""}`} // Add the disabled class when disabled is true
+            className={`${styles.switch} ${styles[size]} ${disabled ? styles.disabled : ""}`}
             data-isOn={isOn}
             onClick={toggleSwitch}
             layout
         >
-            <motion.div className={styles.handle} layout transition={spring} />
+            <motion.div className={`${styles.handle} ${styles[size]}`} layout transition={spring} />
         </motion.div>
     );
 };

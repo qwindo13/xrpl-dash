@@ -135,7 +135,7 @@ export default function Profile({ nfts }) {
                         {isLoading ? (
                             <div className="bg-[#A6B0CF] bg-opacity-5 rounded w-40 h-5 animate-pulse"></div>
                         ) : (
-                            <Tooltip copyContent={xrpAddress} className="w-fit">
+                            <Tooltip enableCopy copyContent={xrpAddress} className="w-fit">
                                 <span className="text-lg opacity-60 cursor-pointer flex gap-2 items-center leading-normal">
                                     <Image className='text-white' src="/images/xrp-logo.svg" width={20} height={20} />
                                     {truncateAddress(xrpAddress)}

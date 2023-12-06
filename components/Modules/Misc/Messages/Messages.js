@@ -8,7 +8,10 @@ import InputField from "@/components/UI/InputField/InputFieldcomponents";
 import Button from "@/components/UI/Button/Buttoncomponents";
 import MessagePreview from "@/components/Chat/MessagePreview/MessagePreviewcomponents";
 import ChatBox from "@/components/Chat/ChatBox/ChatBoxcomponents";
+import Tooltip from "@/components/UI/Tooltip/Tooltipcomponents";
+import TxModal from "@/components/Modals/TxModal/TxModalcomponents";
 import Dropdown from "@/components/UI/Dropdown/Dropdowncomponents";
+import Switch from "@/components/UI/Switch/Switchcomponents";
 import SearchBar from "@/components/UI/SearchBar/SearchBarcomponents";
 import KeyboardBackspaceRoundedIcon from '@mui/icons-material/KeyboardBackspaceRounded';
 
@@ -86,8 +89,7 @@ const FullMessage = ({ userName, message, onClose }) => {
                     userName={userName}
                     type="received"
                     messages={[
-                        'Hello! How can I help you with XRPL?',
-                        'Can you clarify your question?',
+                        'Hi there! I’m interested in buying NFTs on XRPL. Can you guide me on how to get started?'
                     ]}
                 />
                 <ChatBox
@@ -101,7 +103,20 @@ const FullMessage = ({ userName, message, onClose }) => {
                     ]}
                 />
             </motion.div>
-            <InputField placeholder="Type something..." className="bg-[#A6B0CF] bg-opacity-5" sendIcon />
+            <div className="w-full flex flex-row gap-4 items-center">
+                <InputField placeholder="Type something..." className="bg-[#A6B0CF] bg-opacity-5 text-sm" sendIcon />
+                <div className="flex flex-col">
+                    <div className="flex flex-row justify-between items-center gap-4">
+                        <Tooltip tooltipContent="Enable it to send this message as a XRPL transaction." position="top-center" className="text-xs">
+                            <span className="text-sm w-auto flex gap-2 whitespace-nowrap gradient-text">Send with XRPL</span>
+                        </Tooltip>
+                        <Switch size="sm" />
+                    </div>
+                    <div>
+                        <span className="text-xs w-auto flex gap-2 whitespace-nowrap opacity-40">Send as a XRPL transaction</span>
+                    </div>
+                </div>
+            </div>
         </motion.div>
     );
 };
@@ -137,14 +152,15 @@ const Messages = () => {
                         value={moduleSettings.displayTitle}
                         onChange={(value) => updateSettings("displayTitle", value)}
                     />
-                    <BackgroundTabs
-                        value={moduleSettings.backgroundSetting}
-                        onChange={(value) => updateSettings("backgroundSetting", value)}
-                    />
                     <SearchBarSwitch
                         value={moduleSettings.displaySearchBar}
                         onChange={(value) => updateSettings("displaySearchBar", value)}
                     />
+                    <BackgroundTabs
+                        value={moduleSettings.backgroundSetting}
+                        onChange={(value) => updateSettings("backgroundSetting", value)}
+                    />
+
                 </>
             }
             disableTitle={!moduleSettings.displayTitle}

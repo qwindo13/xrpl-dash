@@ -35,3 +35,32 @@
 .disabled[data-isOn="true"] .handle {
     @apply bg-[#BEBEBE];
 }
+
+/* Medium size, which is the default */
+.switch.md {
+    @apply w-10 h-5;
+}
+
+.handle.md {
+    @apply w-3 h-3;
+}
+
+/* Small size switch */
+.switch.sm {
+    @apply w-8 h-4; 
+}
+
+/* Small size handle */
+.handle.sm {
+    @apply w-2.5 h-2.5; 
+    margin-top: -1px;
+}
+
+/* Large size */
+.switch.lg {
+    @apply w-12 h-6;
+}
+
+.handle.lg {
+    @apply w-4 h-4;
+}

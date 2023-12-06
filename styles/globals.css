@@ -75,6 +75,19 @@ textarea:focus, input:focus{
   100% {opacity: 1;}
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .gradient-text {
+    animation: move-bg 8s linear infinite;
+  }
+  @keyframes move-bg {
+    to {
+      background-position: var(--bg-size) 0;
+    }
+  }
+}
+
+
+
 .react-grid-item {
   @apply transition-shadow duration-300;	
 }
@@ -99,6 +112,14 @@ textarea:focus, input:focus{
 }
 .react-grid-item > .react-resizable-handle.react-resizable-handle-se{
   @apply !bottom-4 !right-4;
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, #f280a3, #c86ba0, #9b569d, #75619a, #4f6c97, #85a8d8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block; /* To support the gradient in some browsers */
+
 }
 
 /* General scrollbar styles */

@@ -26,7 +26,7 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                             {userData.username && (
                             <span className="text-lg font-semibold">@{userData.username.length > 20 ? userData.username.substring(0, 20) + '...' : userData.username}</span>
                             )}
-                            <Tooltip copyContent={xrpAddress}>
+                            <Tooltip enableCopy copyContent={xrpAddress}>
                                 <span className="text-base opacity-60">{truncateAddress(xrpAddress)}</span>
                             </Tooltip>
                         </div>

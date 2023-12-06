@@ -93,8 +93,8 @@ const LayoutItem = ({ href, label, icon, custom, layoutId, refreshCustomLayouts,
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="flex items-center gap-2 leading-normal">
-          <span onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}>{icon}</span>
+        <div className="flex items-center gap-3 leading-normal">
+          <span className="flex items-center" onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}>{icon}</span>
           {isEditing ? (
             <div className="flex items-center gap-2 w-full">
               <input
