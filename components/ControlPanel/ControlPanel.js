@@ -35,9 +35,11 @@ const LayoutItem = ({ href, label, icon, custom, layoutId, refreshCustomLayouts,
     e.preventDefault();
     setLoading(true);
     setIsEditing(false);
+    const sanitizedName = inputValue.replace(/ /g, "_");
     //check if new name is valid, it should not be empty and should not contain any special characters, lowercase letters only and numbers
-    const regex = /^[a-zA-Z0-9]+$/;
-    if (inputValue === "" || !regex.test(inputValue)) {
+    const regex = /^[a-zA-Z0-9_]+$/;
+    //change space to _
+    if (sanitizedName === "" || !regex.test(sanitizedName)) {
       alert("Invalid layout name");
       setIsEditing(true);
       return;
@@ -50,8 +52,8 @@ const LayoutItem = ({ href, label, icon, custom, layoutId, refreshCustomLayouts,
         },
         body: JSON.stringify({
           token: cookies.token,
-          layout_name: label,
-          new_layout_name: inputValue,
+          layout_name: label.replace(/ /g, "_"),
+          new_layout_name: sanitizedName,
         }),
       })
         .then((res) => res.json())
@@ -186,13 +188,15 @@ export default function ControlPanel({
     e.preventDefault();
     let name = "";
     if (customLayout) {
-      name = `custom${customLayout.length + 1}`;
+      name = `Custom ${customLayout.length + 1}`;
     } else {
-      name = "custom1";
+      name = "Custom 1";
     }
+    //change space to _
+    name = name.replace(/ /g, "_");
     console.log(name);
-    //check if new name is valid, it should not be empty and should not contain any special characters
-    const regex = /^[a-zA-Z0-9]+$/;
+    //check if new name is valid, it should not be empty and should not contain any special characters, but can contain spaces
+    const regex = /^[a-zA-Z0-9_]+$/;
     if (name === "" || !regex.test(name)) {
       alert("Invalid layout name");
       return;
@@ -264,7 +268,7 @@ export default function ControlPanel({
         },
         body: JSON.stringify({
           token: cookies.token,
-          layout_name: deleteModalLayoutName,
+          layout_name: deleteModalLayoutName.replace(/ /g, "_"),
         }),
       })
         .then((res) => res.json())
@@ -342,7 +346,7 @@ export default function ControlPanel({
                     custom
                     icon={<DashboardRoundedIcon sx={{ fontSize: 20 }} />}
                     href={`/custom/${item.name}`}
-                    label={item.name}
+                    label={item.name.replace(/_/g, " ")} // Replace underscores with spaces
                     layoutId={item.name} // Unique identifier for each layout
                     refreshCustomLayouts={refreshCustomLayouts}
                     onClickDeleteLayout={onClickDeleteLayout}

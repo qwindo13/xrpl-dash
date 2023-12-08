@@ -42,7 +42,6 @@ import Chart from "@/components/Modules/Trades/Chart/Chartcomponents";
 export default function Home({ customLayout, nfts, refreshCustomLayouts }) {
   const gridContainerRef = useRef(null); // Create a reference to the parent
   const [gridWidth, setGridWidth] = useState(null); // Initialize gridWidth with null
-  const [xrpAddress, setXrpAddress] = useState("");
   const [selectedLayout, setSelectedLayout] = useState("");
   const [changeCount, setChangeCount] = useState(0);
   const [layout, setLayout] = useState({
@@ -227,15 +226,6 @@ export default function Home({ customLayout, nfts, refreshCustomLayouts }) {
 
     return () => clearInterval(interval);
   }, [changeCount]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (localStorage.getItem("address")) {
-      setXrpAddress(localStorage.getItem("address"));
-    } else {
-      // setLoggedin(false);
-      // router.push('/auth/login');
-    }
-  }, []);
 
   const onClickTitle = (title) => {
     console.log(title);
