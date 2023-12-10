@@ -355,7 +355,7 @@ export default function ControlPanel({
                   />
                 ))
               ) : (
-                <span className="text-center p-2 text-xs opacity-40">
+                <span className="text-center p-2 text-xs opacity-40 flex">
                 You don&apos;t have any custom layouts yet.
               </span>
               
@@ -412,7 +412,7 @@ export default function ControlPanel({
         description="Customize your XRPLDash by adding modules that provide specific functionalities and data."
         showModal={showModal}
         closeModal={closeModal}
-        className="md:h-[480px] !overflow-scroll"
+        className="md:h-[480px] !overflow-y-scroll"
       >
         <div>
           <div className="flex flex-col gap-4">

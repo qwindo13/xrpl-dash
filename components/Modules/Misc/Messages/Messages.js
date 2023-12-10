@@ -75,7 +75,7 @@ const messagesData = [
 
 const FullMessage = ({ userName, message, onClose }) => {
     return (
-        <motion.div className="absolute top-0 left-0 w-full h-full p-4 bg-[#21212A] flex flex-col gap-4 justify-between">
+        <motion.div className="@container absolute top-0 left-0 w-full h-full p-4 bg-[#21212A] flex flex-col gap-4 justify-between">
             <motion.div className="w-full flex items-center gap-2">
                 <Button onClick={onClose} className="!p-0 bg-transparent mr-2" disableAnimation><KeyboardBackspaceRoundedIcon /></Button>
                 <motion.div layoutId={`avatar-${userName}`} className="rounded-full bg-default-avatar h-8 w-8 aspect-square" />
@@ -103,9 +103,9 @@ const FullMessage = ({ userName, message, onClose }) => {
                     ]}
                 />
             </motion.div>
-            <div className="w-full flex flex-row gap-4 items-center">
+            <div className="w-full flex flex-col @md:flex-row gap-4 items-center">
                 <InputField placeholder="Type something..." className="bg-[#A6B0CF] bg-opacity-5 text-sm" sendIcon />
-                <div className="flex flex-col">
+                <div className="flex flex-col w-full @md:w-auto">
                     <div className="flex flex-row justify-between items-center gap-4">
                         <Tooltip tooltipContent="Enable it to send this message as a XRPL transaction." position="top-center" className="text-xs">
                             <span className="text-sm w-auto flex gap-2 whitespace-nowrap gradient-text">Send with XRPL</span>
@@ -167,11 +167,14 @@ const Messages = () => {
             className={`${backgroundClass}`}
         >
             <div className="w-full h-auto flex flex-col">
+
+                {/* SEARCH BAR */}
                 {moduleSettings.displaySearchBar && (
                     <div className="mb-4">
-                        <SearchBar placeholder='Search messages' />
+                        <SearchBar placeholder='Search by address, username, or messages' />
                     </div>
                 )}
+                
                 {/* PREVIEW MESSAGES */}
                 <motion.div layout>
                     {messagesData.map((message, index) => (
