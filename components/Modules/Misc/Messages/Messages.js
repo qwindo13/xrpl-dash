@@ -103,7 +103,7 @@ const FullMessage = ({ userName, message, onClose }) => {
                     ]}
                 />
             </motion.div>
-            <div className="w-full flex flex-col @md:flex-row gap-4 items-center">
+            <div className="w-full flex flex-col-reverse @md:flex-row gap-4 items-center">
                 <InputField placeholder="Type something..." className="bg-[#A6B0CF] bg-opacity-5 text-sm" sendIcon />
                 <div className="flex flex-col w-full @md:w-auto">
                     <div className="flex flex-row justify-between items-center gap-4">
