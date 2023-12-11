@@ -48,6 +48,7 @@ function SideMenu({ openModal, xrpAddress, truncateAddress, showModal, closeModa
                     {/* MENU */}
                     <div className="flex flex-col gap-4">
                         <Link href={`/user/${xrpAddress}`}><span className="text-2xl font-semibold">My profile</span></Link>
+                        <Link href="/messages"><span className="text-2xl font-semibold">Messages</span></Link>
                         <Link href="/settings/profile"><span className="text-2xl font-semibold">Settings</span></Link>
                     </div>
 
