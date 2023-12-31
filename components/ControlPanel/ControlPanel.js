@@ -35,9 +35,15 @@ const LayoutItem = ({ href, label, icon, custom, layoutId, refreshCustomLayouts,
     e.preventDefault();
     setLoading(true);
     setIsEditing(false);
-    const sanitizedName = inputValue.replace(/ /g, "_");
+    //inputValue shouldnt contain '-'
+    if (inputValue.includes("-")) {
+      alert("Invalid layout name");
+      setIsEditing(true);
+      return;
+    }
+    const sanitizedName = inputValue.replace(/ /g, "-");
     //check if new name is valid, it should not be empty and should not contain any special characters, lowercase letters only and numbers
-    const regex = /^[a-zA-Z0-9_]+$/;
+    const regex = /^[a-zA-Z0-9-]+$/;
     //change space to _
     if (sanitizedName === "" || !regex.test(sanitizedName)) {
       alert("Invalid layout name");
@@ -52,7 +58,7 @@ const LayoutItem = ({ href, label, icon, custom, layoutId, refreshCustomLayouts,
         },
         body: JSON.stringify({
           token: cookies.token,
-          layout_name: label.replace(/ /g, "_"),
+          layout_name: label.replace(/ /g, "-"),
           new_layout_name: sanitizedName,
         }),
       })
@@ -96,7 +102,7 @@ const LayoutItem = ({ href, label, icon, custom, layoutId, refreshCustomLayouts,
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="flex items-center gap-3 leading-normal">
-          <span className="flex items-center" onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}>{icon}</span>
+          <span className="flex items-center" onClick={() => window.location.pathname === `/${label}` ? null : window.location.href = href}>{icon}</span>
           {isEditing ? (
             <div className="flex items-center gap-2 w-full">
               <input
@@ -114,7 +120,7 @@ const LayoutItem = ({ href, label, icon, custom, layoutId, refreshCustomLayouts,
             </div>
           ) : (
             // onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}
-            <span className="text-lg" onClick={() => window.location.pathname === `/custom/${label}` ? null : window.location.href = href}>{inputValue}</span>
+            <span className="text-lg" onClick={() => window.location.pathname === `/${label}` ? null : window.location.href = href}>{inputValue}</span>
           )}
         </div>
 
@@ -176,7 +182,8 @@ export default function ControlPanel({
   useEffect(() => {
     const slug = router.query.slug;
     if (slug) {
-      setLabel(slug);
+      setLabel(slug.replace(/-/g, " "));
+
     }
   }, [router.query.slug]);
 
@@ -192,11 +199,16 @@ export default function ControlPanel({
     } else {
       name = "Custom 1";
     }
+    //if '-' in name, give error
+    if (name.includes("-")) {
+      alert("Invalid layout name");
+      return;
+    }
     //change space to _
-    name = name.replace(/ /g, "_");
+    name = name.replace(/ /g, "-");
     console.log(name);
     //check if new name is valid, it should not be empty and should not contain any special characters, but can contain spaces
-    const regex = /^[a-zA-Z0-9_]+$/;
+    const regex = /^[a-zA-Z0-9-]+$/;
     if (name === "" || !regex.test(name)) {
       alert("Invalid layout name");
       return;
@@ -268,7 +280,7 @@ export default function ControlPanel({
         },
         body: JSON.stringify({
           token: cookies.token,
-          layout_name: deleteModalLayoutName.replace(/ /g, "_"),
+          layout_name: deleteModalLayoutName.replace(/ /g, "-"),
         }),
       })
         .then((res) => res.json())
@@ -346,7 +358,7 @@ export default function ControlPanel({
                     custom
                     icon={<DashboardRoundedIcon sx={{ fontSize: 20 }} />}
                     href={`/${item.name}`}
-                    label={item.name.replace(/_/g, " ")} // Replace underscores with spaces
+                    label={item.name.replace(/-/g, " ")} // Replace underscores with spaces
                     layoutId={item.name} // Unique identifier for each layout
                     refreshCustomLayouts={refreshCustomLayouts}
                     onClickDeleteLayout={onClickDeleteLayout}

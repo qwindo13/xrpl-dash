@@ -230,7 +230,6 @@ export default function Home({ customLayout, nfts, refreshCustomLayouts }) {
   const onClickTitle = (title) => {
     console.log(title);
     const name = `${title.toLowerCase().replace(/\s/g, "")}_${Date.now()}`;
-    console.log(name);
     setModules([...modules, name]);
     const size =
       title === "Price Info"
