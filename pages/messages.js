@@ -70,8 +70,8 @@ export default function Chat() {
 
     const FullMessage = ({ userName, message, onClose }) => {
         return (
-            <div className="@container grow h-auto overflow-y-auto flex flex-col p-4 gap-4 bg-[#21212A] rounded-2xl">
-                <div className="flex w-full justify-between sticky top-0 ">
+            <motion.div layout className="@container grow w-auto h-auto overflow-y-auto flex flex-col p-4 gap-8 bg-[#21212A] rounded-2xl">
+                <motion.div layout className="flex w-full justify-between sticky top-0 ">
                     <motion.div className="w-full flex items-center gap-4">
                         <motion.div className="rounded-full bg-default-avatar h-10 w-10 aspect-square" />
                         <motion.h1 className="text-xl">{userName}</motion.h1>
@@ -79,7 +79,7 @@ export default function Chat() {
                     <Button className='bg-transparent p-0' onClick={() => setShowDetailsColumn(!showDetailsColumn)}>
                         <MoreHorizRoundedIcon />
                     </Button>
-                </div>
+                </motion.div>
                 <div className="flex flex-col overflow-y-auto grow">
                     <ChatBox
                         compactMode
@@ -106,7 +106,7 @@ export default function Chat() {
                     />
                 </div>
                 <div className=" w-full flex flex-col-reverse @md:flex-row gap-4 items-center">
-                    <InputField placeholder="Type something..." className="bg-[#A6B0CF] bg-opacity-5 text-sm" sendIcon />
+                    <InputField placeholder="Type something..." className="bg-[#A6B0CF] bg-opacity-5 text-sm rounded-xl" sendIcon />
                     <div className="flex flex-col w-full @md:w-auto">
                         <motion.div layout className="flex flex-row justify-between items-center gap-4">
                             <Tooltip tooltipContent="Enable it to send this message as a XRPL transaction." position="top-center" className="text-xs">
@@ -119,7 +119,7 @@ export default function Chat() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
         );
     };
 
@@ -174,9 +174,9 @@ export default function Chat() {
 
                 {/* Chat Details */}
                 {showDetailsColumn && (
-                    <div className="w-1/4 h-auto overflow-y-auto bg-transparent p-4">
+                    <motion.div layout className="w-1/4 h-auto overflow-y-auto bg-transparent p-4">
                         <h1 className="text-2xl">Details</h1>
-                    </div>
+                    </motion.div>
                 )}
 
             </div>
