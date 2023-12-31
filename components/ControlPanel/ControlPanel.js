@@ -345,7 +345,7 @@ export default function ControlPanel({
                     key={index}
                     custom
                     icon={<DashboardRoundedIcon sx={{ fontSize: 20 }} />}
-                    href={`/custom/${item.name}`}
+                    href={`/${item.name}`}
                     label={item.name.replace(/_/g, " ")} // Replace underscores with spaces
                     layoutId={item.name} // Unique identifier for each layout
                     refreshCustomLayouts={refreshCustomLayouts}
