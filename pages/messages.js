@@ -16,7 +16,7 @@ import { useCookies } from "react-cookie";
 
 
 export default function Chat() {
-    const { sendMessage, lastMessage, readyState } = useWebSocket("ws://localhost:3000", {
+    const { sendMessage, lastMessage, readyState } = useWebSocket(config.ws_url, {
         onOpen: () => console.log("WS opened"),
         shouldReconnect: (closeEvent) => true,
         onClose: () => console.log("WS closed"),
