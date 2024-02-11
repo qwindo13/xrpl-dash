@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import AppLayout from "@/components/Layouts/AppLayoutcomponents";
 import SearchBar from "@/components/UI/SearchBar/SearchBarcomponents";
@@ -10,70 +10,186 @@ import Tooltip from "@/components/UI/Tooltip/Tooltipcomponents";
 import Switch from "@/components/UI/Switch/Switchcomponents";
 import ChatBox from "@/components/Chat/ChatBox/ChatBoxcomponents";
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
+import { config } from "@/configcomponents";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import { useCookies } from "react-cookie";
+
 
 export default function Chat() {
+    const { sendMessage, lastMessage, readyState } = useWebSocket("ws://localhost:3000", {
+        onOpen: () => console.log("WS opened"),
+        shouldReconnect: (closeEvent) => true,
+        onClose: () => console.log("WS closed"),
+      });
+    const [cookies] = useCookies(["token"]);
+    const [uData, setUData] = useState(null);
+    const [conversations, setConversations] = useState(null);
+    const [selectedMessage, setSelectedMessage] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [messages, setMessages] = useState(null);
+    const [inputMessage, setInputMessage] = useState("");
 
+
+    useEffect(() => {
+        if (lastMessage !== null) {
+            // console.log("Received message", lastMessage);
+            const message = JSON.parse(lastMessage.data);
+            if (message.type === "authenticate") {
+                if (message.success) {
+                    console.log("Authenticated successfully");
+                    setUData(message);
+                } else {
+                    console.log("Authentication failed");
+                }
+            
+            } else if (message.type === "getConversations") {
+                if ("error" in message) {
+                    console.log("Error", message.error);
+                } else if ("users" in message) {
+                    const msgs = message.users.map((user) => {
+                        return {
+                            userName: user.username,
+                            messagePreview: user.last_message.content,
+                            messageTimestamp: new Date(user.last_message.created).toISOString(),
+                            avatar: user.pfp,
+                            conversation_id: user.last_message.conversation_id,
+                        }
+                    });
+                    setConversations(msgs)
+                    if (msgs.length > 0) {
+                        setSelectedMessage(msgs[0]);
+                    }
+                    setLoading(false);
+                }
+            } else if (message.type === "createDm") {
+                console.log("Created DM", message.data);
+            } else if (message.type === "getMessages") {
+                //append messages to the conversation
+                console.log("Received messages", message);
+                if ("error" in message) {
+                    console.log("Error", message.error);
+                } else if ("messages" in message) {
+                    const convos = {};
+                    message.messages.forEach((msg) => {
+                        if (msg.conversation_id in convos) {
+                            convos[msg.conversation_id].push(msg);
+                        } else {
+                            convos[msg.conversation_id] = [msg];
+                        }
+                    });
+
+                    for (const convo in convos) {
+                        convos[convo].reverse();
+                    }
+                    setMessages(convos);
+                    console.log("Messages", convos);
+                }
+            } else if (message.type === "sendMessage") {
+                if (message.success) {
+                    // Create a copy of the messages state
+                    const convos = {...messages};
+                    if (message.data.conversation_id in convos) {
+                        convos[message.data.conversation_id].push(message.data);
+                    } else {
+                        convos[message.data.conversation_id] = [message.data];
+                    }
+                    setMessages(convos);
+                    //update the conversation preview
+                    const convoIndex = conversations.findIndex((convo) => convo.conversation_id === message.data.conversation_id);
+                    const convo = {...conversations[convoIndex]};
+                    convo.messagePreview = message.data.content;
+                    convo.messageTimestamp = new Date(message.data.created).toISOString();
+                    // Create a copy of the conversations state
+                    const newConversations = [...conversations];
+                    newConversations[convoIndex] = convo;
+                    setConversations(newConversations);
+                }
+            } else if (message.type === "subscribeChatUser") {
+                console.log("Subscribed to chat user", message);
+                if ("error" in message) {
+                    console.log("Error", message.error);
+                } else if ("success" in message && "data" in message) {
+                    const convos = { ...messages };
+                    if (message.data.conversation_id in convos) {
+                        convos[message.data.conversation_id].push(message.data);
+                    } else {
+                        convos[message.data.conversation_id] = [message.data];
+                    }
+                    setMessages(convos);
+                    //update the conversation preview
+                    const convoIndex = conversations.findIndex((convo) => convo.conversation_id === message.data.conversation_id);
+                    const convo = { ...conversations[convoIndex] };
+                    convo.messagePreview = message.data.content;
+                    convo.messageTimestamp = new Date(message.data.created).toISOString();
+                    // Create a copy of the conversations state
+                    const newConversations = [...conversations];
+                    newConversations[convoIndex] = convo;
+                    setConversations(newConversations);
+                }
+            }
+        }
+    }, [lastMessage]);
+
+    useEffect(() => {
+        if (readyState === ReadyState.OPEN && cookies.token) {
+            if (cookies.token !== undefined && cookies.token !== null && cookies.token !== "" && cookies.token !== "null" && cookies.token !== "undefined") {
+                console.log(`Authenticating: ${cookies.token}`)
+                sendMessage(JSON.stringify({ type: "authenticate", token: cookies.token }));
+            }
+        }
+    }, [readyState, cookies, sendMessage]);
+
+    useEffect(() => {
+        if (uData !== null) {
+            //send message to getConversation
+            sendMessage(JSON.stringify({ type: "getConversations", token: cookies.token }));
+            sendMessage(JSON.stringify({ type: "subscribeChatUser", token: cookies.token }));
+            // sendMessage(JSON.stringify({ type: "createDm", token: cookies.token, recipient: "rJAFQ2d6mUTgHHtLogPx5BB5NRT97ASFDy" }));
+        }
+    }, [uData]);
+
+    useEffect(() => {
+        if (conversations !== null) {
+            //get chats of all the conversations
+            const convoIds = conversations.map((convo) => convo.conversation_id);
+            const uniqueConvoIds = [...new Set(convoIds)];
+            console.log("Unique convo ids", uniqueConvoIds);
+            sendMessage(JSON.stringify({ type: "getMessages", token: cookies.token, conversation_ids: uniqueConvoIds }));
+            // uniqueConvoIds.forEach((convoId) => {
+            //     sendMessage(JSON.stringify({ type: "getMessages", token: cookies.token, conversation_id: convoId }));
+            // });
+        }
+    }, [conversations]);
+
+    useEffect(() => {
+        console.log(messages);
+    }, [messages]);
+    
     // State to control the display of the third column
     const [showDetailsColumn, setShowDetailsColumn] = useState(false);
 
-    // Dummy messages data
-    const messagesData = [
-        {
-            userName: "RippleTrader",
-            messagePreview: "Just made a successful XRPL transaction. Here's the tx hash: a1b2c3d4...",
-            messageTimestamp: new Date(Date.now() - 2 * 60 * 1000).toISOString(), // 2 minutes ago
-            unreadCount: 4,
-        },
-        {
-            userName: "CryptoNinja",
-            messagePreview: "Hey, do you have any XRPL validators you recommend?",
-            messageTimestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(), // 45 minutes ago
-            unreadCount: 1,
-        },
-        {
-            userName: "XRPMaximalist",
-            messagePreview: "The recent XRP Ledger upgrade is impressive. The throughput has increased!",
-            messageTimestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 hours ago
-            unreadCount: 0,
-        },
-        {
-            userName: "LedgerLover",
-            messagePreview: "Thinking of starting my own XRPL node. Any tips?",
-            messageTimestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
-            unreadCount: 3,
-        },
-        {
-            userName: "DecentralDan",
-            messagePreview: "Did you catch the latest proposal for the XRP Ledger? Looks promising.",
-            messageTimestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
-            unreadCount: 2,
-        },
-        {
-            userName: "CryptoQueen",
-            messagePreview: "I just received some airdropped tokens on the XRPL. Exciting times!",
-            messageTimestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week ago
-            unreadCount: 5,
-        },
-        {
-            userName: "ValidatorVic",
-            messagePreview: "My XRPL validator just achieved a new milestone in terms of uptime. Proud moment!",
-            messageTimestamp: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(), // 12 days ago
-            unreadCount: 0,
-        },
-        {
-            userName: "CoinCollector",
-            messagePreview: "I'm exploring some new NFT projects on the XRPL. Know any good ones?",
-            messageTimestamp: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), // 15 days ago
-            unreadCount: 7,
-        }
-    ];
+    const handleSendMessage = (message) => {
+        console.log("Sending message", message);
+        sendMessage(JSON.stringify({ type: "sendMessage", token: cookies.token, conversation_id: selectedMessage.conversation_id, content: message }));
+        setInputMessage("");
+    }
 
-    const FullMessage = ({ userName, message, onClose }) => {
+
+    const FullMessage = ({ userName, message, onClose, conversation_id, avatarUrl = undefined }) => {
         return (
             <div className="@container grow h-auto overflow-y-auto flex flex-col p-4 gap-4 bg-[#21212A] rounded-2xl">
                 <div className="flex w-full justify-between sticky top-0 ">
                     <motion.div className="w-full flex items-center gap-4">
-                        <motion.div className="rounded-full bg-default-avatar h-10 w-10 aspect-square" />
+                        {/* <motion.div className="rounded-full bg-default-avatar h-10 w-10 aspect-square" /> */}
+                        {avatarUrl !== "" || avatarUrl !== undefined ? (
+                            <AvatarInfoCard
+                                avatarUrl={avatarUrl}
+                                userName={userName}
+                                className="rounded-full aspect-square"
+                            />
+                        ) : (
+                            <motion.div layoutId={`avatar-${userName}`} className="rounded-full bg-default-avatar aspect-square" />
+                        )}
                         <motion.h1 className="text-xl">{userName}</motion.h1>
                     </motion.div>
                     <Button className='bg-transparent p-0' onClick={() => setShowDetailsColumn(!showDetailsColumn)}>
@@ -81,32 +197,34 @@ export default function Chat() {
                     </Button>
                 </div>
                 <div className="flex flex-col overflow-y-auto grow">
-                    <ChatBox
-                        compactMode
-                        timestamp={new Date().toISOString()}
-                        userName="John Doe"
-                        type="received"
-                        messages={[
-                            'Hello! How can I help you with XRPL?',
-                            'Can you clarify your question?',
-                            // ... More received messages
-                        ]}
-                    />
-
-                    <ChatBox
-                        compactMode
-                        timestamp={new Date().toISOString()}
-                        userName="You"
-                        type="sent"
-                        messages={[
-                            'Hi! I have a question regarding transactions.',
-                            'Sure, I was wondering about the fees.',
-                            // ... More sent messages
-                        ]}
-                    />
+                    {
+                        messages && messages[conversation_id].map((msg, index) => {
+                            return (
+                                <ChatBox
+                                    key={index}
+                                    compactMode
+                                    timestamp={msg.created}
+                                    userName={msg.sender}
+                                    type={msg.sender_id === uData.uid ? "sent" : "received"}
+                                    messages={[
+                                        msg.content,
+                                    ]}
+                                />
+                            );
+                        })
+                    }
                 </div>
                 <div className=" w-full flex flex-col-reverse @md:flex-row gap-4 items-center">
-                    <InputField placeholder="Type something..." className="bg-[#A6B0CF] bg-opacity-5 text-sm" sendIcon />
+                    {/* <InputField placeholder="Type something..." className="bg-[#A6B0CF] bg-opacity-5 text-sm" sendIcon value={inputMessage} onChange={(e) => setInputMessage(e.target.value)} onClick={() => handleSendMessage(inputMessage)} /> */}
+                    <InputField
+                        placeholder="Type something..."
+                        className="bg-[#A6B0CF] bg-opacity-5 text-sm"
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                        onClick={() => handleSendMessage(inputMessage)}
+                        sendIcon
+                    />
+
                     <div className="flex flex-col w-full @md:w-auto">
                         <motion.div layout className="flex flex-row justify-between items-center gap-4">
                             <Tooltip tooltipContent="Enable it to send this message as a XRPL transaction." position="top-center" className="text-xs">
@@ -123,15 +241,14 @@ export default function Chat() {
         );
     };
 
-    const [selectedMessage, setSelectedMessage] = useState(messagesData[0]);
-
     const handlePreviewClick = (message) => {
         setSelectedMessage(message);
+
     };
+    
     const handleClose = () => {
         setSelectedMessage(null);
     };
-
 
     return (
         <AppLayout
@@ -149,7 +266,7 @@ export default function Chat() {
 
                     {/* PREVIEW MESSAGES */}
                     <motion.div layout>
-                        {messagesData.map((message, index) => (
+                        {conversations && conversations.map((message, index) => (
                             <MessagePreview
                                 key={index}
                                 userName={message.userName}
@@ -158,17 +275,20 @@ export default function Chat() {
                                 unreadCount={message.unreadCount}
                                 onClick={() => handlePreviewClick(message)}
                                 isSelected={selectedMessage && selectedMessage.userName === message.userName}
+                                avatarUrl={message.avatar}
                             />
                         ))}
                     </motion.div>
                 </div>
 
                 {/* Full Message */}
-                {selectedMessage && (
+                {selectedMessage && messages && (
                     <FullMessage
                         userName={selectedMessage.userName}
                         message={selectedMessage.messagePreview}
                         onClose={handleClose}
+                        avatarUrl={selectedMessage.avatar}
+                        conversation_id={selectedMessage.conversation_id}
                     />
                 )}
 

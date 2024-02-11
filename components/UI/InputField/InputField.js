@@ -31,6 +31,7 @@ const InputField = ({ children, onClick, className, label, placeholder, icon, is
                     placeholder={placeholder}
                     required={isRequired}
                     maxLength={40}
+                    onKeyPress={(e) => e.key === 'Enter' && inputValue && onClick && onClick(inputValue)}
                 />
                 {sendIcon &&
                     <div className={`absolute inset-y-0 right-0 flex items-center pr-4 ${inputValue ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
