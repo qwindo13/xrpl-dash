@@ -25,7 +25,7 @@ const MessagePreview = ({ avatarUrl, userName, messagePreview, messageTimestamp,
         <div
             onClick={onClick}
             className='flex w-full hover:bg-[#21212A] transition-all duration-200 rounded-xl cursor-pointer overflow-hidden gap-4 items-center p-4 leading-none'>
-            {avatarUrl ? (
+            {avatarUrl !== "" ? (
                 <Image
                     src={avatarUrl}
                     alt={name}

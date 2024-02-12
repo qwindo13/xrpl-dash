@@ -619,5 +619,6 @@ export default function Home({ nfts, customLayout,refreshCustomLayouts }) {
       </Modal>
       
     </AppLayout>
+    
   );
 }
