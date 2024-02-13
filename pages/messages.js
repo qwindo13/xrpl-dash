@@ -190,7 +190,6 @@ export default function Chat() {
                         ) : (
                             <motion.div layoutId={`avatar-${userName}`} className="rounded-full bg-default-avatar aspect-square" />
                         )}
-                        <motion.h1 className="text-xl">{userName}</motion.h1>
                     </motion.div>
                     <Button className='bg-transparent p-0' onClick={() => setShowDetailsColumn(!showDetailsColumn)}>
                         <MoreHorizRoundedIcon />

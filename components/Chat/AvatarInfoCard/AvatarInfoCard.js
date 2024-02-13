@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 
-const AvatarInfoCard = ({ avatarUrl, avatarWidth = "40", avatarHeight = "40", name, additionalInfo }) => {
+const AvatarInfoCard = ({ avatarUrl, avatarWidth = "40", avatarHeight = "40", userName, additionalInfo }) => {
     return (
-        <div className="p-4 max-w-sm flex gap-4 items-center w-full overflow-hidden">
+        <div className="max-w-sm flex gap-4 items-center w-full overflow-hidden">
             {avatarUrl ? (
                 <Image
                     src={avatarUrl}
@@ -22,7 +22,7 @@ const AvatarInfoCard = ({ avatarUrl, avatarWidth = "40", avatarHeight = "40", na
                 ></div>
             )}
             <div className='flex flex-col w-full'>
-                <h2 className="text-lg font-semibold">{name}</h2>
+                <h2 className="text-lg font-semibold">{userName}</h2>
                 <p className="text-sm opacity-40 truncate">{additionalInfo}</p>
             </div>
 
