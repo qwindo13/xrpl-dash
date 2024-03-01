@@ -9,6 +9,7 @@ import PriceChart from '@/components/Modules/Trades/Chart/Chartcomponents';
 import Messages from '@/components/Modules/Misc/Messages/Messagescomponents';
 import OrderBook from '@/components/Modules/Trades/OrderBook/OrderBookcomponents';
 import BitcoinHalving from '@/components/Modules/Misc/BitcoinHalving/BitcoinHalvingcomponents';
+import Airdrops from '@/components/Modules/Misc/Airdrops/Airdropscomponents';
 import { priceInfoSize, richListSize, quickSwapSize, walletSize, feedSize, nftsSize, singleNftSize, fearGreedSize } from '@/components/Utils/ModuleSizescomponents';
 
 export default function Home({customLayout,refreshCustomLayouts }) {
@@ -93,8 +94,8 @@ export default function Home({customLayout,refreshCustomLayouts }) {
                     autoSize={true}
                     onLayoutChange={handleLayoutChange}
                 >
-                    <div key="aiChatBot">
-                        <Messages />
+                    <div key="airdrop">
+                        <Airdrops />
                     </div>
                     <div key="richlist">
                         {/* <PriceChart /> */}
