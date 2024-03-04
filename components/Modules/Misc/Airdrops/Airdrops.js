@@ -75,7 +75,7 @@ const AirdropItem = ({ src, title, description, date }) => {
             <div className="w-2/12 flex items-center justify-end">
                 {getStatus(date)}
             </div>
-            
+
             {/* FULL CONTENT */}
         </div>
     );
@@ -85,6 +85,7 @@ const Airdrops = () => {
 
     const [moduleSettings, setModuleSettings] = useState(defaultSettings);
     const [airdrops, setAirdrops] = useState([]);
+    const [sortCriteria, setSortCriteria] = useState({ field: '', direction: 'asc' });
 
     const updateSettings = (key, value) => {
         setModuleSettings((prevSettings) => ({
@@ -111,6 +112,38 @@ const Airdrops = () => {
         fetchAirdrops();
     }, []);
 
+    const getStatusValue = (eventDate) => {
+        if (!eventDate) return 3; // Assign a high value to TBD to ensure it sorts last
+        const event = new Date(eventDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return event > today ? 1 : 2; // LIVE events (1) sort before ENDED events (2)
+    };
+    
+    const sortAirdrops = (field) => {
+        const isAsc = sortCriteria.field === field && sortCriteria.direction === 'asc';
+        const sortedAirdrops = [...airdrops].sort((a, b) => {
+            let aValue, bValue;
+            if (field === 'status') {
+                aValue = getStatusValue(a.airdrop_date);
+                bValue = getStatusValue(b.airdrop_date);
+            } else {
+                aValue = a[field];
+                bValue = b[field];
+            }
+    
+            if (aValue < bValue) return isAsc ? -1 : 1;
+            if (aValue > bValue) return isAsc ? 1 : -1;
+            return 0;
+        });
+    
+        setAirdrops(sortedAirdrops);
+        setSortCriteria({
+            field,
+            direction: isAsc ? 'desc' : 'asc',
+        });
+    };
+
     return (
         <ModuleCard
             title="XRPL Airdrops"
@@ -131,8 +164,8 @@ const Airdrops = () => {
         >
             <div className="flex flex-col gap-4 w-full overflow-hidden">
                 <div className="w-full flex justify-between uppercase text-xs">
-                    <div className="w-10/12 opacity-40">Project</div>
-                    <div className="w-2/12 opacity-40 justify-end flex">Status</div>
+                    <div className="w-10/12 opacity-40 cursor-pointer" onClick={() => sortAirdrops('project_name')}>Project {sortCriteria.field === 'project_name' ? (sortCriteria.direction === 'asc' ? '↑' : '↓') : ''}</div>
+                    <div className="w-2/12 opacity-40 justify-end flex cursor-pointer" onClick={() => sortAirdrops('status')}>Status {sortCriteria.field === 'status' ? (sortCriteria.direction === 'asc' ? '↑' : '↓') : ''}</div>
                 </div>
                 <div className="w-full h-full flex flex-col gap-4">
                     {airdrops.map((airdrop) => (

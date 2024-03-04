@@ -292,7 +292,7 @@ export default function Chat() {
             <MoreHorizRoundedIcon />
           </Button>
         </motion.div>
-        <div className="flex grow flex-col overflow-y-auto">
+        <div className="flex grow flex-col overflow-y-auto gap-4">
           {messages && messages.hasOwnProperty(conversation_id)
             ? messages[conversation_id].map((msg, index) => {
                 return (
@@ -452,10 +452,4 @@ export default function Chat() {
       </div>
     </AppLayout>
   );
-}
-
-{
-  /* Chat function should be reserved to premium users
-    Idea - only allow premium users to see received messages
-*/
 }
