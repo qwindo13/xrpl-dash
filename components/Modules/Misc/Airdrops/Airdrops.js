@@ -6,8 +6,8 @@ import { createClient } from "@supabase/supabase-js";
 import ModuleCard from '@/components/UI/ModuleCard/ModuleCardcomponents';
 import TitleSwitch from '@/components/UI/ModuleCard/Settings/TitleSwitchcomponents';
 import BackgroundTabs from "@/components/UI/ModuleCard/Settings/BackgroundTabscomponents";
-import InputField from "@/components/UI/InputField/InputFieldcomponents";
-import ChatBox from "@/components/Chat/ChatBox/ChatBoxcomponents";
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 
 const defaultSettings = {
     displayTitle: true,
@@ -164,8 +164,8 @@ const Airdrops = () => {
         >
             <div className="flex flex-col gap-4 w-full overflow-hidden">
                 <div className="w-full flex justify-between uppercase text-xs">
-                    <div className="w-10/12 opacity-40 cursor-pointer" onClick={() => sortAirdrops('project_name')}>Project {sortCriteria.field === 'project_name' ? (sortCriteria.direction === 'asc' ? '↑' : '↓') : ''}</div>
-                    <div className="w-2/12 opacity-40 justify-end flex cursor-pointer" onClick={() => sortAirdrops('status')}>Status {sortCriteria.field === 'status' ? (sortCriteria.direction === 'asc' ? '↑' : '↓') : ''}</div>
+                    <div className="w-10/12 opacity-40 cursor-pointer flex gap-1 items-center" onClick={() => sortAirdrops('project_name')}>Project {sortCriteria.field === 'project_name' ? (sortCriteria.direction === 'asc' ? <KeyboardArrowUpRoundedIcon sx={{ fontSize: 14 }} /> : <KeyboardArrowDownRoundedIcon sx={{ fontSize: 14 }}/>) : ''}</div>
+                    <div className="w-2/12 opacity-40 justify-end flex gap-1 items-center cursor-pointer" onClick={() => sortAirdrops('status')}>Status {sortCriteria.field === 'status' ? (sortCriteria.direction === 'asc' ? <KeyboardArrowUpRoundedIcon sx={{ fontSize: 14 }} /> : <KeyboardArrowDownRoundedIcon sx={{ fontSize: 14 }}/>) : ''}</div>
                 </div>
                 <div className="w-full h-full flex flex-col gap-4">
                     {airdrops.map((airdrop) => (
