@@ -293,7 +293,7 @@ export default function Chat() {
             <MoreHorizRoundedIcon />
           </Button>
         </motion.div>
-        <div className="flex grow flex-col overflow-y-auto gap-4">
+        <div className="flex grow flex-col overflow-y-auto gap-2">
           {messages && messages.hasOwnProperty(conversation_id)
             ? messages[conversation_id].map((msg, index) => {
               return (
@@ -370,9 +370,11 @@ export default function Chat() {
   return (
     <AppLayout>
       <div className="flex h-[85vh] w-full gap-8 overflow-hidden">
+
         {/* MESSAGES LIST */}
         <div className="flex h-full  w-1/4 flex-col gap-8 overflow-y-scroll pt-4">
           <h1 className="text-2xl">Messages</h1>
+
           {/* SEARCH BAR */}
           <div className="relative">
             <SearchBar
@@ -407,10 +409,10 @@ export default function Chat() {
               </div>
             )}
 
-
           </div>
+
           {/* PREVIEW MESSAGES */}
-          <motion.div layout>
+          <motion.div >
             {conversations &&
               conversations.map((message, index) => (
                 <MessagePreview
