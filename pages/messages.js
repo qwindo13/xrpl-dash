@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import AppLayout from "@/components/Layouts/AppLayoutcomponents";
 import SearchBar from "@/components/UI/SearchBar/SearchBarcomponents";
@@ -295,17 +296,17 @@ export default function Chat() {
         <div className="flex grow flex-col overflow-y-auto gap-4">
           {messages && messages.hasOwnProperty(conversation_id)
             ? messages[conversation_id].map((msg, index) => {
-                return (
-                  <ChatBox
-                    key={index}
-                    compactMode
-                    timestamp={msg.created}
-                    userName={msg.sender}
-                    type={msg.sender_id === uData.uid ? "sent" : "received"}
-                    messages={[msg.content]}
-                  />
-                );
-              })
+              return (
+                <ChatBox
+                  key={index}
+                  compactMode
+                  timestamp={msg.created}
+                  userName={msg.sender}
+                  type={msg.sender_id === uData.uid ? "sent" : "received"}
+                  messages={[msg.content]}
+                />
+              );
+            })
             : null}
         </div>
         <div className=" @md:flex-row flex w-full flex-col-reverse items-center gap-4">
@@ -349,6 +350,7 @@ export default function Chat() {
 
   const handlePreviewClick = (message) => {
     setSelectedMessage(message);
+    setSearchString(""); 
   };
 
   const handleClose = () => {
@@ -368,21 +370,48 @@ export default function Chat() {
   return (
     <AppLayout>
       <div className="flex h-[85vh] w-full gap-8 overflow-hidden">
-        {/* Messages List */}
+        {/* MESSAGES LIST */}
         <div className="flex h-full  w-1/4 flex-col gap-8 overflow-y-scroll pt-4">
           <h1 className="text-2xl">Messages</h1>
           {/* SEARCH BAR */}
-          <div className="mb-4">
+          <div className="relative">
             <SearchBar
-              placeholder="Search by address, username, or messages"
+              placeholder="Search by address or XRPLDash username"
               onChange={(e) => setSearchString(e.target.value)}
             />
-          </div>
 
+            {searchResults && searchString !== "" && (
+              <div className="absolute top-16 flex flex-col gap-2 bg-[#21212A] w-full p-4 rounded-2xl border border-[#fff] border-opacity-10 z-10 overflow-y-scroll min-w-60  max-h-96 left-0 bg-opacity-60 backdrop-blur-xl overflow-x-hidden overflow-y-auto">
+                {searchResults.length > 0 ? (
+                  searchResults.map((user, index) => (
+                    <div key={index} className="p-2 flex w-full justify-between cursor-pointer items-center" onClick={() => handlePreviewClick(user)}>
+                      <div className="flex gap-4 items-center w-full">
+                        {user.pfp !== "" ? (
+                          <img
+                            src={user.pfp}
+                            alt={user.username}
+                            className="rounded-full aspect-square"
+                            width={40}
+                            height={40}
+                          />
+                        ) : (
+                          <div className="rounded-full bg-default-avatar h-10 w-10 aspect-square" />
+                        )}
+                        <span className="truncate text-sm font-semibold">{user.username}</span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-sm font-semibold opacity-40 text-center">No wallets found.</div>
+                )}
+              </div>
+            )}
+
+
+          </div>
           {/* PREVIEW MESSAGES */}
           <motion.div layout>
             {conversations &&
-              searchString === "" &&
               conversations.map((message, index) => (
                 <MessagePreview
                   key={index}
@@ -398,24 +427,7 @@ export default function Chat() {
                   avatarUrl={message.avatar}
                 />
               ))}
-            {searchResults &&
-              searchString !== "" &&
-              searchResults.map((user, index) => {
-                return (
-                  <MessagePreview
-                    key={index}
-                    userName={user.username}
-                    messagePreview="Message this user..."
-                    unreadCount={0}
-                    onClick={() => handlePreviewClick(user)}
-                    isSelected={
-                      selectedMessage &&
-                      selectedMessage.userName === user.username
-                    }
-                    avatarUrl={user.pfp}
-                  />
-                );
-              })}
+
           </motion.div>
         </div>
 
