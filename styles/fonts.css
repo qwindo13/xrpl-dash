@@ -1,0 +1,52 @@
+/* Mont-Black */
+@font-face {
+    font-family: 'Mont';
+    src: url('/fonts/mont/Mont-Black.woff2') format('woff2'),
+         url('/fonts/mont/Mont-Black.woff') format('woff'),
+         url('/fonts/mont/Mont-Black.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+  }
+  
+  /* Mont-Bold */
+  @font-face {
+    font-family: 'Mont';
+    src: url('/fonts/mont/Mont-Bold.woff2') format('woff2'),
+         url('/fonts/mont/Mont-Bold.woff') format('woff'),
+         url('/fonts/mont/Mont-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  /* Mont-Light */
+  @font-face {
+    font-family: 'Mont';
+    src: url('/fonts/mont/Mont-Light.woff2') format('woff2'),
+         url('/fonts/mont/Mont-Light.woff') format('woff'),
+         url('/fonts/mont/Mont-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  /* Mont-Regular */
+  @font-face {
+    font-family: 'Mont';
+    src: url('/fonts/mont/Mont-Regular.woff2') format('woff2'),
+         url('/fonts/mont/Mont-Regular.woff') format('woff'),
+         url('/fonts/mont/Mont-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  /* Mont-SemiBold */
+  @font-face {
+    font-family: 'Mont';
+    src: url('/fonts/mont/Mont-SemiBold.woff2') format('woff2'),
+         url('/fonts/mont/Mont-SemiBold.woff') format('woff'),
+         url('/fonts/mont/Mont-SemiBold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  /* Remember to adjust the path to match the location of your fonts folder */
+  
