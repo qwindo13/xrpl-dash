@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 
-const AvatarInfoCard = ({ avatarUrl, avatarWidth = "40", avatarHeight = "40", userName, additionalInfo }) => {
+const AvatarInfoCard = ({ avatarUrl, avatarWidth = "40", avatarHeight = "40", userName, additionalInfo, href }) => {
     return (
-        <div className="max-w-sm flex gap-4 items-center w-full overflow-hidden">
+        <div className="max-w-sm flex gap-4 items-center w-full overflow-hidden cursor-pointer" onClick={() => href && window.open(href, '_blank')}>
             {avatarUrl ? (
                 <Image
                     src={avatarUrl}

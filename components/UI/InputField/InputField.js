@@ -17,20 +17,13 @@ const InputField = ({
   reff,
 }) => {
   const [inputValue, setInputValue] = useState("");
-  // Update state on input change
-  // const handleInputChange = (e) => {
-  //   setInputValue(e.target.value);
-  //   onChange && onChange(e); // Propagate the change to parent component
-  // };
-  //
+
   useEffect(() => {
-    console.log(reff.current);
     if (reff.current) {
       setInputValue(reff.current.value);
     }
   }, [reff]);
 
-  console.log(reff);
   return (
     <div className="w-full text-left">
       {label && (
@@ -55,8 +48,6 @@ const InputField = ({
         )}
         <input
           type="text"
-          // value={inputValue}
-          // onChange={handleInputChange}
           className={`block h-full w-full bg-[#21212A] p-4 font-normal ${icon ? "pl-12" : "pl-4"} ${sendIcon ? "pr-12" : "pr-4"} text-medium rounded-2xl border border-transparent transition-all  duration-300 placeholder:text-white placeholder:opacity-40 hover:border-white hover:border-opacity-5 focus:border-white focus:border-opacity-70 active:border active:border-opacity-70 ${className}`}
           placeholder={placeholder}
           required={isRequired}

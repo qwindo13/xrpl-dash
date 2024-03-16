@@ -15,6 +15,8 @@ import { config } from "@/configcomponents";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useCookies } from "react-cookie";
 import { useRef } from "react";
+import TxModal from "@/components/Modals/TxModal/TxModalcomponents";
+import { isInstalled, sendPayment } from "@gemwallet/api";
 
 export default function Chat() {
   const { sendMessage, lastMessage, readyState } = useWebSocket(config.ws_url, {
@@ -30,6 +32,12 @@ export default function Chat() {
   const [messages, setMessages] = useState(null);
   const [searchString, setSearchString] = useState("");
   const [searchResults, setSearchResults] = useState(null);
+  const [selectedUserHref, setSelectedUserHref] = useState(null);
+  const [sendXrpl, setSendXrpl] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [qrCode, setQrCode] = useState("");
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
+
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -167,15 +175,12 @@ export default function Chat() {
           );
           setSearchResults(filteredResults);
         }
+      } else if (message.type === "getWalletFromUname") {
+        console.log("Wallet from username", message);
+        setSelectedUserHref(`/user/${message.data.wallet}`);
       }
     }
   }, [lastMessage]);
-
-  useEffect(() => {
-    if (inputRef.current) {
-      console.log("Input value from useEffect:", inputRef.current.value);
-    }
-  }, [inputRef]);
 
   useEffect(() => {
     if (readyState === ReadyState.OPEN && cookies.token) {
@@ -226,33 +231,135 @@ export default function Chat() {
   // State to control the display of the third column
   const [showDetailsColumn, setShowDetailsColumn] = useState(false);
 
-  const handleSendMessage = () => {
-    if (inputRef.current) {
-      const inputValue = inputRef.current.value;
-      console.log("Current input value:", inputValue);
-      if (searchString === "") {
-        sendMessage(
-          JSON.stringify({
-            type: "sendMessage",
-            token: cookies.token,
-            conversation_id: selectedMessage.conversation_id,
-            content: inputRef.current.value,
-          })
-        );
-      } else {
-        sendMessage(
-          JSON.stringify({
-            type: "sendMessage",
-            token: cookies.token,
-            recipient: selectedMessage.id,
-            content: inputRef.current.value,
-          })
-        );
-      }
-      inputRef.current.value = "";
-    } else {
-      console.log("Input ref is not yet available");
+  const getQrCode = async (message) => {
+    const rec = selectedUserHref.split('/')[2]
+    const payload = await fetch('/api/xumm/createMicro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({destination: rec, memoStr: message, address: localStorage.getItem('address')})
+    })
+    const data = await payload.json();
+
+    setQrCode(data.payload.refs.qr_png);
+    setQrCodeUrl(data.payload.next.always);
+
+    if (window.screen.width < 768) {
+      //open in new tab
+      window.open(data.payload.next.always, '_blank');
     }
+
+    const ws = new WebSocket(data.payload.refs.websocket_status);
+
+    ws.onmessage = async (e) => {
+      let responseObj = JSON.parse(e.data)
+      if (responseObj.signed !== null && responseObj.signed !== undefined) {
+        const payload = await fetch(`/api/xumm/getpayload?payloadId=${responseObj.payload_uuidv4}`)
+        const payloadJson = await payload.json()
+        console.log(payloadJson)
+      }
+    }
+  }
+
+  const handleGem = (message) => {
+    isInstalled().then((response) => {
+      if (response.result.isInstalled) {
+        const memoType = "XRPLDASH";
+        const memoTypeHex = Buffer.from(memoType, "utf-8").toString("hex");
+        const memoStrHex = Buffer.from(message, "utf-8").toString("hex");
+        const payload = {
+          amount: "1",
+          destination: selectedUserHref.split("/")[2],
+          memos: [
+            {
+              memo: {
+                memoType: memoTypeHex,
+                memoData: memoStrHex,
+              },
+            },
+          ],
+        };
+
+        sendPayment(payload)
+      }
+    });
+  };
+
+  const handleSendMessage = () => {
+    const inputValue = inputRef.current.value;
+    if (!sendXrpl) {
+      if (inputRef.current) {
+        // const inputValue = inputRef.current.value;
+        if (searchString === "") {
+          sendMessage(
+            JSON.stringify({
+              type: "sendMessage",
+              token: cookies.token,
+              conversation_id: selectedMessage.conversation_id,
+              content: inputRef.current.value,
+            })
+          );
+        } else {
+          sendMessage(
+            JSON.stringify({
+              type: "sendMessage",
+              token: cookies.token,
+              recipient: selectedMessage.id,
+              content: inputRef.current.value,
+            })
+          );
+        }
+        inputRef.current.value = "";
+      } else {
+        console.log("Input ref is not yet available");
+      }
+    } else {
+      if (inputRef.current) {
+        const walletType = localStorage.getItem("walletType");
+        if (walletType === "xumm") {
+          getQrCode(inputValue);
+          setShowModal(true);
+        } else {
+          handleGem(inputValue);
+        }
+      }
+    }
+  };
+
+  const handlePreviewClick = (message) => {
+    setSelectedMessage(message);
+  };
+
+  const handleClose = () => {
+    setSelectedMessage(null);
+  };
+
+  useEffect(() => {
+    if (searchString !== "") {
+      const payload = {
+        type: "searchUser",
+        searchString: searchString,
+      };
+      sendMessage(JSON.stringify(payload));
+    }
+  }, [searchString]);
+
+  useEffect(() => {
+    if (!selectedMessage) return;
+    if (!selectedMessage.userName) return;
+    //get address form uname, getWalletFromUname
+    sendMessage(
+      JSON.stringify({
+        type: "getWalletFromUname",
+        username: selectedMessage.userName,
+      })
+    );
+
+  }, [selectedMessage]);
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   const FullMessage = ({
@@ -278,6 +385,7 @@ export default function Chat() {
                 avatarUrl={avatarUrl}
                 userName={userName}
                 className="aspect-square rounded-full"
+                href={selectedUserHref}
               />
             ) : (
               <motion.div
@@ -293,20 +401,20 @@ export default function Chat() {
             <MoreHorizRoundedIcon />
           </Button>
         </motion.div>
-        <div className="flex grow flex-col overflow-y-auto gap-2">
+        <div className="flex grow flex-col overflow-y-auto gap-4">
           {messages && messages.hasOwnProperty(conversation_id)
             ? messages[conversation_id].map((msg, index) => {
-              return (
-                <ChatBox
-                  key={index}
-                  compactMode
-                  timestamp={msg.created}
-                  userName={msg.sender}
-                  type={msg.sender_id === uData.uid ? "sent" : "received"}
-                  messages={[msg.content]}
-                />
-              );
-            })
+                return (
+                  <ChatBox
+                    key={index}
+                    compactMode
+                    timestamp={msg.created}
+                    userName={msg.sender}
+                    type={msg.sender_id === uData.uid ? "sent" : "received"}
+                    messages={[msg.content]}
+                  />
+                );
+              })
             : null}
         </div>
         <div className=" @md:flex-row flex w-full flex-col-reverse items-center gap-4">
@@ -335,7 +443,7 @@ export default function Chat() {
                   Send with XRPL
                 </span>
               </Tooltip>
-              <Switch size="sm" />
+              <Switch size="sm" onChange={() => setSendXrpl(!sendXrpl)} value={sendXrpl} />
             </motion.div>
             <div>
               <span className="flex w-auto gap-2 whitespace-nowrap text-xs opacity-40">
@@ -347,25 +455,6 @@ export default function Chat() {
       </motion.div>
     );
   };
-
-  const handlePreviewClick = (message) => {
-    setSelectedMessage(message);
-    setSearchString(""); 
-  };
-
-  const handleClose = () => {
-    setSelectedMessage(null);
-  };
-
-  useEffect(() => {
-    if (searchString !== "") {
-      const payload = {
-        type: "searchUser",
-        searchString: searchString,
-      };
-      sendMessage(JSON.stringify(payload));
-    }
-  }, [searchString]);
 
   return (
     <AppLayout>
@@ -389,6 +478,7 @@ export default function Chat() {
                     <div key={index} className="p-2 flex w-full justify-between cursor-pointer items-center" onClick={() => handlePreviewClick(user)}>
                       <div className="flex gap-4 items-center w-full">
                         {user.pfp !== "" ? (
+                          // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={user.pfp}
                             alt={user.username}
@@ -464,6 +554,9 @@ export default function Chat() {
           </motion.div>
         )}
       </div>
+
+      <TxModal showModal={showModal} closeModal={closeModal} qrCode={qrCode} qrCodeUrl={qrCodeUrl} text={'Send message with XRPL!'}/>
+
     </AppLayout>
   );
 }

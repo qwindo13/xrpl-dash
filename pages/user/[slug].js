@@ -11,7 +11,6 @@ import { BsDiscord } from "react-icons/bs";
 import { config } from '@/configcomponents';
 import { useCookies } from 'react-cookie';
 
-
 function truncateAddress(address, maxLength = 12) {
     if (!address) {
         return '';
@@ -35,6 +34,7 @@ export default function Profile({ nfts }) {
     const [badges, setBadges] = useState([]);
     const router = useRouter();
     const xrpAddress = router.query.slug;
+    console.log(xrpAddress);
     const api_url = config.api_url;
 
     useEffect(() => {
@@ -54,6 +54,7 @@ export default function Profile({ nfts }) {
             })
                 .then((res) => res.json())
                 .then((data) => {
+                    console.log(data);
                     if (data.exists) {
                         setUserData(data.data);
                     }

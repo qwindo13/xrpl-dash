@@ -30,7 +30,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log(window.innerWidth)
     if (window.innerWidth <= 800) {
       setIsMobile(true)
     }
@@ -135,7 +134,6 @@ export default function Home() {
 
   const goToNextStep = () => setCurrentStep((prevStep) => prevStep + 1);
   const goToPrevStep = () => setCurrentStep((prevStep) => prevStep - 1);
-
 
   const handleGem = () => {
     isInstalled().then((response) => {
