@@ -1,4 +1,7 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## XRPLDash
+
+XRPLDash is a modular dashboard originally built for the Ripple Wave 4 Grant. Unfortunately, the project was abandoned, but it remains open for contributions and further development.
+
 
 ## Getting Started
 
